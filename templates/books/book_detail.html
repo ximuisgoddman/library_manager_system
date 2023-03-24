@@ -1,12 +1,25 @@
 {% extends 'books/base.html' %}
 
 {% block content %}
-  <h1>Book Detail</h1>
-  <h2>{{ book.name }}</h2>
-  <p><strong>Author:</strong> {{ book.author }}</p>
-  <p><strong>Price:</strong> {{ book.price }}</p>
-  <a href="{% url 'book_list' %}">Back to List</a>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <div class="card">
+          <div class="card-header">
+            <h1 class="text-center">Book Detail</h1>
+          </div>
+          <div class="card-body">
+            <h2>{{ book.name }}</h2>
+            <p><strong>Author:</strong> {{ book.author }}</p>
+            <p><strong>Price:</strong> {{ book.price }}</p>
+            <div class="text-center">
+              <a href="{% url 'book_update' book.book_id %}" class="btn btn-primary">Edit</a>
+              <a href="{% url 'book_delete' book.book_id %}" class="btn btn-danger">Delete</a>
+              <a href="{% url 'book_list' %}" class="btn btn-secondary">Back to List</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}
-
-
-

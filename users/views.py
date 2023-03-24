@@ -53,7 +53,7 @@ def login(request):
                 request.session['is_login'] = True
                 request.session['user_id'] = user.id
                 request.session['user_name'] = user.name
-                return redirect('/books/add/')
+                return redirect('/books')
             else:
                 message = "密码不正确！"
                 return render(request, 'users/login.html', locals())

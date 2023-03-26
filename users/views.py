@@ -44,7 +44,7 @@ def login(request):
                 user = models.User.objects.get(name=username)
             except:
                 message = "用户不存在！"
-                return render(request, 'login.html', locals())
+                return render(request, 'users/login.html', locals())
             # if not user.has_confirmed:
             # 	message = '该用户还未经过邮件确认！'
             # 	return render(request, 'login.html', locals())
@@ -86,7 +86,6 @@ def register(request):
                 message = '两次输入的密码不同！'
                 return render(request, 'users/register.html', locals())
             else:
-
                 same_name_user = models.User.objects.filter(name=username)
                 if same_name_user:
                     message = '用户名已经存在'
@@ -102,10 +101,9 @@ def register(request):
                 new_user.email = email
                 new_user.sex = sex
                 new_user.save()
+            return render(request, 'users/login.html', locals())
         else:
             return render(request, 'users/register.html', locals())
-    register_form = users_form.RegisterForm()
-    return render(request, 'users/register.html', locals())
 
 
 def logout(request):

@@ -17,7 +17,7 @@ Including another URLconf
 from django.urls import path
 import os
 import sys
-
+from django.contrib.auth.decorators import login_required
 book_path = os.path.abspath(os.path.join(os.getcwd(), "..", "books"))
 user_path = os.path.abspath(os.path.join(os.getcwd(), "..", "users"))
 sys.path.append(book_path)
@@ -29,9 +29,9 @@ from django.conf.urls import url, include
 urlpatterns = [
     path('books/', lib_views.book_list, name='book_list'),
     path('books/add/', lib_views.book_create, name='book_create'),
-    path('books/<int:book_id>/', lib_views.book_detail, name='book_detail'),
-    path('books/<int:book_id>/update/', lib_views.book_update, name='book_update'),
-    path('books/<int:book_id>/delete/', lib_views.book_delete, name='book_delete'),
+    path('books/<int:book_id>/', login_required(lib_views.book_detail), name='book_detail'),
+    path('books/<int:book_id>/update/', login_required(lib_views.book_update), name='book_update'),
+    path('books/<int:book_id>/delete/', login_required(lib_views.book_delete), name='book_delete'),
     url(r"^captcha/", include('captcha.urls')),
     path("login/", user_views.login, name='login'),
     path("register/", user_views.register, name='register'),

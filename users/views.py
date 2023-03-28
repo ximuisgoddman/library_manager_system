@@ -56,10 +56,6 @@ def my_login(request):
                         request.session['next_url'] = next_url
                     else:
                         request.session['next_url'] = reverse('book_list')
-                    print("Next URL: %s request.user:%s user:%s request.session:%s" % (
-                        request.session['next_url'],
-                        request.user.__dict__, myuser,
-                        request.session.keys()))
                     return redirect(request.session['next_url'])
                 else:
                     message = "密码不正确！"

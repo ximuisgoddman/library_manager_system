@@ -5,16 +5,10 @@ from .models import Book
 from users.models import MyUser
 
 
-
 @login_required
 def book_list(request):
-    print("book_list:", request.session.items())
     if not request.session.get("is_login", None):
         return redirect('/login/')
-    # 获取并删除session中的next_url
-    # next_url = request.session.pop('next_url', None)
-    book_owner=request.user
-
     books = Book.objects.filter(owner=request.user)
     return render(request, 'books/book_list.html', {'books': books})
 

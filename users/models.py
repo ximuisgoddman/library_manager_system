@@ -1,8 +1,9 @@
 from django.db import models
 from captcha.fields import CaptchaField
+import hashlib
 
 
-class User(models.Model):
+class MyUser(models.Model):
     """
     用户表
     """
@@ -16,6 +17,20 @@ class User(models.Model):
     sex = models.CharField(max_length=32, choices=gender, default="男")
     c_time = models.DateTimeField(auto_now_add=True)
     has_confirmed = models.BooleanField(default=False)
+    last_login = models.DateTimeField(verbose_name='最后登录时间', null=True, blank=True)
+
+    def check_password(self, raw_password):
+        """
+        Validate the user's password.
+        """
+        # Your password hashing code goes here
+        hash_password = hashlib.sha256(raw_password.encode('utf-8')).hexdigest()
+        print("check_password", self.password, hash_password, raw_password)
+        return self.password == hash_password
+
+    @property
+    def is_authenticated(self):
+        return True
 
     def __str__(self):
         return self.name

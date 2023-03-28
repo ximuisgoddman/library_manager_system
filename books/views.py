@@ -2,19 +2,20 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .book_form import BookForm
 from .models import Book
-from users.models import User
-# @login_required(login_url='login')
-# def book_list(request):
-#     books = request.user.books.all()
-#     return render(request, 'books/book_list.html', {'books': books})
+from users.models import MyUser
+
+
+
 @login_required
 def book_list(request):
-    print("book_list",request.session.get("is_login", "None"))
+    print("book_list:", request.session.items())
     if not request.session.get("is_login", None):
         return redirect('/login/')
     # 获取并删除session中的next_url
     # next_url = request.session.pop('next_url', None)
-    books = Book.objects.all()
+    book_owner=request.user
+
+    books = Book.objects.filter(owner=request.user)
     return render(request, 'books/book_list.html', {'books': books})
 
 
@@ -29,7 +30,7 @@ def book_create(request):
     form = BookForm(request.POST or None)
     if form.is_valid():
         book = form.save(commit=False)
-        print("create,",request.__dict__)
+        print("create,", request.__dict__)
         book.owner = request.user
         book.save()
         return redirect('book_list')

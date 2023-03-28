@@ -128,8 +128,10 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
+    'backends.user_backend.UserBackend'
+
 ]
 LOGIN_URL = '/login/'
 
-SESSION_COOKIE_AGE = 0
+# SESSION_COOKIE_AGE = 10
 

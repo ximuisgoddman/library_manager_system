@@ -1,3 +1,5 @@
+import pdb
+
 from django.shortcuts import render, redirect
 from . import models
 from . import users_form
@@ -9,14 +11,18 @@ from django.urls import reverse_lazy
 from django.urls import reverse
 
 
-def hash_code(s, salt='mysite'):
+def hash_code(s, salt=''):
     h = hashlib.sha256()
     s += salt
     h.update(s.encode())
     return h.hexdigest()
 
 
-def login(request):
+from django.contrib.auth import authenticate
+from django.contrib.auth import login as user_login
+
+
+def my_login(request):
     """
     登录视图
     :param request:
@@ -28,23 +34,32 @@ def login(request):
         if login_form.is_valid():
             username = login_form.cleaned_data['username']
             password = login_form.cleaned_data['password']
+            myuser = authenticate(username=username, password=password)
+            # print("@@1,request.user.dict:",request.user.is_authenticated)
+            if myuser is not None:
+                user_login(request, myuser)
+
             try:
-                user = models.User.objects.get(name=username)
+                # user = models.MyUser.objects.get(name=username)
                 # if not user.has_confirmed:
                 #     message = "该用户还未经过邮件确认！"
                 #     return render(request, 'users/login.html', locals())
-                if user.password == hash_code(password):
+                # import pdb;pdb.set_trace()
+                if myuser.password == hash_code(password):
                     # 设置session
                     request.session['is_login'] = True
-                    request.session['user_id'] = user.id
-                    request.session['user_name'] = user.name
+                    request.session['user_id'] = myuser.id
+                    request.session['user_name'] = myuser.name
                     # 设置重定向的URL
                     next_url = request.GET.get('next', None)
                     if next_url:
                         request.session['next_url'] = next_url
                     else:
                         request.session['next_url'] = reverse('book_list')
-                    print("Next URL: ", request.session['next_url'])
+                    print("Next URL: %s request.user:%s user:%s request.session:%s" % (
+                        request.session['next_url'],
+                        request.user.__dict__, myuser,
+                        request.session.keys()))
                     return redirect(request.session['next_url'])
                 else:
                     message = "密码不正确！"
@@ -55,7 +70,7 @@ def login(request):
     return render(request, 'users/login.html', locals())
 
 
-def register(request):
+def my_register(request):
     """
     注册视图
     :param request:
@@ -78,16 +93,16 @@ def register(request):
                 message = '两次输入的密码不同！'
                 return render(request, 'users/register.html', locals())
             else:
-                same_name_user = models.User.objects.filter(name=username)
+                same_name_user = models.MyUser.objects.filter(name=username)
                 if same_name_user:
                     message = '用户名已经存在'
                     return render(request, 'users/register.html', locals())
-                same_email_user = models.User.objects.filter(email=email)
+                same_email_user = models.MyUser.objects.filter(email=email)
                 if same_email_user:
                     message = '该邮箱已经被注册了！'
                     return render(request, 'users/register.html', locals())
 
-                new_user = models.User()
+                new_user = models.MyUser()
                 new_user.name = username
                 new_user.password = hash_code(password1)
                 new_user.email = email

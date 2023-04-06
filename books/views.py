@@ -9,7 +9,8 @@ from users.models import MyUser
 def book_list(request):
     if not request.session.get("is_login", None):
         return redirect('/login/')
-    books = Book.objects.filter(owner=request.user)
+    # books = Book.objects.filter(owner=request.user)
+    books = Book.objects.all()
     return render(request, 'books/book_list.html', {'books': books})
 
 

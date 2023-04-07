@@ -5,13 +5,20 @@ from .models import BorrowRecord
 from users.models import MyUser
 
 
-# @login_required
-def borrow_record_view(request, record_id):
-    # if not request.session.get("is_login", None):
-    #     return redirect('/login/')
-    borrow_records = BorrowRecord.objects.filter(record_id=record_id)
-    return render(request, 'borrow_record/borrow_record.html', {'borrow_records': borrow_records})
+@login_required
+def borrow_record(request, record_id):
+    if not request.session.get("is_login", None):
+        return redirect('/login/')
+    borrow_record = BorrowRecord.objects.get(id=record_id)
+    return render(request, 'borrow_record/borrow_record.html', {'borrow_record': borrow_record})
 
+
+@login_required
+def borrow_record_detail(request, record_id):
+    if not request.session.get("is_login", None):
+        return redirect('/login/')
+    borrow_records = BorrowRecord.objects.filter(id=record_id)
+    return render(request, 'borrow_record/borrow_record_detail.html', {'borrow_records': borrow_records})
 #
 # @login_required
 # def book_detail(request, book_id):

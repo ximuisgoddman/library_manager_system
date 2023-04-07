@@ -1,9 +1,10 @@
 from django.db import models
 from captcha.fields import CaptchaField
 import hashlib
+from django.contrib.auth.models import AbstractBaseUser
 
 
-class MyUser(models.Model):
+class MyUser(AbstractBaseUser):
     """
     用户表
     """
@@ -11,6 +12,7 @@ class MyUser(models.Model):
         ('male', "男"),
         ('female', "女"),
     )
+    USERNAME_FIELD = 'name'
     name = models.CharField(verbose_name="姓名", max_length=128, unique=True)
     password = models.CharField(max_length=256)
     email = models.EmailField(unique=True)
@@ -18,6 +20,18 @@ class MyUser(models.Model):
     c_time = models.DateTimeField(auto_now_add=True)
     has_confirmed = models.BooleanField(default=False)
     last_login = models.DateTimeField(verbose_name='最后登录时间', null=True, blank=True)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+
+    def has_module_perms(self, app_label):
+        return True
+
+    def has_perm(self, perm, obj=None):
+        """
+        Does the user have a specific permission?
+        """
+        # 简单地返回 True，表示该用户拥有所有权限
+        return True
 
     def check_password(self, raw_password):
         """

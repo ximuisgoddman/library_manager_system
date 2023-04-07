@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Borrow Records</title>
+</head>
+<body>
+	<h1>Borrow Records</h1>
+	<table>
+		<thead>
+			<tr>
+				<th>图书唯一标识</th>
+				<th>借阅时间</th>
+				<th>归还截至日期</th>
+				<th>借阅者id</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for record in borrow_records %}
+			<tr>
+				<td>{{ record.book_name }}</td>
+				<td>{{ record.book_author }}</td>
+				<td>{{ record.publisher }}</td>
+				<td>{{ record.record_user_borrow_time }}</td>
+				<td>{{ record.record_user_borrow_deadline }}</td>
+				<td>
+					<a href="{% url 'borrow_record' %}" class="btn btn-secondary">Back to List</a>
+						View</a>
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</body>
+</html>

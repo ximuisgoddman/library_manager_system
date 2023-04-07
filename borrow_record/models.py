@@ -3,7 +3,6 @@ from users.models import MyUser
 
 
 class BorrowRecord(models.Model):
-    record_id = models.IntegerField(primary_key=True)
     book_id = models.IntegerField(max_length=100)
     book_name = models.CharField(max_length=100)
     book_author = models.CharField(max_length=100)

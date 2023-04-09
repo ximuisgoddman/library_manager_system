@@ -26,7 +26,7 @@ def book_detail(request, book_id):
 
 @login_required
 def book_create(request):
-    print("request.POST", request.POST)
+    print("request.POST:", request.POST)
     form = BookForm(request.POST or None)
     if form.is_valid():
         book = form.save(commit=False)
@@ -83,4 +83,5 @@ def book_borrow(request, book_id):
         form.save()
         print("YES")
     borrow_record = BorrowRecord.objects.get(book_id=int(borrow_book.book_id))
+    print("borrow_record:", borrow_record, borrow_record.book_id, borrow_record.record_user_borrow_time)
     return render(request, 'borrow_record/borrow_record.html', {'borrow_record': borrow_record})

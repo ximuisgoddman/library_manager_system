@@ -45,6 +45,7 @@ def my_login(request):
                 #     message = "该用户还未经过邮件确认！"
                 #     return render(request, 'users/login.html', locals())
                 # import pdb;pdb.set_trace()
+                print('PASSWORD', myuser.password, hash_code(password))
                 if myuser.password == hash_code(password):
                     # 设置session
                     request.session['is_login'] = True

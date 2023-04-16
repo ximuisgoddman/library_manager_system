@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Borrow Records</title>
+    <!-- 引入 Bootstrap 的 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.1.1/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h1 class="my-4">My Book Shelf List</h1>
+    <a href="{% url 'online_book_list' %}" class="btn btn-secondary mb-4">Back to Book_List</a>
+    <table class="table table-hover table-striped">
+        <thead>
+        <tr>
+            <th scope="col">图书唯一标识</th>
+            <th scope="col">图书名称</th>
+            <th scope="col">出版社</th>
+            <th scope="col">作者</th>
+            <th scope="col">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for bookshelf in bookshelfs %}
+        <tr>
+            <td>{{ bookshelf.book_id }}</td>
+            <td>{{ bookshelf.book_name }}</td>
+            <td>{{ bookshelf.book_publisher }}</td>
+            <td>{{ bookshelf.book_author }}</td>
+            <td>
+                <a href="{% url 'book_shelf_detail' bookshelf.id %}" class="btn btn-secondary btn-sm">View</a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+<!-- 引入 Bootstrap 的 JS 文件 -->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/popper.js/1.14.3/umd/popper.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+</body>
+</html>

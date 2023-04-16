@@ -3,11 +3,11 @@ from users.models import MyUser
 
 
 class BorrowRecord(models.Model):
-    book_id = models.IntegerField(max_length=100)
+    book_id = models.IntegerField()
     book_name = models.CharField(max_length=100)
     book_author = models.CharField(max_length=100)
     publisher = models.CharField(max_length=100)
-    record_user_borrow_time = models.IntegerField(max_length=100)
+    record_user_borrow_time = models.IntegerField()
     record_user_borrow_deadline = models.DateTimeField()
     create_time = models.DateTimeField(auto_now_add=True)
     update_time = models.DateTimeField(auto_now=True)

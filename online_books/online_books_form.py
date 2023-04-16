@@ -1,0 +1,15 @@
+from django import forms
+from .models import OnlineBooksModel
+
+
+class OnlineBooksForm(forms.ModelForm):
+    class Meta:
+        model = OnlineBooksModel
+        fields = ['book_image', 'book_name', 'book_author', 'book_publisher', 'book_description']
+        labels = {
+            'book_name': '书名',
+            'book_author': '作者',
+            'book_publisher': '出版社',
+            'book_description': '图书简介',
+            'book_image': '图书封面',
+        }

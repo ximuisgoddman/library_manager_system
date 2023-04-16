@@ -35,7 +35,6 @@ def my_login(request):
             username = login_form.cleaned_data['username']
             password = login_form.cleaned_data['password']
             myuser = authenticate(username=username, password=password)
-            # print("@@1,request.user.dict:",request.user.is_authenticated)
             if myuser is not None:
                 user_login(request, myuser)
 
@@ -43,7 +42,7 @@ def my_login(request):
                 # user = models.MyUser.objects.get(name=username)
                 # if not user.has_confirmed:
                 #     message = "该用户还未经过邮件确认！"
-                #     return render(request, 'users/login.html', locals())
+                #     return render(request, 'general_users/login.html', locals())
                 # import pdb;pdb.set_trace()
                 print('PASSWORD', myuser.password, hash_code(password))
                 if myuser.password == hash_code(password):
@@ -62,9 +61,9 @@ def my_login(request):
                     message = "密码不正确！"
             except:
                 message = "用户不存在！"
-        return render(request, 'users/login.html', locals())
+        return render(request, 'general_users/login.html', locals())
     login_form = users_form.UserForm()
-    return render(request, 'users/login.html', locals())
+    return render(request, 'general_users/login.html', locals())
 
 
 def my_register(request):
@@ -88,16 +87,16 @@ def my_register(request):
 
             if password1 != password2:
                 message = '两次输入的密码不同！'
-                return render(request, 'users/register.html', locals())
+                return render(request, 'general_users/register.html', locals())
             else:
                 same_name_user = models.MyUser.objects.filter(name=username)
                 if same_name_user:
                     message = '用户名已经存在'
-                    return render(request, 'users/register.html', locals())
+                    return render(request, 'general_users/register.html', locals())
                 same_email_user = models.MyUser.objects.filter(email=email)
                 if same_email_user:
                     message = '该邮箱已经被注册了！'
-                    return render(request, 'users/register.html', locals())
+                    return render(request, 'general_users/register.html', locals())
 
                 new_user = models.MyUser()
                 new_user.name = username
@@ -105,8 +104,8 @@ def my_register(request):
                 new_user.email = email
                 new_user.sex = sex
                 new_user.save()
-            return render(request, 'users/login.html', locals())
-    return render(request, 'users/register.html', locals())
+            return render(request, 'general_users/login.html', locals())
+    return render(request, 'general_users/register.html', locals())
 
 
 def logout(request):

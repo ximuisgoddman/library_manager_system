@@ -1,0 +1,29 @@
+{% extends 'books/base.html' %}
+
+{% block content %}
+<h1>Book List</h1>
+<a href="{% url 'online_book_create' %}" class="btn btn-primary my-3">Add Book</a>
+<table class="table">
+    <thead>
+    <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Price</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for book in books %}
+    <tr>
+        <td>{{ book.book_name }}</td>
+        <td>{{ book.author }}</td>
+        <td>{{ book.price }}</td>
+        <td>
+            <a href="{% url 'online_book_detail' book.id %}" class="btn btn-success btn-sm me-2">View</a>
+            <a href="{% url 'add_book_shelf' book.id %}" class="btn btn-success btn-sm me-2">Add to BookShelf</a>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -8,6 +8,11 @@ from django.http import QueryDict
 from borrow_record.models import BorrowRecord
 
 
+def book_front_page(request):
+    books = Book.objects.all()
+    return render(request, 'books/books_front_page.html', {'books': books})
+
+
 @login_required
 def book_list(request):
     if not request.session.get("is_login", None):

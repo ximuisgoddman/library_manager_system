@@ -40,7 +40,7 @@ urlpatterns = [
     path("login/", user_views.my_login, name='login'),
     path("register/", user_views.my_register, name='register'),
     path('logout/', user_views.logout, name='logout'),
-    path('borrow_record/<int:record_id>/', borrow_record_view.borrow_record, name='borrow_record'),
+    path('borrow_record/', borrow_record_view.borrow_record, name='borrow_record'),
     path('borrow_record_detail/<int:record_id>/', borrow_record_view.borrow_record_detail, name='borrow_record_detail'),
     path('admin/', admin.site.urls)
 ]

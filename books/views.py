@@ -60,9 +60,10 @@ def book_borrow(request, book_id):
     if not request.session.get("is_login", None):
         return redirect('/login/')
 
-    same_book_id = BorrowRecord.objects.filter(book_id=book_id)
+    same_book_id = BorrowRecord.objects.filter(book_id=book_id).first()
     if same_book_id:
-        return render(request, 'borrow_record/borrow_record.html', {'borrow_record': same_book_id})
+        print("already borrow")
+        return render(request, 'borrow_record/borrow_record_detail.html', {'record': same_book_id})
 
     borrow_book = Book.objects.filter(book_id=book_id).first()
     print("borrow_book", borrow_book)
@@ -82,6 +83,7 @@ def book_borrow(request, book_id):
     if form.is_valid():
         form.save()
         print("YES")
-    borrow_record = BorrowRecord.objects.get(book_id=int(borrow_book.book_id))
-    print("borrow_record:", borrow_record, borrow_record.book_id, borrow_record.record_user_borrow_time)
-    return render(request, 'borrow_record/borrow_record.html', {'borrow_record': borrow_record})
+    # borrow_records = BorrowRecord.objects.get(book_id=int(borrow_book.book_id))
+    borrow_records = BorrowRecord.objects.all()
+    print("Len", len(borrow_records))
+    return render(request, 'borrow_record/borrow_record.html', {'borrow_records': borrow_records})

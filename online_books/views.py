@@ -68,25 +68,32 @@ def add_book_shelf(request, book_id):
         print("already add to shelf")
         return render(request, 'book_shelf/book_shelf_detail.html', {'bookshelf': bookshelf})
 
-    bookshelf = OnlineBooksModel.objects.filter(id=book_id).first()
-    print("bookshelf", bookshelf)
+    online_book = OnlineBooksModel.objects.filter(id=book_id).first()
+    print("online_book", online_book,type(online_book.book_image))
     form_datas = {
-        "book_name": bookshelf.book_name,
-        "book_author": bookshelf.book_author,
-        "book_publisher": bookshelf.book_publisher,
-        "book_image": bookshelf.book_image,
-        "book_id": bookshelf.id,
-        'book_shelf_user_id':request.user.id
+        "book_name": online_book.book_name,
+        "book_author": online_book.book_author,
+        "book_publisher": online_book.book_publisher,
+        "book_image": online_book.book_image,
+        "book_id": online_book.id,
+        'book_shelf_user_id': request.user.id
     }
     form_data = QueryDict('', mutable=True)
     form_data.update(form_datas)
-    form = BookShelfForm(form_data)
+    form = BookShelfForm(form_data, request.FILES)
     print("Error", form.errors, "form_data:%s" % form_data)
     if form.is_valid():
-        form.save()
-        print("YES")
-    bookshelfs = OnlineBooksModel.objects.all()
-    print("Len", len(bookshelfs))
+        from django.core.files import File
+        from io import BytesIO
+        bookshelf = form.save(commit=False)
+        # 将 ImageFieldFile 对象转换为 File 对象
+        if bookshelf.book_image:
+            in_memory_file = BytesIO()
+            bookshelf.book_image.save(in_memory_file, bookshelf.book_image.format)
+            bookshelf.book_image = File(in_memory_file, name=bookshelf.book_image.name)
+        bookshelf.save()
+    bookshelfs = BookShelfModel.objects.all()
+    print("Len", len(bookshelfs), request.FILES)
     for x in bookshelfs:
-        print("@@", x.id, x.book_name)
+        print("@@", x.id, x.book_name,x.book_image)
     return render(request, 'book_shelf/book_shelf_list.html', {'bookshelfs': bookshelfs})

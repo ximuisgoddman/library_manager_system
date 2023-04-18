@@ -10,6 +10,8 @@ def book_shelf_list(request):
     if not request.session.get("is_login", None):
         return redirect('/login/')
     bookshelfs = BookShelfModel.objects.all()
+    for x in bookshelfs:
+        print("@@", x.id, x.book_name,x.book_image)
     return render(request, 'book_shelf/book_shelf_list.html', {'bookshelfs': bookshelfs})
 
 

@@ -3,7 +3,7 @@ from users.models import MyUser
 
 
 class BookShelfModel(models.Model):
-    book_image = models.ImageField(blank=True, null=True)
+    book_image = models.ImageField(blank=True, null=True, upload_to='online_book_images')
     book_id = models.IntegerField()
     book_name = models.CharField(max_length=100)
     book_author = models.CharField(max_length=100)

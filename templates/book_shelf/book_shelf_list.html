@@ -23,7 +23,7 @@
         <tbody>
         {% for bookshelf in bookshelfs %}
         <tr>
-            <td><img src="{{ bookshelf.book_image }}" width="100"></td>
+            <td><img src="{{ bookshelf.book_image.url }}" width="100"></td>
             <td>{{ bookshelf.book_name }}</td>
             <td>{{ bookshelf.book_publisher }}</td>
             <td>{{ bookshelf.book_author }}</td>

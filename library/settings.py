@@ -68,6 +68,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media'
+
             ],
         },
     },
@@ -135,10 +137,19 @@ AUTHENTICATION_BACKENDS = [
 
 ]
 LOGIN_URL = '/login/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
+
+
+# STATICFILES_DIRS是指定静态文件的目录
+# STATIC_ROOT是指定静态文件的收集目录
+# MEDIA_ROOT指定了媒体文件的保存目录
+# MEDIA_URL指定了媒体文件的URL前缀
+# 在这个示例中，静态文件存储在应用目录下的static目录中，媒体文件存储在应用目录下的media目录中
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'online_book_images')
+    os.path.join(BASE_DIR, 'static'),
 ]
-print(MEDIA_ROOT)
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# 媒体文件配置
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

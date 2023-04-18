@@ -64,6 +64,8 @@ urlpatterns = [
     path('book_shelf_list/', bookshelf_views.book_shelf_list, name='book_shelf_list'),
     path('book_shelf_detail/<int:record_id>/', bookshelf_views.book_shelf_detail, name='book_shelf_detail'),
 
+    path('user_online_book_list/', online_views.user_online_book_list, name='user_online_book_list'),
+    path('book_front_page/', lib_views.book_front_page, name='book_front_page'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

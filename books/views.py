@@ -10,7 +10,7 @@ from borrow_record.models import BorrowRecord
 
 def book_front_page(request):
     books = Book.objects.all()
-    return render(request, 'books/books_front_page.html', {'books': books})
+    return render(request, 'front_page/books_front_page.html', {'books': books})
 
 
 @login_required
@@ -53,7 +53,7 @@ def book_update(request, book_id):
 
 @login_required
 def book_delete(request, book_id):
-    book = get_object_or_404(request.user.books, pk=book_id)
+    book = Book.objects.get(book_id=book_id)
     if request.method == 'POST':
         book.delete()
         return redirect('book_list')

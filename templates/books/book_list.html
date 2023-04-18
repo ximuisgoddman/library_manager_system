@@ -1,4 +1,4 @@
-{% extends 'books/base.html' %}
+{% extends 'online_books/base.html' %}
 
 {% block content %}
 <h1>Book List</h1>
@@ -22,7 +22,6 @@
             <a href="{% url 'book_detail' book.book_id %}" class="btn btn-success btn-sm me-2">View</a>
             <a href="{% url 'book_update' book.book_id %}" class="btn btn-warning btn-sm me-2">Edit</a>
             <a href="{% url 'book_delete' book.book_id %}" class="btn btn-danger btn-sm">Delete</a>
-            <a href="{% url 'book_borrow' book.book_id %}" class="btn btn-success btn-sm me-2">Borrow</a>
         </td>
     </tr>
     {% endfor %}

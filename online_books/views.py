@@ -9,6 +9,11 @@ from bookshelf.models import BookShelfModel
 from bookshelf.book_shelf_form import BookShelfForm
 
 
+def user_online_book_list(request):
+    books = OnlineBooksModel.objects.all()
+    return render(request, 'front_page/online_books_front_page.html', {'books': books})
+
+
 # Create your views here.
 @login_required
 def online_book_list(request):
@@ -16,7 +21,7 @@ def online_book_list(request):
         return redirect('/login/')
     # books = Book.objects.filter(owner=request.user)
     books = OnlineBooksModel.objects.all()
-    return render(request, 'online_books/online_books_front_page.html', {'books': books})
+    return render(request, 'online_books/online_books_list.html', {'books': books})
 
 
 @login_required
@@ -41,20 +46,20 @@ def online_book_detail(request, book_id):
 
 @login_required
 def online_book_update(request, book_id):
-    book = OnlineBooksModel.objects.get(book_id=book_id)
+    book = OnlineBooksModel.objects.get(id=book_id)
     form = OnlineBooksForm(request.POST or None, instance=book)
     if form.is_valid():
         form.save()
-        return redirect('book_list')
+        return redirect('online_book_list')
     return render(request, 'online_books/online_book_create.html', {'form': form})
 
 
 @login_required
 def online_book_delete(request, book_id):
-    book = get_object_or_404(request.user.books, pk=book_id)
+    book = OnlineBooksModel.objects.get(id=book_id)
     if request.method == 'POST':
         book.delete()
-        return redirect('book_list')
+        return redirect('online_book_list')
     return render(request, 'online_books/online_book_delete.html', {'book': book})
 
 

@@ -8,6 +8,8 @@ class OnlineBooksModel(models.Model):
     book_author = models.CharField(max_length=100)
     book_publisher = models.CharField(max_length=100)
     book_description = models.TextField(blank=True, null=True)
+    create_time = models.DateTimeField(auto_now=True)
+    update_time = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.book_name

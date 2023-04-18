@@ -31,6 +31,8 @@ from borrow_record import views as borrow_record_view
 
 from online_books import views as online_views
 from bookshelf import views as bookshelf_views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
 
@@ -63,6 +65,5 @@ urlpatterns = [
     path('book_shelf_detail/<int:record_id>/', bookshelf_views.book_shelf_detail, name='book_shelf_detail'),
 
 ]
-from django.conf import settings
-from django.conf.urls.static import static
+
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

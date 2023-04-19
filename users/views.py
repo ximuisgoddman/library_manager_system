@@ -3,6 +3,7 @@ import pdb
 from django.shortcuts import render, redirect
 from . import models
 from . import users_form
+from admin_users.admin_user_form import AdminUserForm
 import datetime
 from django.conf import settings
 import hashlib
@@ -28,39 +29,76 @@ def my_login(request):
     :param request:
     :return:
     """
+    print("request.POST:", request.POST.get("user_type"))
     if request.method == "POST":
-        login_form = users_form.UserForm(request.POST)
-        message = "请检查填写的内容！"
-        if login_form.is_valid():
-            username = login_form.cleaned_data['username']
-            password = login_form.cleaned_data['password']
-            myuser = authenticate(username=username, password=password)
-            if myuser is not None:
-                user_login(request, myuser)
+        if request.POST.get("user_type") == "normal":
+            login_form = users_form.UserForm(request.POST)
+            message = "请检查填写的内容！"
+            if login_form.is_valid():
+                username = login_form.cleaned_data['username']
+                password = login_form.cleaned_data['password']
+                myuser = authenticate(username=username, password=password)
+                if myuser is not None:
+                    user_login(request, myuser)
 
-            try:
-                # user = models.MyUser.objects.get(name=username)
-                # if not user.has_confirmed:
-                #     message = "该用户还未经过邮件确认！"
-                #     return render(request, 'general_users/login.html', locals())
-                # import pdb;pdb.set_trace()
-                print('PASSWORD', myuser.password, hash_code(password))
-                if myuser.password == hash_code(password):
-                    # 设置session
-                    request.session['is_login'] = True
-                    request.session['user_id'] = myuser.id
-                    request.session['user_name'] = myuser.name
-                    # 设置重定向的URL
-                    next_url = request.GET.get('next', None)
-                    if next_url:
-                        request.session['next_url'] = next_url
+                try:
+                    # user = models.MyUser.objects.get(name=username)
+                    # if not user.has_confirmed:
+                    #     message = "该用户还未经过邮件确认！"
+                    #     return render(request, 'general_users/login.html', locals())
+                    # import pdb;pdb.set_trace()
+                    print('PASSWORD', myuser.password, hash_code(password))
+                    if myuser.password == hash_code(password):
+                        # 设置session
+                        request.session['is_login'] = True
+                        request.session['user_id'] = myuser.id
+                        request.session['user_name'] = myuser.name
+                        # 设置重定向的URL
+                        next_url = request.GET.get('next', None)
+                        print("next_url:", next_url)
+                        if next_url:
+                            request.session['next_url'] = next_url
+                        else:
+                            request.session['next_url'] = reverse('book_list')
+                        return redirect(request.session['next_url'])
                     else:
-                        request.session['next_url'] = reverse('book_list')
-                    return redirect(request.session['next_url'])
-                else:
-                    message = "密码不正确！"
-            except:
-                message = "用户不存在！"
+                        message = "密码不正确！"
+                except:
+                    message = "用户不存在！"
+            elif request.POST.get("user_type") == "admin":
+                login_form = users_form.UserForm(request.POST)
+                message = "请检查填写的内容！"
+                if login_form.is_valid():
+                    username = login_form.cleaned_data['username']
+                    password = login_form.cleaned_data['password']
+                    myuser = authenticate(username=username, password=password)
+                    if myuser is not None:
+                        user_login(request, myuser)
+
+                    try:
+                        # user = models.MyUser.objects.get(name=username)
+                        # if not user.has_confirmed:
+                        #     message = "该用户还未经过邮件确认！"
+                        #     return render(request, 'general_users/login.html', locals())
+                        # import pdb;pdb.set_trace()
+                        print('PASSWORD', myuser.password, hash_code(password))
+                        if myuser.password == hash_code(password):
+                            # 设置session
+                            request.session['is_login'] = True
+                            request.session['user_id'] = myuser.id
+                            request.session['user_name'] = myuser.name
+                            # 设置重定向的URL
+                            next_url = request.GET.get('next', None)
+                            print("next_url:", next_url)
+                            if next_url:
+                                request.session['next_url'] = next_url
+                            else:
+                                request.session['next_url'] = reverse('book_list')
+                            return redirect(request.session['next_url'])
+                        else:
+                            message = "密码不正确！"
+                    except:
+                        message = "用户不存在！"
         return render(request, 'general_users/login.html', locals())
     login_form = users_form.UserForm()
     return render(request, 'general_users/login.html', locals())

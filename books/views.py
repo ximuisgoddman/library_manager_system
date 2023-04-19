@@ -31,6 +31,8 @@ def book_detail(request, book_id):
 
 @login_required
 def book_create(request):
+    if not request.session.get("is_login", None):
+        return redirect('/login/')
     print("request.POST:", request.POST)
     form = BookForm(request.POST or None)
     if form.is_valid():
@@ -43,6 +45,8 @@ def book_create(request):
 
 @login_required
 def book_update(request, book_id):
+    if not request.session.get("is_login", None):
+        return redirect('/login/')
     book = Book.objects.get(book_id=book_id)
     form = BookForm(request.POST or None, instance=book)
     if form.is_valid():
@@ -53,6 +57,8 @@ def book_update(request, book_id):
 
 @login_required
 def book_delete(request, book_id):
+    if not request.session.get("is_login", None):
+        return redirect('/login/')
     book = Book.objects.get(book_id=book_id)
     if request.method == 'POST':
         book.delete()

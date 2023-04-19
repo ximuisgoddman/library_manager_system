@@ -133,7 +133,8 @@ USE_TZ = True
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
-    'backends.user_backend.UserBackend'
+    'backends.user_backend.UserBackend',
+    'backends.admin_user_backend.AdminUserBackend'
 
 ]
 LOGIN_URL = '/login/'

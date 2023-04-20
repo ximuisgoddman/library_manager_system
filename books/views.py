@@ -10,7 +10,7 @@ from borrow_record.models import BorrowRecord
 
 def book_front_page(request):
     books = Book.objects.all()
-    return render(request, 'front_page/books_front_page.html', {'books': books})
+    return render(request, 'user_front_page/books_front_page.html', {'books': books})
 
 
 @login_required
@@ -73,7 +73,7 @@ def book_borrow(request, book_id):
 
     same_book_id = BorrowRecord.objects.filter(book_id=book_id).first()
     if same_book_id:
-        print("already borrow")
+        print("already borrow",same_book_id.record_user_id.id)
         return render(request, 'borrow_record/borrow_record_detail.html', {'record': same_book_id})
 
     borrow_book = Book.objects.filter(book_id=book_id).first()
@@ -90,11 +90,14 @@ def book_borrow(request, book_id):
     form_data = QueryDict('', mutable=True)
     form_data.update(form_datas)
     form = BorrowRecordForm(form_data)
-    print("Error", form.errors, form)
+    print("Error", form.errors, form_data)
     if form.is_valid():
         form.save()
         print("YES")
     # borrow_records = BorrowRecord.objects.get(book_id=int(borrow_book.book_id))
-    borrow_records = BorrowRecord.objects.all()
+    borrow_records = BorrowRecord.objects.filter(record_user_id=request.user.id)
     print("Len", len(borrow_records))
     return render(request, 'borrow_record/borrow_record.html', {'borrow_records': borrow_records})
+
+
+

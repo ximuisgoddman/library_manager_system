@@ -6,15 +6,17 @@ from users.models import MyUser
 
 
 @login_required
-def borrow_record(request):
+def borrow_record(request,record_user_id):
+    print("qqrequest.user:", request.user,record_user_id)
     if not request.session.get("is_login", None):
         return redirect('/login/')
-    borrow_records = BorrowRecord.objects.all()
+    borrow_records = BorrowRecord.objects.filter(record_user_id=record_user_id)
     return render(request, 'borrow_record/borrow_record.html', {'borrow_records': borrow_records})
 
 
 @login_required
 def borrow_record_detail(request, record_id):
+    print("request.user:", request.user,record_id)
     if not request.session.get("is_login", None):
         return redirect('/login/')
     try:
@@ -24,4 +26,3 @@ def borrow_record_detail(request, record_id):
     else:
         print("@@@", record.id, record.book_id)
         return render(request, 'borrow_record/borrow_record_detail.html', {'record': record})
-

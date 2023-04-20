@@ -23,8 +23,7 @@ from django.contrib import admin
 
 book_path = os.path.abspath(os.path.join(os.getcwd(), "..", "books"))
 user_path = os.path.abspath(os.path.join(os.getcwd(), "..", "users"))
-sys.path.append(book_path)
-sys.path.append(user_path)
+
 from books import views as lib_views
 from users import views as user_views
 from borrow_record import views as borrow_record_view
@@ -34,6 +33,11 @@ from bookshelf import views as bookshelf_views
 from django.conf import settings
 from django.conf.urls.static import static
 
+sys.path.append(book_path)
+sys.path.append(user_path)
+
+
+from .admin_front_page_views import user_info_manage_view
 urlpatterns = [
 
     path("captcha/", include('captcha.urls')),
@@ -50,7 +54,7 @@ urlpatterns = [
     path('books/<int:book_id>/delete/', lib_views.book_delete, name='book_delete'),
     path('books/<int:book_id>/borrow/', lib_views.book_borrow, name='book_borrow'),
 
-    path('borrow_record/', borrow_record_view.borrow_record, name='borrow_record'),
+    path('borrow_record/<int:record_user_id>/', borrow_record_view.borrow_record, name='borrow_record'),
     path('borrow_record_detail/<int:record_id>/', borrow_record_view.borrow_record_detail, name='borrow_record_detail'),
 
     path('online_books/list', online_views.online_book_list, name='online_book_list'),
@@ -61,11 +65,13 @@ urlpatterns = [
     path('online_books/<int:book_id>/delete/', online_views.online_book_delete, name='online_book_delete'),
     path('online_books/<int:book_id>/add_book_shelf/', online_views.add_book_shelf, name='add_book_shelf'),
 
-    path('book_shelf_list/', bookshelf_views.book_shelf_list, name='book_shelf_list'),
+    path('book_shelf_list/<int:book_shelf_user_id>', bookshelf_views.book_shelf_list, name='book_shelf_list'),
     path('book_shelf_detail/<int:record_id>/', bookshelf_views.book_shelf_detail, name='book_shelf_detail'),
 
     path('user_online_book_list/', online_views.user_online_book_list, name='user_online_book_list'),
     path('book_front_page/', lib_views.book_front_page, name='book_front_page'),
+
+    path('users_manage/', user_info_manage_view.users_manage, name='users_manage')
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

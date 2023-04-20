@@ -7,15 +7,15 @@
 </head>
 <body>
 <div class="container mt-5">
-    <h1 class="mb-4">Borrow Records</h1>
-    <a href="{% url 'book_list' %}" class="btn btn-secondary">Back to Book_List</a>
+    <h1 class="mb-4">Borrow Records Detail</h1>
+    <a href="{% url 'book_front_page' %}" class="btn btn-secondary">Back to Book_List</a>
     <table class="table">
         <thead>
         <tr>
             <th scope="col">图书唯一标识</th>
             <th scope="col">借阅时间</th>
             <th scope="col">归还截至日期</th>
-            <th scope="col">借阅者id</th>
+            <th scope="col">借阅者名字</th>
             <th scope="col">操作</th>
         </tr>
         </thead>
@@ -24,9 +24,9 @@
             <td>{{ record.book_id }}</td>
             <td>{{ record.record_user_borrow_time }}</td>
             <td>{{ record.record_user_borrow_deadline }}</td>
-            <td>{{ record.record_user_id }}</td>
+            <td>{{ record.record_user_id.name }}</td>
             <td>
-                <a href="{% url 'borrow_record' %}" class="btn btn-secondary">Back to List</a>
+                <a href="{% url 'borrow_record' record.record_user_id.id %}" class="btn btn-secondary">Back to List</a>
             </td>
         </tr>
         </tbody>

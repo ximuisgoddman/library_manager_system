@@ -26,7 +26,7 @@
             <td>{{ bookshelf.book_author }}</td>
             <td>{{ bookshelf.book_publisher }}</td>
             <td>
-                <a href="{% url 'book_shelf_list' %}" class="btn btn-secondary">Back to List</a>
+                <a href="{% url 'book_shelf_list' bookshelf.book_shelf_user_id.id %}" class="btn btn-secondary">Back to List</a>
             </td>
         </tr>
         </tbody>

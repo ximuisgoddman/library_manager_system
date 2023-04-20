@@ -6,12 +6,11 @@ from users.models import MyUser
 
 
 @login_required
-def book_shelf_list(request):
+def book_shelf_list(request,book_shelf_user_id):
     if not request.session.get("is_login", None):
         return redirect('/login/')
-    bookshelfs = BookShelfModel.objects.all()
-    for x in bookshelfs:
-        print("@@", x.id, x.book_name,x.book_image)
+    print("book_shelf_user_id:",book_shelf_user_id)
+    bookshelfs = BookShelfModel.objects.filter(book_shelf_user_id=book_shelf_user_id)
     return render(request, 'book_shelf/book_shelf_list.html', {'bookshelfs': bookshelfs})
 
 

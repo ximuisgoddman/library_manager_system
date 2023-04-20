@@ -11,7 +11,7 @@ from bookshelf.book_shelf_form import BookShelfForm
 
 def user_online_book_list(request):
     books = OnlineBooksModel.objects.all()
-    return render(request, 'front_page/online_books_front_page.html', {'books': books})
+    return render(request, 'user_front_page/online_books_front_page.html', {'books': books})
 
 
 # Create your views here.

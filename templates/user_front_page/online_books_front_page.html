@@ -1,4 +1,4 @@
-{% extends 'front_page/base.html' %}
+{% extends 'user_front_page/base.html' %}
 
 {% block content %}
 <h1>Book List</h1>
@@ -20,7 +20,6 @@
         <td>{{ book.book_author }}</td>
         <td>{{ book.book_publisher }}</td>
         <td>
-            <a href="{% url 'online_book_detail' book.id %}" class="btn btn-success btn-sm me-2">View</a>
             <a href="{% url 'add_book_shelf' book.id %}" class="btn btn-success btn-sm me-2">Add to BookShelf</a>
         </td>
     </tr>

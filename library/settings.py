@@ -154,3 +154,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # 媒体文件配置
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+ADMIN_FRONT_PAGE_VIEWS_DIR = os.path.join(BASE_DIR, 'admin_front_page_views')

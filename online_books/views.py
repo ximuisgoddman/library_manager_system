@@ -10,7 +10,8 @@ from bookshelf.book_shelf_form import BookShelfForm
 
 
 def user_online_book_list(request):
-    books = OnlineBooksModel.objects.all()
+    search_query = request.GET.get('search', '')
+    books = OnlineBooksModel.objects.filter(book_name__icontains=search_query)
     return render(request, 'user_front_page/online_books_front_page.html', {'books': books})
 
 
@@ -19,8 +20,8 @@ def user_online_book_list(request):
 def online_book_list(request):
     if not request.session.get("is_login", None):
         return redirect('/login/')
-    # books = Book.objects.filter(owner=request.user)
-    books = OnlineBooksModel.objects.all()
+    search_query = request.GET.get('search', '')
+    books = OnlineBooksModel.objects.filter(book_name__icontains=search_query)
     return render(request, 'online_books/online_books_list.html', {'books': books})
 
 

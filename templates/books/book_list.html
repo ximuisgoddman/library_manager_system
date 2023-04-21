@@ -1,14 +1,27 @@
 {% extends 'admin_front_page/base.html' %}
 
 {% block content %}
-<h1>Book List</h1>
+<div class="row">
+    <div class="col-md-8">
+        <h1>Book List</h1>
+    </div>
+    <div class="col-md-4 text-end">
+        <!-- 添加筛选框 -->
+        <form method="get" class="form-inline my-3">
+            <div class="form-group mx-sm-3 mb-2">
+                <input type="text" name="search" class="form-control" placeholder="Search">
+            </div>
+            <button type="submit" class="btn btn-primary mb-2">Submit</button>
+        </form>
+    </div>
+</div>
 <a href="{% url 'book_create' %}" class="btn btn-primary my-3">Add Book</a>
 <table class="table">
     <thead>
     <tr>
         <th>Title</th>
         <th>Author</th>
-        <th>Price</th>
+        <th>book_numbers</th>
         <th>Actions</th>
     </tr>
     </thead>
@@ -17,7 +30,7 @@
     <tr>
         <td>{{ book.book_name }}</td>
         <td>{{ book.author }}</td>
-        <td>{{ book.price }}</td>
+        <td>{{ book.book_numbers }}</td>
         <td>
             <a href="{% url 'book_detail' book.book_id %}" class="btn btn-success btn-sm me-2">View</a>
             <a href="{% url 'book_update' book.book_id %}" class="btn btn-warning btn-sm me-2">Edit</a>

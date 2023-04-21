@@ -6,10 +6,12 @@ from users.models import MyUser
 from borrow_record.borrow_record_form import BorrowRecordForm
 from django.http import QueryDict
 from borrow_record.models import BorrowRecord
+import datetime
 
 
 def book_front_page(request):
-    books = Book.objects.all()
+    search_query = request.GET.get('search', '')
+    books = Book.objects.filter(book_name__icontains=search_query)
     return render(request, 'user_front_page/books_front_page.html', {'books': books})
 
 
@@ -17,8 +19,9 @@ def book_front_page(request):
 def book_list(request):
     if not request.session.get("is_login", None):
         return redirect('/login/')
-    # books = Book.objects.filter(owner=request.user)
-    books = Book.objects.all()
+    search_query = request.GET.get('search', '')
+    books = Book.objects.filter(book_name__icontains=search_query)
+    # books = Book.objects.all()
     return render(request, 'books/book_list.html', {'books': books})
 
 
@@ -73,9 +76,13 @@ def book_borrow(request, book_id):
 
     same_book_id = BorrowRecord.objects.filter(book_id=book_id).first()
     if same_book_id:
-        print("already borrow",same_book_id.record_user_id.id)
+        print("already borrow", same_book_id.record_user_id.id)
         return render(request, 'borrow_record/borrow_record_detail.html', {'record': same_book_id})
-
+    print("Lee",Book.objects.filter(book_id=book_id))
+    if Book.objects.filter(book_id=book_id).first().book_numbers < 1:
+        print("borrow out", )
+        books = Book.objects.all()
+        return render(request, 'user_front_page/books_front_page.html', {'books': books})
     borrow_book = Book.objects.filter(book_id=book_id).first()
     print("borrow_book", borrow_book)
     form_datas = {
@@ -83,7 +90,7 @@ def book_borrow(request, book_id):
         "book_author": borrow_book.author,
         "publisher": borrow_book.publisher,
         "record_user_borrow_time": 10,
-        "record_user_borrow_deadline": "2023-04-14 10:00:00",
+        "record_user_borrow_deadline": datetime.datetime.now(),
         "book_id": int(borrow_book.book_id),
         "record_user_id": request.user.id
     }
@@ -93,11 +100,10 @@ def book_borrow(request, book_id):
     print("Error", form.errors, form_data)
     if form.is_valid():
         form.save()
-        print("YES")
+    borrow_book.book_numbers=borrow_book.book_numbers-1
+    borrow_book.save()
+
     # borrow_records = BorrowRecord.objects.get(book_id=int(borrow_book.book_id))
     borrow_records = BorrowRecord.objects.filter(record_user_id=request.user.id)
     print("Len", len(borrow_records))
     return render(request, 'borrow_record/borrow_record.html', {'borrow_records': borrow_records})
-
-
-

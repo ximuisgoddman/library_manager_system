@@ -1,7 +1,21 @@
 {% extends 'admin_front_page/base.html' %}
 
 {% block content %}
-<h1>Book List</h1>
+<div class="row">
+    <div class="col-md-8">
+        <h1>Book List</h1>
+    </div>
+    <div class="col-md-4 text-end">
+        <!-- 添加筛选框 -->
+        <form method="get" class="form-inline my-3">
+            <div class="form-group mx-sm-3 mb-2">
+                <input type="text" name="search" class="form-control" placeholder="Search">
+            </div>
+            <button type="submit" class="btn btn-primary mb-2">Submit</button>
+        </form>
+    </div>
+</div>
+
 <a href="{% url 'online_book_create' %}" class="btn btn-primary my-3">Add Book</a>
 <table class="table">
     <thead>

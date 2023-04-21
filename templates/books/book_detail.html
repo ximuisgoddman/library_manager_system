@@ -11,7 +11,7 @@
           <div class="card-body">
             <h2>{{ book.name }}</h2>
             <p><strong>Author:</strong> {{ book.author }}</p>
-            <p><strong>Price:</strong> {{ book.price }}</p>
+            <p><strong>book_numbers:</strong> {{ book.book_numbers }}</p>
             <div class="text-center">
               <a href="{% url 'book_update' book.book_id %}" class="btn btn-primary">Edit</a>
               <a href="{% url 'book_delete' book.book_id %}" class="btn btn-danger">Delete</a>

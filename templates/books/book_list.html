@@ -32,9 +32,9 @@
         <td>{{ book.author }}</td>
         <td>{{ book.book_numbers }}</td>
         <td>
-            <a href="{% url 'book_detail' book.book_id %}" class="btn btn-success btn-sm me-2">View</a>
-            <a href="{% url 'book_update' book.book_id %}" class="btn btn-warning btn-sm me-2">Edit</a>
-            <a href="{% url 'book_delete' book.book_id %}" class="btn btn-danger btn-sm">Delete</a>
+            <a href="{% url 'book_detail' book.id %}" class="btn btn-success btn-sm me-2">View</a>
+            <a href="{% url 'book_update' book.id %}" class="btn btn-warning btn-sm me-2">Edit</a>
+            <a href="{% url 'book_delete' book.id %}" class="btn btn-danger btn-sm">Delete</a>
         </td>
     </tr>
     {% endfor %}

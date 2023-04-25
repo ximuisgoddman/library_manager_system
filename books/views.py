@@ -27,7 +27,7 @@ def book_list(request):
 
 @login_required
 def book_detail(request, book_id):
-    book = Book.objects.get(book_id=book_id)
+    book = Book.objects.get(id=book_id)
     print("Book", book)
     return render(request, 'books/book_detail.html', {'book': book})
 
@@ -50,7 +50,7 @@ def book_create(request):
 def book_update(request, book_id):
     if not request.session.get("is_login", None):
         return redirect('/login/')
-    book = Book.objects.get(book_id=book_id)
+    book = Book.objects.get(id=book_id)
     form = BookForm(request.POST or None, instance=book)
     if form.is_valid():
         form.save()
@@ -62,7 +62,7 @@ def book_update(request, book_id):
 def book_delete(request, book_id):
     if not request.session.get("is_login", None):
         return redirect('/login/')
-    book = Book.objects.get(book_id=book_id)
+    book = Book.objects.get(id=book_id)
     if request.method == 'POST':
         book.delete()
         return redirect('book_list')
@@ -74,16 +74,16 @@ def book_borrow(request, book_id):
     if not request.session.get("is_login", None):
         return redirect('/login/')
 
-    same_book_id = BorrowRecord.objects.filter(book_id=book_id).first()
+    same_book_id = BorrowRecord.objects.filter(id=book_id).first()
     if same_book_id:
         print("already borrow", same_book_id.record_user_id.id)
         return render(request, 'borrow_record/borrow_record_detail.html', {'record': same_book_id})
-    print("Lee",Book.objects.filter(book_id=book_id))
-    if Book.objects.filter(book_id=book_id).first().book_numbers < 1:
+    print("Lee",Book.objects.filter(id=book_id))
+    if Book.objects.filter(id=book_id).first().book_numbers < 1:
         print("borrow out", )
         books = Book.objects.all()
         return render(request, 'user_front_page/books_front_page.html', {'books': books})
-    borrow_book = Book.objects.filter(book_id=book_id).first()
+    borrow_book = Book.objects.filter(id=book_id).first()
     print("borrow_book", borrow_book)
     form_datas = {
         "book_name": borrow_book.book_name,
@@ -91,7 +91,6 @@ def book_borrow(request, book_id):
         "publisher": borrow_book.publisher,
         "record_user_borrow_time": 10,
         "record_user_borrow_deadline": datetime.datetime.now(),
-        "book_id": int(borrow_book.book_id),
         "record_user_id": request.user.id
     }
     form_data = QueryDict('', mutable=True)

@@ -72,7 +72,7 @@ def add_book_shelf(request, book_id):
     bookshelf = BookShelfModel.objects.filter(id=book_id).first()
     if bookshelf:
         print("already add to shelf")
-        return render(request, 'book_shelf/book_shelf_detail.html', {'bookshelf': bookshelf})
+        return render(request, 'book_shelf/user_book_shelf/user_book_shelf_detail.html', {'bookshelf': bookshelf})
 
     online_book = OnlineBooksModel.objects.filter(id=book_id).first()
     print("online_book", online_book, type(online_book.book_image))
@@ -91,4 +91,4 @@ def add_book_shelf(request, book_id):
     print("Len", len(bookshelfs), request.FILES)
     for x in bookshelfs:
         print("@@", x.id, x.book_name, x.book_image)
-    return render(request, 'book_shelf/book_shelf_list.html', {'bookshelfs': bookshelfs})
+    return render(request, 'book_shelf/user_book_shelf/user_book_shelf_list.html', {'bookshelfs': bookshelfs})

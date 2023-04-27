@@ -77,8 +77,9 @@ def book_borrow(request, book_id):
     same_book_id = BorrowRecord.objects.filter(id=book_id).first()
     if same_book_id:
         print("already borrow", same_book_id.record_user_id.id)
-        return render(request, 'borrow_record/borrow_record_detail.html', {'record': same_book_id})
-    print("Lee",Book.objects.filter(id=book_id))
+        return render(request, 'borrow_record/user_borrow_record/user_borrow_record_detail.html',
+                      {'record': same_book_id})
+    print("Lee", Book.objects.filter(id=book_id))
     if Book.objects.filter(id=book_id).first().book_numbers < 1:
         print("borrow out", )
         books = Book.objects.all()
@@ -86,6 +87,7 @@ def book_borrow(request, book_id):
     borrow_book = Book.objects.filter(id=book_id).first()
     print("borrow_book", borrow_book)
     form_datas = {
+        "book_id": borrow_book.id,
         "book_name": borrow_book.book_name,
         "book_author": borrow_book.author,
         "publisher": borrow_book.publisher,
@@ -99,10 +101,12 @@ def book_borrow(request, book_id):
     print("Error", form.errors, form_data)
     if form.is_valid():
         form.save()
-    borrow_book.book_numbers=borrow_book.book_numbers-1
+        print("Yes")
+    borrow_book.book_numbers = borrow_book.book_numbers - 1
     borrow_book.save()
 
     # borrow_records = BorrowRecord.objects.get(book_id=int(borrow_book.book_id))
     borrow_records = BorrowRecord.objects.filter(record_user_id=request.user.id)
     print("Len", len(borrow_records))
-    return render(request, 'borrow_record/borrow_record.html', {'borrow_records': borrow_records})
+    return render(request, 'borrow_record/user_borrow_record/user_borrow_record_list.html',
+                  {'borrow_records': borrow_records})

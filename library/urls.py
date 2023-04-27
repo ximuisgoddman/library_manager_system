@@ -36,8 +36,8 @@ from django.conf.urls.static import static
 sys.path.append(book_path)
 sys.path.append(user_path)
 
-
 from .admin_front_page_views import user_info_manage_view
+
 urlpatterns = [
 
     path("captcha/", include('captcha.urls')),
@@ -54,8 +54,13 @@ urlpatterns = [
     path('books/<int:book_id>/delete/', lib_views.book_delete, name='book_delete'),
     path('books/<int:book_id>/borrow/', lib_views.book_borrow, name='book_borrow'),
 
-    path('borrow_record/<int:record_user_id>/', borrow_record_view.borrow_record, name='borrow_record'),
-    path('borrow_record_detail/<int:record_id>/', borrow_record_view.borrow_record_detail, name='borrow_record_detail'),
+    path('user_borrow_record/<int:record_user_id>/', borrow_record_view.user_borrow_record, name='user_borrow_record'),
+    path('user_borrow_record_detail/<int:record_id>/', borrow_record_view.user_borrow_record_detail,
+         name='user_borrow_record_detail'),
+    path('admin_borrow_record/<int:record_user_id>/', borrow_record_view.admin_borrow_record,
+         name='admin_borrow_record'),
+    path('admin_borrow_record_detail/<int:record_id>/', borrow_record_view.admin_borrow_record_detail,
+         name='admin_borrow_record_detail'),
 
     path('online_books/list', online_views.online_book_list, name='online_book_list'),
     path('online_books/add/', online_views.online_book_create, name='online_book_create'),
@@ -65,10 +70,17 @@ urlpatterns = [
     path('online_books/<int:book_id>/delete/', online_views.online_book_delete, name='online_book_delete'),
     path('online_books/<int:book_id>/add_book_shelf/', online_views.add_book_shelf, name='add_book_shelf'),
 
-    path('book_shelf_list/<int:book_shelf_user_id>', bookshelf_views.book_shelf_list, name='book_shelf_list'),
-    path('book_shelf_detail/<int:record_id>/', bookshelf_views.book_shelf_detail, name='book_shelf_detail'),
+    path('user_book_shelf_list/<int:book_shelf_user_id>', bookshelf_views.user_book_shelf_list,
+         name='user_book_shelf_list'),
+    path('user_book_shelf_detail/<int:record_id>/', bookshelf_views.user_book_shelf_detail,
+         name='user_book_shelf_detail'),
 
+    path('admin_book_shelf_list/<int:book_shelf_user_id>', bookshelf_views.admin_book_shelf_list,
+         name='admin_book_shelf_list'),
+    path('admin_book_shelf_detail/<int:record_id>/', bookshelf_views.admin_book_shelf_detail,
+         name='admin_book_shelf_detail'),
     path('user_online_book_list/', online_views.user_online_book_list, name='user_online_book_list'),
+
     path('book_front_page/', lib_views.book_front_page, name='book_front_page'),
 
     path('users_manage/', user_info_manage_view.users_manage, name='users_manage')

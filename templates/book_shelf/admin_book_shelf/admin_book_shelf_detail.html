@@ -1,14 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Borrow Records</title>
-    <!-- 引入 Bootstrap 5 CSS 文件 -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css">
-</head>
-<body>
+{% extends 'admin_front_page/base.html' %}
+
+{% block content %}
 <div class="container mt-5">
     <h1 class="mb-4">Book Shelf Detail</h1>
-    <a href="{% url 'user_online_book_list' %}" class="btn btn-secondary">Back to Book_List</a>
+    <a href="{% url 'users_manage' %}" class="btn btn-secondary">Back to Book_List</a>
     <table class="table">
         <thead>
         <tr>
@@ -26,13 +21,10 @@
             <td>{{ bookshelf.book_author }}</td>
             <td>{{ bookshelf.book_publisher }}</td>
             <td>
-                <a href="{% url 'book_shelf_list' bookshelf.book_shelf_user_id.id %}" class="btn btn-secondary">Back to List</a>
+                <a href="{% url 'admin_book_shelf_list' bookshelf.book_shelf_user_id.id %}" class="btn btn-secondary">Back to List</a>
             </td>
         </tr>
         </tbody>
     </table>
 </div>
-<!-- 引入 Bootstrap 5 JS 文件 -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.min.js"></script>
-</body>
-</html>
+{% endblock %}

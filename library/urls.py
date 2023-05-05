@@ -37,7 +37,7 @@ sys.path.append(book_path)
 sys.path.append(user_path)
 
 from .admin_front_page_views import user_info_manage_view
-
+from .library_front_page_views import library_front_page_views
 urlpatterns = [
 
     path("captcha/", include('captcha.urls')),
@@ -83,7 +83,8 @@ urlpatterns = [
 
     path('book_front_page/', lib_views.book_front_page, name='book_front_page'),
 
-    path('users_manage/', user_info_manage_view.users_manage, name='users_manage')
+    path('users_manage/', user_info_manage_view.users_manage, name='users_manage'),
+    path('library_front_page',library_front_page_views.library_front_page,name='library_front_page')
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

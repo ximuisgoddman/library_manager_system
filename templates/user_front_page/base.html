@@ -12,21 +12,25 @@
 
     <style>
     body {
-      background-image: url('https://img2.baidu.com/it/u=2967453779,2366306540&fm=253&fmt=auto&app=138&f=JPEG?w=889&h=500');
+      background-image: url('media/online_book_images/3.jpeg');
       background-size: cover;
     }
     </style>
 </head>
 <body>
+<!-- 导航栏 -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">Library</a>
+    <div class="container">
+        <a class="navbar-brand" href="#">图书馆</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'library_front_page' %}">首页</a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'logout' %}">Logout</a>
                 </li>

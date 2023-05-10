@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -91,6 +94,16 @@ DATABASES = {
             'PASSWORD': 'LUO808089lin@',  # 数据库密码
         }
 }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': os.getenv('DB_NAME'),
+#         'USER': os.getenv('DB_USER'),
+#         'PASSWORD': os.getenv('DB_PASSWORD'),
+#         'HOST': os.getenv('DB_HOST'),
+#         'PORT': '3306',
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -139,7 +152,6 @@ AUTHENTICATION_BACKENDS = [
 ]
 LOGIN_URL = '/login/'
 
-
 # STATICFILES_DIRS是指定静态文件的目录
 # STATIC_ROOT是指定静态文件的收集目录
 # MEDIA_ROOT指定了媒体文件的保存目录
@@ -154,6 +166,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # 媒体文件配置
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
 
 ADMIN_FRONT_PAGE_VIEWS_DIR = os.path.join(BASE_DIR, 'admin_front_page_views')

@@ -7,11 +7,16 @@ from users.models import MyUser
 from django.http import QueryDict
 from bookshelf.models import BookShelfModel
 from bookshelf.book_shelf_form import BookShelfForm
+from django.core.cache import cache
 
 
 def user_online_book_list(request):
     search_query = request.GET.get('search', '')
-    books = OnlineBooksModel.objects.filter(book_name__icontains=search_query)
+    cache_key = 'book_list_{}'.format(search_query)
+    books = cache.get(cache_key)
+    if books is None:
+        books = OnlineBooksModel.objects.filter(book_name__icontains=search_query)
+        cache.set(cache_key, books, timeout=60*5)  # 设置缓存时间为 5 分钟
     return render(request, 'user_front_page/online_books_front_page.html', {'books': books})
 
 

@@ -14,6 +14,10 @@
       background-image: url('/media/online_book_images/front_page.webp');
       background-size: cover;
     }
+
+
+
+
     </style>
 </head>
 <body>
@@ -26,15 +30,9 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
+            <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'library_front_page' %}">首页</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'login' %}">LogIn</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'user_online_book_list' %}">OnlineBooks</a>
@@ -42,8 +40,30 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'book_front_page' %}">OfflineBooks</a>
                 </li>
+
+            </ul>
+            <ul class="navbar-nav">
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'user_book_shelf_list' user.id %}">我的书架</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'user_borrow_record' user.id %}">我的借阅</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">LogIn</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'register' %}">Register</a>
+                </li>
+                {% endif %}
             </ul>
         </div>
+
     </div>
     <!-- 模态框 -->
     <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel"
@@ -80,6 +100,10 @@
       $('#loginModal').modal('show');
     });
   };
+
+
+
+
     </script>
     {% endif %}
 

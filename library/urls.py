@@ -63,7 +63,7 @@ urlpatterns = [
     path('admin_borrow_record_detail/<int:record_id>/', borrow_record_view.admin_borrow_record_detail,
          name='admin_borrow_record_detail'),
 
-    path('online_books/list', online_views.online_book_list, name='online_book_list'),
+    path('online_books/list', online_views.admin_online_book_list, name='admin_online_book_list'),
     path('online_books/add/', online_views.online_book_create, name='online_book_create'),
 
     path('online_books/<int:book_id>/', online_views.online_book_detail, name='online_book_detail'),

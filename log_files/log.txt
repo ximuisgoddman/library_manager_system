@@ -1,0 +1,13 @@
+is_locked:True
+already borrow:1
+already borrow:1
+already borrow:1
+already borrow:1
+already borrow:1
+already borrow:1
+already borrow:1 11
+already borrow:1 11
+already borrow:1 22
+is_locked:True
+already borrow:2 22
+already borrow:1 11

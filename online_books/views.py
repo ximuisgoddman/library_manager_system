@@ -16,13 +16,13 @@ def user_online_book_list(request):
     books = cache.get(cache_key)
     if books is None:
         books = OnlineBooksModel.objects.filter(book_name__icontains=search_query)
-        cache.set(cache_key, books, timeout=60*5)  # 设置缓存时间为 5 分钟
+        cache.set(cache_key, books, timeout=60 * 5)  # 设置缓存时间为 5 分钟
     return render(request, 'user_front_page/online_books_front_page.html', {'books': books})
 
 
 # Create your views here.
 @login_required
-def online_book_list(request):
+def admin_online_book_list(request):
     if not request.session.get("is_login", None):
         return redirect('/login/')
     search_query = request.GET.get('search', '')
@@ -38,7 +38,7 @@ def online_book_create(request):
         book = form.save(commit=False)
         # book.owner = request.user
         book.save()
-        return redirect('online_book_list')
+        return redirect('admin_online_book_list')
     return render(request, 'online_books/online_book_create.html', {'form': form})
 
 
@@ -56,7 +56,7 @@ def online_book_update(request, book_id):
     form = OnlineBooksForm(request.POST or None, instance=book)
     if form.is_valid():
         form.save()
-        return redirect('online_book_list')
+        return redirect('admin_online_book_list')
     return render(request, 'online_books/online_book_create.html', {'form': form})
 
 
@@ -65,7 +65,7 @@ def online_book_delete(request, book_id):
     book = OnlineBooksModel.objects.get(id=book_id)
     if request.method == 'POST':
         book.delete()
-        return redirect('online_book_list')
+        return redirect('admin_online_book_list')
     return render(request, 'online_books/online_book_delete.html', {'book': book})
 
 
@@ -74,7 +74,7 @@ def add_book_shelf(request, book_id):
     if not request.session.get("is_login", None):
         return redirect('/login/')
 
-    bookshelf = BookShelfModel.objects.filter(id=book_id).first()
+    bookshelf = BookShelfModel.objects.filter(id=book_id, book_shelf_user_id=request.user.id).first()
     if bookshelf:
         print("already add to shelf")
         return render(request, 'book_shelf/user_book_shelf/user_book_shelf_detail.html', {'bookshelf': bookshelf})

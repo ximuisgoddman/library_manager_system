@@ -80,9 +80,9 @@ def book_borrow(request, book_id):
     if not request.session.get("is_login", None):
         return redirect('/login/')
 
-    same_book_id = BorrowRecord.objects.filter(book_id=book_id).first()
+    same_book_id = BorrowRecord.objects.filter(book_id=book_id, record_user_id=request.user.id).first()
     if same_book_id:
-        logger.info("already borrow:%s", same_book_id.record_user_id.id)
+        logger.info("already borrow:%s %s" % (same_book_id.record_user_id.id, request.user.name))
         return render(request, 'borrow_record/user_borrow_record/user_borrow_record_detail.html',
                       {'record': same_book_id})
     if Book.objects.filter(id=book_id).first().book_numbers < 1:

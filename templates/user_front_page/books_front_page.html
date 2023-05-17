@@ -30,13 +30,18 @@
     <tr>
         <td>{{ book.book_name }}</td>
         <td>{{ book.author }}</td>
-        <td>{{ book.book_numbers }}</td>
-        <td>{{book.book_classification}}</td>
+        <td>{{ book.current_number }}</td>
+        <td>{{ book.book_classification }}</td>
         <td>
-            <a href="{% url 'book_borrow' book.id %}" class="btn btn-success btn-sm me-2">Borrow</a>
+            {% if book.current_number == 0 %}
+                <a href="#" class="btn btn-secondary btn-sm me-2 disabled" title="书籍已借阅完">Borrow</a>
+            {% else %}
+                <a href="{% url 'book_borrow' book.id %}" class="btn btn-success btn-sm me-2">Borrow</a>
+            {% endif %}
         </td>
     </tr>
     {% endfor %}
     </tbody>
 </table>
+
 {% endblock %}

@@ -83,6 +83,7 @@ urlpatterns = [
     path('user_online_book_list/', online_views.user_online_book_list, name='user_online_book_list'),
 
     path('book_front_page/', lib_views.book_front_page, name='book_front_page'),
+    # path('filter_books/',lib_views.filter_books,name='filter_books'),
 
     path('users_manage/', user_info_manage_view.users_manage, name='users_manage'),
     path('library_front_page', library_front_page_views.library_front_page, name='library_front_page')

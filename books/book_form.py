@@ -3,18 +3,25 @@ from .models import Book
 
 
 class BookForm(forms.ModelForm):
+    BOOK_CLASS_CHOICES = [
+        ('AA', 'AA'),
+        ('BB', 'BB'),
+        ('CC', 'CC'),
+    ]
+    book_classification = forms.ChoiceField(choices=BOOK_CLASS_CHOICES)
+
     class Meta:
         model = Book
-        fields = ['book_name', 'author', 'publisher', 'publish_time', 'book_numbers', 'current_number'
-                  , 'book_classification']
+        fields = ['book_name', 'author', 'publisher', 'publish_time', 'book_numbers', 'current_number',
+                  'book_classification']
         labels = {
-            'book_name': '书名',
-            'author': '作者',
-            'publisher': '出版社',
-            'publish_time': '出版时间',
-            'book_numbers': '数量',
-            'current_number': '当前数量',
-            'book_classification': '图书分类'
+            'book_name': '书名:',
+            'author': '作者:',
+            'publisher': '出版社:',
+            'publish_time': '出版时间:',
+            'book_numbers': '数量:',
+            'current_number': '当前数量:',
+            'book_classification': '图书分类:'
         }
         widgets = {
             'publish_time': forms.DateInput(attrs={'type': 'date'})

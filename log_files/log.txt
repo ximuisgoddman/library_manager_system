@@ -16,3 +16,49 @@ is_locked:True
 is_locked:True
 already borrow:2 22
 already borrow:2 22
+already borrow:2 22
+already borrow:2 22
+already borrow:2 22
+already borrow:2 22
+filter_publisher: filter_book_class:
+filter_publisher: filter_book_class:
+filter_publisher:356 filter_book_class:
+filter_publisher:356 filter_book_class:354
+filter_publisher:356 filter_book_class:43
+filter_publisher: filter_book_class:
+filter_publisher: filter_book_class:
+filter_publisher: filter_book_class:
+filter_publisher: filter_book_class:
+filter_publisher: filter_book_class:
+filter_publisher: filter_book_class:
+filter_publisher: filter_book_class:
+filter_publisher: filter_book_class:
+filter_publisher: filter_book_class:
+filter_publisher: filter_book_class:
+filter_publisher: filter_book_class:
+filter_publisher:243 filter_book_class:
+filter_publisher:354 filter_book_class:
+filter_publisher: filter_book_class:
+filter_publisher: filter_book_class:
+is_locked:True
+filter_publisher: filter_book_class:
+is_locked:True
+already borrow:2 22
+filter_publisher: filter_book_class:
+filter_publisher: filter_book_class:
+filter_publisher: filter_book_class:
+filter_publisher: filter_book_class:
+filter_publisher: filter_book_class:
+filter_publisher: filter_book_class:
+filter_publisher: filter_book_class:
+is_locked:True
+filter_publisher: filter_book_class:
+filter_publisher: filter_book_class:
+is_locked:True
+filter_publisher: filter_book_class:
+filter_publisher: filter_book_class:
+filter_publisher: filter_book_class:
+filter_publisher: filter_book_class:
+filter_publisher: filter_book_class:
+filter_publisher: filter_book_class:
+filter_publisher: filter_book_class:

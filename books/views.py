@@ -14,21 +14,50 @@ import logging
 # 获得logger实例
 logger = logging.getLogger('myapp')
 
+from django.http import JsonResponse
+from django.views.decorators.http import require_GET
+from .models import Book
+
 
 def book_front_page(request):
+    publishers = Book.objects.values_list('publisher', flat=True).distinct()
+    bookClasses = Book.objects.values_list('book_classification', flat=True).distinct()
+
+    publisher = request.GET.get('publisher', '')
+    book_class = request.GET.get('book_class', '')
+    logger.info("filter_publisher:%s filter_book_class:%s", publisher, book_class)
     search_query = request.GET.get('search', '')
     books = Book.objects.filter(book_name__icontains=search_query)
-    return render(request, 'user_front_page/books_front_page.html', {'books': books})
+    books = books.filter(publisher__icontains=publisher)
+    books = books.filter(book_classification__icontains=book_class)
+
+    return render(request, 'user_front_page/books_front_page.html', {
+        'books': books,
+        'publishers': publishers,
+        'bookClasses': bookClasses})
 
 
 @login_required
 def book_list(request):
     if not request.session.get("is_login", None):
         return redirect('/login/')
+
+    publishers = Book.objects.values_list('publisher', flat=True).distinct()
+    bookClasses = Book.objects.values_list('book_classification', flat=True).distinct()
+
+    publisher = request.GET.get('publisher', '')
+    book_class = request.GET.get('book_class', '')
+    logger.info("filter_publisher:%s filter_book_class:%s", publisher, book_class)
     search_query = request.GET.get('search', '')
-    books = Book.objects.filter(book_name__icontains=search_query)
-    # books = Book.objects.all()
-    return render(request, 'books/book_list.html', {'books': books})
+    books = Book.objects.all()
+    books = books.filter(book_name__icontains=search_query)
+    books = books.filter(publisher__icontains=publisher)
+    books = books.filter(book_classification__icontains=book_class)
+
+    return render(request, 'books/book_list.html', {
+        'books': books,
+        'publishers': publishers,
+        'bookClasses': bookClasses})
 
 
 @login_required

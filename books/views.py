@@ -10,7 +10,8 @@ import datetime
 from django.http import HttpResponse
 import redis
 import logging
-
+import csv
+from io import TextIOWrapper
 # 获得logger实例
 logger = logging.getLogger('myapp')
 
@@ -71,13 +72,46 @@ def book_detail(request, book_id):
 def book_create(request):
     if not request.session.get("is_login", None):
         return redirect('/login/')
-    print("request.POST:", request.POST)
-    form = BookForm(request.POST or None)
-    if form.is_valid():
-        book = form.save(commit=False)
-        book.owner = request.user
-        book.save()
-        return redirect('book_list')
+    # print("request.POST:", request.POST)
+    # form = BookForm(request.POST or None)
+    # if form.is_valid():
+    #     book = form.save(commit=False)
+    #     book.owner = request.user
+    #     book.save()
+    #     return redirect('book_list')
+    # return render(request, 'books/book_create.html', {'form': form})
+    if request.method == 'POST':
+        form = BookForm(request.POST, request.FILES)
+        if form.is_valid():
+            if 'file_upload' in request.FILES:
+                # 处理文件上传逻辑
+                file = request.FILES['file_upload']
+                # 在这里解析文件数据并将数据写入数据库
+                file_wrapper = TextIOWrapper(file)
+                reader = csv.reader(file_wrapper)
+                for row in reader:
+                    # 解析CSV文件内容并创建书籍对象
+                    book = Book(
+                        book_name=row[0],
+                        author=row[1],
+                        publisher=row[2],
+                        publish_time=row[3],
+                        book_numbers=row[4],
+                        current_number=row[5],
+                        book_classification=row[6]
+                    )
+                    book.owner = request.user
+                    book.save()
+
+                return redirect('book_list')
+            else:
+                book = form.save(commit=False)
+                book.owner = request.user
+                book.save()
+                return redirect('book_list')
+    else:
+        form = BookForm()
+
     return render(request, 'books/book_create.html', {'form': form})
 
 

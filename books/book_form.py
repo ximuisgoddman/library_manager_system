@@ -9,7 +9,7 @@ class BookForm(forms.ModelForm):
         ('CC', 'CC'),
     ]
     book_classification = forms.ChoiceField(choices=BOOK_CLASS_CHOICES)
-
+    file_upload = forms.FileField(required=False)  # 添加文件上传字段
     class Meta:
         model = Book
         fields = ['book_name', 'author', 'publisher', 'publish_time', 'book_numbers', 'current_number',

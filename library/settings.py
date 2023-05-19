@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-jtx45ur93nc&)1yd(rc@uuh@*(=e#f1*lp*vp9%+^m5$vh-7xs
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['10.24.96.143','127.0.0.1','10.58.237.49']
 
 # Application definition
 
@@ -150,6 +150,18 @@ CACHES = {
         "KEY_PREFIX": "library:",  # 指定缓存键的前缀，以便将缓存键命名空间化
     }
 }
+
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django_redis.cache.RedisCache",
+#         "LOCATION": "redis://redis:6379/0",
+#         "OPTIONS": {
+#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+#         },
+#         "KEY_PREFIX": "library:",
+#     }
+# }
+
 # 指定Django会话存储的后端和缓存别名
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_CACHE_ALIAS = "default"

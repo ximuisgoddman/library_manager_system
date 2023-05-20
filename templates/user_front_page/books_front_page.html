@@ -43,6 +43,7 @@
     }
 
 
+
 </script>
 
 <table class="table" id="bookTable">
@@ -85,7 +86,7 @@
     </tr>
     </thead>
     <tbody>
-    {% for book in books %}
+    {% for book in page_obj %}
     <tr>
         <td>{{ book.book_name }}</td>
         <td>{{ book.author }}</td>
@@ -103,6 +104,19 @@
     {% endfor %}
     </tbody>
 </table>
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
 
+        <span class="current-page">{{ page_obj.number }}</span>
 
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
 {% endblock %}

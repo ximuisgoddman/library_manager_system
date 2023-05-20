@@ -18,7 +18,7 @@ logger = logging.getLogger('myapp')
 from django.http import JsonResponse
 from django.views.decorators.http import require_GET
 from .models import Book
-
+from django.core.paginator import Paginator
 
 def book_front_page(request):
     publishers = Book.objects.values_list('publisher', flat=True).distinct()
@@ -32,8 +32,13 @@ def book_front_page(request):
     books = books.filter(publisher__icontains=publisher)
     books = books.filter(book_classification__icontains=book_class)
 
+    paginator = Paginator(books, per_page=10)  # 每页显示10条数据
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     return render(request, 'user_front_page/books_front_page.html', {
-        'books': books,
+        'page_obj': page_obj,
         'publishers': publishers,
         'bookClasses': bookClasses})
 
@@ -87,7 +92,8 @@ def book_create(request):
                 # 处理文件上传逻辑
                 file = request.FILES['file_upload']
                 # 在这里解析文件数据并将数据写入数据库
-                file_wrapper = TextIOWrapper(file)
+                print("file:",file)
+                file_wrapper = TextIOWrapper(file,encoding='utf-8')
                 reader = csv.reader(file_wrapper)
                 for row in reader:
                     # 解析CSV文件内容并创建书籍对象

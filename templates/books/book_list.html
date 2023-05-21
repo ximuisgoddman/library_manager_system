@@ -1,4 +1,4 @@
-{% extends 'admin_front_page/base.html' %}
+{% extends 'user_front_page/base.html' %}
 
 {% block content %}
 <div class="row">
@@ -15,8 +15,6 @@
         </form>
     </div>
 </div>
-<a href="{% url 'book_create' %}" class="btn btn-primary my-3">Add Book</a>
-
 
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -26,23 +24,24 @@
         var bookClassFilter = document.getElementById("bookClassFilter").value;
 
         $.ajax({
-            url: "{% url 'book_list' %}",
+            url: "{% url 'book_front_page' %}",
             type: "GET",
             data: {
                 publisher: publisherFilter,
                 book_class: bookClassFilter
             },
-            success: function(response) {
-    // 更新表格内容
-    $("#bookTable tbody").html($(response).find("#bookTable tbody").html());
-},
+            success: function (response) {
+                // 更新表格内容
+                $("#bookTable tbody").html($(response).find("#bookTable tbody").html());
+            },
 
 
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 // 处理错误情况
             }
         });
     }
+
 
 
 </script>
@@ -51,7 +50,7 @@
     <!-- 表头和表格内容 -->
     <thead>
     <tr>
-        <th scope="col">图书封面</th>
+        <th>图书封面</th>
         <th>书名</th>
         <th>作者</th>
         <th>当前数量</th>
@@ -88,7 +87,7 @@
     </tr>
     </thead>
     <tbody>
-    {% for book in books %}
+    {% for book in page_obj %}
     <tr>
         <td><img src="{{ book.book_image.url }}" width="100"></td>
         <td>{{ book.book_name }}</td>
@@ -97,40 +96,29 @@
         <td>{{ book.publisher }}</td>
         <td>{{ book.book_classification }}</td>
         <td>
-            <a href="{% url 'book_detail' book.id %}" class="btn btn-success btn-sm me-2">View</a>
-            <a href="{% url 'book_update' book.id %}" class="btn btn-warning btn-sm me-2">Edit</a>
-            <a href="{% url 'book_delete' book.id %}" class="btn btn-danger btn-sm">Delete</a>
+            {% if book.current_number == 0 %}
+            <a href="#" class="btn btn-secondary btn-sm me-2 disabled" title="书籍已借阅完">Borrow</a>
+            {% else %}
+            <a href="{% url 'book_borrow' book.id %}" class="btn btn-success btn-sm me-2">Borrow</a>
+            {% endif %}
         </td>
     </tr>
     {% endfor %}
     </tbody>
 </table>
-<!--<table class="table">-->
-<!--    <thead>-->
-<!--    <tr>-->
-<!--        <th>Title</th>-->
-<!--        <th>Author</th>-->
-<!--        <th>book_numbers</th>-->
-<!--        <th>book_classification</th>-->
-<!--        <th>Actions</th>-->
-<!--    </tr>-->
-<!--    </thead>-->
-<!--    <tbody>-->
-<!--    {% for book in books %}-->
-<!--    <tr>-->
-<!--        <td>{{ book.book_name }}</td>-->
-<!--        <td>{{ book.author }}</td>-->
-<!--        <td>{{ book.book_numbers }}</td>-->
-<!--        <td>{{book.book_classification}}</td>-->
-<!--        <td>-->
-<!--            <a href="{% url 'book_detail' book.id %}" class="btn btn-success btn-sm me-2">View</a>-->
-<!--            <a href="{% url 'book_update' book.id %}" class="btn btn-warning btn-sm me-2">Edit</a>-->
-<!--            <a href="{% url 'book_delete' book.id %}" class="btn btn-danger btn-sm">Delete</a>-->
-<!--        </td>-->
-<!--    </tr>-->
-<!--    {% endfor %}-->
-<!--    </tbody>-->
-<!--</table>-->
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
 
+        <span class="current-page">{{ page_obj.number }}</span>
 
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
 {% endblock %}

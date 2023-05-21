@@ -50,6 +50,7 @@
     <!-- 表头和表格内容 -->
     <thead>
     <tr>
+        <th>图书封面</th>
         <th>书名</th>
         <th>作者</th>
         <th>当前数量</th>
@@ -88,6 +89,7 @@
     <tbody>
     {% for book in page_obj %}
     <tr>
+        <td><img src="{{ book.book_image.url }}" width="100"></td>
         <td>{{ book.book_name }}</td>
         <td>{{ book.author }}</td>
         <td>{{ book.current_number }}</td>

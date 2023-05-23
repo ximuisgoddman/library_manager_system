@@ -23,6 +23,7 @@ from django.views.decorators.http import require_GET
 from .models import Book
 from django.core.paginator import Paginator
 
+
 def book_front_page(request):
     publishers = Book.objects.values_list('publisher', flat=True).distinct()
     bookClasses = Book.objects.values_list('book_classification', flat=True).distinct()
@@ -87,8 +88,8 @@ def book_create(request):
                 # 处理文件上传逻辑
                 file = request.FILES['file_upload']
                 # 在这里解析文件数据并将数据写入数据库
-                print("file:",file)
-                file_wrapper = TextIOWrapper(file,encoding='utf-8')
+                print("file:", file)
+                file_wrapper = TextIOWrapper(file, encoding='utf-8')
                 reader = csv.reader(file_wrapper)
                 for row in reader:
                     # 解析CSV文件内容并创建书籍对象
@@ -105,7 +106,7 @@ def book_create(request):
                         book_classification=row[6],
                         book_image=book_image_full_path  # 设置书籍图片路径
                     )
-                    print("book_image_full_path",book_image_full_path)
+                    print("book_image_full_path", book_image_full_path)
                     book.owner = request.user
                     book.save()
 

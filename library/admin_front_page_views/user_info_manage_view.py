@@ -10,5 +10,4 @@ def users_manage(request):
     if not request.session.get("is_login", None):
         return redirect('/login/')
     all_users = MyUser.objects.all()
-    print("len users_myuser:", len(all_users))
     return render(request, 'admin_front_page/users_manage.html', {'all_users': all_users})

@@ -17,7 +17,7 @@ from django.utils.text import slugify
 
 # 获得logger实例
 logger = logging.getLogger('myapp')
-
+from django.db.models import Q
 from django.http import JsonResponse
 from django.views.decorators.http import require_GET
 from .models import Book
@@ -32,7 +32,9 @@ def book_front_page(request):
     book_class = request.GET.get('book_class', '')
     logger.info("filter_publisher:%s filter_book_class:%s", publisher, book_class)
     search_query = request.GET.get('search', '')
-    books = Book.objects.filter(book_name__icontains=search_query)
+
+    books = Book.objects.filter(Q(book_name__icontains=search_query) | Q(author__icontains=search_query))
+
     books = books.filter(publisher__icontains=publisher)
     books = books.filter(book_classification__icontains=book_class)
 

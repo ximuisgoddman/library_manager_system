@@ -2,37 +2,35 @@
 <html>
 <head>
     <title>我的图书馆</title>
-
     <!-- 加载 jQuery 库 -->
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
-
     <!-- 加载 Bootstrap JavaScript 库 -->
     <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
     {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
-     <style>
-        .container {
-            position: relative;
-            padding: 0 20px; /* 用于设置容器两侧的间距 */
-        }
+    <meta charset="UTF-8">
+    <title>video全屏背景视频播放特效 - 站长素材</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+ .container.my-4 .video-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -100;
+}
 
-        .container::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: url('{% static 'background.gif' %}');
-            background-size: cover;
-            z-index: -1;
-        }
+.container.my-4 .video-container video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
     </style>
 </head>
 
 <body>
-<!-- 导航栏 -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
         <a class="navbar-brand" href="#">Welcom {{ user.name }}!</a>
@@ -76,11 +74,16 @@
         </div>
     </div>
 </nav>
-<main class="container my-4">
+<div class="container my-4">
+    <div class="video-container">
+        <video src="{% static 'image/video.mov' %}" autoplay muted loop></video>
+    </div>
+    <div class="container my-4" style="position: relative; z-index: 1;background-color: white;">
         {% block content %}
         {% endblock %}
     </div>
-</main>
+</div>
+
 <!-- 加载 Bootstrap JavaScript -->
 <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
 </body>

@@ -54,6 +54,7 @@ urlpatterns = [
     path('books/<int:book_id>/update/', lib_views.book_update, name='book_update'),
     path('books/<int:book_id>/delete/', lib_views.book_delete, name='book_delete'),
     path('books/<int:book_id>/borrow/', lib_views.book_borrow, name='book_borrow'),
+    path('user_books/<int:book_id>/', lib_views.user_book_detail, name='user_book_detail'),
 
     path('user_borrow_record/<int:record_user_id>/', borrow_record_view.user_borrow_record, name='user_borrow_record'),
     path('user_borrow_record_detail/<int:record_id>/', borrow_record_view.user_borrow_record_detail,

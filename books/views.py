@@ -72,10 +72,16 @@ def book_list(request):
         'bookClasses': bookClasses})
 
 
+def user_book_detail(request, book_id):
+    book = Book.objects.get(id=book_id)
+    return render(request, 'user_front_page/offline_book_detail.html', {'book': book})
+
+
 @login_required
 def book_detail(request, book_id):
+    if not request.session.get("is_login", None):
+        return redirect('/login/')
     book = Book.objects.get(id=book_id)
-    print("Book", book)
     return render(request, 'books/book_detail.html', {'book': book})
 
 

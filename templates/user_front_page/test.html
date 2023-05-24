@@ -1,121 +1,142 @@
+document.addEventListener("DOMContentLoaded", function() {
+    // 配置 Particles.js
+    particlesJS("particles-js", {
+        particles: {
+            number: {
+                value: 80,
+                density: {
+                    enable: true,
+                    value_area: 800
+                }
+            },
+            color: {
+                value: "#ffffff"
+            },
+            shape: {
+                type: "circle",
+                stroke: {
+                    width: 0,
+                    color: "#000000"
+                },
+                polygon: {
+                    nb_sides: 5
+                }
+            },
+            opacity: {
+                value: 5,
+                random: false,
+                anim: {
+                    enable: false,
+                    speed: 1,
+                    opacity_min: 0.1,
+                    sync: false
+                }
+            },
+            size: {
+                value: 3,
+                random: true,
+                anim: {
+                    enable: false,
+                    speed: 40,
+                    size_min: 0.1,
+                    sync: false
+                }
+            },
+            line_linked: {
+                enable: true,
+                distance: 150,
+                color: "#ffffff",
+                opacity: 0.8,
+                width: 2
+            },
+            move: {
+                enable: true,
+                speed: 1,
+                direction: "none",
+                random: false,
+                straight: false,
+                out_mode: "out",
+                bounce: false,
+                attract: {
+                    enable: false,
+                    rotateX: 600,
+                    rotateY: 1200
+                }
+            }
+        },
+        interactivity: {
+            detect_on: "canvas",
+            events: {
+                onhover: {
+                    enable: true,
+                    mode: "grab"
+                },
+                onclick: {
+                    enable: true,
+                    mode: "push"
+                },
+                resize: true
+            },
+            modes: {
+                grab: {
+                    distance: 140,
+                    line_linked: {
+                        opacity: 1
+                    }
+                },
+                bubble: {
+                    distance: 400,
+                    size: 40,
+                    duration: 2,
+                    opacity: 8,
+                    speed: 3
+                },
+                repulse: {
+                    distance: 200,
+                    duration: 0.4
+                },
+                push: {
+                    particles_nb: 4
+                },
+                remove: {
+                    particles_nb: 2
+                }
+            }
+        },
+        retina_detect: true
+    });
+});
+
+
+
+
+body {
+    margin: 0;
+    overflow: hidden;
+}
+
+#particles-js {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    z-index: -1;
+    background-color: black;
+}
+
+
+
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>数字图书馆</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Particles.js Background</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<!-- 导航栏 -->
-<nav class="navbar navbar-expand-md bg-dark navbar-dark">
-    <a class="navbar-brand" href="#">数字图书馆</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="collapsibleNavbar">
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" href="#">首页</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">搜索</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">我的图书</a>
-            </li>
-        </ul>
-    </div>
-</nav>
+    <div id="particles-js"></div>
 
-<!-- 主要内容区 -->
-<div class="container-fluid mt-3">
-    <div class="row">
-        <!-- 侧边栏 -->
-        <div class="col-md-2">
-            <h4>分类</h4>
-            <ul class="list-group">
-                <li class="list-group-item">计算机科学</li>
-                <li class="list-group-item">数学</li>
-                <li class="list-group-item">物理学</li>
-                <li class="list-group-item">化学</li>
-            </ul>
-        </div>
-
-        <!-- 图书列表 -->
-        <div class="col-md-10">
-            <h4>图书列表</h4>
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th>图书名称</th>
-                    <th>作者</th>
-                    <th>出版社</th>
-                    <th>分类</th>
-                    <th>操作</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>计算机网络</td>
-                    <td>谢希仁</td>
-                    <td>电子工业出版社</td>
-                    <td>计算机科学</td>
-                    <td>
-                        <button class="btn btn-primary">借阅</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>离散数学</td>
-                    <td>肖捷</td>
-                    <td>清华大学出版社</td>
-                    <td>数学</td>
-                    <td>
-                        <button class="btn-primary">借阅</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>大学物理</td>
-                    <td>赵凯华</td>
-                    <td>高等教育出版社</td>
-                    <td>物理学</td>
-                    <td>
-                        <button class="btn btn-primary">借阅</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>有机化学</td>
-                    <td>邓肯</td>
-                    <td>人民教育出版社</td>
-                    <td>化学</td>
-                    <td>
-                        <button class="btn btn-primary">借阅</button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-<!-- 页脚 -->
-<footer class="bg-light text-center text-lg-start mt-3">
-    <div class="container p-4">
-        <div class="row">
-            <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
-                <h5 class="text-uppercase">联系我们</h5>
-                <p>地址：xxx</p>
-                <p>电话：xxx</p>
-                <p>邮箱：xxx</p>
-            </div>
-            <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
-                <h5 class="text-uppercase">关于本站</h5>
-                <p>本站是一个数字图书馆，提供大量电子图书资源。</p>
-            </div>
-        </div>
-    </div>
-</footer>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

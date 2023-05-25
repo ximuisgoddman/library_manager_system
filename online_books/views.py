@@ -32,7 +32,6 @@ def admin_online_book_list(request):
 
 @login_required
 def online_book_create(request):
-    print("request.POST:", request.POST, request.FILES)
     form = OnlineBooksForm(request.POST, request.FILES)
     if form.is_valid():
         book = form.save(commit=False)

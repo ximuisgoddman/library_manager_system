@@ -33,6 +33,7 @@ ALLOWED_HOSTS = ['10.24.96.143','127.0.0.1','10.58.237.49']
 # Application definition
 
 INSTALLED_APPS = [
+    'online_song',
     'books',
     'users',
     'borrow_record',

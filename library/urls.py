@@ -27,7 +27,7 @@ user_path = os.path.abspath(os.path.join(os.getcwd(), "..", "users"))
 from books import views as lib_views
 from users import views as user_views
 from borrow_record import views as borrow_record_view
-
+from online_song import views as online_song_view
 from online_books import views as online_views
 from bookshelf import views as bookshelf_views
 from django.conf import settings
@@ -84,7 +84,12 @@ urlpatterns = [
     path('user_online_book_list/', online_views.user_online_book_list, name='user_online_book_list'),
 
     path('book_front_page/', lib_views.book_front_page, name='book_front_page'),
-    # path('filter_books/',lib_views.filter_books,name='filter_books'),
+
+    path('online_song_list/', online_song_view.online_song_list, name='online_song_list'),
+    path('admin_online_song_list/', online_song_view.admin_online_song_list, name='admin_online_song_list'),
+    path("upload_song", online_song_view.upload_song, name='upload_song'),
+    path("online_song_update/<int:song_id>/update/", online_song_view.online_song_update, name='online_song_update'),
+    path("online_song_delete/<int:song_id>/update/", online_song_view.online_song_delete, name='online_song_delete'),
 
     path('users_manage/', user_info_manage_view.users_manage, name='users_manage'),
     path('library_front_page', library_front_page_views.library_front_page, name='library_front_page')

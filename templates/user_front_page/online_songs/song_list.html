@@ -1,0 +1,78 @@
+{% extends 'user_front_page/base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <h1>Book List</h1>
+    </div>
+    <div class="col-md-4 text-end">
+        <!-- 添加筛选框 -->
+        <form method="get" class="form-inline my-3">
+            <div class="form-group mx-sm-3 mb-2">
+                <input type="text" name="search" class="form-control" placeholder="Search">
+            </div>
+            <button type="submit" class="btn btn-primary mb-2">Submit</button>
+        </form>
+    </div>
+</div>
+
+<a href="{% url 'upload_song' %}" class="btn btn-primary my-3">Add Song</a>
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">歌名</th>
+        <th scope="col">时长</th>
+        <th scope="col">作者</th>
+        <th scope="col">类别</th>
+        <th scope="col">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for song in songs %}
+    <tr>
+        <td>{{ song.song_title }}</td>
+        <td>{{ song.song_duration }}</td>
+        <td>{{ song.song_author }}</td>
+        <td>{{ song.song_classification }}</td>
+        <td>
+            <audio id="audio-{{ song.id }}">
+                <source src="{{ song.audio_file.url }}" type="audio/mpeg">
+            </audio>
+            <button id="play-button-{{ song.id }}" onclick="playSong({{ song.id }})">播放</button>
+
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<script>
+var currentlyPlayingSong = null;
+
+function playSong(songId) {
+    var audio = document.getElementById("audio-" + songId);
+    var playButton = document.getElementById("play-button-" + songId);
+
+    if (currentlyPlayingSong && currentlyPlayingSong !== audio) {
+        currentlyPlayingSong.pause();
+        var previousButton = document.getElementById("play-button-" + currentlyPlayingSong.getAttribute('data-song-id'));
+        previousButton.innerText = '播放';
+    }
+
+    if (audio.paused) {
+        audio.play();
+        playButton.innerText = '停止';
+        currentlyPlayingSong = audio;
+    } else {
+        audio.pause();
+        playButton.innerText = '播放';
+        currentlyPlayingSong = null;
+    }
+}
+</script>
+
+
+
+
+
+{% endblock %}

@@ -1,0 +1,126 @@
+views.py
+from django.shortcuts import render
+from .online_song_form import OnlineSongForm
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import OnlineSongModel
+
+
+def upload_song(request):
+    form = OnlineSongForm(request.POST, request.FILES)
+    if form.is_valid():
+        form.save()
+        return redirect('admin_online_book_list')
+    return render(request, 'upload_song.html', {'form': form})
+
+
+def song_list(request):
+    songs = OnlineSongModel.objects.all()
+    return render(request, 'song_list.html', {'songs': songs})
+
+
+def play_song(request, song_id):
+    song = get_object_or_404(OnlineSongModel, pk=song_id)
+    return render(request, 'play_song.html', {'song': song})
+
+models.py
+from django.db import models
+
+
+# Create your models here.
+class OnlineSongModel(models.Model):
+    song_title = models.CharField(max_length=100)
+    audio_file = models.FileField(upload_to='audio/')
+    song_duration = models.CharField()
+    song_author = models.CharField(max_length=100)
+    song_classification = models.CharField(max_length=100)
+    create_time = models.DateTimeField(auto_now=True)
+    update_time = models.DateTimeField(auto_now=True)
+
+
+
+online_song_form.py
+
+from django import forms
+from .models import OnlineSongModel
+
+
+class OnlineSongForm(forms.ModelForm):
+    class Meta:
+        model = OnlineSongModel
+        fields = ('song_title', 'audio_file', 'song_duration', 'song_author', 'song_classification')
+        labels = {
+            'song_title': "歌名",
+            'audio_file': "音乐文件",
+            'song_duration': "音乐时长",
+            'song_author': "作曲",
+            'song_classification': "分类"
+        }
+
+
+templates/OnlineSong/song_list.html
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Song List</title>
+</head>
+<body>
+    <h2>Song List</h2>
+    <ul>
+        {% for song in songs %}
+        <li><a href="{% url 'play_song' song.id %}">{{ song.title }}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
+
+templates/OnlineSong/upload_song.html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload Song</title>
+</head>
+<body>
+    <h2>Upload Song</h2>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Upload</button>
+    </form>
+</body>
+</html>
+
+
+templates/user_front_page/online_songs/play_song.html
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Song List</title>
+</head>
+<body>
+    <h2>Song List</h2>
+    <ul>
+        {% for song in songs %}
+        <li><a href="{% url 'play_song' song.id %}">{{ song.title }}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
+
+
+templates/user_front_page/online_songs/song_list.html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Song List</title>
+</head>
+<body>
+    <h2>Song List</h2>
+    <ul>
+        {% for song in songs %}
+        <li><a href="{% url 'play_song' song.id %}">{{ song.title }}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

@@ -84,7 +84,6 @@ urlpatterns = [
     path('user_online_book_list/', online_views.user_online_book_list, name='user_online_book_list'),
 
     path('book_front_page/', lib_views.book_front_page, name='book_front_page'),
-
     path('online_song_list/', online_song_view.online_song_list, name='online_song_list'),
     path('admin_online_song_list/', online_song_view.admin_online_song_list, name='admin_online_song_list'),
     path("upload_song", online_song_view.upload_song, name='upload_song'),

@@ -457,3 +457,11 @@ filter_publisher: filter_book_class:
 filter_publisher: filter_book_class:
 filter_publisher: filter_book_class:
 filter_publisher: filter_book_class:
+filter_publisher: filter_book_class:
+filter_publisher: filter_book_class:
+is_locked:True
+filter_publisher: filter_book_class:
+is_locked:True
+filter_publisher: filter_book_class:
+is_locked:True
+already borrow:1 11

@@ -3,7 +3,9 @@ from .online_song_form import OnlineSongForm
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import OnlineSongModel
 from django.contrib.auth.decorators import login_required
+from myfavoritemusic.models import MyFavoriteMusic
 from io import TextIOWrapper
+from django.http import JsonResponse
 import csv
 import os
 
@@ -66,3 +68,28 @@ def online_song_delete(request, song_id):
         song.delete()
         return redirect('admin_online_song_list')
     return render(request, 'online_song/delete_online_song.html', {'song': song})
+
+
+@login_required
+def add_to_favorite(request):
+    if request.method == "POST":
+        song_id = request.POST.get("songId")
+        print("song_id:", song_id)
+        song = OnlineSongModel.objects.get(id=song_id)
+        user = request.user
+        # 创建或获取 MyFavoriteMusic 对象
+        favorite_music, created = MyFavoriteMusic.objects.get_or_create(
+            music_id=song.id,
+            audio_file=song.audio_file,
+            song_title=song.song_title,
+            song_author=song.song_author,
+            song_classification=song.song_classification,
+            favorite_music_user_id=user
+        )
+        print("favorite_music:%s, created:%s" % (favorite_music, created))
+        if created:
+            return JsonResponse({"status": "success", "message": "歌曲已添加到favorite列表"})
+        else:
+            return JsonResponse({"status": "error", "message": "歌曲已存在于favorite列表中"})
+    else:
+        return JsonResponse({"status": "error", "message": "未登录或请求方法错误"})

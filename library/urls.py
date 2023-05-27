@@ -20,6 +20,8 @@ import sys
 from django.contrib.auth.decorators import login_required
 from django.conf.urls import include
 from django.contrib import admin
+from django.conf import settings
+from django.conf.urls.static import static
 
 book_path = os.path.abspath(os.path.join(os.getcwd(), "..", "books"))
 user_path = os.path.abspath(os.path.join(os.getcwd(), "..", "users"))
@@ -30,8 +32,7 @@ from borrow_record import views as borrow_record_view
 from online_song import views as online_song_view
 from online_books import views as online_views
 from bookshelf import views as bookshelf_views
-from django.conf import settings
-from django.conf.urls.static import static
+from myfavoritemusic import views as my_favorite_music_view
 
 sys.path.append(book_path)
 sys.path.append(user_path)
@@ -89,6 +90,8 @@ urlpatterns = [
     path("upload_song", online_song_view.upload_song, name='upload_song'),
     path("online_song_update/<int:song_id>/update/", online_song_view.online_song_update, name='online_song_update'),
     path("online_song_delete/<int:song_id>/update/", online_song_view.online_song_delete, name='online_song_delete'),
+    path("add_to_favorite", online_song_view.add_to_favorite, name='add_to_favorite'),
+    path("my_favorite_music_list", my_favorite_music_view.my_favorite_music_list, name='my_favorite_music_list'),
 
     path('users_manage/', user_info_manage_view.users_manage, name='users_manage'),
     path('library_front_page', library_front_page_views.library_front_page, name='library_front_page')

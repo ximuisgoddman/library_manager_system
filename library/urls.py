@@ -22,6 +22,7 @@ from django.conf.urls import include
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.generic.base import RedirectView
 
 book_path = os.path.abspath(os.path.join(os.getcwd(), "..", "books"))
 user_path = os.path.abspath(os.path.join(os.getcwd(), "..", "users"))
@@ -94,7 +95,8 @@ urlpatterns = [
     path("my_favorite_music_list", my_favorite_music_view.my_favorite_music_list, name='my_favorite_music_list'),
 
     path('users_manage/', user_info_manage_view.users_manage, name='users_manage'),
-    path('library_front_page', library_front_page_views.library_front_page, name='library_front_page')
+    path('library_front_page', library_front_page_views.library_front_page, name='library_front_page'),
+    path('favicon.ico', RedirectView.as_view(url='/static/ico/favicon.ico'))
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

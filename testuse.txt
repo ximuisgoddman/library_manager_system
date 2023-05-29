@@ -40,6 +40,7 @@
                 <source src="{{ song.audio_file.url }}" type="audio/mpeg">
             </audio>
             <button id="play-button-{{ song.id }}" onclick="playSong('{{ song.id }}')">播放</button>
+            <button id="add_to_favorite-{{ song.id }}" onclick="handleFavorite({{ song.id }})">喜欢</button>
         </td>
     </tr>
     {% endfor %}
@@ -175,6 +176,35 @@
 
         currentlyPlayingSong.setAttribute('data-song-id', songId); // 更新当前播放歌曲的data-song-id属性
     }
+function handleFavorite(songId) {
+    {% if user.is_authenticated %}
+        // 用户已登录，执行喜欢操作
+        addToFavorite(songId);
+    {% else %}
+        // 用户未登录，跳转到登录页面
+        window.location.href = "{% url 'login' %}";
+    {% endif %}
+}
+
+function addToFavorite(songId) {
+    // 发送AJAX请求将歌曲添加到“favorite”列表
+    $.ajax({
+        url: "{% url 'add_to_favorite' %}",
+        method: "POST",
+        data: {
+            songId: songId,
+            csrfmiddlewaretoken: "{{ csrf_token }}",
+        },
+        success: function(response) {
+            // 添加成功后的处理逻辑
+            console.log("歌曲已添加到favorite列表");
+        },
+        error: function(xhr, errmsg, err) {
+            // 错误处理逻辑
+            console.log("添加到favorite列表时出错");
+        }
+    });
+}
 
 </script>
 

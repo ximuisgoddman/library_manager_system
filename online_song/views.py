@@ -8,6 +8,7 @@ from io import TextIOWrapper
 from django.http import JsonResponse
 import csv
 import os
+import json
 
 
 def upload_song(request):
@@ -41,14 +42,25 @@ def upload_song(request):
     return render(request, 'online_song/upload_song.html', {'form': form})
 
 
-def online_song_list(request):
+def admin_online_song_list(request):
     songs = OnlineSongModel.objects.all()
     return render(request, 'user_front_page/online_songs/song_list.html', {'songs': songs})
 
 
-def admin_online_song_list(request):
+def online_song_list(request):
     songs = OnlineSongModel.objects.all()
-    return render(request, 'online_song/song_list.html', {'songs': songs})
+    print("Songs:", songs)
+    song_list = []
+    for each_song in songs:
+        song_list.append({"song_id": each_song.id,
+                          "song_title": each_song.song_title,
+                          "audio_file": each_song.audio_file.url,
+                          "song_duration": each_song.song_duration,
+                          "song_author": each_song.song_author,
+                          "song_classification": each_song.song_classification})
+
+    return render(request, 'user_front_page/online_songs/song_list.html',
+                  {'songs': songs, "songs_json": json.dumps(song_list)})
 
 
 @login_required

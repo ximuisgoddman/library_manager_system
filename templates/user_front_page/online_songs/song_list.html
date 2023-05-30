@@ -93,12 +93,22 @@
     function changePlayMode() {
         playMode = playModeSelect.value;
     }
+<!--    window.addEventListener("load",function(){-->
+<!--    playNextSong();-->
+<!--    });-->
 
     function playNextSong() {
         var currentSongId = currentlyPlayingSong.getAttribute('data-song-id');
-        var currentSongIndex = songs.indexOf(currentSongId);
+        var currentSongIndex = -1;
+        for(var i=0;i<songs.length;i++){
+        var tmp=songs[i]['song_id'].toString();
+        if (tmp === currentSongId){`
+        currentSongIndex=i;
+        break;
+            }
+        }
+        console.log("next当前歌曲：",currentSongIndex)
         var nextSongIndex;
-
         if (playMode === "sequential") {
             nextSongIndex = (currentSongIndex + 1) % songs.length;
         } else if (playMode === "random") {
@@ -106,16 +116,25 @@
         } else if (playMode === "repeat") {
             nextSongIndex = currentSongIndex;
         }
-        playSong(nextSongIndex);
+        console.log("next要播放",songs[nextSongIndex]['song_id']);
+        playSong(songs[nextSongIndex]['song_id']);
     }
 
     function playPreviousSong() {
         var currentSongId = currentlyPlayingSong.getAttribute('data-song-id');
-        var currentSongIndex = songs.indexOf(currentSongId);
-        console.log("当前歌曲：",currentSongIndex)
+        var currentSongIndex = -1;
+        for(var i=0;i<songs.length;i++){
+
+        var tmp=songs[i]['song_id'].toString();
+        if (tmp === currentSongId){
+        currentSongIndex=i;
+        break;
+            }
+        }
+        console.log("pre当前歌曲：",currentSongIndex,currentSongId)
         var previousSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
-        console.log("要播放的歌曲",previousSongIndex)
-        playSong(previousSongIndex);
+        console.log("pre要播放的歌曲",songs[previousSongIndex]['song_id'])
+        playSong(songs[previousSongIndex]['song_id']);
     }
 
     function togglePlayPause() {
@@ -203,6 +222,8 @@
             }
         });
     }
+
+
 
 
 

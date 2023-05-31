@@ -46,9 +46,12 @@
     {% endfor %}
     </tbody>
 </table>
+
 <div id="player">
     <span id="current-song-title"></span>
     <button id="previous-button" onclick="playPreviousSong()">上一首</button>
+    <progress id="progress" value="0" min="0" max="100" max="300"></progress>
+
     <button id="play-pause-button" onclick="togglePlayPause()">播放</button>
     <button id="next-button" onclick="playNextSong()">下一首</button>
     <label for="play-mode">播放模式：</label>
@@ -75,7 +78,6 @@
 
    for (var i = 0; i < songs.length; i++) {
     var songId = songs[i]['song_id'];
-    console.log('songId:',songId);
     var audio = document.getElementById("audio-" + songId);
 
     // 添加 ended 事件处理程序
@@ -93,9 +95,25 @@
     function changePlayMode() {
         playMode = playModeSelect.value;
     }
-<!--    window.addEventListener("load",function(){-->
-<!--    playNextSong();-->
-<!--    });-->
+    window.addEventListener("load",function(){
+    playNextSong();
+    });
+
+    audio.addEventListener("loadedmetadata", function() {
+      setInterval(updateProgressBar, 1000);
+    });
+
+    function updateProgressBar() {
+      var audio = currentlyPlayingSong;
+      if (audio && isFinite(audio.duration) && isFinite(audio.currentTime)) {
+        var progress = document.getElementById("progress");
+        var progressPercentage = (audio.currentTime / audio.duration) * 100;
+        progress.value = progressPercentage;
+      }
+    }
+
+
+
 
     function playNextSong() {
         var currentSongId = currentlyPlayingSong.getAttribute('data-song-id');
@@ -146,28 +164,43 @@
             playPauseButton.innerText = '播放';
         }
     }
-    var currentlyPlayingSong = null;
 
+    function loadAudio(audioElement, audioUrl) {
+        audioElement.src = audioUrl;
+        audioElement.load(); // 加载音频文件
+    }
+
+    var currentlyPlayingSong = null;
+    var currentSongId = null;
     function playSong(songId) {
         var audio = document.getElementById("audio-" + songId);
         var playButton = document.getElementById("play-button-" + songId);
         console.log("开始播放歌曲:", songId);
         console.log("音频元素:", audio);
 
-        // 其他的逻辑和代码
-
+        for(var i=0;i<songs.length;i++){
+        var audioUrl="";
+        var tmp=songs[i]['song_id'].toString();
+        if (songId === tmp){
+        audioUrl=songs[i]['audio_file'];
+        break;
+            }
+        }
+        console.log("audioUrl:",audioUrl);
+        loadAudio(audio, audioUrl);
         // 打印一条消息以验证函数是否被调用
         console.log("playSong 函数被调用");
-<!--        currentlyPlayingSong = audio;-->
-        console.log(currentlyPlayingSong,"切歌",audio)
-        if (currentlyPlayingSong && currentlyPlayingSong === audio) {
+
+        if (currentSongId === songId) {
             // 当前点击的歌曲与正在播放的歌曲相同，切换播放/暂停状态
             console.log("当前点击的歌曲与正在播放的歌曲相同，切换播放/暂停状态")
             if (audio.paused) {
+                console.log("@@");
                 audio.play();
                 playButton.innerText = '停止';
                 playPauseButton.innerText = '暂停';
             } else {
+            console.log("!!");
                 audio.pause();
                 playButton.innerText = '播放';
                 playPauseButton.innerText = '播放';
@@ -187,6 +220,10 @@
             // 更新播放栏信息
             currentSongTitle.innerText = audio.getAttribute('data-song-title');
             player.style.display = "block";
+            // 置进度条
+<!--             setInterval(updateProgressBar, 1000);-->
+
+            currentSongId = songId;
         }
 
         currentlyPlayingSong.setAttribute('data-song-id', songId); // 更新当前播放歌曲的data-song-id属性
@@ -222,6 +259,8 @@
             }
         });
     }
+
+
 
 
 

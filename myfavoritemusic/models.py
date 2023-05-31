@@ -6,6 +6,7 @@ class MyFavoriteMusic(models.Model):
     music_id = models.IntegerField()
     audio_file = models.FileField()
     song_title = models.CharField(max_length=100)
+    song_duration = models.CharField(max_length=100)
     song_author = models.CharField(max_length=100)
     song_classification = models.CharField(max_length=100)
     create_time = models.DateTimeField(auto_now_add=True)

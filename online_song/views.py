@@ -44,12 +44,15 @@ def upload_song(request):
 
 def admin_online_song_list(request):
     songs = OnlineSongModel.objects.all()
-    return render(request, 'user_front_page/online_songs/song_list.html', {'songs': songs})
+    search_query = request.GET.get('search', '')
+    songs = songs.filter(song_title__icontains=search_query)
+    return render(request, 'online_song/song_list.html', {'songs': songs})
 
 
 def online_song_list(request):
     songs = OnlineSongModel.objects.all()
-    print("Songs:", songs)
+    search_query = request.GET.get('search', '')
+    songs = songs.filter(song_title__icontains=search_query)
     song_list = []
     for each_song in songs:
         song_list.append({"song_id": each_song.id,

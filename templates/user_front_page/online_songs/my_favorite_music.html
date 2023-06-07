@@ -38,6 +38,7 @@
                 <source src="{{ song.audio_file.url }}" type="audio/mpeg">
             </audio>
             <button id="play-button-{{ song.id }}" onclick="playSong({{ song.id }})">播放</button>
+            <a href="{% url 'delete_favorite_music' song.music_id %}" class="btn btn-danger btn-sm">Delete</a>
         </td>
     </tr>
     {% endfor %}

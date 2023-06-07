@@ -93,6 +93,8 @@ urlpatterns = [
     path("online_song_delete/<int:song_id>/update/", online_song_view.online_song_delete, name='online_song_delete'),
     path("add_to_favorite", online_song_view.add_to_favorite, name='add_to_favorite'),
     path("my_favorite_music_list", my_favorite_music_view.my_favorite_music_list, name='my_favorite_music_list'),
+    path("delete_favorite_music/<int:music_id>/", my_favorite_music_view.delete_favorite_music,
+         name='delete_favorite_music'),
 
     path('users_manage/', user_info_manage_view.users_manage, name='users_manage'),
     path('library_front_page', library_front_page_views.library_front_page, name='library_front_page'),

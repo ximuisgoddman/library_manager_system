@@ -108,3 +108,5 @@ def add_to_favorite(request):
             return JsonResponse({"status": "error", "message": "歌曲已存在于favorite列表中"})
     else:
         return JsonResponse({"status": "error", "message": "未登录或请求方法错误"})
+
+

@@ -9,7 +9,7 @@
             <h1 class="text-center">Confirm Delete</h1>
           </div>
           <div class="card-body">
-            <p>Are you sure you want to delete "{{ book.name }}"?</p>
+            <p>Are you sure you want to delete "{{ book.book_name }}"?</p>
             <form method="post">
               {% csrf_token %}
               <div class="text-center">

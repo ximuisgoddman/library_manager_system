@@ -48,10 +48,9 @@
 </table>
 
 <div id="player">
-    <span id="current-song-title"></span>
     <button id="previous-button" onclick="playPreviousSong()">上一首</button>
-    <progress id="progress" value="0" min="0" max="100" max="300"></progress>
-
+    <progress id="progress" value="0"></progress>
+    <span id="current-song-title"></span>
     <button id="play-pause-button" onclick="togglePlayPause()">播放</button>
     <button id="next-button" onclick="playNextSong()">下一首</button>
     <label for="play-mode">播放模式：</label>
@@ -219,7 +218,7 @@
             currentlyPlayingSong = audio;
         }
         // 更新播放栏信息
-        currentSongTitle.innerText = audio.getAttribute('data-song-title');
+        currentSongTitle.innerText = songs[i]['song_title'];
         player.style.display = "block";
         // 置进度条
         setInterval(updateProgressBar, 10000);

@@ -108,7 +108,7 @@
         if (audio && isFinite(audio.duration) && isFinite(audio.currentTime)) {
             var progress = document.getElementById("progress");
             // console.log(audio.currentTime, audio.duration)
-            progress.value = (audio.currentTime / audio.duration) * 100;
+            progress.value = audio.currentTime / audio.duration;
         }
     }
 
@@ -176,18 +176,19 @@
         var playButton = document.getElementById("play-button-" + songId);
         console.log("开始播放歌曲:", songId);
         console.log("音频元素:", audio);
-
+        var song_title="";
         for (var i = 0; i < songs.length; i++) {
             var audioUrl = "";
             var tmp = songs[i]['song_id'].toString();
-            if (songId === tmp) {
+            var tmp2 = songId.toString();
+            if (tmp2 === tmp) {
                 audioUrl = songs[i]['audio_file'];
+                song_title=songs[i]['song_title'];
                 break;
             }
         }
         console.log("audioUrl:", audioUrl, songs[i]);
         // loadAudio(audio, audioUrl);
-        //audio.play();
         // 打印一条消息以验证函数是否被调用
         console.log("playSong 函数被调用");
 
@@ -218,10 +219,10 @@
             currentlyPlayingSong = audio;
         }
         // 更新播放栏信息
-        currentSongTitle.innerText = songs[i]['song_title'];
+        currentSongTitle.innerText = song_title;
         player.style.display = "block";
         // 置进度条
-        setInterval(updateProgressBar, 10000);
+        setInterval(updateProgressBar, 1000);
 
         currentSongId = songId;
 

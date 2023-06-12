@@ -29,34 +29,60 @@
     }
 </style>
 
-<a href="{% url 'upload_song' %}" class="btn btn-primary my-3">Add Song</a>
 
-<table class="table">
+<table class="table" id="songTable">
     <thead>
-        <tr>
-            <th scope="col">歌名</th>
-            <th scope="col">专辑</th>
-            <th scope="col">作者</th>
-            <th scope="col">时长</th>
-            <th scope="col">操作</th>
-        </tr>
+    <tr>
+        <th scope="col">歌名</th>
+        <th>
+            <label for="song_author_Filter">歌手:</label>
+            <select id="song_author_Filter" class="form-select form-select-sm" style="width: 50px;"
+                    onchange="filterSong()">
+                <option value="">All</option>
+                {% for song_author in song_authors %}
+                {% if song_author == selected_song_author %}
+                <option value="{{ song_author }}" selected>{{ song_author }}</option>
+                {% else %}
+                <option value="{{ song_author }}">{{ song_author }}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+        </th>
+        <th>
+            <label for="song_classification_Filter">专辑:</label>
+            <select id="song_classification_Filter" class="form-select form-select-sm" style="width: 50px;"
+                    onchange="filterSong()">
+                <option value="">All</option>
+                {% for song_classification in song_classifications %}
+                {% if song_classification == selected_song_classification %}
+                <option value="{{ song_classification }}" selected>{{ song_classification }}</option>
+                {% else %}
+                <option value="{{ song_classification }}">{{ song_classification }}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+        </th>
+        <th scope="col">时长</th>
+        <th scope="col">操作</th>
+    </tr>
     </thead>
     <tbody>
-        {% for song in songs %}
-        <tr>
-            <td>{{ song.song_title }}</td>
-            <td>{{ song.song_duration }}</td>
-            <td>{{ song.song_author }}</td>
-            <td>{{ song.song_classification }}</td>
-            <td>
-                <audio id="audio-{{ song.id }}">
-                    <source src="{{ song.audio_file.url }}" type="audio/mpeg">
-                </audio>
-                <button id="play-button-{{ song.id }}" onclick="playSong('{{ song.id }}')">播放</button>
-                <button id="add_to_favorite-{{ song.id }}" onclick="handleFavorite('{{ song.id }}')">喜欢</button>
-            </td>
-        </tr>
-        {% endfor %}
+    {% for song in songs %}
+    <tr>
+        <td>{{ song.song_title }}</td>
+        <td>{{ song.song_author }}</td>
+        <td>{{ song.song_classification }}</td>
+        <td>{{ song.song_duration }}</td>
+
+        <td>
+            <audio id="audio-{{ song.id }}">
+                <source src="{{ song.audio_file.url }}" type="audio/mpeg">
+            </audio>
+            <button id="play-button-{{ song.id }}" onclick="playSong('{{ song.id }}')">播放</button>
+            <button id="add_to_favorite-{{ song.id }}" onclick="handleFavorite('{{ song.id }}')">喜欢</button>
+        </td>
+    </tr>
+    {% endfor %}
     </tbody>
 </table>
 
@@ -113,6 +139,29 @@
     window.addEventListener("load", function () {
         playNextSong();
     });
+
+    function filterSong() {
+        var song_classification_Filter = document.getElementById("song_classification_Filter").value;
+        var song_author_Filter = document.getElementById("song_author_Filter").value;
+
+        $.ajax({
+            url: "{% url 'online_song_list' %}",
+            type: "GET",
+            data: {
+                song_author: song_author_Filter,
+                song_classification: song_classification_Filter
+            },
+            success: function (response) {
+                // 更新表格内容
+                $("#songTable tbody").html($(response).find("#songTable tbody").html());
+            },
+
+
+            error: function (xhr, status, error) {
+                // 处理错误情况
+            }
+        });
+    }
 
     // audio.addEventListener("loadedmetadata", function () {
     //     setInterval(updateProgressBar, 1000);

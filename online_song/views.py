@@ -26,11 +26,11 @@ def upload_song(request):
                     song_filename = row[0].strip()
                     song_full_path = os.path.join('audio', song_filename)
                     song = OnlineSongModel(
+                        song_author=row[1],
                         song_title=row[2],
                         audio_file=song_full_path,
-                        song_duration=row[3],
-                        song_author=row[1],
-                        song_classification=row[4]
+                        song_duration=row[4],
+                        song_classification=row[3]
                     )
                     song.save()
         else:
@@ -50,9 +50,16 @@ def admin_online_song_list(request):
 
 
 def online_song_list(request):
+    song_classifications = OnlineSongModel.objects.values_list('song_classification', flat=True).distinct()
+    song_authors = OnlineSongModel.objects.values_list('song_author', flat=True).distinct()
+
     songs = OnlineSongModel.objects.all()
     search_query = request.GET.get('search', '')
     songs = songs.filter(song_title__icontains=search_query)
+    song_author = request.GET.get('song_author', '')
+    song_classification = request.GET.get('song_classification', '')
+    songs = songs.filter(song_author__icontains=song_author)
+    songs = songs.filter(song_classification__icontains=song_classification)
     song_list = []
     for each_song in songs:
         song_list.append({"song_id": each_song.id,
@@ -63,7 +70,10 @@ def online_song_list(request):
                           "song_classification": each_song.song_classification})
 
     return render(request, 'user_front_page/online_songs/song_list.html',
-                  {'songs': songs, "songs_json": json.dumps(song_list)})
+                  {'songs': songs,
+                   'song_classifications': song_classifications,
+                   'song_authors': song_authors,
+                   "songs_json": json.dumps(song_list)})
 
 
 @login_required
@@ -108,5 +118,3 @@ def add_to_favorite(request):
             return JsonResponse({"status": "error", "message": "歌曲已存在于favorite列表中"})
     else:
         return JsonResponse({"status": "error", "message": "未登录或请求方法错误"})
-
-

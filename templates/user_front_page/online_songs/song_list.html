@@ -223,7 +223,6 @@
             nextSongIndex = currentSongIndex;
         }
         console.log("next要播放", songs[nextSongIndex]['song_id']);
-        currentlyPlayingSong = audioElements[songs[nextSongIndex]['song_id']];
         playSong(songs[nextSongIndex]['song_id']);
     }
 

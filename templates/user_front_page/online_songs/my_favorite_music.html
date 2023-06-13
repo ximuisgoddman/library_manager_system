@@ -115,32 +115,7 @@
         playNextSong();
     });
 
-    function filterSong() {
-        var song_classification_Filter = document.getElementById("song_classification_Filter").value;
-        var song_author_Filter = document.getElementById("song_author_Filter").value;
 
-        $.ajax({
-            url: "{% url 'online_song_list' %}",
-            type: "GET",
-            data: {
-                song_author: song_author_Filter,
-                song_classification: song_classification_Filter
-            },
-            success: function (response) {
-                // 更新表格内容
-                $("#songTable tbody").html($(response).find("#songTable tbody").html());
-            },
-
-
-            error: function (xhr, status, error) {
-                // 处理错误情况
-            }
-        });
-    }
-
-    // audio.addEventListener("loadedmetadata", function () {
-    //     setInterval(updateProgressBar, 1000);
-    // });
     function updateCountdown(totalSeconds) {
         var minutes = Math.floor(totalSeconds / 60);
         var seconds = totalSeconds % 60;
@@ -182,7 +157,7 @@
             nextSongIndex = currentSongIndex;
         }
         console.log("next要播放", songs[nextSongIndex]['song_id']);
-        currentlyPlayingSong = audioElements[songs[nextSongIndex]['song_id']];
+        // currentlyPlayingSong = audioElements[songs[nextSongIndex]['song_id']];
         playSong(songs[nextSongIndex]['song_id']);
     }
 

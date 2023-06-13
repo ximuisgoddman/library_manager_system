@@ -2,7 +2,7 @@ import os
 from mutagen.mp3 import MP3
 import re
 
-mp3_file = "media/audio"
+mp3_file = "../../media/audio"
 print(os.path.abspath(mp3_file))
 for each_file in os.listdir(mp3_file):
     pattern = r"(.*?)\s-\s(.*?)\s\["

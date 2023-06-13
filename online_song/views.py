@@ -108,6 +108,7 @@ def add_to_favorite(request):
             audio_file=song.audio_file,
             song_title=song.song_title,
             song_author=song.song_author,
+            song_duration=song.song_duration,
             song_classification=song.song_classification,
             favorite_music_user_id=user
         )

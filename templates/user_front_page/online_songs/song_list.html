@@ -99,6 +99,8 @@
         <option value="sequential">顺序播放</option>
         <option value="repeat">单曲循环</option>
     </select>
+    <label for="volume">音量：</label>
+    <input type="range" id="volume" min="0" max="1" step="0.001" value="0.2" onchange="updateVolume()">
 </div>
 
 
@@ -156,6 +158,15 @@
         playNextSong();
     });
 
+    function updateVolume() {
+        var volumeSlider = document.getElementById("volume");
+        var volume = volumeSlider.value;
+        console.log("volume:", volume);
+        // 更新音量
+        Object.values(audioElements).forEach(function (audio) {
+            audio.volume = volume;
+        });
+    }
     function filterSong() {
         var song_classification_Filter = document.getElementById("song_classification_Filter").value;
         var song_author_Filter = document.getElementById("song_author_Filter").value;
@@ -334,25 +345,25 @@
         {% endif %}
     }
 
-        function addToFavorite(songId) {
-            // 发送AJAX请求将歌曲添加到“favorite”列表
-            $.ajax({
-                url: "{% url 'add_to_favorite' %}",
-                method: "POST",
-                data: {
-                    songId: songId,
-                    csrfmiddlewaretoken: "{{ csrf_token }}",
-                },
-                success: function (response) {
-                    // 添加成功后的处理逻辑
-                    console.log("歌曲已添加到favorite列表");
-                },
-                error: function (xhr, errmsg, err) {
-                    // 错误处理逻辑
-                    console.log("添加到favorite列表时出错");
-                }
-            });
-        }
+    function addToFavorite(songId) {
+        // 发送AJAX请求将歌曲添加到“favorite”列表
+        $.ajax({
+            url: "{% url 'add_to_favorite' %}",
+            method: "POST",
+            data: {
+                songId: songId,
+                csrfmiddlewaretoken: "{{ csrf_token }}",
+            },
+            success: function (response) {
+                // 添加成功后的处理逻辑
+                console.log("歌曲已添加到favorite列表");
+            },
+            error: function (xhr, errmsg, err) {
+                // 错误处理逻辑
+                console.log("添加到favorite列表时出错");
+            }
+        });
+    }
 
 </script>
 

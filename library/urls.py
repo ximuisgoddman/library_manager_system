@@ -34,6 +34,7 @@ from online_song import views as online_song_view
 from online_books import views as online_views
 from bookshelf import views as bookshelf_views
 from myfavoritemusic import views as my_favorite_music_view
+from relax_moment import views as relax_moment_view
 
 sys.path.append(book_path)
 sys.path.append(user_path)
@@ -95,6 +96,8 @@ urlpatterns = [
     path("my_favorite_music_list", my_favorite_music_view.my_favorite_music_list, name='my_favorite_music_list'),
     path("delete_favorite_music/<int:music_id>/", my_favorite_music_view.delete_favorite_music,
          name='delete_favorite_music'),
+
+    path("relax_moment/", relax_moment_view.relax_moment, name='relax_moment'),
 
     path('users_manage/', user_info_manage_view.users_manage, name='users_manage'),
     path('library_front_page', library_front_page_views.library_front_page, name='library_front_page'),

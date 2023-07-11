@@ -1,0 +1,21 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="{% static 'js/tetris1.js' %}"></script>
+</head>
+<body> <!-- onload="draw();"" -->
+    <div style="text-align: center;"><h1> Hello Django! Tetris!</h1><h1 id="clock">00:00</h1></div>
+    <img src="{% static 'img/mococo.png' %}" width="200" height="200" />
+    
+    <canvas id="canvas" width="150" height="150"></canvas>
+    <script>
+        init();
+        // console.log(time)
+        // setInterval(timer, 1000);
+        // start();
+        // game();
+        
+    </script>
+</body>
+</html>

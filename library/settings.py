@@ -86,27 +86,27 @@ WSGI_APPLICATION = 'library.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default':
-        {
-            'ENGINE': 'django.db.backends.mysql',  # 数据库引擎
-            'NAME': os.getenv('DB_NAME'),  # 数据库名称
-            'HOST': '127.0.0.1',  # 数据库地址，本机 ip 地址 127.0.0.1
-            'PORT': 3306,  # 端口
-            'USER': 'root',  # 数据库用户名
-            'PASSWORD': 'LUO808089lin@',  # 数据库密码
-        }
-}
 # DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': os.getenv('DB_NAME'),
-#         'USER': os.getenv('DB_USER'),
-#         'PASSWORD': os.getenv('DB_PASSWORD'),
-#         'HOST': os.getenv('DB_HOST'),
-#         'PORT': '3306',
-#     }
+#     'default':
+#         {
+#             'ENGINE': 'django.db.backends.mysql',  # 数据库引擎
+#             'NAME': os.getenv('DB_NAME'),  # 数据库名称
+#             'HOST': '127.0.0.1',  # 数据库地址，本机 ip 地址 127.0.0.1
+#             'PORT': 3306,  # 端口
+#             'USER': 'root',  # 数据库用户名
+#             'PASSWORD': 'LUO808089lin@',  # 数据库密码
+#         }
 # }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': '3306',
+    }
+}
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -142,27 +142,27 @@ LOGGING = {
 # }
 
 
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/0",  # 指定了Redis服务器的位置,如果Redis服务器不在本地主机上，则应使用相应的IP地址或主机名来替换127.0.0.1
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        },
-        "KEY_PREFIX": "library:",  # 指定缓存键的前缀，以便将缓存键命名空间化
-    }
-}
-
 # CACHES = {
 #     "default": {
 #         "BACKEND": "django_redis.cache.RedisCache",
-#         "LOCATION": "redis://redis:6379/0",
+#         "LOCATION": "redis://127.0.0.1:6379/0",  # 指定了Redis服务器的位置,如果Redis服务器不在本地主机上，则应使用相应的IP地址或主机名来替换127.0.0.1
 #         "OPTIONS": {
 #             "CLIENT_CLASS": "django_redis.client.DefaultClient",
 #         },
-#         "KEY_PREFIX": "library:",
+#         "KEY_PREFIX": "library:",  # 指定缓存键的前缀，以便将缓存键命名空间化
 #     }
 # }
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://redis:6379/0",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
+        "KEY_PREFIX": "library:",
+    }
+}
 
 # 指定Django会话存储的后端和缓存别名
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"

@@ -1,0 +1,73 @@
+{% load static %}
+<html>
+  <head>
+    <title>Tetris Game</title>
+    <link rel="stylesheet" href = "{% static 'css/style.css' %}">
+  </head>
+  <body>
+    <div id="side_left">
+      <div id="side_left_box"></div>
+      <div id="side_left_box"></div>
+    </div>
+
+    <div id="mid_content">
+      <div id="side_content_box">
+        <canvas id="canvas" width="520" height="800"> </canvas>
+        <button
+          style="
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background-color: gray;
+            border: 0px;
+          "
+          onClick="resetVars()"
+        >
+          <svg height="100%" version="1.1" viewBox="0 0 36 36" width="100%">
+            <use class="ytp-svg-shadow" xlink:href="#ytp-id-54"></use>
+            <path
+              class="ytp-svg-fill"
+              fill="#ffffff"
+              d="M 18,11 V 7 l -5,5 5,5 v -4 c 3.3,0 6,2.7 6,6 0,3.3 -2.7,6 -6,6 -3.3,0 -6,-2.7 -6,-6 h -2 c 0,4.4 3.6,8 8,8 4.4,0 8,-3.6 8,-8 0,-4.4 -3.6,-8 -8,-8 z"
+              id="ytp-id-54"
+            ></path>
+          </svg>
+        </button>
+      </div>
+
+      <div id="side_content_box"></div>
+    </div>
+
+    <div id="side_right">
+      <canvas
+        id="nextShapeCanvas"
+        width="200"
+        height="200"
+        style="position: absolute; top: 10"
+      >
+      </canvas>
+      <div id="side_right_box">
+        <canvas
+          id="scoreCanvas"
+          width="200"
+          height="200"
+          style="position: absolute; top: 220"
+          >
+        </canvas>
+        
+      </div>
+    </div>
+
+    <div id="best_score">
+      {% for game in gameInfo %}
+        <h3>score:{{game.score}} date:{{ game.date }}</h3>
+      {% endfor %}
+    </div>
+
+    <div>
+      <img id="image" src="{% static 'img/rotations.png' %}" style="display: none" />
+    </div>
+
+    <script src="{% static 'js/tetris.js' %}"></script>
+  </body>
+</html>

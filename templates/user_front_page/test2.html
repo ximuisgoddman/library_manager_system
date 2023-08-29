@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图书馆浏览页面</title>
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.0.0-beta3/css/bootstrap.min.css">
+    <style>
+    body {
+      background-image: url('https://img2.baidu.com/it/u=2967453779,2366306540&fm=253&fmt=auto&app=138&f=JPEG?w=889&h=500');
+        background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+    }
+
+    </style>
+</head>
+<body>
+<!-- 导航栏 -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand" href="#">图书馆</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">首页</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">电子书</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">借阅记录</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">登录</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">注册</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- 搜索栏 -->
+<div class="container my-3">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form action="#" method="get">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="输入关键字搜索图书">
+                    <button class="btn btn-outline-secondary" type="submit">搜索</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- 电子书展示 -->
+<div class="container my-3">
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="col">
+            <div class="card">
+                <img src="https://via.placeholder.com/300x200.png" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">电子书标题</h5>
+                    <p class="card-text">电子书描述信息</p>
+                    <a href="#" class="btn btn-primary">借阅</a>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <img src="https://via.placeholder.com/300x200.png" class="card-img-top" alt="hahah">
+                <div class="card-body">
+                    <h5 class="card-title">电子书标题</h5>
+                    <p class="card-text">电子书描述信息</p>
+                    <a href="#" class="btn btn-primary">借阅</a>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <img src="https://via.placeholder.com/300x200.png" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">电子书标题</h5>
+                    <p class="card-text">电子书描述信息</p>
+                    <a href="#" class="btn btn-primary">借阅</a>
+                </div>
+            </div>
+        </div>
+        <!-- 更多电子书卡片... -->
+    </div>
+</div>
+
+<!-- 底部 -->
+<footer class="bg-light text-center text-lg-start">
+    <div class="container p-4">
+        <div class="row">
+            <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
+                <h5 class="text-uppercase">联系我们</h5>
+                <p>
+                    地址：某某路XX号
+                    <br>电话：(123) 456-7890
+                    <br>邮箱：library@example.com
+                </p>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                <h5 class="text-uppercase">相关链接</h5>
+                <ul class="list-unstyled mb-0">
+                    <li>
+                        <a href="#!" class="text-dark">关于我们</a>
+                    </li>
+                    <li>
+                        <a href="#!" class="text-dark">常见问题</a>
+                    </li>
+                    <li>
+                        <a href="#!" class="text-dark">加入我们</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                <h5 class="text-uppercase">版权声明</h5>
+                <p>
+                    版权 © 2023 图书馆，保留所有权利。
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/popper.js/2.9.3/umd/popper.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.0.0-beta3/js/bootstrap.min.js"></script>
+</body>
+</html>

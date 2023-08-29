@@ -1,0 +1,125 @@
+{% extends 'user_front_page/base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <h1>Book List</h1>
+    </div>
+    <div class="col-md-4 text-end">
+        <!-- 添加筛选框 -->
+        <form method="get" class="form-inline my-3">
+            <div class="form-group mx-sm-3 mb-2">
+                <input type="text" name="search" class="form-control" placeholder="搜索 书名/作者">
+            </div>
+            <button type="submit" class="btn btn-primary mb-2">Submit</button>
+        </form>
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function filterBooks() {
+        var publisherFilter = document.getElementById("publisherFilter").value;
+        var bookClassFilter = document.getElementById("bookClassFilter").value;
+
+        $.ajax({
+            url: "{% url 'book_front_page' %}",
+            type: "GET",
+            data: {
+                publisher: publisherFilter,
+                book_class: bookClassFilter
+            },
+            success: function (response) {
+                // 更新表格内容
+                $("#bookTable tbody").html($(response).find("#bookTable tbody").html());
+            },
+
+
+            error: function (xhr, status, error) {
+                // 处理错误情况
+            }
+        });
+    }
+</script>
+
+<table class="table" id="bookTable">
+    <!-- 表头和表格内容 -->
+    <thead>
+    <tr>
+        <th>图书封面</th>
+        <th>书名</th>
+        <th>作者</th>
+        <th>当前数量</th>
+        <th>
+            <label for="publisherFilter">出版社:</label>
+            <select id="publisherFilter" class="form-select form-select-sm" style="width: 50px;"
+                    onchange="filterBooks()">
+                <option value="">All</option>
+                {% for publisher in publishers %}
+                {% if publisher == selected_publisher %}
+                <option value="{{ publisher }}" selected>{{ publisher }}</option>
+                {% else %}
+                <option value="{{ publisher }}">{{ publisher }}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+        </th>
+
+        <th>
+            <label for="bookClassFilter">分类</label>
+            <select id="bookClassFilter" class="form-select form-select-sm" style="width: 50px;"
+                    onchange="filterBooks()">
+                <option value="">All</option>
+                {% for bookClass in bookClasses %}
+                {% if bookClass == selected_bookClass %}
+                <option value="{{ bookClass }}" selected>{{ bookClass }}</option>
+                {% else %}
+                <option value="{{ bookClass }}">{{ bookClass }}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+        </th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for book in page_obj %}
+    <tr>
+        <td><img src="{{ book.book_image.url }}" width="100"></td>
+        <td>{{ book.book_name }}</td>
+        <td>{{ book.author }}</td>
+        <td>{{ book.current_number }}</td>
+        <td>{{ book.publisher }}</td>
+        <td>{{ book.book_classification }}</td>
+        <td>
+            {% if book.current_number == 0 %}
+            <a href="#" class="btn btn-secondary btn-sm me-2 disabled" title="书籍已借阅完">Borrow</a>
+            {% else %}
+            <a href="{% url 'book_borrow' book.id %}" class="btn btn-success btn-sm me-2">Borrow</a>
+            {% endif %}
+            <a href="{% url 'user_book_detail' book.id %}" class="btn btn-success btn-sm me-2">View</a>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% if page_obj.paginator.num_pages > 1 %}
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; 第一页</a>
+            <a href="?page={{ page_obj.previous_page_number }}">上一页</a>
+        {% endif %}
+
+        <span class="current-page">{{ page_obj.number }}</span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">下一页</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">最后一页 &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+{% endif %}
+
+{% endblock %}

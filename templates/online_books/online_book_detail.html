@@ -1,0 +1,41 @@
+{% extends 'admin_front_page/base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card">
+                <div class="card-header">
+                    <h1 class="text-center">Book Detail</h1>
+                </div>
+                <div class="card-body">
+                    <div class="text-center">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">图书封面</th>
+                                <th scope="col">图书名称</th>
+                                <th scope="col">图书作者</th>
+                                <th scope="col">出版社</th>
+                                <th scope="col">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td><img src="{{ book.book_image.url }}" width="100"></td>
+                                <td>{{ book.book_name }}</td>
+                                <td>{{ book.book_author }}</td>
+                                <td>{{ book.book_publisher }}</td>
+                                <td>
+                                    <a href="{% url 'admin_online_book_list' %}" class="btn btn-secondary">Back to List</a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

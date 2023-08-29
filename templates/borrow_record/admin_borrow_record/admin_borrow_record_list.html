@@ -1,0 +1,33 @@
+{% extends 'admin_front_page/base.html' %}
+{% block content %}
+<div class="container">
+    <h1 class="my-4">Borrow Records List</h1>
+<!--    <a href="{% url 'users_manage' %}" class="btn btn-secondary mb-4">Back to Book_List</a>-->
+    <table class="table table-hover table-striped">
+        <thead>
+        <tr>
+            <th scope="col">图书名称</th>
+            <th scope="col">作者</th>
+            <th scope="col">出版社</th>
+            <th scope="col">归还截至日期</th>
+            <th scope="col">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for record in borrow_records %}
+        <tr>
+            <td>{{ record.book_name }}</td>
+            <td>{{ record.book_author }}</td>
+            <td>{{ record.publisher }}</td>
+            <td>{{ record.record_user_borrow_deadline }}</td>
+            <td>
+                <a href="{% url 'admin_borrow_record_detail' record.id %}" class="btn btn-secondary btn-sm">View</a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+{% endblock %}

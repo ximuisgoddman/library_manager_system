@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>图书馆管理系统</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    {% load static %}
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        .container.my-4 .video-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -100;
+        }
+
+        .container.my-4 .video-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">图书馆管理系统</a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#">首页</a></li>
+                    <li><a href="#">借阅管理</a></li>
+                    <li><a href="{% url 'users_manage' %}">读者管理</a></li>
+                    <li><a href="{% url 'admin_online_book_list'  %}">在线图书管理</a></li>
+                    <li><a href="{% url 'book_list'  %}">离线图书管理</a></li>
+                    <li><a href="{% url 'admin_online_song_list'  %}">歌曲管理</a></li>
+
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="{% url 'login'  %}"><span class="glyphicon glyphicon-user"></span> 登录</a></li>
+                    <li><a href="{% url 'register'  %}"><span class="glyphicon glyphicon-log-in"></span> 注册</a></li>
+                    <li><a href="{% url 'logout'  %}"><span class="glyphicon glyphicon-log-out"></span> 登出</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-4">
+        <div class="video-container">
+            <video src="{% static 'image/video.mov' %}" autoplay muted loop></video>
+        </div>
+        <div class="container my-4" style="position: relative; z-index: 1;background-color: white;">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </div>
+    <!-- 模态框 -->
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginModalLabel">已登录</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    已登录
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if user.is_authenticated %}
+    <!-- 如果已登录，则显示一个模态框 -->
+    <script>
+        console.log("already login");
+        // 在页面加载后运行这个代码块
+        $(document).ready(function () {
+            // 选中登录按钮
+            const loginButton = $('a[href="{% url 'login' %}"]');
+            // 给登录按钮添加一个点击事件监听器
+            loginButton.on('click', function (event) {
+                // 阻止默认行为（即打开登录页面）
+                event.preventDefault();
+                // 执行其他操作或显示其他模态框
+                // 例如，显示一个提示信息
+                alert("您已登录！");
+            });
+        });
+    </script>
+    {% else %}
+    <!-- 如果未登录，则显示登录链接 -->
+    <a href="{% url 'login' %}">登录</a>
+    {% endif %}
+
+</body>
+
+</html>

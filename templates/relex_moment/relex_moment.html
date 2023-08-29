@@ -1,0 +1,36 @@
+{% extends 'user_front_page/base.html' %}
+
+{% block content %}
+<table class="table" id="gameTable">
+    <thead>
+        <tr>
+            <th scope="col">game</th>
+            <th scope="col">开始</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <p id="tetris">俄罗斯方块</p>
+            </td>
+            <td>
+                <!-- 在这里添加按钮链接，点击后跳转到/tetris页面 -->
+                <a href="{% url 'tetris' %}">
+                    <button>开始</button>
+                </a>
+            </td>
+        </tr>
+    <tr>
+            <td>
+                <p id="snake">贪吃蛇</p>
+            </td>
+            <td>
+                <!-- 在这里添加按钮链接，点击后跳转到/tetris页面 -->
+                <a href="{% url 'snake' %}">
+                    <button>开始</button>
+                </a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+{% endblock %}F

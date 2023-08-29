@@ -1,0 +1,52 @@
+{% extends 'user_front_page/base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <h1>Book List</h1>
+    </div>
+    <div class="col-md-4 text-end">
+        <!-- 添加筛选框 -->
+        <form method="get" class="form-inline my-3">
+            <div class="form-group mx-sm-3 mb-2">
+                <input type="text" name="search" class="form-control" placeholder="搜索 书名/作者">
+            </div>
+            <button type="submit" class="btn btn-primary mb-2">Submit</button>
+        </form>
+    </div>
+</div>
+<style>
+    .btn-fixed-size {
+    width: 50px; /* 设置按钮的宽度 */
+    height: 30px; /* 设置按钮的高度 */
+}
+
+</style>
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">图书封面</th>
+        <th scope="col">图书名称</th>
+        <th scope="col">图书作者</th>
+        <th scope="col">出版社</th>
+        <th scope="col">图书类别</th>
+        <th scope="col">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for book in books %}
+    <tr>
+        <td><img src="{{ book.book_image.url }}" width="100"></td>
+        <td>{{ book.book_name }}</td>
+        <td>{{ book.book_author }}</td>
+        <td>{{ book.book_publisher }}</td>
+        <td>{{book.book_classification}}</td>
+        <td>
+            <a href="{% url 'read_online_book' book.id %}" class="btn btn-success btn-sm me-2 btn-fixed-size">Read</a>
+            <a href="{% url 'add_book_shelf' book.id %}" class="btn btn-success btn-sm me-2 btn-fixed-size">Add to BookShelf</a>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

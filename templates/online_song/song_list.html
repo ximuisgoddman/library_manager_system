@@ -1,0 +1,44 @@
+{% extends 'admin_front_page/base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <h1>Book List</h1>
+    </div>
+    <div class="col-md-4 text-end">
+        <!-- 添加筛选框 -->
+        <form method="get" class="form-inline my-3">
+            <div class="form-group mx-sm-3 mb-2">
+                <input type="text" name="search" class="form-control" placeholder="Search">
+            </div>
+            <button type="submit" class="btn btn-primary mb-2">Submit</button>
+        </form>
+    </div>
+</div>
+<a href="{% url 'upload_song' %}" class="btn btn-primary my-3">Add Song</a>
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">歌名</th>
+        <th scope="col">专辑</th>
+        <th scope="col">作者</th>
+        <th scope="col">时长</th>
+        <th scope="col">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for song in songs %}
+    <tr>
+        <td>{{ song.song_title }}</td>
+        <td>{{ song.song_duration }}</td>
+        <td>{{ song.song_author }}</td>
+        <td>{{song.song_classification}}</td>
+        <td>
+            <a href="{% url 'online_song_update' song.id %}" class="btn btn-success btn-sm me-2">Update</a>
+            <a href="{% url 'online_song_delete' song.id %}" class="btn btn-success btn-sm me-2">Delete</a>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

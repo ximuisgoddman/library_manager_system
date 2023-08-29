@@ -1,0 +1,48 @@
+{% extends 'admin_front_page/base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <h1>Book List</h1>
+    </div>
+    <div class="col-md-4 text-end">
+        <!-- 添加筛选框 -->
+        <form method="get" class="form-inline my-3">
+            <div class="form-group mx-sm-3 mb-2">
+                <input type="text" name="search" class="form-control" placeholder="Search">
+            </div>
+            <button type="submit" class="btn btn-primary mb-2">Submit</button>
+        </form>
+    </div>
+</div>
+
+<a href="{% url 'online_book_create' %}" class="btn btn-primary my-3">Add Book</a>
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">图书封面</th>
+        <th scope="col">图书名称</th>
+        <th scope="col">图书作者</th>
+        <th scope="col">出版社</th>
+        <th scope="col">图书类别</th>
+        <th scope="col">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for book in books %}
+    <tr>
+        <td><img src="{{ book.book_image.url }}" width="100"></td>
+        <td>{{ book.book_name }}</td>
+        <td>{{ book.book_author }}</td>
+        <td>{{ book.book_publisher }}</td>
+        <td>{{book.book_classification}}</td>
+        <td>
+            <a href="{% url 'online_book_detail' book.id %}" class="btn btn-success btn-sm me-2">View</a>
+            <a href="{% url 'online_book_update' book.id %}" class="btn btn-success btn-sm me-2">Update</a>
+            <a href="{% url 'online_book_delete' book.id %}" class="btn btn-success btn-sm me-2">Delete</a>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

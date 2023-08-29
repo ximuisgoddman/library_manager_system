@@ -1,0 +1,56 @@
+{% extends 'user_front_page/base.html' %}
+
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    {% load static %}
+    <title>Read Online Book</title>
+    <script src="{% static 'js/epub.min.js' %}"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        #viewer {
+            width: 100%;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <div id="viewer"></div>
+    <script>
+        var bookPath = "{% get_media_prefix %}" + "{{ book_path }}";  // 生成完整的文件 URL
+        var book = ePub(bookPath);
+
+        book.renderTo("viewer");
+
+        book.loaded.navigation.then(function(toc) {
+            var $viewer = document.getElementById("viewer");
+
+            var $iframe = $viewer.querySelector("iframe");
+            $iframe.style.width = "100%";
+            $iframe.style.height = "100%";
+
+            var doc = $iframe.contentDocument || $iframe.contentWindow.document;
+            var $head = doc.querySelector("head");
+
+            var $style = doc.createElement("style");
+            $style.textContent = "body { margin: 0; }";
+            $head.appendChild($style);
+
+            var $container = doc.createElement("div");
+            $container.style.width = "100%";
+            $container.style.height = "100%";
+            $container.style.display = "flex";
+            $container.style.justifyContent = "center";
+            $container.style.alignItems = "center";
+            $container.style.overflow = "auto";
+
+            var $toc = toc.render({ container: $container });
+            doc.body.appendChild($container);
+        });
+    </script>
+</body>
+{% endblock %}

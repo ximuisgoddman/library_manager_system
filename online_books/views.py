@@ -117,8 +117,8 @@ def read_online_book(request, book_id):
     # book_path = book.book_save_path
     # print("book_path:", book_path)
     # book_path = os.path.join("media/",book.book_save_path)  # 获取保存电子书的路径
-    # book_path = book.book_save_path
-    return render(request, "user_front_page/online_songs/read_online_book.html", {"book": book})
+    book_path = book.book_save_path
+    return render(request, "user_front_page/online_songs/read_online_book.html", {"book_path": book_path})
 
 
 @login_required

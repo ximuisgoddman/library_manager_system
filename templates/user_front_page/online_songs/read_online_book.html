@@ -27,6 +27,7 @@
         book.renderTo("viewer");
 
         book.loaded.navigation.then(function(toc) {
+            debugger;
             var $viewer = document.getElementById("viewer");
 
             var $iframe = $viewer.querySelector("iframe");

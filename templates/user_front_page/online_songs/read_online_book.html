@@ -24,34 +24,18 @@
         var bookPath = "{% get_media_prefix %}" + "{{ book_path }}";  // 生成完整的文件 URL
         var book = ePub(bookPath);
 
+        // 在 book.renderTo("viewer"); 之前添加日志
+        console.log("Before rendering book to viewer");
         book.renderTo("viewer");
 
+        // 在 book.loaded.navigation.then(function(toc) {...}); 中添加日志
         book.loaded.navigation.then(function(toc) {
-            debugger;
-            var $viewer = document.getElementById("viewer");
-
-            var $iframe = $viewer.querySelector("iframe");
-            $iframe.style.width = "100%";
-            $iframe.style.height = "100%";
-
-            var doc = $iframe.contentDocument || $iframe.contentWindow.document;
-            var $head = doc.querySelector("head");
-
-            var $style = doc.createElement("style");
-            $style.textContent = "body { margin: 0; }";
-            $head.appendChild($style);
-
-            var $container = doc.createElement("div");
-            $container.style.width = "100%";
-            $container.style.height = "100%";
-            $container.style.display = "flex";
-            $container.style.justifyContent = "center";
-            $container.style.alignItems = "center";
-            $container.style.overflow = "auto";
-
-            var $toc = toc.render({ container: $container });
-            doc.body.appendChild($container);
+            console.log("Table of contents loaded successfully");
+            // 剩余的逻辑
+        }).catch(function(error) {
+            console.error("Error loading table of contents:", error);
         });
+
     </script>
 </body>
 {% endblock %}

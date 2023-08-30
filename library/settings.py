@@ -33,6 +33,7 @@ ALLOWED_HOSTS = ['10.24.96.143','127.0.0.1','10.58.237.49']
 # Application definition
 
 INSTALLED_APPS = [
+    'spaceship_shoot',
     'snake',
     'tetris_app',
     'relax_moment',

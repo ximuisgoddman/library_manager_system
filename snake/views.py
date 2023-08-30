@@ -1,7 +1,9 @@
-import pygame
-import random
+# import pygame
+# import random
 from django.shortcuts import render
 
+
+#
 # # 初始化 pygame
 # pygame.init()
 #
@@ -149,11 +151,11 @@ from django.shortcuts import render
 # def message(msg, color):
 #     mesg = font_style.render(msg, True, color)
 #     win.blit(mesg, [win_width / 6, win_height / 3])
-
-
+#
+#
 # 游戏开始
 # gameLoop()
-
-
+#
+#
 def snake(request):
     return render(request, "snake/snake_v1.html")

@@ -38,6 +38,7 @@ from relax_moment import views as relax_moment_view
 
 from tetris_app import views as tetris_view
 from snake import views as snake_view
+from spaceship_shoot import views as spaceship_shoot_view
 
 sys.path.append(book_path)
 sys.path.append(user_path)
@@ -105,6 +106,8 @@ urlpatterns = [
 
     path("tetris/", tetris_view.tetris, name='tetris'),
     path("snake/", snake_view.snake, name="snake"),
+
+    path("spaceship_shoot/",spaceship_shoot_view.spaceship_shoot,name="spaceship_shoot"),
     path('users_manage/', user_info_manage_view.users_manage, name='users_manage'),
     path('library_front_page', library_front_page_views.library_front_page, name='library_front_page'),
     path('favicon.ico', RedirectView.as_view(url='/static/ico/favicon.ico'))

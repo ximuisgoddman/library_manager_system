@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Snake Game</title>
+    <style>
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <h1>Snake Game</h1>
+
+    <canvas id="gameCanvas" width="640" height="480"></canvas>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const canvas = document.getElementById('gameCanvas');
+            const context = canvas.getContext('2d');
+
+            let snakeX = 10;
+            let snakeY = 10;
+            let snakeSpeedX = 10;
+            let snakeSpeedY = 0;
+
+            const snakeSize = 20;
+            let snake = [{ x: snakeX, y: snakeY }];
+
+            const foodSize = 20;
+            let food = { x: 100, y: 100 };
+
+            function drawSnake() {
+                for (let i = 0; i < snake.length; i++) {
+                    context.fillStyle = 'green';
+                    context.fillRect(snake[i].x, snake[i].y, snakeSize, snakeSize);
+                }
+            }
+
+            function drawFood() {
+                context.fillStyle = 'red';
+                context.fillRect(food.x, food.y, foodSize, foodSize);
+            }
+
+            function checkCollision() {
+                if (
+                    snake[0].x === food.x &&
+                    snake[0].y === food.y
+                ) {
+                    snake.push({ x: snake[0].x, y: snake[0].y });
+                    generateFood();
+                }
+
+                // Add more collision detection logic if needed
+            }
+
+            function generateFood() {
+                food = {
+                    x: Math.floor(Math.random() * (canvas.width / foodSize)) * foodSize,
+                    y: Math.floor(Math.random() * (canvas.height / foodSize)) * foodSize,
+                };
+            }
+
+            function gameLoop() {
+                context.clearRect(0, 0, canvas.width, canvas.height);
+
+                snakeX += snakeSpeedX;
+                snakeY += snakeSpeedY;
+
+                snake.unshift({ x: snakeX, y: snakeY });
+                if (snake.length > 1) {
+                    snake.pop();
+                }
+
+                drawSnake();
+                drawFood();
+                checkCollision();
+
+                // Add more game logic here if needed
+
+                requestAnimationFrame(gameLoop);
+            }
+
+            document.addEventListener('keydown', function(event) {
+                switch (event.key) {
+                    case 'ArrowUp':
+                        snakeSpeedX = 0;
+                        snakeSpeedY = -snakeSize;
+                        break;
+                    case 'ArrowDown':
+                        snakeSpeedX = 0;
+                        snakeSpeedY = snakeSize;
+                        break;
+                    case 'ArrowLeft':
+                        snakeSpeedX = -snakeSize;
+                        snakeSpeedY = 0;
+                        break;
+                    case 'ArrowRight':
+                        snakeSpeedX = snakeSize;
+                        snakeSpeedY = 0;
+                        break;
+                }
+            });
+
+            generateFood();
+            gameLoop();
+        });
+    </script>
+</body>
+</html>

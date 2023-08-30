@@ -1,9 +1,10 @@
 import pygame
 import random
 import os
-base_dir=os.path.dirname(os.path.dirname(__file__))
+
+base_dir = os.path.dirname(os.path.dirname(__file__))
 # 加载玩家飞船图片
-player_ship = pygame.image.load(os.path.join(base_dir,"my_resource/game_info/game_image/汤姆猫.jpg"))
+player_ship = pygame.image.load(os.path.join(base_dir, "my_resource/game_info/game_image/汤姆猫.jpg"))
 player_ship = pygame.transform.scale(player_ship, (50, 50))
 import pygame
 import random
@@ -26,7 +27,7 @@ player_rect.centerx = width // 2
 player_rect.bottom = height - 10
 
 # 加载敌人飞船图片
-enemy_ship = pygame.image.load(os.path.join(base_dir,"my_resource/game_info/game_image/杰利鼠.png"))
+enemy_ship = pygame.image.load(os.path.join(base_dir, "my_resource/game_info/game_image/杰利鼠.png"))
 enemy_ship = pygame.transform.scale(enemy_ship, (50, 50))
 enemies = []
 for _ in range(5):
@@ -109,3 +110,7 @@ while running:
 
 # 退出游戏
 pygame.quit()
+
+
+def spaceship_shoot(request):
+    pass

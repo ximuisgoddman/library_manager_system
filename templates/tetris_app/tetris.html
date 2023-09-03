@@ -1,5 +1,6 @@
-<!DOCTYPE html>
-<html>
+{% extends 'user_front_page/base.html' %}
+
+{% block content %}
 
 <head>
     <title>俄罗斯方块</title>
@@ -119,7 +120,7 @@
             }
             // Function to show the game over dialog
             function showGameOverDialog() {
-                game_over = true; // 设置游戏状态为结束
+                 // 设置游戏状态为结束
                 const dialog = document.getElementById('gameOverDialog');
                 dialog.style.display = 'block';
                 // 清除定时器，防止继续发送更新请求
@@ -134,9 +135,12 @@
                 // Handle the Retry button click
                 document.getElementById('retryBtn').addEventListener('click', function () {
                     // Reload the current page to start a new game
-                    window.location.reload();
+                    // debugger;
+                    // window.location.reload();
+                    game_over = false;
                     // 启动游戏
                     current_piece = create_new_piece();
+                    ctx.clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
                     // 定时器，模拟方块的定时下落
                     const fallingInterval = 1000; // 下落间隔时间（毫秒）
                     setInterval(function () {
@@ -170,9 +174,9 @@
                         console.log("data.game_over:",data.game_over);
                         if (data.game_over) {
                             // 清空整个页面
-                            // showGameOverDialog();
+                            showGameOverDialog();
                             // 如果需要重新开始游戏，可以重新加载页面
-                            window.location.reload();
+                            // window.location.reload();
                         } else {
                             // 清空画布
                             ctx.clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -213,4 +217,4 @@
     </script>
 </body>
 
-</html>
+{% endblock %}

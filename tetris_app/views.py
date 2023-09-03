@@ -150,7 +150,6 @@ def update_game_state(request):
             game_data['game_over'] = True
     game_data['current_piece'] = current_piece
     game_data['play_matrix'] = play_matrix
-    print("play_matrix:",play_matrix)
     return JsonResponse(game_data)
 
 

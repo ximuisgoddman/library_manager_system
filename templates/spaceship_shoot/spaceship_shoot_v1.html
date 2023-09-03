@@ -1,0 +1,112 @@
+<!-- spaceshooter.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Spaceship Shoot</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Spaceship Shoot Game</h1>
+    <canvas id="gameCanvas" width="800" height="600" tabindex="0"></canvas>
+    <p id="scoreDisplay" style="color: white; font-size: 24px;"></p>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const context = canvas.getContext('2d');
+        let player_x = {{ player_rect.x }};
+        let enemies = {{ enemies|safe }};
+        let bullets = {{ bullets|safe }};
+        let score = {{ score }};
+
+        function drawGame() {
+            // 清空画布
+            context.clearRect(0, 0, canvas.width, canvas.height);
+
+            // 绘制玩家飞船
+            context.drawImage(player_ship, player_x, {{ player_rect.top }});
+
+            // 绘制敌人飞船
+            for (const enemy of enemies) {
+                context.drawImage(enemy_ship, enemy.x, enemy.y);
+            }
+
+            // 绘制子弹
+            for (const bullet of bullets) {
+                context.fillStyle = 'white';
+                context.fillRect(bullet.x, bullet.y, 4, 10);
+            }
+
+            // 显示分数
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            scoreDisplay.textContent = 'Score: ' + score;
+        }
+
+        function updateGame() {
+            // 处理键盘事件
+            const keys = [];
+            document.addEventListener('keydown', function (event) {
+                if (event.key === 'ArrowLeft') {
+                    keys.push('left');
+                } else if (event.key === 'ArrowRight') {
+                    keys.push('right');
+                }
+            });
+
+            // 向服务器发送游戏数据
+            const updateInterval = setInterval(function () {
+                const csrfToken = getCookie('csrftoken');
+                $.ajax({
+                    type: 'GET',
+                    url: '/update_space_ship_state/',
+                    data: { keys: keys.join(',') },
+                    dataType: 'json',
+                    headers: {
+                        'X-CSRFToken': csrfToken
+                    },
+                    success: function (data) {
+                        if (data.game_over) {
+                            clearInterval(updateInterval);
+                            alert('Game Over! Your Score: ' + score);
+                            location.reload();
+                        } else {
+                            player_x = data.player_x;
+                            enemies = data.enemies;
+                            bullets = data.bullets;
+                            score = data.score;
+                            drawGame();
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(error);
+                    }
+                });
+                keys.length = 0;  // 清空按键队列
+            }, 1000 / 60);
+        }
+
+        // 获取Cookie
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        // 主循环
+        function main() {
+            drawGame();
+            updateGame();
+        }
+
+        main();
+    </script>
+</body>
+</html>

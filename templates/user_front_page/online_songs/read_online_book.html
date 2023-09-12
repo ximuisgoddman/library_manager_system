@@ -1,41 +1,11 @@
-{% extends 'user_front_page/base.html' %}
-
-{% block content %}
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    {% load static %}
-    <title>Read Online Book</title>
-    <script src="{% static 'js/epub.min.js' %}"></script>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-        }
-        #viewer {
-            width: 100%;
-            height: 100vh;
-        }
-    </style>
+    <title>电子书</title>
 </head>
 <body>
-    <div id="viewer"></div>
-    <script>
-        var bookPath = "{% get_media_prefix %}" + "{{ book_path }}";  // 生成完整的文件 URL
-        var book = ePub(bookPath);
+    <iframe src="{{ MEDIA_URL }}{{ book_path }}" width="100%" height="800" frameborder="0" sandbox="allow-same-origin"></iframe>
 
-        // 在 book.renderTo("viewer"); 之前添加日志
-        console.log("Before rendering book to viewer");
-        book.renderTo("viewer");
-
-        // 在 book.loaded.navigation.then(function(toc) {...}); 中添加日志
-        book.loaded.navigation.then(function(toc) {
-            console.log("Table of contents loaded successfully");
-            // 剩余的逻辑
-        }).catch(function(error) {
-            console.error("Error loading table of contents:", error);
-        });
-
-    </script>
 </body>
-{% endblock %}
+</html>

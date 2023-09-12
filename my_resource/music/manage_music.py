@@ -105,7 +105,7 @@ def get_music_info(music_path):
                     timestamp = "%02d:%02d" % (int(duration) // 60, int(duration) % 60)
             # else:
             #     print("Error format", os.path.join(music_path, x, each_file))
-            # shutil.copy(os.path.join(music_path, x, each_file), "D:\my_program\py\library_manager_system-master\media/audio")
+            shutil.copy(os.path.join(music_path, x, each_file), "D:\my_program\py\library_manager_system-master\media/audio")
             with open("my_music2.txt", 'a', encoding='utf-8') as fw:
                 fw.write(
                     "%s,%s,%s,%s,%s\n" % (
@@ -113,7 +113,7 @@ def get_music_info(music_path):
                     zhuanji, timestamp))
 
 
-get_music_info("D:\my_program\py\library_manager_system-master\media")
+get_music_info("D:\BaiduNetdiskDownload\music")
 
 # music_path = "D:\BaiduNetdiskDownload\music\吴青峰"
 # for x in os.listdir(music_path):

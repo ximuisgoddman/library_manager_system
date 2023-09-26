@@ -6,34 +6,55 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-    <h1>Spaceship Shoot Game</h1>
-    <canvas id="gameCanvas" width="800" height="600" tabindex="0"></canvas>
-    <p id="scoreDisplay" style="color: white; font-size: 24px;"></p>
+<h1>Spaceship Shoot Game</h1>
+<canvas id="gameCanvas" width="800" height="600" tabindex="0"></canvas>
+<p id="scoreDisplay" style="color: white; font-size: 24px;"></p>
 
-    <script>
-        const canvas = document.getElementById('gameCanvas');
-        const context = canvas.getContext('2d');
-        let player_x = {{ player_rect.x }};
-        let enemies = {{ enemies|safe }};
-        let bullets = {{ bullets|safe }};
-        let score = {{ score }};
+<script>
+    const canvas = document.getElementById('gameCanvas');
+    const context = canvas.getContext('2d')
+    var play_ship_x = JSON.parse('{{ play_ship_x |safe }}')
+    var play_ship_y = JSON.parse('{{ play_ship_y |safe }}')
+    var play_ship_img = JSON.parse('{{ play_ship_img |safe }}')
+    var enemy_ship_img = JSON.parse('{{ enemy_ship_img|safe }}')
+    var enemies_location = JSON.parse('{{enemies_location|safe}}')
+    var score = JSON.parse('{{score|safe}}')
+    var image_size = JSON.parse('{{image_size|safe}}')
+    var bullets = JSON.parse('{{bullets|safe}}')
+    var bullet_size = JSON.parse('{{bullet_size|safe}}')
+
+    function initGame() {
+        let game_over = false;
 
         function drawGame() {
             // 清空画布
             context.clearRect(0, 0, canvas.width, canvas.height);
 
+            //  // 绘制画布边框
+            // context.strokeStyle = 'white'; // 设置边框颜色为白色
+            // context.lineWidth = 1; // 设置边框线宽为2像素
+            // context.strokeRect(PLAY_X - 1, PLAY_Y - 1, PLAY_WIDTH + 1, PLAY_HEIGHT + 1);
+
             // 绘制玩家飞船
-            context.drawImage(player_ship, player_x, {{ player_rect.top }});
+            const ship_image = new Image();
+            ship_image.src = "/media/" + play_ship_img
+            console.log(play_ship_x, play_ship_y);
+            context.drawImage(ship_image, play_ship_x, play_ship_y, image_size, image_size)
 
             // 绘制敌人飞船
-            for (const enemy of enemies) {
-                context.drawImage(enemy_ship, enemy.x, enemy.y);
+            const enemy_image = new Image();
+            enemy_image.src = "/media/" + enemy_ship_img
+            for (let i = 0; i < enemies_location.length; i++) {
+                let enemy = enemies_location[i]
+                console.log("enemy:", enemy)
+                context.drawImage(enemy_image, enemy.loc_x, enemy.loc_y, image_size, image_size);
             }
 
             // 绘制子弹
-            for (const bullet of bullets) {
-                context.fillStyle = 'white';
-                context.fillRect(bullet.x, bullet.y, 4, 10);
+            for (let i = 0; i < bullets.length; i++) {
+                let bullet = bullets[i]
+                context.fillStyle = 'red';  // 设置矩形颜色
+                context.fillRect(bullet.bullet_x, bullet.bullet_y, bullet_size, bullet_size);
             }
 
             // 显示分数
@@ -41,48 +62,6 @@
             scoreDisplay.textContent = 'Score: ' + score;
         }
 
-        function updateGame() {
-            // 处理键盘事件
-            const keys = [];
-            document.addEventListener('keydown', function (event) {
-                if (event.key === 'ArrowLeft') {
-                    keys.push('left');
-                } else if (event.key === 'ArrowRight') {
-                    keys.push('right');
-                }
-            });
-
-            // 向服务器发送游戏数据
-            const updateInterval = setInterval(function () {
-                const csrfToken = getCookie('csrftoken');
-                $.ajax({
-                    type: 'GET',
-                    url: '/update_space_ship_state/',
-                    data: { keys: keys.join(',') },
-                    dataType: 'json',
-                    headers: {
-                        'X-CSRFToken': csrfToken
-                    },
-                    success: function (data) {
-                        if (data.game_over) {
-                            clearInterval(updateInterval);
-                            alert('Game Over! Your Score: ' + score);
-                            location.reload();
-                        } else {
-                            player_x = data.player_x;
-                            enemies = data.enemies;
-                            bullets = data.bullets;
-                            score = data.score;
-                            drawGame();
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        console.log(error);
-                    }
-                });
-                keys.length = 0;  // 清空按键队列
-            }, 1000 / 60);
-        }
 
         // 获取Cookie
         function getCookie(name) {
@@ -100,13 +79,95 @@
             return cookieValue;
         }
 
-        // 主循环
-        function main() {
-            drawGame();
-            updateGame();
-        }-
+        // Function to show the game over dialog
+        function showGameOverDialog() {
+            console.log("END!");
+            console.log("dialog:", dialog);
+            dialog.style.display = 'block';
 
-        main();
-    </script>
+            if (confirmBtn && retryBtn) {
+                dialog.style.display = 'block';
+
+                // 清除定时器，防止继续发送更新请求
+                clearInterval(gameInterval);
+
+                confirmBtn.addEventListener('click', function () {
+                    // Redirect to the /front page
+                    window.location.href = '/relax_moment';
+                });
+
+                // Handle the Retry button click
+                retryBtn.addEventListener('click', function () {
+                    // Reload the current page to start a new game
+                    window.location.reload();
+                    game_over = false;
+                });
+
+
+            } else {
+                console.error("One or both buttons not found.");
+            }
+        }
+
+        // 处理键盘事件
+        document.addEventListener('keydown', function (event) {
+            const key = event.key;
+            console.log('Key pressed:', key);
+            sendUpdateToServer(key);
+        });
+
+        function sendUpdateToServer(key) {
+            if (game_over) {
+                showGameOverDialog();
+            }
+            const csrfToken = getCookie('csrftoken');
+            $.ajax({
+                type: 'POST',
+                url: '/update_space_ship_state/',
+                data: {
+                    "cur_play_ship_x": play_ship_x,
+                    "cur_enemies": enemies_location,
+                    "cur_bullets": bullets,
+                    "key_event": key},
+                dataType: 'json',
+                headers: {
+                    'X-CSRFToken': csrfToken
+                },
+                success: function (data) {
+                    game_over = JSON.parse(data.game_over);
+                    if (data.game_over) {
+                        console.log("END!");
+                        // window.location.reload(); 刷新当前页面,等同F5
+                        showGameOverDialog();
+                    } else {
+                        context.clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+                        score = data.score
+                        bullets = data.cur_bullets
+                        enemies_location = data.cur_enemies
+                        play_ship_x = data.cur_play_ship_x
+                        drawGame()
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log(error);
+                }
+            });
+        }
+
+        drawGame();
+
+        // 启动游戏循环定时器
+        const moveInterval = 1000;
+        gameInterval = setInterval(() => {
+            if (!game_over) {
+                sendUpdateToServer("");  // 发送空按键事件来更新游戏状态
+            }
+        }, moveInterval);
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        initGame();
+    });
+</script>
 </body>
 </html>

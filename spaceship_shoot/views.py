@@ -67,13 +67,14 @@ def update_space_ship_state(request):
             generate_bullet(cur_play_ship_x)
             cur_bullets.extend(bullets)
         # 碰撞则 #删除子弹 删除敌机
-        for each_bullet in cur_bullets:
-            for each_enemy in cur_enemies:
+        for each_enemy in cur_enemies:
+            for each_bullet in cur_bullets:
                 if each_bullet['bullet_x'] >= each_enemy['loc_x'] \
                         and each_bullet['bullet_x'] <= each_enemy['loc_x'] + image_size \
-                        and each_bullet['bullet_y'] <= each_enemy['loc_y'] + image_size:
+                        and each_bullet['bullet_y'] < each_enemy['loc_y'] + image_size:
                     cur_bullets.remove(each_bullet)
-                    generate_enemy(1)
+                    each_enemy['loc_x'] = random.randint(0, width - image_size)
+                    each_enemy['loc_y'] = random.randint(-250, -50)
                     score += 1
 
         # 敌机到底部则消失

@@ -43,6 +43,8 @@
             var ROWs = PLAY_WIDTH / BLOCK_SIZE;
             const PLAY_X = JSON.parse('{{ PLAY_X | safe }}');
             const PLAY_Y = JSON.parse('{{ PLAY_Y | safe }}');
+            const confirmBtn = document.getElementById('confirmBtn');
+            const retryBtn = document.getElementById('retryBtn');
 
             function rgbToCssColor(rgbArray) {
                 const [r, g, b] = rgbArray;
@@ -120,40 +122,31 @@
             }
             // Function to show the game over dialog
             function showGameOverDialog() {
-                 // 设置游戏状态为结束
+                // 设置游戏状态为结束
                 const dialog = document.getElementById('gameOverDialog');
                 dialog.style.display = 'block';
                 // 清除定时器，防止继续发送更新请求
                 clearInterval(gameInterval);
 
                 // Handle the Confirm button click
-                document.getElementById('confirmBtn').addEventListener('click', function () {
+                confirmBtn.addEventListener('click', function () {
                     // Redirect to the /front page
                     window.location.href = '/relax_moment';
                 });
 
                 // Handle the Retry button click
-                document.getElementById('retryBtn').addEventListener('click', function () {
+                retryBtn.addEventListener('click', function () {
                     // Reload the current page to start a new game
                     // debugger;
-                    // window.location.reload();
+                    window.location.reload();
                     game_over = false;
-                    // 启动游戏
-                    current_piece = create_new_piece();
-                    ctx.clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-                    // 定时器，模拟方块的定时下落
-                    const fallingInterval = 1000; // 下落间隔时间（毫秒）
-                    setInterval(function () {
-                        // 向服务器发送向下的键盘事件
-                        sendUpdateToServer('ArrowDown');
-                    }, fallingInterval);
                 });
             }
             // 请求更新游戏状态
             function sendUpdateToServer(key) {
                 console.log("game_over@:", game_over);
                 if (game_over) {
-                    return; // 如果游戏结束，不再向服务器发送请求
+                    showGameOverDialog(); // 如果游戏结束，不再向服务器发送请求
                 }
                 // 获取Cookie中的CSRF令牌
                 const csrfToken = getCookie('csrftoken');
@@ -166,12 +159,13 @@
                         'X-CSRFToken': csrfToken
                     },
                     success: function (data) {
+                        game_over = data.game_over;
                         // 服务器返回更新后的游戏数据
                         // 根据data中的内容来更新游戏画布
                         // 在这里，你可以使用data.play_matrix来更新游戏区域
                         // 使用data.current_piece来更新当前方块的位置
                         // 使用data.score来更新得分信息
-                        console.log("data.game_over:",data.game_over);
+                        console.log("data.game_over:", data.game_over);
                         if (data.game_over) {
                             // 清空整个页面
                             showGameOverDialog();

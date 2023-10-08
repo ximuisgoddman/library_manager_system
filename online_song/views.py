@@ -67,11 +67,11 @@ def online_song_list(request):
     page_obj = paginator.get_page(page_number)
     for each_song in page_obj:
         song_list.append({"song_id": each_song.id,
-                          "song_title": each_song.song_title,
-                          "audio_file": each_song.audio_file.url,
-                          "song_duration": each_song.song_duration,
-                          "song_author": each_song.song_author,
-                          "song_classification": each_song.song_classification})
+                          "song_title": each_song.song_title.replace("'", " "),
+                          "audio_file": each_song.audio_file.url.replace("'", " "),
+                          "song_duration": each_song.song_duration.replace("'", " "),
+                          "song_author": each_song.song_author.replace("'", " "),
+                          "song_classification": each_song.song_classification.replace("'", " ")})
         each_song.song_format = each_song.audio_file.url.split(".")[-1].lower()
 
     return render(request, 'user_front_page/online_songs/song_list.html',

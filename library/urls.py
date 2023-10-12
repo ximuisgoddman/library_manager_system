@@ -35,6 +35,7 @@ from online_books import views as online_views
 from bookshelf import views as bookshelf_views
 from myfavoritemusic import views as my_favorite_music_view
 from relax_moment import views as relax_moment_view
+from lottery import views as lottery_view
 
 from tetris_app import views as tetris_view
 from snake import views as snake_view
@@ -108,8 +109,10 @@ urlpatterns = [
     path("snake/", snake_view.snake, name="snake"),
     path("update_snake_state/", snake_view.update_snake_state, name='update_snake_state'),
 
+    path("lottery_view/", lottery_view.lottery_view, name='lottery_view'),
+    path("upload_lottery_info/", lottery_view.upload_lottery_info, name='upload_lottery_info'),
     path("spaceship_shoot/", spaceship_shoot_view.spaceship_shoot, name="spaceship_shoot"),
-    path("update_space_ship_state/",spaceship_shoot_view.update_space_ship_state,name='update_space_ship_state'),
+    path("update_space_ship_state/", spaceship_shoot_view.update_space_ship_state, name='update_space_ship_state'),
     path('users_manage/', user_info_manage_view.users_manage, name='users_manage'),
     path('library_front_page', library_front_page_views.library_front_page, name='library_front_page'),
     path('favicon.ico', RedirectView.as_view(url='/static/ico/favicon.ico'))

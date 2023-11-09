@@ -41,6 +41,7 @@ from tetris_app import views as tetris_view
 from snake import views as snake_view
 from spaceship_shoot import views as spaceship_shoot_view
 
+from my_blog import views as blog_view
 sys.path.append(book_path)
 sys.path.append(user_path)
 
@@ -115,7 +116,10 @@ urlpatterns = [
     path("update_space_ship_state/", spaceship_shoot_view.update_space_ship_state, name='update_space_ship_state'),
     path('users_manage/', user_info_manage_view.users_manage, name='users_manage'),
     path('library_front_page', library_front_page_views.library_front_page, name='library_front_page'),
-    path('favicon.ico', RedirectView.as_view(url='/static/ico/favicon.ico'))
+    path('favicon.ico', RedirectView.as_view(url='/static/ico/favicon.ico')),
+
+    path('create_blog/', blog_view.create_blog, name='create_blog'),
+    path('show_blog/<int:pk>/', blog_view.show_blog, name='show_blog'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

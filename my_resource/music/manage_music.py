@@ -106,7 +106,7 @@ def get_music_info(music_path):
             # else:
             #     print("Error format", os.path.join(music_path, x, each_file))
             shutil.copy(os.path.join(music_path, x, each_file), "D:\my_program\py\library_manager_system-master\media/audio")
-            with open("my_music2.txt", 'a', encoding='utf-8') as fw:
+            with open("my_music.txt", 'a', encoding='utf-8') as fw:
                 fw.write(
                     "%s,%s,%s,%s,%s\n" % (
                     each_file, author.strip(), song_name.strip(),

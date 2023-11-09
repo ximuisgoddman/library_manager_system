@@ -1,6 +1,7 @@
 <!-- lottery.html -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     {% load static %}
@@ -33,27 +34,34 @@
         }
     </style>
 </head>
+
 <body>
     <h1>抽奖游戏</h1>
     <div class="roulette">
         <div class="pointer" id="pointer"></div>
         {% for prize in prizes %}
-    <div class="prize" style="transform: rotate({{ forloop.counter * 360/prizes|length }}deg) translateX(150px) rotate(-{{ forloop.counter * 360/prizes|length + random_degree }}deg); background-image: url('{% static prize.image %}');"></div>
-{% endfor %}
+        <div class="prize"
+            style="transform: rotate({{ forloop.counter0 * 360/prize_count }}deg) translateX(150px) rotate(-{{ (forloop.counter0 * 360/prize_count) + random_degree }}deg); background-image: url('{% static prize.image %}');">
+        </div>
+        {% endfor %}
+
+
 
     </div>
     <button id="start">开始抽奖</button>
 
     <script>
-        document.getElementById('start').addEventListener('click', function() {
+        document.getElementById('start').addEventListener('click', function () {
             let pointer = document.getElementById('pointer');
-            let randomDegree = {{ random_degree }};
-            let prizeCount = {{ prizes|length }};
-            let rotation = 2160 + randomDegree + (360 / prizeCount);  // 控制旋转圈数
+            let randomDegree = {{ random_degree }
+        };
+        let prizeCount = {{ prizes| length }};
+        let rotation = 2160 + randomDegree + (360 / prizeCount);  // 控制旋转圈数
 
-            pointer.style.transition = 'transform 5s ease-in-out';
-            pointer.style.transform = 'translateX(-50%) rotate(' + rotation + 'deg)';
+        pointer.style.transition = 'transform 5s ease-in-out';
+        pointer.style.transform = 'translateX(-50%) rotate(' + rotation + 'deg)';
         });
     </script>
 </body>
+
 </html>

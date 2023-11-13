@@ -22,6 +22,7 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_GET
 from .models import Book
 from django.core.paginator import Paginator
+from django.core.cache import cache
 
 
 def book_front_page(request):
@@ -31,10 +32,16 @@ def book_front_page(request):
     publisher = request.GET.get('publisher', '')
     book_class = request.GET.get('book_class', '')
     logger.info("filter_publisher:%s filter_book_class:%s", publisher, book_class)
+
     search_query = request.GET.get('search', '')
-
-    books = Book.objects.filter(Q(book_name__icontains=search_query) | Q(author__icontains=search_query))
-
+    cache_key = 'book_front_page_{}'.format(search_query)
+    books = cache.get(cache_key)
+    if not books:
+        books = Book.objects.all()
+        cache.set(cache_key, books, timeout=60 * 5)  # 设置缓存时间为 5 分钟
+    # 根据作者或者书名搜索
+    books = books.filter(Q(book_name__icontains=search_query) | Q(author__icontains=search_query))
+    # 过滤出版社和图书类别
     books = books.filter(publisher__icontains=publisher)
     books = books.filter(book_classification__icontains=book_class)
 
@@ -61,7 +68,12 @@ def book_list(request):
     book_class = request.GET.get('book_class', '')
     logger.info("filter_publisher:%s filter_book_class:%s", publisher, book_class)
     search_query = request.GET.get('search', '')
-    books = Book.objects.all()
+    cache_key = 'book_list_{}'.format(search_query)
+    books = cache.get(cache_key)
+    if not books:
+        books = Book.objects.all()
+        cache.set(cache_key, books, timeout=60 * 5)
+
     books = books.filter(book_name__icontains=search_query)
     books = books.filter(publisher__icontains=publisher)
     books = books.filter(book_classification__icontains=book_class)

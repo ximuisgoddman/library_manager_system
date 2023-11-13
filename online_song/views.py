@@ -10,6 +10,7 @@ import csv
 import os
 import json
 from django.core.paginator import Paginator
+from django.core.cache import cache
 
 
 def upload_song(request):
@@ -21,6 +22,7 @@ def upload_song(request):
                 file = request.FILES['file_upload']
                 # 在这里解析文件数据并将数据写入数据库
                 print("file:", file)
+                songs_to_create = []
                 file_wrapper = TextIOWrapper(file, encoding='utf-8')
                 reader = csv.reader(file_wrapper)
                 for row in reader:
@@ -33,7 +35,9 @@ def upload_song(request):
                         song_duration=row[4],
                         song_classification=row[3]
                     )
-                    song.save()
+                    OnlineSongModel.objects.bulk_create(songs_to_create)
+                    songs_to_create.append(song)
+                    # song.save()
         else:
             song = form.save()
             song.save()
@@ -53,9 +57,13 @@ def admin_online_song_list(request):
 def online_song_list(request):
     song_classifications = OnlineSongModel.objects.values_list('song_classification', flat=True).distinct()
     song_authors = OnlineSongModel.objects.values_list('song_author', flat=True).distinct()
-
-    songs = OnlineSongModel.objects.all()
     search_query = request.GET.get('search', '')
+    cache_key = 'online_song_list_{}'.format(search_query)
+    songs = cache.get(cache_key)
+    if not songs:
+        songs = OnlineSongModel.objects.all()
+        cache.set(cache_key, songs, timeout=60 * 120)
+
     songs = songs.filter(song_title__icontains=search_query)
     song_author = request.GET.get('song_author', '')
     song_classification = request.GET.get('song_classification', '')
@@ -64,7 +72,11 @@ def online_song_list(request):
     song_list = []
     paginator = Paginator(songs, per_page=50)  # 每页显示10条数据
     page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
+    cache_key = 'song_list_page_info_{}'.format(search_query)
+    page_obj = cache.get(cache_key)
+    if not page_obj:
+        page_obj = paginator.get_page(page_number)
+        cache.set(cache_key, page_obj, timeout=60 * 10)
     for each_song in page_obj:
         song_list.append({"song_id": each_song.id,
                           "song_title": each_song.song_title.replace("'", " "),

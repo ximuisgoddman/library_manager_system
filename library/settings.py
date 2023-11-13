@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-jtx45ur93nc&)1yd(rc@uuh@*(=e#f1*lp*vp9%+^m5$vh-7xs
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['10.24.96.143', '127.0.0.1', '10.58.237.49']
+ALLOWED_HOSTS = ['10.24.96.143', '127.0.0.1', '10.58.237.49', '192.168.1.3']
 
 # Application definition
 
@@ -98,10 +98,10 @@ DATABASES = {
         {
             'ENGINE': 'django.db.backends.mysql',  # 数据库引擎
             'NAME': os.getenv('DB_NAME'),  # 数据库名称
-            'HOST': '127.0.0.1',  # 数据库地址，本机 ip 地址 127.0.0.1
-            'PORT': 3306,  # 端口
-            'USER': 'root',  # 数据库用户名
-            'PASSWORD': 'LUO808089lin@',  # 数据库密码
+            'HOST': os.getenv('DB_HOST'),  # 数据库地址，本机 ip 地址 127.0.0.1
+            'PORT': os.getenv('DB_PORT'),  # 端口
+            'USER': os.getenv('DB_USER'),  # 数据库用户名
+            'PASSWORD': os.getenv('DB_PASSWORD'),  # 数据库密码
         }
 }
 # DATABASES = {
@@ -110,7 +110,7 @@ DATABASES = {
 #         'NAME': os.getenv('DB_NAME'),
 #         'USER': os.getenv('DB_USER'),
 #         'PASSWORD': os.getenv('DB_PASSWORD'),
-#         'HOST': os.getenv('DB_HOST'),
+#         'HOST': 'db',
 #         'PORT': '3306',
 #     }
 # }

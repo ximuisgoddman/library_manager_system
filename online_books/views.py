@@ -19,12 +19,12 @@ from io import BytesIO
 
 def user_online_book_list(request):
     search_query = request.GET.get('search', '')
-    cache_key = 'book_list_{}'.format(search_query)
-    books = cache.get(cache_key)
-    if books is None:
-        books = OnlineBooksModel.objects.filter(book_name__icontains=search_query)
-        cache.set(cache_key, books, timeout=60 * 5)  # 设置缓存时间为 5 分钟
-    return render(request, 'user_front_page/online_books_front_page.html', {'books': books})
+    cache_key = 'user_online_book_list_{}'.format(search_query)
+    online_books = cache.get(cache_key)
+    if online_books is None:
+        online_books = OnlineBooksModel.objects.filter(book_name__icontains=search_query)
+        cache.set(cache_key, online_books, timeout=60 * 5)  # 设置缓存时间为 5 分钟
+    return render(request, 'user_front_page/online_books_front_page.html', {'books': online_books})
 
 
 # Create your views here.

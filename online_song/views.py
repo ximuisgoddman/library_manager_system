@@ -35,9 +35,9 @@ def upload_song(request):
                         song_duration=row[4],
                         song_classification=row[3]
                     )
-                    OnlineSongModel.objects.bulk_create(songs_to_create)
                     songs_to_create.append(song)
                     # song.save()
+                OnlineSongModel.objects.bulk_create(songs_to_create)
         else:
             song = form.save()
             song.save()

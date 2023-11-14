@@ -61,7 +61,7 @@ def online_song_list(request):
     cache_key = 'online_song_list_{}'.format(search_query)
     songs = cache.get(cache_key)
     if not songs:
-        songs = OnlineSongModel.objects.all()
+        songs = OnlineSongModel.objects.all().order_by('id')
         cache.set(cache_key, songs, timeout=60 * 120)
 
     songs = songs.filter(song_title__icontains=search_query)
@@ -72,7 +72,7 @@ def online_song_list(request):
     song_list = []
     paginator = Paginator(songs, per_page=50)  # 每页显示10条数据
     page_number = request.GET.get('page')
-    cache_key = 'song_list_page_info_{}'.format(search_query)
+    cache_key = 'song_list_page_info_{}'.format(page_number)
     page_obj = cache.get(cache_key)
     if not page_obj:
         page_obj = paginator.get_page(page_number)

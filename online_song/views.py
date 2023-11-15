@@ -72,11 +72,11 @@ def online_song_list(request):
     song_list = []
     paginator = Paginator(songs, per_page=50)  # 每页显示10条数据
     page_number = request.GET.get('page')
-    cache_key = 'song_list_page_info_{}'.format(page_number)
-    page_obj = cache.get(cache_key)
-    if not page_obj:
-        page_obj = paginator.get_page(page_number)
-        cache.set(cache_key, page_obj, timeout=60 * 10)
+    # cache_key = 'song_list_page_info_{}'.format(page_number)
+    # page_obj = cache.get(cache_key)
+    # if not page_obj:
+    page_obj = paginator.get_page(page_number)
+        # cache.set(cache_key, page_obj, timeout=60 * 10)
     for each_song in page_obj:
         song_list.append({"song_id": each_song.id,
                           "song_title": each_song.song_title.replace("'", " "),

@@ -41,12 +41,22 @@ from tetris_app import views as tetris_view
 from snake import views as snake_view
 from spaceship_shoot import views as spaceship_shoot_view
 
-from my_blog import views as blog_view
+# from my_blog import views as blog_view
 sys.path.append(book_path)
 sys.path.append(user_path)
 
 from .admin_front_page_views import user_info_manage_view
 from .library_front_page_views import library_front_page_views
+from django.contrib import admin
+# 记得引入include
+from django.urls import path, include
+
+from django.conf import settings
+from django.conf.urls.static import static
+
+from django.urls import path, include
+
+from article.views import article_list
 
 urlpatterns = [
 
@@ -118,8 +128,21 @@ urlpatterns = [
     path('library_front_page', library_front_page_views.library_front_page, name='library_front_page'),
     path('favicon.ico', RedirectView.as_view(url='/static/ico/favicon.ico')),
 
-    path('create_blog/', blog_view.create_blog, name='create_blog'),
-    path('show_blog/<int:pk>/', blog_view.show_blog, name='show_blog'),
+    # home
+    path('', article_list, name='home'),
+    # 重置密码app
+    path('password-reset/', include('password_reset.urls')),
+    # 新增代码，配置app的url
+    path('article/', include('article.urls', namespace='article')),
+    # 用户管理
+    path('userprofile/', include('userprofile.urls', namespace='userprofile')),
+    # 评论
+    path('comment/', include('comment.urls', namespace='comment')),
+    # djang-notifications
+    path('inbox/notifications/', include('notifications.urls', namespace='notifications')),  # notice
+    path('notice/', include('notice.urls', namespace='notice')),
+    # django-allauth
+    path('accounts/', include('allauth.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

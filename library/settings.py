@@ -33,8 +33,7 @@ ALLOWED_HOSTS = ['10.24.96.143', '127.0.0.1', '10.58.237.49', '192.168.1.3']
 # Application definition
 
 INSTALLED_APPS = [
-    'my_blog',
-    'markdownx',
+
     'lottery',
     'spaceship_shoot',
     'snake',
@@ -55,9 +54,31 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'captcha',  # 注册验证码模块,captcha需要在数据库中建立自己的数据表，所以需要执行migrate命令生成数据表
+    # Third party apps
+    'bootstrap4',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    # 可添加需要的第三方登录
+    'allauth.socialaccount.providers.github',
+    'allauth.socialaccount.providers.weibo',
+
+    'password_reset',
+    'taggit',
+    'ckeditor',
+    'mptt',
+    'notifications',
+    'article',
+    'my_blog',
+    'markdownx',
+    'userprofile',
+    'comment',
+    'notice',
 ]
 
 MIDDLEWARE = [
+    'allauth.account.middleware.AccountMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -238,3 +259,45 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 ADMIN_FRONT_PAGE_VIEWS_DIR = os.path.join(BASE_DIR, 'admin_front_page_views')
+
+CKEDITOR_CONFIGS = {
+    # django-ckeditor默认使用default配置
+    'default': {
+        # 编辑器宽度自适应
+        'width': 'auto',
+        'height': '250px',
+        # tab键转换空格数
+        'tabSpaces': 4,
+        # 工具栏风格
+        'toolbar': 'Custom',
+        # 工具栏按钮
+        'toolbar_Custom': [
+            # 表情 代码块
+            ['Smiley', 'CodeSnippet'],
+            # 字体风格
+            ['Bold', 'Italic', 'Underline', 'RemoveFormat', 'Blockquote'],
+            # 字体颜色
+            ['TextColor', 'BGColor'],
+            # 链接
+            ['Link', 'Unlink'],
+            # 列表
+            ['NumberedList', 'BulletedList'],
+            # 最大化
+            ['Maximize']
+        ],
+        # 插件
+        'extraPlugins': ','.join(['codesnippet', 'prism', 'widget', 'lineutils']),
+    }
+}
+
+AUTHENTICATION_BACKENDS = (
+    # 此项使 Django 后台可独立于 allauth 登录
+    'django.contrib.auth.backends.ModelBackend',
+    # 配置 allauth 独有的认证方法，如 email 登录
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+# 设置站点
+SITE_ID = 1
+# 重定向 url
+LOGIN_REDIRECT_URL = '/'

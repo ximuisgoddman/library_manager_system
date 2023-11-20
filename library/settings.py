@@ -70,7 +70,6 @@ INSTALLED_APPS = [
     'mptt',
     'notifications',
     'article',
-    'my_blog',
     'markdownx',
     'userprofile',
     'comment',
@@ -236,11 +235,13 @@ USE_TZ = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTHENTICATION_BACKENDS = [
+
     'django.contrib.auth.backends.ModelBackend',
     'backends.user_backend.UserBackend',
-    'backends.admin_user_backend.AdminUserBackend'
-
+    'backends.admin_user_backend.AdminUserBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
 ]
+
 LOGIN_URL = '/login/'
 
 # STATICFILES_DIRS是指定静态文件的目录
@@ -290,14 +291,7 @@ CKEDITOR_CONFIGS = {
     }
 }
 
-AUTHENTICATION_BACKENDS = (
-    # 此项使 Django 后台可独立于 allauth 登录
-    'django.contrib.auth.backends.ModelBackend',
-    # 配置 allauth 独有的认证方法，如 email 登录
-    'allauth.account.auth_backends.AuthenticationBackend',
-)
-
 # 设置站点
 SITE_ID = 1
 # 重定向 url
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/home'

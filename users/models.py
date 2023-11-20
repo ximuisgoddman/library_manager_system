@@ -1,7 +1,8 @@
 from django.db import models
 from captcha.fields import CaptchaField
 import hashlib
-from django.contrib.auth.models import AbstractBaseUser
+from django.contrib.auth.models import AbstractBaseUser, AbstractUser
+from notifications.models import Notification
 
 
 class MyUser(AbstractBaseUser):
@@ -17,11 +18,16 @@ class MyUser(AbstractBaseUser):
     password = models.CharField(max_length=256)
     email = models.EmailField(unique=True)
     sex = models.CharField(max_length=32, choices=gender, default="男")
-    c_time = models.DateTimeField(auto_now_add=True)
-    has_confirmed = models.BooleanField(default=False)
-    last_login = models.DateTimeField(verbose_name='最后登录时间', null=True, blank=True)
-    is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=False)
+    create_time = models.DateTimeField(auto_now_add=True)
+    phone = models.CharField(max_length=20, blank=True)
+    # 头像
+    avatar = models.ImageField(upload_to='avatar/%Y%m%d/', blank=True)
+    # 个人简介
+    bio = models.TextField(max_length=500, blank=True)
+    notifications = models.ManyToManyField('notifications.Notification')
+
+    def get_unread_notifications(self):
+        return Notification.objects.filter(recipient=self, unread=True)
 
     def has_module_perms(self, app_label):
         return True
@@ -50,4 +56,4 @@ class MyUser(AbstractBaseUser):
         return self.name
 
     class Meta:
-        ordering = ['-c_time']
+        ordering = ['-create_time']

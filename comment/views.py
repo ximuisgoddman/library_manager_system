@@ -94,7 +94,8 @@ def post_comment(request, article_id, parent_comment_id=None):
                 new_comment.save()
 
                 # 检查是否是文章作者
-                if not request.user.is_superuser and not request.user == article.author:
+                # if not request.user.is_superuser and not request.user == article.author:
+                if not request.user == article.author:
                     # 给文章作者发送通知
                     notify.send(
                         request.user,
@@ -115,7 +116,8 @@ def post_comment(request, article_id, parent_comment_id=None):
                 new_comment.save()
 
                 # 给被回复人发送通知
-                if not parent_comment.user.is_superuser and not parent_comment.user == request.user:
+                # if not parent_comment.user.is_superuser and not parent_comment.user == request.user:
+                if not parent_comment.user == request.user:
                     notify.send(
                         request.user,
                         recipient=parent_comment.user,

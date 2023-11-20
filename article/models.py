@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 # timezone 用于处理时间相关事务。
 from django.utils import timezone
 from django.urls import reverse
-
+from users.models import MyUser
 # Django-taggit
 from taggit.managers import TaggableManager
 
@@ -36,7 +36,7 @@ class ArticlePost(models.Model):
 
     # 定义文章作者。 author 通过 models.ForeignKey 外键与内建的 User 模型关联在一起
     # 参数 on_delete 用于指定数据删除的方式，避免两个关联表的数据不一致。通常设置为 CASCADE 级联删除就可以了
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(MyUser, on_delete=models.CASCADE)
 
     # 文章标题图
     avatar = models.ImageField(upload_to='article/%Y%m%d/', blank=True)

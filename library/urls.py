@@ -129,7 +129,7 @@ urlpatterns = [
     path('favicon.ico', RedirectView.as_view(url='/static/ico/favicon.ico')),
 
     # home
-    path('', article_list, name='home'),
+    path('home', article_list, name='home'),
     # 重置密码app
     path('password-reset/', include('password_reset.urls')),
     # 新增代码，配置app的url

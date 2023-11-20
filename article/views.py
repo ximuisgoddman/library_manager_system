@@ -26,8 +26,8 @@ from django.views import View
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView
 
-# from my_blog.settings import LOGGING
-# import logging
+from users.models import MyUser
+
 
 # logging.config.dictConfig(LOGGING)
 # logger = logging.getLogger('django.request')
@@ -154,7 +154,7 @@ def article_create(request):
             # 保存数据，但暂时不提交到数据库中
             new_article = article_post_form.save(commit=False)
             # 指定登录的用户为作者
-            new_article.author = User.objects.get(id=request.user.id)
+            new_article.author = MyUser.objects.get(id=request.user.id)
             if request.POST['column'] != 'none':
                 # 保存文章栏目
                 new_article.column = ArticleColumn.objects.get(id=request.POST['column'])

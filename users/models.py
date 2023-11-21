@@ -5,7 +5,7 @@ from django.contrib.auth.models import AbstractBaseUser, AbstractUser
 from notifications.models import Notification
 
 
-class MyUser(AbstractBaseUser):
+class MyUser(AbstractUser):
     """
     用户表
     """
@@ -13,8 +13,6 @@ class MyUser(AbstractBaseUser):
         ('male', "男"),
         ('female', "女"),
     )
-    USERNAME_FIELD = 'name'
-    name = models.CharField(verbose_name="姓名", max_length=128, unique=True)
     password = models.CharField(max_length=256)
     email = models.EmailField(unique=True)
     sex = models.CharField(max_length=32, choices=gender, default="男")
@@ -24,7 +22,7 @@ class MyUser(AbstractBaseUser):
     avatar = models.ImageField(upload_to='avatar/%Y%m%d/', blank=True)
     # 个人简介
     bio = models.TextField(max_length=500, blank=True)
-    notifications = models.ManyToManyField('notifications.Notification')
+    # notifications = models.ManyToManyField('notifications.Notification')
 
     def get_unread_notifications(self):
         return Notification.objects.filter(recipient=self, unread=True)
@@ -53,7 +51,7 @@ class MyUser(AbstractBaseUser):
         return True
 
     def __str__(self):
-        return self.name
+        return self.username
 
     class Meta:
         ordering = ['-create_time']

@@ -38,9 +38,9 @@
                                 {% endif %}
                             </a>
                             <a class="dropdown-item" href="{% url 'article:article_create' %}">写文章</a>
-                            <a class="dropdown-item" href='{% url "userprofile:edit" user.id %}'>个人信息</a>
+                            <a class="dropdown-item" href='{% url "user_edit" user.id %}'>个人信息</a>
                             <a class="dropdown-item" href="#" onclick="user_delete()">删除用户</a>
-                            <a class="dropdown-item" href='{% url "userprofile:logout" %}'>退出登录</a>
+                            <a class="dropdown-item" href='{% url "logout" %}'>退出登录</a>
                         </div>
                     </li>
                 <!-- 如果用户未登录，则显示 “登录” -->
@@ -59,7 +59,7 @@
 <form 
     style="display:none;" 
     id="user_delete"
-    action="{% url 'userprofile:delete' user.id %}" 
+    action="{% url 'user_delete' user.id %}"
     method="POST"
 >
 {% csrf_token %}

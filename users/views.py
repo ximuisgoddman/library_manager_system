@@ -1,7 +1,7 @@
 import pdb
 
 from django.shortcuts import render, redirect
-from . import models
+from .models import MyUser
 from . import users_form
 from admin_users.admin_user_form import AdminUserForm
 import datetime
@@ -10,6 +10,8 @@ import hashlib
 from django.http import JsonResponse
 from django.urls import reverse_lazy
 from django.urls import reverse
+from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
 
 
 def hash_code(s, salt=''):
@@ -52,7 +54,7 @@ def my_login(request):
                         # 设置session
                         request.session['is_login'] = True
                         request.session['user_id'] = myuser.id
-                        request.session['user_name'] = myuser.name
+                        request.session['user_name'] = myuser.username
                         # 设置重定向的URL
                         next_url = request.GET.get('next', None)
                         print("next_url:", next_url)
@@ -76,12 +78,12 @@ def my_login(request):
                     user_login(request, myuser)
 
                 try:
-                    print('PASSWORD', myuser.password, hash_code(password),password)
+                    print('PASSWORD', myuser.password, hash_code(password), password)
                     if myuser.password == password:
                         # 设置session
                         request.session['is_login'] = True
                         request.session['user_id'] = myuser.id
-                        request.session['user_name'] = myuser.name
+                        request.session['user_name'] = myuser.username
                         # 设置重定向的URL
                         next_url = request.GET.get('next', None)
                         print("next_url:", next_url)
@@ -122,17 +124,17 @@ def my_register(request):
                 message = '两次输入的密码不同！'
                 return render(request, 'general_users/register.html', locals())
             else:
-                same_name_user = models.MyUser.objects.filter(name=username)
+                same_name_user = MyUser.objects.filter(username=username)
                 if same_name_user:
                     message = '用户名已经存在'
                     return render(request, 'general_users/register.html', locals())
-                same_email_user = models.MyUser.objects.filter(email=email)
+                same_email_user = MyUser.objects.filter(email=email)
                 if same_email_user:
                     message = '该邮箱已经被注册了！'
                     return render(request, 'general_users/register.html', locals())
 
-                new_user = models.MyUser()
-                new_user.name = username
+                new_user = MyUser()
+                new_user.username = username
                 new_user.password = hash_code(password1)
                 new_user.email = email
                 new_user.sex = sex
@@ -154,3 +156,68 @@ def logout(request):
     # 一次性将session中的所有内容全部清空
     request.session.flush()
     return redirect('/login/')
+
+
+# 用户删除
+# 验证用户是否登录的装饰器
+@login_required(login_url='login/')
+def user_delete(request, user_id):
+    if request.method == 'POST':
+        user = MyUser.objects.get(id=user_id)
+        # 验证登录用户、待删除用户是否相同
+        if request.user == user:
+            # 退出登录，删除数据并返回博客列表
+            logout(request)
+            user.delete()
+            return redirect("article:article_list")
+        else:
+            return HttpResponse("你没有删除操作的权限。")
+    else:
+        return HttpResponse("仅接受post请求。")
+
+
+# 编辑用户信息
+@login_required(login_url='login/')
+def user_edit(request, user_id):
+    user = MyUser.objects.get(id=user_id)
+
+    # 旧教程代码
+    # profile = Profile.objects.get(user_id=id)
+    # 新教程代码： 获取 Profile
+    if MyUser.objects.filter(id=user_id).exists():
+        # user_id 是 OneToOneField 自动生成的字段
+        profile = MyUser.objects.get(id=user_id)
+    else:
+        profile = MyUser.objects.create(user=user)
+
+    if request.method == 'POST':
+        # 验证修改数据者，是否为用户本人
+        if request.user != user:
+            return HttpResponse("你没有权限修改此用户信息。")
+
+        # 上传的文件保存在 request.FILES 中，通过参数传递给表单类
+        profile_form = users_form.UserForm(request.POST, request.FILES)
+
+        if profile_form.is_valid():
+            # 取得清洗后的合法数据
+            profile_cd = profile_form.cleaned_data
+
+            profile.phone = profile_cd['phone']
+            profile.bio = profile_cd['bio']
+
+            # 如果 request.FILES 存在文件，则保存
+            if 'avatar' in request.FILES:
+                profile.avatar = profile_cd["avatar"]
+
+            profile.save()
+            # 带参数的 redirect()
+            return redirect("user_edit", user_id=user_id)
+        else:
+            return HttpResponse("注册表单输入有误。请重新输入~")
+
+    elif request.method == 'GET':
+        profile_form = users_form.UserForm()
+        context = {'profile_form': profile_form, 'profile': profile, 'user': user}
+        return render(request, 'general_users/edit.html', context)
+    else:
+        return HttpResponse("请使用GET或POST请求数据")

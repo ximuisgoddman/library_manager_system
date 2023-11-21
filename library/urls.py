@@ -65,6 +65,8 @@ urlpatterns = [
     path("login/", user_views.my_login, name='login'),
     path("register/", user_views.my_register, name='register'),
     path('logout/', user_views.logout, name='logout'),
+    path('user_edit/<int:user_id>', user_views.user_edit, name='user_edit'),
+    path('user_delete/<int:user_id>', user_views.user_delete, name='user_delete'),
 
     path('books/list', lib_views.book_list, name='book_list'),
     path('books/', lib_views.book_front_page, name='book_front_page'),
@@ -134,8 +136,6 @@ urlpatterns = [
     path('password-reset/', include('password_reset.urls')),
     # 新增代码，配置app的url
     path('article/', include('article.urls', namespace='article')),
-    # 用户管理
-    path('userprofile/', include('userprofile.urls', namespace='userprofile')),
     # 评论
     path('comment/', include('comment.urls', namespace='comment')),
     # djang-notifications

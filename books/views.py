@@ -43,7 +43,7 @@ def book_front_page(request):
     books = books.filter(Q(book_name__icontains=search_query) | Q(author__icontains=search_query))
     # 过滤出版社和图书类别
     books = books.filter(publisher__icontains=publisher)
-    books = books.filter(book_classification__icontains=book_class)
+    books = books.filter(book_classification__icontains=book_class).order_by('id')
 
     paginator = Paginator(books, per_page=10)  # 每页显示10条数据
 

@@ -71,11 +71,10 @@ INSTALLED_APPS = [
     'notifications',
     'article',
     'markdownx',
-    'userprofile',
     'comment',
     'notice',
 ]
-
+AUTH_USER_MODEL = 'users.MyUser'
 MIDDLEWARE = [
     'allauth.account.middleware.AccountMiddleware',
     'django.middleware.security.SecurityMiddleware',

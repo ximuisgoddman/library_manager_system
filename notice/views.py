@@ -14,7 +14,7 @@ class CommentNoticeListView(LoginRequiredMixin, ListView):
     # 模板位置
     template_name = 'notice/list.html'
     # 登录重定向
-    login_url = '/userprofile/login/'
+    login_url = 'login/'
 
     # 未读通知的查询集
     def get_queryset(self):

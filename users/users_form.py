@@ -1,6 +1,7 @@
 # __*__coding:utf-8__*__
 from django import forms
 from captcha.fields import CaptchaField
+from .models import MyUser
 
 '''
 Django的表单给我们提供了下面三个主要功能：
@@ -17,6 +18,13 @@ class UserForm(forms.Form):
     password = forms.CharField(label="密码", max_length=256,
                                widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': "Password"}))
     captcha = CaptchaField(label="验证码")
+
+
+class UserEditForm(forms.ModelForm):
+    class Meta:
+        model = MyUser
+        # 定义表单包含的字段
+        fields = ('phone', 'avatar', 'bio')
 
 
 class RegisterForm(forms.Form):

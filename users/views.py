@@ -180,7 +180,7 @@ def user_delete(request, user_id):
 @login_required(login_url='login/')
 def user_edit(request, user_id):
     user = MyUser.objects.get(id=user_id)
-
+    print("User:",user)
     # 旧教程代码
     # profile = Profile.objects.get(user_id=id)
     # 新教程代码： 获取 Profile
@@ -196,22 +196,21 @@ def user_edit(request, user_id):
             return HttpResponse("你没有权限修改此用户信息。")
 
         # 上传的文件保存在 request.FILES 中，通过参数传递给表单类
-        profile_form = users_form.UserForm(request.POST, request.FILES)
-
+        profile_form = users_form.UserEditForm(request.POST, request.FILES)
         if profile_form.is_valid():
             # 取得清洗后的合法数据
             profile_cd = profile_form.cleaned_data
-
             profile.phone = profile_cd['phone']
             profile.bio = profile_cd['bio']
 
             # 如果 request.FILES 存在文件，则保存
             if 'avatar' in request.FILES:
                 profile.avatar = profile_cd["avatar"]
-
             profile.save()
-            # 带参数的 redirect()
-            return redirect("user_edit", user_id=user_id)
+            # 构建重定向的 URL
+            # return redirect(reverse('user_edit', kwargs={'user_id': user_id}))
+            #   return redirect(f'/user_edit/{user_id}')
+            return redirect('home')
         else:
             return HttpResponse("注册表单输入有误。请重新输入~")
 

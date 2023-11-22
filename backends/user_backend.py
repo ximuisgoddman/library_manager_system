@@ -5,7 +5,7 @@ from users.models import MyUser
 class UserBackend(BaseBackend):
     def authenticate(self, request, username=None, password=None, **kwargs):
         try:
-            myuser = MyUser.objects.get(name=username)
+            myuser = MyUser.objects.get(username=username)
             if myuser.check_password(password):
                 return myuser
         except MyUser.DoesNotExist as e:

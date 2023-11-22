@@ -46,7 +46,7 @@
                 <!-- 如果用户未登录，则显示 “登录” -->
                 {% else %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'account_login' %}">登录</a>
+                        <a class="nav-link" href="{% url 'login' %}">登录</a>
                     </li>
                 <!-- if 语句在这里结束 -->
                 {% endif %}
@@ -56,8 +56,8 @@
 </nav>
 
 {% if user.is_authenticated %}
-<form 
-    style="display:none;" 
+<form
+    style="display:none;"
     id="user_delete"
     action="{% url 'user_delete' user.id %}"
     method="POST"

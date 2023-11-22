@@ -41,7 +41,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'library_front_page' %}">首页</a>
+                    <a class="nav-link" href="{% url 'home' %}">首页</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'user_online_book_list' %}">OnlineBooks</a>
@@ -54,6 +54,9 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'relax_moment' %}">Game</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'article:article_list' %}">blog</a>
                 </li>
             </ul>
             <ul class="navbar-nav">

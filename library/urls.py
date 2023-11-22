@@ -127,11 +127,11 @@ urlpatterns = [
     path("spaceship_shoot/", spaceship_shoot_view.spaceship_shoot, name="spaceship_shoot"),
     path("update_space_ship_state/", spaceship_shoot_view.update_space_ship_state, name='update_space_ship_state'),
     path('users_manage/', user_info_manage_view.users_manage, name='users_manage'),
-    path('library_front_page', library_front_page_views.library_front_page, name='library_front_page'),
+    path('home/', library_front_page_views.library_front_page, name='home'),
     path('favicon.ico', RedirectView.as_view(url='/static/ico/favicon.ico')),
 
     # home
-    path('home', article_list, name='home'),
+    # path('home/', article_list, name='home'),
     # 重置密码app
     path('password-reset/', include('password_reset.urls')),
     # 新增代码，配置app的url

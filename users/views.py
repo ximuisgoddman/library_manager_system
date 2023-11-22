@@ -61,7 +61,7 @@ def my_login(request):
                         if next_url:
                             request.session['next_url'] = next_url
                         else:
-                            request.session['next_url'] = reverse('user_online_book_list')
+                            request.session['next_url'] = reverse('home')
                         return redirect(request.session['next_url'])
                     else:
                         message = "密码不正确！"
@@ -149,7 +149,7 @@ def logout(request):
     :param request:
     :return:
     """
-    print(request.get_full_path())
+    print("path:",request.get_full_path())
     if not request.session.get('is_login', None):
         # 没有登录就没有登出之说
         return redirect('/login/')
@@ -167,9 +167,8 @@ def user_delete(request, user_id):
         # 验证登录用户、待删除用户是否相同
         if request.user == user:
             # 退出登录，删除数据并返回博客列表
-            logout(request)
             user.delete()
-            return redirect("article:article_list")
+            return redirect("/home")
         else:
             return HttpResponse("你没有删除操作的权限。")
     else:
@@ -180,7 +179,6 @@ def user_delete(request, user_id):
 @login_required(login_url='login/')
 def user_edit(request, user_id):
     user = MyUser.objects.get(id=user_id)
-    print("User:",user)
     # 旧教程代码
     # profile = Profile.objects.get(user_id=id)
     # 新教程代码： 获取 Profile

@@ -156,7 +156,7 @@ def article_detail(request, id):
             'markdown.extensions.toc',
         ]
     )
-    article.body = md.convert(article.body)
+    article.content = md.convert(article.content)
 
     # 为评论引入表单
     comment_form = CommentForm()
@@ -263,7 +263,7 @@ def article_update(request, id):
         if article_post_form.is_valid():
             # 保存新写入的 title、body 数据并保存
             article.title = request.POST['title']
-            article.body = request.POST['body']
+            article.content = request.POST['content']
 
             if request.POST['column'] != 'none':
                 # 保存文章栏目

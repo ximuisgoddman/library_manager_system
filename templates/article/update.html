@@ -56,11 +56,22 @@
                 </div>
 
                 <!-- 文章正文 -->
-                <div class="form-group">
-                    <label for="body">文章正文</label>
-                    <!-- 文本域不需要 value 属性，直接在标签体中嵌入数据即可 -->
-                    <textarea type="text" class="form-control" id="body" name="body" rows="12">{{ article.body }}</textarea>
+                <div id="test-editor">
+                    <label for="content">文章正文</label>
+                    <textarea
+                            style="display:none;"
+                            type="text"
+                            class="form-control"
+                            id="content"
+                            name="content"
+                            rows="12"
+                    ></textarea>
                 </div>
+<!--                <div class="form-group">-->
+<!--                    <label for="content">文章正文</label>-->
+<!--                    &lt;!&ndash; 文本域不需要 value 属性，直接在标签体中嵌入数据即可 &ndash;&gt;-->
+<!--                    <textarea type="text" class="form-control" id="content" name="content" rows="12">{{ article.content }}</textarea>-->
+<!--                </div>-->
 
                 <!-- 提交按钮 -->
                 <button type="submit" class="btn btn-primary">完成</button>
@@ -68,4 +79,22 @@
         </div>
     </div>
 </div>
+
+
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="{% static 'mdeditor/editormd.min.js' %}"></script>
+
+<script type="text/javascript">
+    $(function() {
+        var editor = editormd("test-editor", {
+    width  : "100%",
+    height : "80vh",  // 80% of the viewport height
+    path   : "{% static 'mdeditor/lib/' %}",
+    imageUpload    : true,
+    imageFormats   : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+    imageUploadURL : "/upload/",
+});
+
+    });
+</script>
 {% endblock content %}

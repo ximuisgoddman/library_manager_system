@@ -73,7 +73,10 @@ INSTALLED_APPS = [
     'markdownx',
     'comment',
     'notice',
+    'mdeditor',
+    'corsheaders'
 ]
+
 AUTH_USER_MODEL = 'users.MyUser'
 MIDDLEWARE = [
     'allauth.account.middleware.AccountMiddleware',
@@ -84,7 +87,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
+CORS_ALLOW_ALL_ORIGINS = True
+
 
 ROOT_URLCONF = 'library.urls'
 

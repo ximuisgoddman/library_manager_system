@@ -27,11 +27,44 @@ from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView
 
 from users.models import MyUser
-
+from .forms import MDEditorForm
 
 # logging.config.dictConfig(LOGGING)
 # logger = logging.getLogger('django.request')
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import os
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+import time
+import uuid
+
+
+from django.http import JsonResponse, HttpResponse
+
+@csrf_exempt
+def upload(request):
+    obj = request.FILES.get('editormd-image-file')
+    file_name = time.strftime('%Y%m%d%H%M%S') + str(uuid.uuid1().hex) + '.' + obj.name.split('.')[-1]
+    dir_path = os.path.join(BASE_DIR, 'static', 'editor')
+    img_path = os.path.join(dir_path, file_name)
+
+    with open(img_path, 'wb') as f:
+        for chunk in obj.chunks():
+            f.write(chunk)
+
+    response_data = {"success": 1, "message": "上传成功", "url": '/static/editor/' + file_name}
+    response = JsonResponse(response_data)
+
+    # 设置 X-Frame-Options 头，允许同域下的嵌套
+    response['X-Frame-Options'] = 'SAMEORIGIN'
+
+    return response
+
+
+def demo(request):
+    form = MDEditorForm()
+    return render(request,'mdeditor.html', {"form": form})
 
 # 文章列表
 def article_list(request):

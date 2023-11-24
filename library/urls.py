@@ -24,6 +24,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic.base import RedirectView
 
+import article.views
+
 book_path = os.path.abspath(os.path.join(os.getcwd(), "..", "books"))
 user_path = os.path.abspath(os.path.join(os.getcwd(), "..", "users"))
 
@@ -143,6 +145,9 @@ urlpatterns = [
     path('notice/', include('notice.urls', namespace='notice')),
     # django-allauth
     path('accounts/', include('allauth.urls')),
+
+    path('demo/', article.views.demo, name='demo'),
+    path("upload/", article.views.upload, name="upload"),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

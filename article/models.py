@@ -14,6 +14,7 @@ from PIL import Image
 from mdeditor.fields import MDTextFormField
 from mdeditor.fields import MDTextField
 
+
 class ArticleColumn(models.Model):
     """
     文章栏目的 Model
@@ -38,7 +39,7 @@ class ArticlePost(models.Model):
 
     # 定义文章作者。 author 通过 models.ForeignKey 外键与内建的 User 模型关联在一起
     # 参数 on_delete 用于指定数据删除的方式，避免两个关联表的数据不一致。通常设置为 CASCADE 级联删除就可以了
-    author = models.ForeignKey(MyUser, on_delete=models.CASCADE)
+    author = models.ForeignKey(MyUser, on_delete=models.CASCADE, related_name='article')
 
     # 文章标题图
     avatar = models.ImageField(upload_to='article/%Y%m%d/', blank=True)
@@ -70,6 +71,8 @@ class ArticlePost(models.Model):
 
     # 文章点赞数
     likes = models.PositiveIntegerField(default=0)
+    # 文章收藏数
+    collects = models.PositiveIntegerField(default=0)
 
     # 文章创建时间。 
     # DateTimeField 为一个日期字段

@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'relax_moment',
     'online_song',
     'myfavoritemusic',
+    'myfavoritearticle',
     'books',
     'users',
     'borrow_record',

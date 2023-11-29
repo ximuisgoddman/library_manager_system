@@ -23,6 +23,8 @@ class MyUser(AbstractUser):
     # 个人简介
     bio = models.TextField(max_length=500, blank=True)
     # notifications = models.ManyToManyField('notifications.Notification')
+    # 多对多关系，表示该用户关注了哪些用户
+    following = models.ManyToManyField('self', symmetrical=False, blank=True, related_name='followers')
 
     def get_unread_notifications(self):
         return Notification.objects.filter(recipient=self, unread=True)

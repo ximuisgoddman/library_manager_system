@@ -39,8 +39,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 import time
 import uuid
 
-
 from django.http import JsonResponse, HttpResponse
+
 
 @csrf_exempt
 def upload(request):
@@ -64,7 +64,8 @@ def upload(request):
 
 def demo(request):
     form = MDEditorForm()
-    return render(request,'mdeditor.html', {"form": form})
+    return render(request, 'mdeditor.html', {"form": form})
+
 
 # 文章列表
 def article_list(request):
@@ -116,7 +117,6 @@ def article_list(request):
     }
     # render函数：载入模板，并返回context对象
     return render(request, 'article/list.html', context)
-
 
 
 @login_required(login_url='login/')
@@ -326,7 +326,7 @@ def article_update(request, id):
 
             if request.FILES.get('avatar'):
                 article.avatar = request.FILES.get('avatar')
-
+            print("request.POST.get('tags'):",request.POST.get('tags'),len(request.POST.get('tags').split(',')))
             article.tags.set(*request.POST.get('tags').split(','), clear=True)
             article.save()
             # 完成后返回到修改后的文章中。需传入文章的 id 值

@@ -40,7 +40,6 @@
 
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="{% url 'notice:list' %}">通知</a>
-
                         {% if unread_count %}
                         <span class="badge badge-danger">{{ unread_count }}</span>
                         {% endif %}

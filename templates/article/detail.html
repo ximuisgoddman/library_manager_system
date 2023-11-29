@@ -18,6 +18,8 @@
         <div class="col-2 mt-4" id="author-sidebar">
             <div class="sidebar__inner">
                 <h4><strong>{{ article.author.username }}</strong></h4>
+<!--                <h5>{{ article.author.id }}</h5>-->
+                <button class="btn btn-primary mt-2" onclick="followUser('{{ article.author.id }}')">关注</button>
                 <hr>
                 <div>
 
@@ -40,6 +42,7 @@
                     <div><strong>浏览量：</strong> {{ author_views }}</div>
                     <div><strong>收藏数：</strong> {{ author_likes }}</div>
                     <div><strong>点赞数：</strong> {{ author_collects }}</div>
+                    <div><strong>粉丝数：</strong> {{ author_followers }}</div>
                 </div>
             </div>
         </div>
@@ -259,11 +262,28 @@
         transform: translate3d(0, 0, 0);
         will-change: position, transform;
     }
-
-
-
-
 </style>
+
+
+<script>
+    function followUser(userId) {
+    console.log("userId:",userId);
+        $.ajax({
+            url: '{% url "follow_user" article.author.id %}',  // 传递正确的作者ID
+            type: 'POST',
+            data: { 'csrfmiddlewaretoken': '{{ csrf_token }}' },  // 添加 CSRF 令牌
+            dataType: 'json',
+            success: function (data) {
+                alert(data.message);
+            },
+            error: function (data) {
+                alert('关注失败，请重试');
+            }
+        });
+    }
+</script>
+
+
 
 <script>
     // 删除文章的函数
@@ -292,10 +312,6 @@
             }
         })
     }
-
-
-
-
 </script>
 {% endblock content %}
 
@@ -425,10 +441,6 @@
             return false;
         };
     };
-
-
-
-
 </script>
 
 <!-- 粘性侧边栏 -->
@@ -438,19 +450,11 @@
         topSpacing: 20,
         bottomSpacing: 20,
     });
-
-
-
-
 </script>
 
 <!-- Ckeditor自适应 -->
 <script>
     $(".django-ckeditor-widget").removeAttr('style');
-
-
-
-
 </script>
 
 <!-- 唤醒二级回复的 modal -->

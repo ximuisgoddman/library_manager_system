@@ -221,12 +221,14 @@ def article_detail(request, id):
     author_likes = 0
     author_collects = 0
     author_views = 0
+    author_followers=article_author.following.count()
     for each_article in author_articles:
         author_likes += each_article.likes
         author_collects += each_article.collects
         author_views += each_article.total_views
 
     context = {
+        'author_followers':author_followers,
         'article_numbers': article_numbers,
         'author_likes': author_likes,
         'author_collects': author_collects,

@@ -12,7 +12,7 @@ from django.urls import reverse_lazy
 from django.urls import reverse
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
-
+from django.shortcuts import get_object_or_404
 
 def hash_code(s, salt=''):
     h = hashlib.sha256()
@@ -218,3 +218,16 @@ def user_edit(request, user_id):
         return render(request, 'general_users/edit.html', context)
     else:
         return HttpResponse("请使用GET或POST请求数据")
+
+
+@login_required(login_url='login/')
+def follow_user(request, author_id):
+    article_author = get_object_or_404(MyUser, id=author_id)
+
+    # Check if the user is not already following
+    if not article_author.following.filter(id=request.user.id).exists():
+        article_author.following.add(request.user)
+        return JsonResponse({'status': 'success', 'message': '关注成功'})
+    else:
+        return JsonResponse({'status': 'error', 'message': '您已经关注过该用户'})
+

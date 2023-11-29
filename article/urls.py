@@ -19,12 +19,12 @@ urlpatterns = [
     path('article-update/<int:id>/', views.article_update, name='article_update'),
     # 点赞 +1
     path('increase-likes/<int:id>/', views.IncreaseLikesView.as_view(), name='increase_likes'),
-
+    path('increase-collects/<int:id>/', views.IncreaseCollectsView.as_view(), name='increase_collects'),
     # 列表类视图
     path('list-view/', views.ArticleListView.as_view(), name='list_view'),
     # 详情类视图
     path('detail-view/<int:pk>/', views.ArticleDetailView.as_view(), name='detail_view'),
     # 创建类视图
     path('create-view/', views.ArticleCreateView.as_view(), name='create_view'),
-    path('user_article_list/',views.user_article_list,name='user_article_list'),
+    path('user_article_list/', views.user_article_list, name='user_article_list'),
 ]

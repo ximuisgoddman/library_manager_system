@@ -62,6 +62,23 @@
                 </button>
             </div>
 
+            <!-- 收藏 -->
+            <div style="text-align:center;" class="mt-4">
+                <button class="btn btn-outline-danger" type="button" onclick="validate_is_collect(
+                                '{% url 'article:increase_collects' article.id %}',
+                                {{ article.id }},
+                                {{ article.collects }}
+                            )">
+                    <span>收藏</span>
+                    <span>
+                        <i class="fas fa-heart"></i>
+                    </span>
+                    <span id="collects_number">
+                        {{ article.collects }}
+                    </span>
+                </button>
+            </div>
+
             <!-- 相邻文章导航 -->
             <br>
             <div class="row justify-content-end">
@@ -252,7 +269,7 @@
     function validate_is_like(url, id, likes) {
         // 取出 LocalStorage 中的数据
         let storage = window.localStorage;
-        const storage_str_data = storage.getItem("my_blog_data");
+        const storage_str_data = storage.getItem("my_blog_likes_data");
         let storage_json_data = JSON.parse(storage_str_data);
         // 若数据不存在，则创建空字典
         if (!storage_json_data) {
@@ -285,12 +302,12 @@
                     const d = JSON.stringify(storage_json_data);
                     // 尝试存储点赞数据到 LocalStorage
                     try {
-                        storage.setItem("my_blog_data", d);
+                        storage.setItem("my_blog_likes_data", d);
                     } catch (e) {
                         // code 22 错误表示 LocalStorage 空间满了
                         if (e.code === 22) {
                             window.localStorage.clear();
-                            storage.setItem("my_blog_data", d);
+                            storage.setItem("my_blog_likes_data", d);
                         }
                     };
                 } else {
@@ -300,9 +317,63 @@
             }
         );
     };
-    // 辅助点赞主函数，验证点赞状态
+
+        // 收藏功能主函数
+        function validate_is_collect(url, id, likes) {
+        // 取出 LocalStorage 中的数据
+        let storage = window.localStorage;
+        const storage_str_data = storage.getItem("my_blog_collects_data");
+        let storage_json_data = JSON.parse(storage_str_data);
+        // 若数据不存在，则创建空字典
+        if (!storage_json_data) {
+            storage_json_data = {}
+        };
+        console.log("storage_json_data:",storage_json_data);
+        // 检查当前文章是否已收藏。是则 status = true
+        const status = check_status(storage_json_data, id);
+        if (status) {
+            layer.msg('已经收藏了哟~');
+            // 点过赞则立即退出函数
+            return;
+        } else {
+            // 用 Jquery 找到收藏数量，并 +1
+            $('span#collects_number').text(collects + 1).css('color', '#dc3545');
+        }
+        // 用 ajax 向后端发送 post 请求
+        $.post(
+            url,
+            // post 只是为了做 csrf 校验，因此数据为空
+            {},
+            function (result) {
+                if (result === 'success') {
+                    // 尝试修改收藏数据
+                    try {
+                        storage_json_data[id] = true;
+                    } catch (e) {
+                        window.localStorage.clear();
+                    };
+
+                    const d = JSON.stringify(storage_json_data);
+                    // 尝试存储收藏数据到 LocalStorage
+                    try {
+                        storage.setItem("my_blog_collects_data", d);
+                    } catch (e) {
+                        // code 22 错误表示 LocalStorage 空间满了
+                        if (e.code === 22) {
+                            window.localStorage.clear();
+                            storage.setItem("my_blog_collects_data", d);
+                        }
+                    };
+                } else {
+                    layer.msg("与服务器通信失败..过一会儿再试试呗~");
+                }
+
+            }
+        );
+    };
+    // 辅助主函数，验证点赞收藏状态
     function check_status(data, id) {
-        // 尝试查询点赞状态
+        // 尝试查询点赞收藏状态
         try {
             if (id in data && data[id]) {
                 return true;

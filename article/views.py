@@ -326,8 +326,8 @@ def article_update(request, id):
 
             if request.FILES.get('avatar'):
                 article.avatar = request.FILES.get('avatar')
-            print("request.POST.get('tags'):",request.POST.get('tags'),len(request.POST.get('tags').split(',')))
-            article.tags.set(*request.POST.get('tags').split(','), clear=True)
+            print("request.POST.get('tags'):", request.POST.get('tags'), len(request.POST.get('tags').split(',')))
+            article.tags.set(request.POST.get('tags'), clear=True)
             article.save()
             # 完成后返回到修改后的文章中。需传入文章的 id 值
             return redirect("article:article_detail", id=id)
@@ -347,7 +347,7 @@ def article_update(request, id):
             'article': article,
             'article_post_form': article_post_form,
             'columns': columns,
-            'tags': ','.join([x for x in article.tags.names()]),
+            'tags': "".join(list(article.tags.names())),
         }
 
         # 将响应返回到模板中
@@ -359,6 +359,15 @@ class IncreaseLikesView(View):
     def post(self, request, *args, **kwargs):
         article = ArticlePost.objects.get(id=kwargs.get('id'))
         article.likes += 1
+        article.save()
+        return HttpResponse('success')
+
+
+# 收藏数+1
+class IncreaseCollectsView(View):
+    def post(self, request, *args, **kwargs):
+        article = ArticlePost.objects.get(id=kwargs.get('id'))
+        article.collects += 1
         article.save()
         return HttpResponse('success')
 

@@ -15,7 +15,36 @@
 <!-- 文章详情 -->
 <div class="container">
     <div class="row">
-        <div class="col-9">
+        <div class="col-2 mt-4" id="author-sidebar">
+            <div class="sidebar__inner">
+                <h4><strong>{{ article.author.username }}</strong></h4>
+                <hr>
+                <div>
+
+                    {% if article.author.avatar and article.author.avatar.url %}
+                    <a href="{% url 'article:user_article_list' user_id=article.author.id %}">
+                        <img src="{{ article.author.avatar.url }}" alt="{{ article.author.username }}"
+                             class="avatar-img"
+                             style="width: 80px; height: 80px; border-radius: 50%;">
+                    </a>
+                    {% else %}
+                    <a href="{% url 'article:user_article_list' user_id=article.author.id %}">
+                        <img src="{% static 'avatar/default.jpeg' %}" alt="{{ article.author.username }}"
+                             class="avatar-img"
+                             style="width: 80px; height: 80px; border-radius: 50%;">
+                    </a>
+                    {% endif %}
+                </div>
+                <div class="author-stats">
+                    <div><strong>博文数：</strong> {{ article_numbers }}</div>
+                    <div><strong>浏览量：</strong> {{ author_views }}</div>
+                    <div><strong>收藏数：</strong> {{ author_likes }}</div>
+                    <div><strong>点赞数：</strong> {{ author_collects }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-8">
             <!-- 标题及作者 -->
             <h1 class="mt-4 mb-4">{{ article.title }}</h1>
             <div class="alert alert-success">
@@ -26,14 +55,14 @@
                     <!-- · <a href="#" onclick="confirm_delete()">删除文章</a> -->
                     · <a href="#" onclick="confirm_safe_delete()">删除文章</a>
                     <form style="display:none;" id="safe_delete"
-                        action="{% url 'article:article_safe_delete' article.id %}" method="POST">
+                          action="{% url 'article:article_safe_delete' article.id %}" method="POST">
                         {% csrf_token %}
                         <button type="submit">发送</button>
                     </form>
 
                     · <a href="{% url 'article:article_update' article.id %}">
-                        编辑文章
-                    </a>
+                    编辑文章
+                </a>
                     {% endif %}
                 </div>
                 <div>
@@ -44,39 +73,41 @@
             <div class="col-12">
                 <p>{{ article.content|safe }}</p>
             </div>
-
-            <!-- 点赞 -->
-            <div style="text-align:center;" class="mt-4">
-                <button class="btn btn-outline-danger" type="button" onclick="validate_is_like(
+            <!-- 点赞和收藏 -->
+            <div class="row mt-4">
+                <!-- 点赞 -->
+                <div class="col-md-6 text-left">
+                    <button class="btn btn-outline-danger" type="button" onclick="validate_is_like(
                                 '{% url 'article:increase_likes' article.id %}',
                                 {{ article.id }},
                                 {{ article.likes }}
                             )">
-                    <span>点赞</span>
-                    <span>
+                        <span>点赞</span>
+                        <span>
                         <i class="fas fa-heart"></i>
                     </span>
-                    <span id="likes_number">
+                        <span id="likes_number">
                         {{ article.likes }}
                     </span>
-                </button>
-            </div>
+                    </button>
+                </div>
 
-            <!-- 收藏 -->
-            <div style="text-align:center;" class="mt-4">
-                <button class="btn btn-outline-danger" type="button" onclick="validate_is_collect(
+                <!-- 收藏 -->
+                <div class="col-md-6 text-right">
+                    <button class="btn btn-outline-danger" type="button" onclick="validate_is_collect(
                                 '{% url 'article:increase_collects' article.id %}',
                                 {{ article.id }},
                                 {{ article.collects }}
                             )">
-                    <span>收藏</span>
-                    <span>
-                        <i class="fas fa-heart"></i>
+                        <span>收藏</span>
+                        <span>
+                        <i class="fas fa-star"></i>
                     </span>
-                    <span id="collects_number">
+                        <span id="collects_number">
                         {{ article.collects }}
                     </span>
-                </button>
+                    </button>
+                </div>
             </div>
 
             <!-- 相邻文章导航 -->
@@ -130,7 +161,6 @@
             {% endif %}
 
 
-
             <!-- 显示评论 -->
             {% load mptt_tags %}
             <h4>共有{{ comments.count }}条评论</h4>
@@ -168,7 +198,7 @@
                         <!-- 加载 modal 的按钮 -->
                         {% if user.is_authenticated %}
                         <button type="button" class="btn btn-light btn-sm text-muted"
-                            onclick="load_modal({{ article.id }}, {{ comment.id }})">
+                                onclick="load_modal({{ article.id }}, {{ comment.id }})">
                             回复
                         </button>
                         {% else %}
@@ -180,11 +210,12 @@
 
                     <!-- Modal -->
                     <div class="modal fade" id="comment_{{ comment.id }}" tabindex="-1" role="dialog"
-                        aria-labelledby="CommentModalCenter" aria-hidden="true">
+                         aria-labelledby="CommentModalCenter" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                             <div class="modal-content" style="height: 480px">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalCenterTitle">回复 {{ comment.user }}：</h5>
+                                    <h5 class="modal-title" id="exampleModalCenterTitle">回复 {{ comment.user
+                                        }}：</h5>
                                 </div>
                                 <div class="modal-body" id="modal_body_{{ comment.id }}"></div>
                             </div>
@@ -204,7 +235,7 @@
         </div>
 
         <!-- 目录 -->
-        <div class="col-3 mt-4" id="sidebar" class="sidebar">
+        <div class="col-2 mt-4" id="sidebar" class="sidebar">
             <div class="sidebar__inner">
                 <h4><strong>目录</strong></h4>
                 <hr>
@@ -228,6 +259,10 @@
         transform: translate3d(0, 0, 0);
         will-change: position, transform;
     }
+
+
+
+
 </style>
 
 <script>
@@ -257,6 +292,10 @@
             }
         })
     }
+
+
+
+
 </script>
 {% endblock content %}
 
@@ -319,7 +358,8 @@
     };
 
         // 收藏功能主函数
-        function validate_is_collect(url, id, likes) {
+        function validate_is_collect(url, id, collects) {
+        console.log("collects:",collects);
         // 取出 LocalStorage 中的数据
         let storage = window.localStorage;
         const storage_str_data = storage.getItem("my_blog_collects_data");
@@ -385,6 +425,10 @@
             return false;
         };
     };
+
+
+
+
 </script>
 
 <!-- 粘性侧边栏 -->
@@ -394,11 +438,19 @@
         topSpacing: 20,
         bottomSpacing: 20,
     });
+
+
+
+
 </script>
 
 <!-- Ckeditor自适应 -->
 <script>
     $(".django-ckeditor-widget").removeAttr('style');
+
+
+
+
 </script>
 
 <!-- 唤醒二级回复的 modal -->
@@ -429,5 +481,9 @@
         // 刷新并定位到锚点
         window.location.replace(next_url + "#comment_elem_" + new_comment_id);
     };
+
+
+
+
 </script>
 {% endblock script %}

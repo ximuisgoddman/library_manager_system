@@ -120,7 +120,7 @@ def article_list(request):
 
 
 @login_required(login_url='login/')
-def user_article_list(request):
+def user_article_list(request,user_id):
     # 从 url 中提取查询参数
     search = request.GET.get('search')
     order = request.GET.get('order')
@@ -128,8 +128,8 @@ def user_article_list(request):
     tag = request.GET.get('tag')
 
     # 初始化查询集
-    article_list = ArticlePost.objects.filter(author_id=request.user.id)
-
+    article_list = ArticlePost.objects.filter(author_id=user_id)
+    print("article_list:",len(article_list))
     # 搜索查询集
     if search:
         article_list = article_list.filter(
@@ -215,7 +215,22 @@ def article_detail(request, id):
     comment_form = CommentForm()
 
     # 需要传递给模板的对象
+    article_author = article.author
+    author_articles = ArticlePost.objects.filter(author=article_author)
+    article_numbers = author_articles.count()
+    author_likes = 0
+    author_collects = 0
+    author_views = 0
+    for each_article in author_articles:
+        author_likes += each_article.likes
+        author_collects += each_article.collects
+        author_views += each_article.total_views
+
     context = {
+        'article_numbers': article_numbers,
+        'author_likes': author_likes,
+        'author_collects': author_collects,
+        'author_views': author_views,
         'article': article,
         'toc': md.toc,
         'comments': comments,

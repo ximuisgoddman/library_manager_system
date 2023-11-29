@@ -26,5 +26,5 @@ urlpatterns = [
     path('detail-view/<int:pk>/', views.ArticleDetailView.as_view(), name='detail_view'),
     # 创建类视图
     path('create-view/', views.ArticleCreateView.as_view(), name='create_view'),
-    path('user_article_list/', views.user_article_list, name='user_article_list'),
+    path('user_article_list/<int:user_id>/', views.user_article_list, name='user_article_list'),
 ]

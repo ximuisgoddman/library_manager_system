@@ -19,17 +19,22 @@
                 <!-- 如果用户已经登录，则显示用户名下拉框 -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         {% if unread_count %}
                         <svg viewBox="0 0 8 8" width="8px" height="8px">
                             <circle cx="4" cy="4" r="4" fill="#ff6b6b"></circle>
                         </svg>
                         {% endif %}
                         {% if user.avatar and user.avatar.url %}
-                        <img src="{{ user.avatar.url }}" alt="{{ user.username }}" class="avatar-img" style="width: 38px; height: 38px; border-radius: 50%;">
+                        <a href="{% url 'article:user_article_list' user_id=user.id %}">
+                            <img src="{{ user.avatar.url }}" alt="{{ user.username }}" class="avatar-img"
+                                 style="width: 38px; height: 38px; border-radius: 50%;">
+                        </a>
                         {% else %}
-                        <img src="{% static 'avatar/default.jpeg' %}" alt="{{ user.username }}" class="avatar-img"
-                            style="width: 38px; height: 38px; border-radius: 50%;">
+                        <a href="{% url 'article:user_article_list' user_id=user.id %}">
+                            <img src="{% static 'avatar/default.jpeg' %}" alt="{{ user.username }}" class="avatar-img"
+                                 style="width: 38px; height: 38px; border-radius: 50%;">
+                        </a>
                         {% endif %}
                     </a>
 
@@ -44,9 +49,7 @@
                         <a class="dropdown-item" href='{% url "user_edit" user.id %}'>个人信息</a>
                         <a class="dropdown-item" href="#" onclick="user_delete()">删除用户</a>
                         <a class="dropdown-item" href='{% url "logout" %}'>退出登录</a>
-                        <a class="dropdown-item" href='{% url "article:user_article_list" %}'>我的文章</a>
                     </div>
-
                 </li>
                 <li id="back-home">
                     <a class="nav-link" href="{% url 'home' %}">主页</a>
@@ -98,6 +101,7 @@
             })
         }
     });
+
 
 </script>
 

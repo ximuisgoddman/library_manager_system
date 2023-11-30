@@ -17,12 +17,13 @@
     <div class="row">
         <div class="col-2 mt-4" id="author-sidebar">
             <div class="sidebar__inner">
-                <h4><strong>{{ article.author.username }}</strong></h4>
-<!--                <h5>{{ article.author.id }}</h5>-->
-                <button class="btn btn-primary mt-2" onclick="followUser('{{ article.author.id }}')">关注</button>
+                <div class="d-flex align-items-center">
+                    <h4 class="mr-3"><strong>{{ article.author.username }}</strong></h4>
+                    <button class="btn {% if if_follow %}btn-primary{% else %}btn-secondary{% endif %} mt-2" onclick="followUser()">关注</button>
+
+                </div>
                 <hr>
                 <div>
-
                     {% if article.author.avatar and article.author.avatar.url %}
                     <a href="{% url 'article:user_article_list' user_id=article.author.id %}">
                         <img src="{{ article.author.avatar.url }}" alt="{{ article.author.username }}"
@@ -55,7 +56,6 @@
                     作者：{{ article.author }}
                     {% if user == article.author %}
 
-                    <!-- · <a href="#" onclick="confirm_delete()">删除文章</a> -->
                     · <a href="#" onclick="confirm_safe_delete()">删除文章</a>
                     <form style="display:none;" id="safe_delete"
                           action="{% url 'article:article_safe_delete' article.id %}" method="POST">
@@ -262,14 +262,14 @@
         transform: translate3d(0, 0, 0);
         will-change: position, transform;
     }
+
 </style>
 
 
 <script>
-    function followUser(userId) {
-    console.log("userId:",userId);
+    function followUser() {
         $.ajax({
-            url: '{% url "follow_user" article.author.id %}',  // 传递正确的作者ID
+            url: '{% url "follow_user" article.author.id article.id %}',  // 传递正确的作者ID
             type: 'POST',
             data: { 'csrfmiddlewaretoken': '{{ csrf_token }}' },  // 添加 CSRF 令牌
             dataType: 'json',
@@ -281,8 +281,8 @@
             }
         });
     }
-</script>
 
+</script>
 
 
 <script>
@@ -312,6 +312,7 @@
             }
         })
     }
+
 </script>
 {% endblock content %}
 
@@ -441,6 +442,7 @@
             return false;
         };
     };
+
 </script>
 
 <!-- 粘性侧边栏 -->
@@ -450,11 +452,13 @@
         topSpacing: 20,
         bottomSpacing: 20,
     });
+
 </script>
 
 <!-- Ckeditor自适应 -->
 <script>
     $(".django-ckeditor-widget").removeAttr('style');
+
 </script>
 
 <!-- 唤醒二级回复的 modal -->
@@ -485,9 +489,5 @@
         // 刷新并定位到锚点
         window.location.replace(next_url + "#comment_elem_" + new_comment_id);
     };
-
-
-
-
 </script>
 {% endblock script %}

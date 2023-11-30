@@ -18,23 +18,23 @@
                 {% if user.is_authenticated %}
                 <!-- 如果用户已经登录，则显示用户名下拉框 -->
                 <li class="nav-item dropdown">
+                    {% if user.avatar and user.avatar.url %}
+                    <a href="{% url 'article:user_article_list' user_id=user.id %}">
+                        <img src="{{ user.avatar.url }}" alt="{{ user.username }}" class="avatar-img"
+                             style="width: 38px; height: 38px; border-radius: 50%;">
+                    </a>
+                    {% else %}
+                    <a href="{% url 'article:user_article_list' user_id=user.id %}">
+                        <img src="{% static 'avatar/default.jpeg' %}" alt="{{ user.username }}" class="avatar-img"
+                             style="width: 38px; height: 38px; border-radius: 50%;">
+                    </a>
+                    {% endif %}
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         {% if unread_count %}
                         <svg viewBox="0 0 8 8" width="8px" height="8px">
                             <circle cx="4" cy="4" r="4" fill="#ff6b6b"></circle>
                         </svg>
-                        {% endif %}
-                        {% if user.avatar and user.avatar.url %}
-                        <a href="{% url 'article:user_article_list' user_id=user.id %}">
-                            <img src="{{ user.avatar.url }}" alt="{{ user.username }}" class="avatar-img"
-                                 style="width: 38px; height: 38px; border-radius: 50%;">
-                        </a>
-                        {% else %}
-                        <a href="{% url 'article:user_article_list' user_id=user.id %}">
-                            <img src="{% static 'avatar/default.jpeg' %}" alt="{{ user.username }}" class="avatar-img"
-                                 style="width: 38px; height: 38px; border-radius: 50%;">
-                        </a>
                         {% endif %}
                     </a>
 
@@ -100,6 +100,7 @@
             })
         }
     });
+
 
 
 </script>

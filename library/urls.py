@@ -58,7 +58,7 @@ from django.conf.urls.static import static
 
 from django.urls import path, include
 
-from article.views import article_list
+from article import views as  article_view
 
 urlpatterns = [
 
@@ -69,7 +69,7 @@ urlpatterns = [
     path('logout/', user_views.logout, name='logout'),
     path('user_edit/<int:user_id>', user_views.user_edit, name='user_edit'),
     path('user_delete/<int:user_id>', user_views.user_delete, name='user_delete'),
-    path('follow_user/<int:author_id>', user_views.follow_user, name='follow_user'),
+    path('follow_user/<int:author_id>/<int:article_id>', article_view.follow_user, name='follow_user'),
 
     path('books/list', lib_views.book_list, name='book_list'),
     path('books/', lib_views.book_front_page, name='book_front_page'),

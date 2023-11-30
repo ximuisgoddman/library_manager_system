@@ -40,6 +40,7 @@ import time
 import uuid
 
 from django.http import JsonResponse, HttpResponse
+from notifications.signals import notify
 
 
 @csrf_exempt
@@ -129,8 +130,8 @@ def user_article_list(request, user_id):
 
     # 初始化查询集
     article_list = ArticlePost.objects.filter(author_id=user_id)
-    article_author=MyUser.objects.filter(id=user_id).first()
-    print("article_author:", article_author,article_author.username)
+    article_author = MyUser.objects.filter(id=user_id).first()
+    print("article_author:", article_author, article_author.username)
     # 搜索查询集
     if search:
         article_list = article_list.filter(
@@ -178,7 +179,7 @@ def user_article_list(request, user_id):
         'author_likes': author_likes,
         'author_collects': author_collects,
         'author_views': author_views,
-        'article_author':article_author,
+        'article_author': article_author,
         'articles': articles,
         'order': order,
         'search': search,
@@ -245,7 +246,11 @@ def article_detail(request, id):
         author_collects += each_article.collects
         author_views += each_article.total_views
 
+    if_follow = article_author.following.filter(id=request.user.id).exists()
+    print("if_follow:", if_follow)
+
     context = {
+        'if_follow': if_follow,
         'author_followers': author_followers,
         'article_numbers': article_numbers,
         'author_likes': author_likes,
@@ -477,3 +482,29 @@ class ArticleCreateView(CreateView):
     # 或者有选择的提交字段，比如：
     # fields = ['title']
     template_name = 'article/create_by_class_view.html'
+
+
+@login_required(login_url='login/')
+def follow_user(request, author_id, article_id):
+    article_author = get_object_or_404(MyUser, id=author_id)
+    current_article = get_object_or_404(ArticlePost, id=article_id)
+    # Check if the user is not already following
+    if not article_author.following.filter(id=request.user.id).exists():
+        article_author.following.add(request.user)
+
+        notify.send(
+            request.user,
+            recipient=article_author,
+            verb='关注了你',
+            target=current_article,
+        )
+        return JsonResponse({'status': 'success', 'message': '关注成功'})
+    else:
+        notify.send(
+            request.user,
+            recipient=article_author,
+            verb='取消关注了你',
+            target=current_article,
+        )
+        article_author.following.remove(request.user)
+        return JsonResponse({'status': 'error', 'message': '您已取消关注'})

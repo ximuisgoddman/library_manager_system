@@ -120,7 +120,7 @@ def article_list(request):
 
 
 @login_required(login_url='login/')
-def user_article_list(request,user_id):
+def user_article_list(request, user_id):
     # 从 url 中提取查询参数
     search = request.GET.get('search')
     order = request.GET.get('order')
@@ -129,7 +129,8 @@ def user_article_list(request,user_id):
 
     # 初始化查询集
     article_list = ArticlePost.objects.filter(author_id=user_id)
-    print("article_list:",len(article_list))
+    article_author=MyUser.objects.filter(id=user_id).first()
+    print("article_author:", article_author,article_author.username)
     # 搜索查询集
     if search:
         article_list = article_list.filter(
@@ -160,7 +161,24 @@ def user_article_list(request,user_id):
     # 将导航对象相应的页码内容返回给 articles
     articles = paginator.get_page(page)
     # 需要传递给模板（templates）的对象
+
+    author_articles = ArticlePost.objects.filter(author_id=article_author)
+    article_numbers = author_articles.count()
+    author_likes = 0
+    author_collects = 0
+    author_views = 0
+    author_followers = article_author.following.count()
+    for each_article in author_articles:
+        author_likes += each_article.likes
+        author_collects += each_article.collects
+        author_views += each_article.total_views
     context = {
+        'author_followers': author_followers,
+        'article_numbers': article_numbers,
+        'author_likes': author_likes,
+        'author_collects': author_collects,
+        'author_views': author_views,
+        'article_author':article_author,
         'articles': articles,
         'order': order,
         'search': search,
@@ -168,7 +186,7 @@ def user_article_list(request,user_id):
         'tag': tag,
     }
     # render函数：载入模板，并返回context对象
-    return render(request, 'article/list.html', context)
+    return render(request, 'article/user_article_list.html', context)
 
 
 # 文章详情
@@ -221,14 +239,14 @@ def article_detail(request, id):
     author_likes = 0
     author_collects = 0
     author_views = 0
-    author_followers=article_author.following.count()
+    author_followers = article_author.following.count()
     for each_article in author_articles:
         author_likes += each_article.likes
         author_collects += each_article.collects
         author_views += each_article.total_views
 
     context = {
-        'author_followers':author_followers,
+        'author_followers': author_followers,
         'article_numbers': article_numbers,
         'author_likes': author_likes,
         'author_collects': author_collects,

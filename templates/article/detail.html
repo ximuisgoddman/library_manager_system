@@ -19,7 +19,8 @@
             <div class="sidebar__inner">
                 <div class="d-flex align-items-center">
                     <h4 class="mr-3"><strong>{{ article.author.username }}</strong></h4>
-                    <button class="btn {% if if_follow %}btn-primary{% else %}btn-secondary{% endif %} mt-2" onclick="followUser()">关注</button>
+                    <button class="btn {% if if_follow %}btn-secondary{% else %}btn-primary{% endif %} mt-2"
+                        onclick="followUser()">关注</button>
 
                 </div>
                 <hr>
@@ -27,14 +28,12 @@
                     {% if article.author.avatar and article.author.avatar.url %}
                     <a href="{% url 'article:user_article_list' user_id=article.author.id %}">
                         <img src="{{ article.author.avatar.url }}" alt="{{ article.author.username }}"
-                             class="avatar-img"
-                             style="width: 80px; height: 80px; border-radius: 50%;">
+                            class="avatar-img" style="width: 80px; height: 80px; border-radius: 50%;">
                     </a>
                     {% else %}
                     <a href="{% url 'article:user_article_list' user_id=article.author.id %}">
                         <img src="{% static 'avatar/default.jpeg' %}" alt="{{ article.author.username }}"
-                             class="avatar-img"
-                             style="width: 80px; height: 80px; border-radius: 50%;">
+                            class="avatar-img" style="width: 80px; height: 80px; border-radius: 50%;">
                     </a>
                     {% endif %}
                 </div>
@@ -58,14 +57,14 @@
 
                     · <a href="#" onclick="confirm_safe_delete()">删除文章</a>
                     <form style="display:none;" id="safe_delete"
-                          action="{% url 'article:article_safe_delete' article.id %}" method="POST">
+                        action="{% url 'article:article_safe_delete' article.id %}" method="POST">
                         {% csrf_token %}
                         <button type="submit">发送</button>
                     </form>
 
                     · <a href="{% url 'article:article_update' article.id %}">
-                    编辑文章
-                </a>
+                        编辑文章
+                    </a>
                     {% endif %}
                 </div>
                 <div>
@@ -87,11 +86,11 @@
                             )">
                         <span>点赞</span>
                         <span>
-                        <i class="fas fa-heart"></i>
-                    </span>
+                            <i class="fas fa-heart"></i>
+                        </span>
                         <span id="likes_number">
-                        {{ article.likes }}
-                    </span>
+                            {{ article.likes }}
+                        </span>
                     </button>
                 </div>
 
@@ -104,11 +103,11 @@
                             )">
                         <span>收藏</span>
                         <span>
-                        <i class="fas fa-star"></i>
-                    </span>
+                            <i class="fas fa-star"></i>
+                        </span>
                         <span id="collects_number">
-                        {{ article.collects }}
-                    </span>
+                            {{ article.collects }}
+                        </span>
                     </button>
                 </div>
             </div>
@@ -201,7 +200,7 @@
                         <!-- 加载 modal 的按钮 -->
                         {% if user.is_authenticated %}
                         <button type="button" class="btn btn-light btn-sm text-muted"
-                                onclick="load_modal({{ article.id }}, {{ comment.id }})">
+                            onclick="load_modal({{ article.id }}, {{ comment.id }})">
                             回复
                         </button>
                         {% else %}
@@ -213,7 +212,7 @@
 
                     <!-- Modal -->
                     <div class="modal fade" id="comment_{{ comment.id }}" tabindex="-1" role="dialog"
-                         aria-labelledby="CommentModalCenter" aria-hidden="true">
+                        aria-labelledby="CommentModalCenter" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                             <div class="modal-content" style="height: 480px">
                                 <div class="modal-header">
@@ -262,7 +261,6 @@
         transform: translate3d(0, 0, 0);
         will-change: position, transform;
     }
-
 </style>
 
 
@@ -326,17 +324,17 @@
         // 取出 LocalStorage 中的数据
         let storage = window.localStorage;
         const storage_str_data = storage.getItem("my_blog_likes_data");
+        console.log("storage_str_data:", storage_str_data)
         let storage_json_data = JSON.parse(storage_str_data);
         // 若数据不存在，则创建空字典
         if (!storage_json_data) {
             storage_json_data = {}
         };
-        // 检查当前文章是否已点赞。是则 status = true
-        const status = check_status(storage_json_data, id);
-        if (status) {
-            layer.msg('已经点过赞了哟~');
+        // 检查当前文章是否已点赞。是则 like_status = true
+        const like_status = check_status(storage_json_data, id);
+        if (like_status) {
+            $('span#likes_number').text(likes - 1).css('color', '#dc3545');
             // 点过赞则立即退出函数
-            return;
         } else {
             // 用 Jquery 找到点赞数量，并 +1
             $('span#likes_number').text(likes + 1).css('color', '#dc3545');
@@ -345,9 +343,10 @@
         $.post(
             url,
             // post 只是为了做 csrf 校验，因此数据为空
-            {},
+            { "like_status": like_status },
             function (result) {
-                if (result === 'success') {
+                console.log("result:", result);
+                if (result === 'add_success') {
                     // 尝试修改点赞数据
                     try {
                         storage_json_data[id] = true;
@@ -366,17 +365,34 @@
                             storage.setItem("my_blog_likes_data", d);
                         }
                     };
+                } else if (result === 'del_success') {
+                    // 尝试修改点赞数据
+                    try {
+                        storage_json_data[id] = false;
+                    } catch (e) {
+                        window.localStorage.clear();
+                    };
+                    const d = JSON.stringify(storage_json_data);
+                    // 尝试存储点赞数据到 LocalStorage
+                    try {
+                        storage.setItem("my_blog_likes_data", d);
+                    } catch (e) {
+                        // code 22 错误表示 LocalStorage 空间满了
+                        if (e.code === 22) {
+                            window.localStorage.clear();
+                            storage.setItem("my_blog_likes_data", d);
+                        }
+                    };
                 } else {
                     layer.msg("与服务器通信失败..过一会儿再试试呗~");
                 }
-
             }
         );
     };
 
-        // 收藏功能主函数
-        function validate_is_collect(url, id, collects) {
-        console.log("collects:",collects);
+    // 收藏功能主函数
+    function validate_is_collect(url, id, collects) {
+        console.log("collects:", collects);
         // 取出 LocalStorage 中的数据
         let storage = window.localStorage;
         const storage_str_data = storage.getItem("my_blog_collects_data");
@@ -385,13 +401,11 @@
         if (!storage_json_data) {
             storage_json_data = {}
         };
-        console.log("storage_json_data:",storage_json_data);
+        console.log("storage_json_data:", storage_json_data);
         // 检查当前文章是否已收藏。是则 status = true
-        const status = check_status(storage_json_data, id);
-        if (status) {
-            layer.msg('已经收藏了哟~');
-            // 点过赞则立即退出函数
-            return;
+        const collect_status = check_status(storage_json_data, id);
+        if (collect_status) {
+            $('span#collects_number').text(collects - 1).css('color', '#dc3545');
         } else {
             // 用 Jquery 找到收藏数量，并 +1
             $('span#collects_number').text(collects + 1).css('color', '#dc3545');
@@ -400,12 +414,31 @@
         $.post(
             url,
             // post 只是为了做 csrf 校验，因此数据为空
-            {},
+            { "collect_status": collect_status },
             function (result) {
-                if (result === 'success') {
+                if (result === 'add_success') {
                     // 尝试修改收藏数据
                     try {
                         storage_json_data[id] = true;
+                    } catch (e) {
+                        window.localStorage.clear();
+                    };
+
+                    const d = JSON.stringify(storage_json_data);
+                    // 尝试存储收藏数据到 LocalStorage
+                    try {
+                        storage.setItem("my_blog_collects_data", d);
+                    } catch (e) {
+                        // code 22 错误表示 LocalStorage 空间满了
+                        if (e.code === 22) {
+                            window.localStorage.clear();
+                            storage.setItem("my_blog_collects_data", d);
+                        }
+                    };
+                } else if (result === 'del_success') {
+                    // 尝试修改收藏数据
+                    try {
+                        storage_json_data[id] = false;
                     } catch (e) {
                         window.localStorage.clear();
                     };

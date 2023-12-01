@@ -397,19 +397,30 @@ def article_update(request, id):
 # 点赞数 +1
 class IncreaseLikesView(View):
     def post(self, request, *args, **kwargs):
+        print("IncreaseLikesView request.POST:", request.POST.get('like_status'))
         article = ArticlePost.objects.get(id=kwargs.get('id'))
-        article.likes += 1
-        article.save()
-        return HttpResponse('success')
+        if request.POST.get('like_status') == 'true':
+            article.likes -= 1
+            article.save()
+            return HttpResponse('del_success')
+        else:
+            article.likes += 1
+            article.save()
+            return HttpResponse('add_success')
 
 
 # 收藏数+1
 class IncreaseCollectsView(View):
     def post(self, request, *args, **kwargs):
         article = ArticlePost.objects.get(id=kwargs.get('id'))
-        article.collects += 1
-        article.save()
-        return HttpResponse('success')
+        if request.POST.get('collect_status') == 'true':
+            article.collects -= 1
+            article.save()
+            return HttpResponse('del_success')
+        else:
+            article.collects += 1
+            article.save()
+            return HttpResponse('add_success')
 
 
 def article_list_example(request):

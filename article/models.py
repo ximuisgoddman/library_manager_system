@@ -98,6 +98,7 @@ class ArticlePost(models.Model):
 
     # 获取文章地址
     def get_absolute_url(self):
+        print("@Article")
         return reverse('article:article_detail', args=[self.id])
 
     # 保存时处理图片

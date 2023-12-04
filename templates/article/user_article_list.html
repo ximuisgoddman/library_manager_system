@@ -58,6 +58,8 @@
     <div class="col-2 mt-4" id="author-sidebar">
         <div class="sidebar__inner">
             <h4><strong>{{ article_author.username }}</strong></h4>
+            <button class="btn {% if if_follow %}btn-secondary{% else %}btn-primary{% endif %} mt-2"
+                        onclick="followUser()">关注</button>
             <hr>
             <div>
 
@@ -214,3 +216,23 @@
 </div>
 
 {% endblock content %}
+
+{% block script %}
+<script>
+    function followUser() {
+        $.ajax({
+            url: '{% url "follow_user" article_author.id 0 %}',  // 传递正确的作者ID
+            type: 'POST',
+            data: { 'csrfmiddlewaretoken': '{{ csrf_token }}' },  // 添加 CSRF 令牌
+            dataType: 'json',
+            success: function (data) {
+                alert(data.message);
+            },
+            error: function (data) {
+                alert('关注失败，请重试');
+            }
+        });
+    }
+
+</script>
+{% endblock script %}

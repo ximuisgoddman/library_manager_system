@@ -173,7 +173,12 @@ def user_article_list(request, user_id):
         author_likes += each_article.likes
         author_collects += each_article.collects
         author_views += each_article.total_views
+
+    if_follow = article_author.following.filter(id=request.user.id).exists()
+    print("if_follow:", if_follow)
+
     context = {
+        'if_follow': if_follow,
         'author_followers': author_followers,
         'article_numbers': article_numbers,
         'author_likes': author_likes,
@@ -497,9 +502,16 @@ class ArticleCreateView(CreateView):
 
 @login_required(login_url='login/')
 def follow_user(request, author_id, article_id):
+    print("article_id@@:", article_id)
     article_author = get_object_or_404(MyUser, id=author_id)
-    current_article = get_object_or_404(ArticlePost, id=article_id)
+
     # Check if the user is not already following
+    if article_id == 0:
+        current_target = article_author
+        print("YES")
+    else:
+        current_target = get_object_or_404(ArticlePost, id=article_id)
+    print("current_target:",current_target)
     if not article_author.following.filter(id=request.user.id).exists():
         article_author.following.add(request.user)
 
@@ -507,7 +519,7 @@ def follow_user(request, author_id, article_id):
             request.user,
             recipient=article_author,
             verb='关注了你',
-            target=current_article,
+            target=current_target,
         )
         return JsonResponse({'status': 'success', 'message': '关注成功'})
     else:
@@ -515,7 +527,7 @@ def follow_user(request, author_id, article_id):
             request.user,
             recipient=article_author,
             verb='取消关注了你',
-            target=current_article,
+            target=current_target,
         )
         article_author.following.remove(request.user)
         return JsonResponse({'status': 'error', 'message': '您已取消关注'})

@@ -14,7 +14,7 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from notifications.signals import notify
-
+from django.contrib.auth.hashers import make_password, check_password
 
 def hash_code(s, salt=''):
     h = hashlib.sha256()
@@ -137,7 +137,7 @@ def my_register(request):
 
                 new_user = MyUser()
                 new_user.username = username
-                new_user.password = hash_code(password1)
+                new_user.password = make_password(password1)
                 new_user.email = email
                 new_user.sex = sex
                 new_user.save()

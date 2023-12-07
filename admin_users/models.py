@@ -13,15 +13,13 @@ class AdminUser(AbstractBaseUser):
         ('female', "女"),
     )
     USERNAME_FIELD = 'name'
-    name = models.CharField(verbose_name="姓名", max_length=128, unique=True)
+    username = models.CharField(verbose_name="姓名", max_length=128, unique=True)
     password = models.CharField(max_length=256)
     email = models.EmailField(unique=True)
     sex = models.CharField(max_length=32, choices=gender, default="男")
     c_time = models.DateTimeField(auto_now_add=True)
     has_confirmed = models.BooleanField(default=False)
     last_login = models.DateTimeField(verbose_name='最后登录时间', null=True, blank=True)
-    is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=False)
 
     def has_module_perms(self, app_label):
         return True

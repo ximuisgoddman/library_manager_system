@@ -5,7 +5,7 @@ from admin_users.models import AdminUser
 class AdminUserBackend(BaseBackend):
     def authenticate(self, request, username=None, password=None, **kwargs):
         try:
-            myuser = AdminUser.objects.get(name=username)
+            myuser = AdminUser.objects.get(username=username)
             if myuser.check_password(password):
                 return myuser
         except AdminUser.DoesNotExist as e:

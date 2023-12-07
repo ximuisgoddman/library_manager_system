@@ -511,7 +511,7 @@ def follow_user(request, author_id, article_id):
         print("YES")
     else:
         current_target = get_object_or_404(ArticlePost, id=article_id)
-    print("current_target:",current_target)
+
     if not article_author.following.filter(id=request.user.id).exists():
         article_author.following.add(request.user)
 

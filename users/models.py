@@ -4,6 +4,7 @@ import hashlib
 from django.contrib.auth.models import AbstractBaseUser, AbstractUser
 from notifications.models import Notification
 from django.urls import reverse
+from django.contrib.auth.hashers import make_password, check_password
 
 
 class MyUser(AbstractUser):
@@ -50,8 +51,17 @@ class MyUser(AbstractUser):
         """
         # Your password hashing code goes here
         hash_password = hashlib.sha256(raw_password.encode('utf-8')).hexdigest()
-        print("check_password", self.password, hash_password, raw_password)
-        return self.password == hash_password
+        print("check_password", self.password, hash_password, make_password(raw_password))
+        p = check_password(self.password, raw_password)
+        print("P:", p)
+        return p
+
+    def set_password(self, raw_password):
+        """
+        Set the user's password.
+        """
+        # 使用 Django 提供的 make_password 函数进行密码哈希
+        self.password = make_password(raw_password)
 
     @property
     def is_authenticated(self):

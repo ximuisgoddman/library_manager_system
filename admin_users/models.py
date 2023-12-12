@@ -12,7 +12,7 @@ class AdminUser(AbstractBaseUser):
         ('male', "男"),
         ('female', "女"),
     )
-    USERNAME_FIELD = 'name'
+    USERNAME_FIELD = 'username'
     username = models.CharField(verbose_name="姓名", max_length=128, unique=True)
     password = models.CharField(max_length=256)
     email = models.EmailField(unique=True)
@@ -38,14 +38,14 @@ class AdminUser(AbstractBaseUser):
         # Your password hashing code goes here
         hash_password = hashlib.sha256(raw_password.encode('utf-8')).hexdigest()
         print("check_password", self.password, hash_password, raw_password)
-        return self.password == raw_password
+        return self.password == hash_password
 
     @property
     def is_authenticated(self):
         return True
 
     def __str__(self):
-        return self.name
+        return self.username
 
     class Meta:
         ordering = ['-c_time']

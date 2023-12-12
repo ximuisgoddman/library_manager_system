@@ -54,7 +54,7 @@ class MyUser(AbstractUser):
         print("check_password", self.password, hash_password, make_password(raw_password))
         p = check_password(self.password, raw_password)
         print("P:", p)
-        return p
+        return self.password== hash_password
 
     def set_password(self, raw_password):
         """

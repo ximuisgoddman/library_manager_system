@@ -137,7 +137,7 @@ def my_register(request):
 
                 new_user = MyUser()
                 new_user.username = username
-                new_user.password = make_password(password1)
+                new_user.password = hash_code(password1)
                 new_user.email = email
                 new_user.sex = sex
                 new_user.save()

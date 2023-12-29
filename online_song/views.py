@@ -11,6 +11,7 @@ import os
 import json
 from django.core.paginator import Paginator
 from django.core.cache import cache
+import base64
 
 
 def upload_song(request):
@@ -54,11 +55,19 @@ def admin_online_song_list(request):
     return render(request, 'online_song/song_list.html', {'songs': songs})
 
 
+def transform_chinese(input_str):
+    return base64.b64encode(input_str.encode("utf-8")).decode("utf-8")
+
+
 def online_song_list(request):
     song_classifications = OnlineSongModel.objects.values_list('song_classification', flat=True).distinct()
     song_authors = OnlineSongModel.objects.values_list('song_author', flat=True).distinct()
     search_query = request.GET.get('search', '')
-    cache_key = 'online_song_list_{}'.format(search_query)
+    cache_key = 'online_song_list_{}'.format(
+        "%s_%s_%s" % (transform_chinese(request.GET.get('song_classification', '')),
+                      transform_chinese(request.GET.get('song_author', '')),
+                      transform_chinese(search_query)))
+    print("cache_key:", cache_key)
     songs = cache.get(cache_key)
     if not songs:
         songs = OnlineSongModel.objects.all().order_by('id')
@@ -72,11 +81,12 @@ def online_song_list(request):
     song_list = []
     paginator = Paginator(songs, per_page=50)  # 每页显示10条数据
     page_number = request.GET.get('page')
-    # cache_key = 'song_list_page_info_{}'.format(page_number)
-    # page_obj = cache.get(cache_key)
-    # if not page_obj:
-    page_obj = paginator.get_page(page_number)
-        # cache.set(cache_key, page_obj, timeout=60 * 10)
+    new_cache_key = '%s_%s' % (cache_key, page_number)
+    print("new_cache_key:", new_cache_key)
+    page_obj = cache.get(new_cache_key)
+    if not page_obj:
+        page_obj = paginator.get_page(page_number)
+    cache.set(new_cache_key, page_obj, timeout=60 * 10)
     for each_song in page_obj:
         song_list.append({"song_id": each_song.id,
                           "song_title": each_song.song_title.replace("'", " "),
@@ -85,7 +95,7 @@ def online_song_list(request):
                           "song_author": each_song.song_author.replace("'", " "),
                           "song_classification": each_song.song_classification.replace("'", " ")})
         each_song.song_format = each_song.audio_file.url.split(".")[-1].lower()
-
+    print("songs_json:", len(song_list), song_list)
     return render(request, 'user_front_page/online_songs/song_list.html',
                   {'page_obj': page_obj,
                    'song_classifications': song_classifications,

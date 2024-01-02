@@ -203,18 +203,36 @@
                 audio.volume = volume;
             });
         }
+                    // 获取Cookie
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
 
         function filterSong() {
             var song_classification_Filter = document.getElementById("song_classification_Filter").value;
             var song_author_Filter = document.getElementById("song_author_Filter").value;
-
+            const csrfToken = getCookie('csrftoken');
             $.ajax({
                 url: "{% url 'online_song_list' %}",
-                type: "GET",
+                type: "POST",
                 data: {
                     song_author: song_author_Filter,
                     song_classification: song_classification_Filter
                 },
+                headers: {
+                        'X-CSRFToken': csrfToken
+                    },
                 success: function (response) {
                     {#console.log("GGGresponse",response)#}
                     // 更新表格内容
@@ -230,15 +248,12 @@
         }
 
         function handleFilteredSongs(response) {
-            var songs_json = $(response).filter("#songs_json").text();
-            console.log("FFresponse:",songs_json);
+
+            console.log("FFresponse:",response.songs_json);
+            songs_json = JSON.parse(response.songs_json);
             var song_list = JSON.parse(songs_json);
-
-            // 更新其他相关操作，使用更新后的song_list数据
-            console.log("filterSong_songs.length:", song_list.length);
-
             setTimeout(function () {
-                for (var i = 0; i < songs.length; i++) {
+                for (var i = 0; i < song_list.length; i++) {
                     var songId = songs[i]['song_id'];
                     var audio = document.getElementById("audio-" + songId);
                     console.log("filterSong_audio:", audio);

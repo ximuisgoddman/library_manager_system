@@ -62,13 +62,20 @@ def transform_chinese(input_str):
 def online_song_list(request):
     song_classifications = OnlineSongModel.objects.values_list('song_classification', flat=True).distinct()
     song_authors = OnlineSongModel.objects.values_list('song_author', flat=True).distinct()
-    search_query = request.POST.get('search', '')
-    song_classification = request.POST.get('song_classification', '')
-    song_author = request.POST.get('song_author', '')
-    cache_key = 'online_song_list_{}'.format(
-        "%s_%s_%s" % (transform_chinese(song_classification),
-                      transform_chinese(song_author),
-                      transform_chinese(search_query)))
+    if request.method == 'POST':
+        search_query = request.POST.get('search', '')
+        song_author = request.POST.get('song_author', '')
+        song_classification = request.POST.get('song_classification', '')
+
+
+    else:
+        search_query = request.GET.get('search', '')
+        song_author = request.GET.get('song_author', '')
+        song_classification = request.GET.get('song_classification', '')
+
+    cache_key = 'online_song_list_{}'.format("%s_%s_%s" % (transform_chinese(song_classification),
+                                                           transform_chinese(song_author),
+                                                           transform_chinese(search_query)))
     print("cache_key:", cache_key)
     songs = cache.get(cache_key)
     if not songs:
@@ -76,10 +83,11 @@ def online_song_list(request):
         cache.set(cache_key, songs, timeout=60 * 120)
 
     songs = songs.filter(song_title__icontains=search_query)
+
     songs = songs.filter(song_author__icontains=song_author)
     songs = songs.filter(song_classification__icontains=song_classification)
     song_list = []
-    paginator = Paginator(songs, per_page=50)  # 每页显示10条数据
+    paginator = Paginator(songs, per_page=20)  # 每页显示20条数据
     page_number = request.GET.get('page')
     new_cache_key = '%s_%s' % (cache_key, page_number)
     print("new_cache_key:", new_cache_key)
@@ -96,13 +104,13 @@ def online_song_list(request):
                           "song_classification": each_song.song_classification.replace("'", " ")})
         each_song.song_format = each_song.audio_file.url.split(".")[-1].lower()
     print("songs_json:", len(song_list), song_list)
-    response_data = {'page_obj': page_obj,
-                     'song_classifications': song_classifications,
-                     'song_authors': song_authors,
-                     "songs_json": json.dumps(song_list)}
-    if search_query or song_classification or song_author:
-        return JsonResponse({"songs_json": json.dumps(song_list)})
-    return render(request, 'user_front_page/online_songs/song_list.html', response_data)
+    if request.method == 'POST':
+        return JsonResponse({"song_list": json.dumps(song_list)})
+    return render(request, 'user_front_page/online_songs/song_list.html',
+                  {'page_obj': page_obj,
+                   'song_classifications': song_classifications,
+                   'song_authors': song_authors,
+                   "songs_json": json.dumps(song_list)})
 
 
 @login_required

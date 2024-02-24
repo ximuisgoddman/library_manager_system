@@ -37,8 +37,8 @@ services:
       - db_vol:/var/lib/mysql:rw # 挂载数据库数据, 可读可写
       - ./compose/mysql/conf/my.cnf:/etc/mysql/my.cnf # 挂载配置文件
       - ./compose/mysql/init:/docker-entrypoint-initdb.d/ # 挂载数据初始化sql脚本
-    ports:
-      - "3306:3306" # 与配置文件保持一致
+#    ports:
+#      - "3306:3306" # 与配置文件保持一致
     restart: always
 
   web:
@@ -79,34 +79,3 @@ services:
     depends_on:
       - web
     restart: always
-#version: '3'
-#
-#services:
-#  db:
-#    image: mysql:8.0
-#    environment:
-#      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-#      MYSQL_DATABASE: ${DB_NAME}
-#      MYSQL_USER: ${DB_USER}
-#      MYSQL_PASSWORD: ${DB_PASSWORD}
-#    volumes:
-#      - db-data:/var/lib/mysql
-#    env_file:
-#      - .env
-#  redis:
-#    image: redis:latest
-#    ports:
-#      - "6379:6379"
-#
-#  web:
-#    build: .
-#    command: python manage.py runserver 0.0.0.0:8000
-#    volumes:
-#      - .:/app
-#    ports:
-#      - "8000:8000"
-#    depends_on:
-#      - db
-#      - redis
-#volumes:
-#  db-data:

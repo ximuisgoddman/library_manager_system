@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-jtx45ur93nc&)1yd(rc@uuh@*(=e#f1*lp*vp9%+^m5$vh-7xs
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['10.24.96.143', '127.0.0.1', '10.58.237.49', '192.168.1.3']
+ALLOWED_HOSTS = ['10.24.96.143', '127.0.0.1', '10.58.237.49', '192.168.1.3', 'django']
 
 # Application definition
 
@@ -92,7 +92,6 @@ MIDDLEWARE = [
 ]
 CORS_ALLOW_ALL_ORIGINS = True
 
-
 ROOT_URLCONF = 'library.urls'
 
 TEMPLATES = [
@@ -119,44 +118,44 @@ WSGI_APPLICATION = 'library.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default':
-        {
-            'ENGINE': 'django.db.backends.mysql',  # 数据库引擎
-            'NAME': os.getenv('DB_NAME'),  # 数据库名称
-            'HOST': os.getenv('DB_HOST'),  # 数据库地址，本机 ip 地址 127.0.0.1
-            'PORT': os.getenv('DB_PORT'),  # 端口
-            'USER': os.getenv('DB_USER'),  # 数据库用户名
-            'PASSWORD': os.getenv('DB_PASSWORD'),  # 数据库密码
-        }
-}
 # DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': os.getenv('DB_NAME'),
-#         'USER': os.getenv('DB_USER'),
-#         'PASSWORD': os.getenv('DB_PASSWORD'),
-#         'HOST': 'db',
-#         'PORT': '3306',
-#     }
+#     'default':
+#         {
+#             'ENGINE': 'django.db.backends.mysql',  # 数据库引擎
+#             'NAME': os.getenv('DB_NAME'),  # 数据库名称
+#             'HOST': os.getenv('DB_HOST'),  # 数据库地址，本机 ip 地址 127.0.0.1
+#             'PORT': os.getenv('DB_PORT'),  # 端口
+#             'USER': os.getenv('DB_USER'),  # 数据库用户名
+#             'PASSWORD': os.getenv('DB_PASSWORD'),  # 数据库密码
+#         }
 # }
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': os.path.join("D:/", "temp_files", "log.txt"),
-        },
-    },
-    'loggers': {
-        'myapp': {
-            'handlers': ['file'],
-            'level': 'DEBUG',
-        },
-    },
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.getenv('MYSQL_DATABASE'),
+        'USER': os.getenv('MYSQL_USER'),
+        'PASSWORD': os.getenv('MYSQL_PASSWORD'),
+        'HOST': 'db',
+        'PORT': '3306',
+    }
 }
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'handlers': {
+#         'file': {
+#             'level': 'DEBUG',
+#             'class': 'logging.FileHandler',
+#             'filename': os.path.join("D:/", "temp_files", "log.txt"),
+#         },
+#     },
+#     'loggers': {
+#         'myapp': {
+#             'handlers': ['file'],
+#             'level': 'DEBUG',
+#         },
+#     },
+# }
 
 # LOGGING = {
 #     'version': 1,
@@ -175,27 +174,27 @@ LOGGING = {
 # }
 
 
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/0",  # 指定了Redis服务器的位置,如果Redis服务器不在本地主机上，则应使用相应的IP地址或主机名来替换127.0.0.1
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        },
-        "KEY_PREFIX": "library:",  # 指定缓存键的前缀，以便将缓存键命名空间化
-    }
-}
-
 # CACHES = {
 #     "default": {
 #         "BACKEND": "django_redis.cache.RedisCache",
-#         "LOCATION": "redis://redis:6379/0",
+#         "LOCATION": "redis://127.0.0.1:6379/0",  # 指定了Redis服务器的位置,如果Redis服务器不在本地主机上，则应使用相应的IP地址或主机名来替换127.0.0.1
 #         "OPTIONS": {
 #             "CLIENT_CLASS": "django_redis.client.DefaultClient",
 #         },
-#         "KEY_PREFIX": "library:",
+#         "KEY_PREFIX": "library:",  # 指定缓存键的前缀，以便将缓存键命名空间化
 #     }
 # }
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://redis:6379/0",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
+        "KEY_PREFIX": "library:",
+    }
+}
 
 # 指定Django会话存储的后端和缓存别名
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"

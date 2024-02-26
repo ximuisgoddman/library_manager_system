@@ -33,7 +33,6 @@ ALLOWED_HOSTS = ['10.24.96.143', '127.0.0.1', '10.58.237.49', '192.168.1.3', 'dj
 # Application definition
 
 INSTALLED_APPS = [
-
     'lottery',
     'spaceship_shoot',
     'snake',
@@ -64,7 +63,6 @@ INSTALLED_APPS = [
     # 可添加需要的第三方登录
     'allauth.socialaccount.providers.github',
     'allauth.socialaccount.providers.weibo',
-
     'password_reset',
     'taggit',
     'ckeditor',

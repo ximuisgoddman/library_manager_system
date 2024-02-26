@@ -58,10 +58,20 @@ from django.conf.urls.static import static
 
 from django.urls import path, include
 
-from article import views as  article_view
+from article import views as article_view
+
+import os
+from django.http import HttpResponse
+
+
+def get_host_name(request):
+    host_name = os.environ.get('HOSTNAME', 'None')
+    info = f'您当前访问的主机是:{host_name}'
+    return HttpResponse(info)
+
 
 urlpatterns = [
-
+    path("say_hello/", get_host_name, name='get_host_name'),
     path("captcha/", include('captcha.urls')),
     path('admin/', admin.site.urls),
     path("login/", user_views.my_login, name='login'),

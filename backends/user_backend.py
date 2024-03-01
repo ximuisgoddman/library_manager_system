@@ -8,6 +8,8 @@ class UserBackend(BaseBackend):
             myuser = MyUser.objects.get(username=username)
             if myuser.check_password(password):
                 return myuser
+            else:
+                print("error user password")
         except MyUser.DoesNotExist as e:
             print("user no exist", e)
             return None

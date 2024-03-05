@@ -65,7 +65,6 @@ class MyUser(AbstractUser):
 
     def hash_code(s, salt=''):
         h = hashlib.sha256()
-        s += salt
         h.update(s.encode())
         return h.hexdigest()
 

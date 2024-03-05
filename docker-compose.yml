@@ -102,10 +102,9 @@ services:
   nginx:
     build: ./compose/nginx
     ports:
-      - "80:80"
-      - "443:443"
+      - "8088:8088"
     expose:
-      - "80"
+      - "8088"
     volumes:
       - ./compose/nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf # 挂载nginx配置文件
       - ./compose/nginx/ssl:/usr/share/nginx/ssl # 挂载ssl证书目录

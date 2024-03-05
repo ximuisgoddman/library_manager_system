@@ -6,6 +6,7 @@ class UserBackend(BaseBackend):
     def authenticate(self, request, username=None, password=None, **kwargs):
         try:
             myuser = MyUser.objects.get(username=username)
+            print("@@password:",password)
             if myuser.check_password(password):
                 return myuser
             else:

@@ -6,17 +6,17 @@ class UserBackend(BaseBackend):
     def authenticate(self, request, username=None, password=None, **kwargs):
         try:
             myuser = MyUser.objects.get(username=username)
-            print("@@password:",password)
+            print("@@password:", password)
             if myuser.check_password(password):
                 return myuser
             else:
                 print("error user password")
-        except MyUser.DoesNotExist as e:
+        except Exception as e:
             print("user no exist", e)
             return None
 
     def get_user(self, user_id):
         try:
             return MyUser.objects.get(pk=user_id)
-        except MyUser.DoesNotExist:
+        except Exception as e:
             return None

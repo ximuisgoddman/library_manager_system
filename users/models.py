@@ -51,7 +51,7 @@ class MyUser(AbstractUser):
         """
         # Your password hashing code goes here
         hash_password = hashlib.sha256(raw_password.encode('utf-8')).hexdigest()
-        print("user_check_password", self.password, hash_password, raw_password, self.hash_code(raw_password))
+        print("user_check_password", self.password, hash_password, raw_password, type(raw_password))
         p = check_password(self.password, raw_password)
         print("P:", p, self.password == raw_password, self.password == hash_password)
         return self.password == self.hash_code(raw_password)
@@ -63,9 +63,11 @@ class MyUser(AbstractUser):
         # 使用 Django 提供的 make_password 函数进行密码哈希
         self.password = make_password(raw_password)
 
-    def hash_code(s, salt=''):
+    @staticmethod
+    def hash_code(pwd, salt=''):
         h = hashlib.sha256()
-        h.update(s.encode())
+        pwd += salt
+        h.update(pwd.encode())
         return h.hexdigest()
 
     @property

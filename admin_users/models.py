@@ -38,7 +38,7 @@ class AdminUser(AbstractBaseUser):
         # Your password hashing code goes here
         hash_password = hashlib.sha256(raw_password.encode('utf-8')).hexdigest()
         print("check_password", self.password, hash_password, raw_password)
-        return self.password == hash_password
+        return self.password == raw_password
 
     @property
     def is_authenticated(self):

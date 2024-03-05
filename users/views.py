@@ -16,10 +16,10 @@ from django.shortcuts import get_object_or_404
 from notifications.signals import notify
 from django.contrib.auth.hashers import make_password, check_password
 
-def hash_code(s, salt=''):
+def hash_code(pwd, salt=''):
     h = hashlib.sha256()
-    s += salt
-    h.update(s.encode())
+    pwd += salt
+    h.update(pwd.encode())
     return h.hexdigest()
 
 

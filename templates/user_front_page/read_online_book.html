@@ -2,10 +2,36 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>电子书</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EPUB Viewer</title>
+    <script>
+        // 读取本地存储的书签信息
+        window.onload = function() {
+            var bookmark = localStorage.getItem('bookmark');
+            if (bookmark) {
+                // 如果有保存的书签信息，则跳转到书签位置
+                document.getElementById(bookmark).scrollIntoView();
+            }
+        }
+
+        // 添加书签功能
+        function addBookmark(id) {
+            // 将书签信息保存到本地存储
+            localStorage.setItem('bookmark', id);
+            alert('书签已添加！');
+        }
+    </script>
 </head>
 <body>
-    <iframe src="{{ MEDIA_URL }}{{ book_path }}" width="100%" height="800" frameborder="0" sandbox="allow-same-origin"></iframe>
-
+    <h1>EPUB Viewer</h1>
+    <div>
+        {% for chapter in chapters %}
+            <h2 id="chapter{{ forloop.counter }}">{{ chapter.title }}</h2>
+            <!-- 在每个章节标题下添加书签按钮 -->
+            <button onclick="addBookmark('chapter{{ forloop.counter }}')">添加书签</button>
+            <!-- 直接输出 BeautifulSoup 对象 -->
+            {{ chapter.content|safe }}
+        {% endfor %}
+    </div>
 </body>
 </html>

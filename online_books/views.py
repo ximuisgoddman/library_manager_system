@@ -107,19 +107,41 @@ def online_book_delete(request, book_id):
         return redirect('admin_online_book_list')
     return render(request, 'online_books/online_book_delete.html', {'book': book})
 
-
+from bs4 import BeautifulSoup
 @login_required
 def read_online_book(request, book_id):
     if not request.session.get("is_login", None):
         return redirect('/login/')
 
     book = get_object_or_404(OnlineBooksModel, pk=book_id)
-    # book_path = book.book_save_path
-    # print("book_path:", book_path)
-    # book_path = os.path.join("media/",book.book_save_path)  # 获取保存电子书的路径
     book_path = book.book_save_path
-    return render(request, "user_front_page/read_online_book.html", {"book_path": book_path})
+    print("book_path:", book_path)
+    # book_path = os.path.join("media/",book.book_save_path)  # 获取保存电子书的路径
+    # book_path = book.book_save_path
+    # return render(request, "user_front_page/read_online_book.html", {"book_path": book_path})
+        # EPUB 文件路径，根据你的实际情况修改
 
+    epub_file_path = os.path.join("media/",book.book_save_path)
+    print("epub_file_path:",epub_file_path)
+    # 读取 EPUB 文件
+    book = epub.read_epub(epub_file_path)
+
+    # 读取 EPUB 文件
+    # book = epub.read_epub('/path/to/your/epub/book.epub')
+
+    # 提取章节内容并转换为 HTML 格式
+    chapters = []
+    for item in book.get_items():
+        if item.get_type() == ebooklib.ITEM_DOCUMENT:
+            content = item.get_content()
+            # 使用 BeautifulSoup 解析 HTML 内容
+            soup = BeautifulSoup(content, 'html.parser')
+            # 获取章节标题和内容
+            title = item.get_name()
+            content = str(soup)
+            chapters.append({'title': title, 'content': content})
+    print(chapters)
+    return render(request, "user_front_page/read_online_book.html", {'chapters': chapters})
 
 @login_required
 def add_book_shelf(request, book_id):

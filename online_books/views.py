@@ -15,6 +15,9 @@ from django.http import HttpResponse
 import ebooklib
 from ebooklib import epub
 from io import BytesIO
+import shutil
+import requests
+import html
 
 
 def user_online_book_list(request):
@@ -107,41 +110,91 @@ def online_book_delete(request, book_id):
         return redirect('admin_online_book_list')
     return render(request, 'online_books/online_book_delete.html', {'book': book})
 
+
 from bs4 import BeautifulSoup
+
+import os
+import requests
+from bs4 import BeautifulSoup
+from ebooklib import epub
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+import zipfile
+import os
+import requests
+import shutil
+from bs4 import BeautifulSoup
+import zipfile
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+
+
 @login_required
 def read_online_book(request, book_id):
     if not request.session.get("is_login", None):
         return redirect('/login/')
 
     book = get_object_or_404(OnlineBooksModel, pk=book_id)
-    book_path = book.book_save_path
-    print("book_path:", book_path)
-    # book_path = os.path.join("media/",book.book_save_path)  # 获取保存电子书的路径
-    # book_path = book.book_save_path
-    # return render(request, "user_front_page/read_online_book.html", {"book_path": book_path})
-        # EPUB 文件路径，根据你的实际情况修改
+    epub_file_path = os.path.join("media/", book.book_save_path)
 
-    epub_file_path = os.path.join("media/",book.book_save_path)
-    print("epub_file_path:",epub_file_path)
-    # 读取 EPUB 文件
-    book = epub.read_epub(epub_file_path)
+    # 创建一个目录来保存 EPUB 文件中的资源
+    resource_dir = os.path.join("media/", str(book_id))
+    os.makedirs(resource_dir, exist_ok=True)
 
     # 读取 EPUB 文件
-    # book = epub.read_epub('/path/to/your/epub/book.epub')
+    with zipfile.ZipFile(epub_file_path, 'r') as epub_zip:
+        # 提取章节内容并转换为 HTML 格式
+        chapters = []
+        for filename in epub_zip.namelist():
+            if filename.endswith('.html'):
+                with epub_zip.open(filename, 'r') as f:
+                    # 解码 HTML 编码的字符串
+                    decoded_content = f.read().decode('utf-8')
+                    # 使用 BeautifulSoup 解析 HTML 内容
+                    soup = BeautifulSoup(decoded_content, 'html.parser')
 
-    # 提取章节内容并转换为 HTML 格式
-    chapters = []
-    for item in book.get_items():
-        if item.get_type() == ebooklib.ITEM_DOCUMENT:
-            content = item.get_content()
-            # 使用 BeautifulSoup 解析 HTML 内容
-            soup = BeautifulSoup(content, 'html.parser')
-            # 获取章节标题和内容
-            title = item.get_name()
-            content = str(soup)
-            chapters.append({'title': title, 'content': content})
-    print(chapters)
+                    # 处理图片和其他资源
+                    for img_tag in soup.find_all("img", src=True):
+                        src = img_tag["src"]
+                        print("SRC:", src)
+                        handle_resource(src, resource_dir, epub_zip)
+
+                    for link_tag in soup.find_all("link", href=True):
+                        href = link_tag["href"]
+                        handle_resource(href, resource_dir, epub_zip)
+
+                    for script_tag in soup.find_all("script", src=True):
+                        src = script_tag["src"]
+                        handle_resource(src, resource_dir, epub_zip)
+
+                    # 获取章节标题和内容
+                    title = os.path.basename(filename)
+                    content = str(soup)
+                    chapters.append({'title': title, 'content': content})
+
     return render(request, "user_front_page/read_online_book.html", {'chapters': chapters})
+
+
+def handle_resource(src, resource_dir, epub_zip):
+    if src.startswith("http"):
+        # 如果资源是一个 URL，则下载它
+        response = requests.get(src)
+        filename = os.path.basename(src)
+        dest_path = os.path.join(resource_dir, filename)
+        with open(dest_path, "wb") as f:
+            f.write(response.content)
+    else:
+        # 如果资源是一个文件路径，则拷贝它
+        try:
+            with epub_zip.open(src, 'r') as src_file:
+                filename = os.path.basename(src)
+                dest_path = os.path.join(resource_dir, filename)
+                with open(dest_path, "wb") as dest_file:
+                    print("src_file:", src_file)
+                    shutil.copyfileobj(src_file, dest_file)
+        except KeyError:
+            print(f"File {src} not found in EPUB archive.")
+
 
 @login_required
 def add_book_shelf(request, book_id):

@@ -9,7 +9,7 @@
     <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script src="{% static 'js/Particles.js' %}"></script>
-        <style>
+    <style>
         #particles-overlay {
             position: fixed;
             top: 0;
@@ -27,6 +27,8 @@
             z-index: 1;
             background-color: black;
         }
+
+
     </style>
 </head>
 
@@ -60,16 +62,43 @@
                 </li>
             </ul>
             <ul class="navbar-nav">
+                <!-- Django的 if 模板语句 -->
                 {% if user.is_authenticated %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'user_book_shelf_list' user.id %}">我的书架</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'user_borrow_record' user.id %}">我的借阅</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'my_favorite_music_list' %}">我喜欢</a>
-                </li>
+                <!-- 如果用户已经登录，则显示用户名下拉框 -->
+                <li class="nav-item dropdown">
+                    {% if user.avatar and user.avatar.url %}
+                    <a href="{% url 'article:user_article_list' user_id=user.id %}">
+                        <img src="{{ user.avatar.url }}" alt="{{ user.username }}" class="avatar-img"
+                             style="width: 38px; height: 38px; border-radius: 50%;">
+                    </a>
+                    {% else %}
+                    <a href="{% url 'article:user_article_list' user_id=user.id %}">
+                        <img src="{% static 'avatar/default.jpeg' %}" alt="{{ user.username }}" class="avatar-img"
+                             style="width: 38px; height: 38px; border-radius: 50%;">
+                    </a>
+                    {% endif %}
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {% if unread_count %}
+                        <svg viewBox="0 0 8 8" width="8px" height="8px">
+                            <circle cx="4" cy="4" r="4" fill="#ff6b6b"></circle>
+                        </svg>
+                        {% endif %}
+                    </a>
+
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{% url 'notice:list' %}">通知</a>
+                        {% if unread_count %}
+                        <span class="badge badge-danger">{{ unread_count }}</span>
+                        {% endif %}
+                        </a>
+                        <a class="dropdown-item" href="{% url 'article:article_create' %}">写文章</a>
+                        <a class="dropdown-item" href='{% url "user_edit" user.id %}'>个人信息</a>
+                        <a class="dropdown-item" href="#" onclick="user_delete()">删除用户</a>
+                        <a class="nav-link" href="{% url 'user_book_shelf_list' user.id %}">我的书架</a>
+                        <a class="nav-link" href="{% url 'user_borrow_record' user.id %}">我的借阅</a>
+                        <a class="nav-link" href="{% url 'my_favorite_music_list' %}">我喜欢</a>
+                    </div>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'logout' %}">登出</a>
                 </li>

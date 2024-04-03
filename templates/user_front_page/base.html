@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>我的图书馆</title>
     {% load static %}
@@ -28,102 +29,106 @@
             background-color: black;
         }
 
-
+        .navbar {
+            margin-bottom: 0;
+            /* 取消导航栏的底部外边距 */
+        }
     </style>
 </head>
 
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container">
-        <a class="navbar-brand" href="#">Welcom {{ user.username }}!</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top" style="height: 80px;">
+        <div class="container">
+            <a class="navbar-brand" href="#">Welcom {{ user.username }}!</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'home' %}">首页</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'user_online_book_list' %}">OnlineBooks</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'book_front_page' %}">OfflineBooks</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'online_song_list' %}">Music</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'relax_moment' %}">Game</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'article:article_list' %}">blog</a>
-                </li>
-            </ul>
-            <ul class="navbar-nav">
-                <!-- Django的 if 模板语句 -->
-                {% if user.is_authenticated %}
-                <!-- 如果用户已经登录，则显示用户名下拉框 -->
-                <li class="nav-item dropdown">
-                    {% if user.avatar and user.avatar.url %}
-                    <a href="{% url 'article:user_article_list' user_id=user.id %}">
-                        <img src="{{ user.avatar.url }}" alt="{{ user.username }}" class="avatar-img"
-                             style="width: 38px; height: 38px; border-radius: 50%;">
-                    </a>
-                    {% else %}
-                    <a href="{% url 'article:user_article_list' user_id=user.id %}">
-                        <img src="{% static 'avatar/default.jpeg' %}" alt="{{ user.username }}" class="avatar-img"
-                             style="width: 38px; height: 38px; border-radius: 50%;">
-                    </a>
-                    {% endif %}
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {% if unread_count %}
-                        <svg viewBox="0 0 8 8" width="8px" height="8px">
-                            <circle cx="4" cy="4" r="4" fill="#ff6b6b"></circle>
-                        </svg>
-                        {% endif %}
-                    </a>
-
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="{% url 'notice:list' %}">通知</a>
-                        {% if unread_count %}
-                        <span class="badge badge-danger">{{ unread_count }}</span>
-                        {% endif %}
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'home' %}">首页</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'user_online_book_list' %}">OnlineBooks</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'book_front_page' %}">OfflineBooks</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'online_song_list' %}">Music</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'relax_moment' %}">Game</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'article:article_list' %}">blog</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <!-- Django的 if 模板语句 -->
+                    {% if user.is_authenticated %}
+                    <!-- 如果用户已经登录，则显示用户名下拉框 -->
+                    <li class="nav-item dropdown">
+                        {% if user.avatar and user.avatar.url %}
+                        <a href="{% url 'article:user_article_list' user_id=user.id %}">
+                            <img src="{{ user.avatar.url }}" alt="{{ user.username }}" class="avatar-img"
+                                style="width: 38px; height: 38px; border-radius: 50%;">
                         </a>
-                        <a class="dropdown-item" href="{% url 'article:article_create' %}">写文章</a>
-                        <a class="dropdown-item" href='{% url "user_edit" user.id %}'>个人信息</a>
-                        <a class="dropdown-item" href="#" onclick="user_delete()">删除用户</a>
-                        <a class="nav-link" href="{% url 'user_book_shelf_list' user.id %}">我的书架</a>
-                        <a class="nav-link" href="{% url 'user_borrow_record' user.id %}">我的借阅</a>
-                        <a class="nav-link" href="{% url 'my_favorite_music_list' %}">我喜欢</a>
-                    </div>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'logout' %}">登出</a>
-                </li>
-                {% else %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'login' %}">登录</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'register' %}">注册</a>
-                </li>
-                {% endif %}
-            </ul>
-        </div>
-    </div>
-</nav>
-<div id="particles-overlay"></div>
-<div id="particles-js"></div>
-<div class="container my-4" style="position: relative; z-index: 1;background-color: white;">
-    {% block content %}
-    {% endblock %}
-</div>
+                        {% else %}
+                        <a href="{% url 'article:user_article_list' user_id=user.id %}">
+                            <img src="{% static 'avatar/default.jpeg' %}" alt="{{ user.username }}" class="avatar-img"
+                                style="width: 38px; height: 38px; border-radius: 50%;">
+                        </a>
+                        {% endif %}
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {% if unread_count %}
+                            <svg viewBox="0 0 8 8" width="8px" height="8px">
+                                <circle cx="4" cy="4" r="4" fill="#ff6b6b"></circle>
+                            </svg>
+                            {% endif %}
+                        </a>
 
-<!-- 加载 jQuery 库 -->
-<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
-<!-- 加载 Bootstrap JavaScript 库 -->
-<script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{% url 'notice:list' %}">通知</a>
+                            {% if unread_count %}
+                            <span class="badge badge-danger">{{ unread_count }}</span>
+                            {% endif %}
+                            </a>
+                            <a class="dropdown-item" href="{% url 'article:article_create' %}">写文章</a>
+                            <a class="dropdown-item" href='{% url "user_edit" user.id %}'>个人信息</a>
+                            <a class="dropdown-item" href="#" onclick="user_delete()">删除用户</a>
+                            <a class="dropdown-item" href="{% url 'user_book_shelf_list' user.id %}">我的书架</a>
+                            <a class="dropdown-item" href="{% url 'user_borrow_record' user.id %}">我的借阅</a>
+                            <a class="dropdown-item" href="{% url 'my_favorite_music_list' %}">我喜欢</a>
+                        </div>
+                    <li class="dropdown-item">
+                        <a class="nav-link" href="{% url 'logout' %}">登出</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">登录</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'register' %}">注册</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div id="particles-overlay"></div>
+    <div id="particles-js"></div>
+    <div class="container my-4 mt-0" style="position: relative; z-index: 1; background-color: white; top: 80px;">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <!-- 加载 jQuery 库 -->
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <!-- 加载 Bootstrap JavaScript 库 -->
+    <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
+
 </html>

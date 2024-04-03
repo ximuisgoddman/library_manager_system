@@ -264,6 +264,23 @@
 </style>
 
 
+{% block script %}
+
+<!-- csrf token -->
+<script src="{% static 'csrf.js' %}"></script>
+<!-- 粘性侧边栏 -->
+<script src="{% static 'sticky_sidebar/jquery.sticky-sidebar.min.js' %}"></script>
+<script type="text/javascript">
+    $('#sidebar').stickySidebar({
+        topSpacing: 20,
+        bottomSpacing: 20,
+    });
+</script>
+<!-- Ckeditor自适应 -->
+<script>
+    $(".django-ckeditor-widget").removeAttr('style');
+
+</script>
 <script>
     function followUser() {
         $.ajax({
@@ -280,10 +297,6 @@
         });
     }
 
-</script>
-
-
-<script>
     // 删除文章的函数
     function confirm_delete() {
         // 调用layer弹窗组件
@@ -311,16 +324,11 @@
         })
     }
 
-</script>
-{% endblock content %}
-
-{% block script %}
-
-<!-- csrf token -->
-<script src="{% static 'csrf.js' %}"></script>
-<script>
     // 点赞功能主函数
     function validate_is_like(url, id, likes) {
+        // 获取 CSRF 令牌
+        const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+
         // 取出 LocalStorage 中的数据
         let storage = window.localStorage;
         const storage_str_data = storage.getItem("my_blog_likes_data");
@@ -339,12 +347,15 @@
             // 用 Jquery 找到点赞数量，并 +1
             $('span#likes_number').text(likes + 1).css('color', '#dc3545');
         }
-        // 用 ajax 向后端发送 post 请求
-        $.post(
-            url,
-            // post 只是为了做 csrf 校验，因此数据为空
-            { "like_status": like_status },
-            function (result) {
+        // 用 ajax 向后端发送 post 请求，并包含 CSRF 令牌
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: {
+                'csrfmiddlewaretoken': csrfToken,
+                'like_status': like_status
+            },
+            success: function (result) {
                 console.log("result:", result);
                 if (result === 'add_success') {
                     // 尝试修改点赞数据
@@ -386,14 +397,20 @@
                 } else {
                     layer.msg("与服务器通信失败..过一会儿再试试呗~");
                 }
+            },
+            error: function (data) {
+                console.error('点赞请求失败:', data);
+                layer.msg("点赞请求失败，请稍后重试");
             }
-        );
-    };
+        });
+    }
 
     // 收藏功能主函数
     function validate_is_collect(url, id, collects) {
         console.log("collects:", collects);
         // 取出 LocalStorage 中的数据
+        // 获取 CSRF 令牌
+        const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
         let storage = window.localStorage;
         const storage_str_data = storage.getItem("my_blog_collects_data");
         let storage_json_data = JSON.parse(storage_str_data);
@@ -411,11 +428,14 @@
             $('span#collects_number').text(collects + 1).css('color', '#dc3545');
         }
         // 用 ajax 向后端发送 post 请求
-        $.post(
-            url,
-            // post 只是为了做 csrf 校验，因此数据为空
-            { "collect_status": collect_status },
-            function (result) {
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: {
+                'csrfmiddlewaretoken': csrfToken,
+                "collect_status": collect_status
+            },
+            success: function (result) {
                 if (result === 'add_success') {
                     // 尝试修改收藏数据
                     try {
@@ -457,9 +477,11 @@
                 } else {
                     layer.msg("与服务器通信失败..过一会儿再试试呗~");
                 }
-
+            }, error: function (data) {
+                console.error('点赞请求失败:', data);
+                layer.msg("点赞请求失败，请稍后重试");
             }
-        );
+        });
     };
     // 辅助主函数，验证点赞收藏状态
     function check_status(data, id) {
@@ -476,26 +498,7 @@
         };
     };
 
-</script>
-
-<!-- 粘性侧边栏 -->
-<script src="{% static 'sticky_sidebar/jquery.sticky-sidebar.min.js' %}"></script>
-<script type="text/javascript">
-    $('#sidebar').stickySidebar({
-        topSpacing: 20,
-        bottomSpacing: 20,
-    });
-
-</script>
-
-<!-- Ckeditor自适应 -->
-<script>
-    $(".django-ckeditor-widget").removeAttr('style');
-
-</script>
-
-<!-- 唤醒二级回复的 modal -->
-<script>
+    <!-- 唤醒二级回复的 modal -->
     // 加载 modal
     function load_modal(article_id, comment_id) {
         let modal_body = '#modal_body_' + comment_id;
@@ -524,3 +527,4 @@
     };
 </script>
 {% endblock script %}
+{% endblock %}

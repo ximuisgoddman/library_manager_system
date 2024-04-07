@@ -55,58 +55,59 @@
     {% endif %}
     {% endif %}
     <div class="row">
-    <div class="col-2 mt-4" id="author-sidebar">
-        <div class="sidebar__inner">
-            <h4><strong>{{ article_author.username }}</strong></h4>
-            <button class="btn {% if if_follow %}btn-secondary{% else %}btn-primary{% endif %} mt-2"
-                        onclick="followUser()">关注</button>
-            <hr>
-            <div>
+        <div class="col-2 mt-4" id="author-sidebar">
+            <div class="sidebar__inner">
+                <h4><strong>{{ article_author.username }}</strong></h4>
+                <button class="btn {% if if_follow %}btn-secondary{% else %}btn-primary{% endif %} mt-2"
+                        onclick="followUser()">关注
+                </button>
+                <hr>
+                <div>
+                    {% if article_author.avatar and article_author.avatar.url %}
+                    <a href="{% url 'article:user_article_list' user_id=article_author.id %}">
+                        <img src="{{ article_author.avatar.url }}" alt="{{ article_author.username }}"
+                             class="avatar-img"
+                             width="20" height="20" style="border-radius: 50%;">
+                    </a>
+                    {% else %}
+                    <a href="{% url 'article:user_article_list' user_id=article_author.id %}">
+                        <img src="{% static 'avatar/default.jpeg' %}" alt="{{ article_author.username }}"
+                             class="avatar-img"
+                             width="20" height="20" style="border-radius: 50%;">
+                    </a>
+                    {% endif %}
+                </div>
 
-                {% if article_author.avatar and article_author.avatar.url %}
-                <a href="{% url 'article:user_article_list' user_id=article_author.id %}">
-                    <img src="{{ article_author.avatar.url }}" alt="{{ article_author.username }}"
-                         class="avatar-img"
-                         style="width: 80px; height: 80px; border-radius: 50%;">
-                </a>
-                {% else %}
-                <a href="{% url 'article:user_article_list' user_id=article_author.id %}">
-                    <img src="{% static 'avatar/default.jpeg' %}" alt="{{ article_author.username }}"
-                         class="avatar-img"
-                         style="width: 80px; height: 80px; border-radius: 50%;">
-                </a>
-                {% endif %}
-            </div>
-            <div class="author-stats">
-                <div><strong>博文数：</strong> {{ article_numbers }}</div>
-                <div><strong>浏览量：</strong> {{ author_views }}</div>
-                <div><strong>收藏数：</strong> {{ author_likes }}</div>
-                <div><strong>点赞数：</strong> {{ author_collects }}</div>
-                <div><strong>粉丝数：</strong> {{ author_followers }}</div>
+                <div class="author-stats">
+                    <div><strong>博文数：</strong> {{ article_numbers }}</div>
+                    <div><strong>浏览量：</strong> {{ author_views }}</div>
+                    <div><strong>收藏数：</strong> {{ author_likes }}</div>
+                    <div><strong>点赞数：</strong> {{ author_collects }}</div>
+                    <div><strong>粉丝数：</strong> {{ author_followers }}</div>
+                </div>
             </div>
         </div>
-    </div>
-    <!-- 列表循环 -->
-    <div class="col-10 mt-2">
-        {% for article in articles %}
-        <!-- 文章内容 -->
+        <!-- 列表循环 -->
+        <div class="col-10 mt-2">
+            {% for article in articles %}
+            <!-- 文章内容 -->
 
-        <!-- 标题图 -->
-        {% if article.avatar %}
-        <div class="col-3">
-            <img src="{{ article.avatar.url }}"
-                 alt="avatar"
-                 style="max-width:100%; border-radius: 20px"
-            >
-        </div>
-        {% endif %}
+            <!-- 标题图 -->
+            {% if article.avatar %}
+            <div class="col-3">
+                <img src="{{ article.avatar.url }}"
+                     alt="avatar"
+                     style="max-width:100%; border-radius: 20px"
+                >
+            </div>
+            {% endif %}
 
-        <div class="col">
-            <!-- 栏目 -->
-            {% if article.column %}
-            <a role="button"
-               href="{% url 'article:article_list' %}?column={{ article.column.id }}"
-               class="btn btn-sm mb-2
+            <div class="col">
+                <!-- 栏目 -->
+                {% if article.column %}
+                <a role="button"
+                   href="{% url 'article:article_list' %}?column={{ article.column.id }}"
+                   class="btn btn-sm mb-2
                             {% if article.column.title == 'Django' %}
                                 btn-success
                             {% elif article.column.title == 'Java' %}
@@ -115,13 +116,13 @@
                                 btn-warning
                             {% endif %}
                         "
-            >
-                {{ article.column }}
-            </a>
-            {% endif %}
+                >
+                    {{ article.column }}
+                </a>
+                {% endif %}
 
-            <!-- 标签 -->
-            <span>
+                <!-- 标签 -->
+                <span>
                     {% for tag in article.tags.all %}
                         <a href="{% url 'article:article_list' %}?tag={{ tag }}"
                            class="badge badge-secondary"
@@ -131,45 +132,45 @@
                     {% endfor %}
                 </span>
 
-            <!-- 标题 -->
-            <h4>
-                <b>
-                    <a href="{% url 'article:article_detail' article.id %}"
-                       style="color: black;"
-                    >
-                        {{ article.title }}
-                    </a>
-                </b>
-            </h4>
-            <!-- 摘要 -->
-            <div>
-                <p style="color: gray;">
-                    {{ article.content|slice:'100' }}...
-                </p>
-            </div>
-            <!-- 注脚 -->
-            <p>
-                <!-- 附加信息 -->
-                <span>
+                <!-- 标题 -->
+                <h4>
+                    <b>
+                        <a href="{% url 'article:article_detail' article.id %}"
+                           style="color: black;"
+                        >
+                            {{ article.title }}
+                        </a>
+                    </b>
+                </h4>
+                <!-- 摘要 -->
+                <div>
+                    <p style="color: gray;">
+                        {{ article.content|slice:'100' }}...
+                    </p>
+                </div>
+                <!-- 注脚 -->
+                <p>
+                    <!-- 附加信息 -->
+                    <span>
                         <i class="fas fa-eye" style="color: lightskyblue;"></i>
                         {{ article.total_views }}&nbsp;&nbsp;&nbsp;
                     </span>
-                <span>
+                    <span>
                         <i class="fas fa-comments" style="color: yellowgreen;"></i>
                         {{ article.comments.count }}&nbsp;&nbsp;&nbsp;
                     </span>
-                <span>
+                    <span>
                         <i class="fas fa-clock" style="color: pink;"></i>
-                    <!--
-                    {{ article.created|date:'Y-m-d' }}
-                    -->
+                        <!--
+                        {{ article.created|date:'Y-m-d' }}
+                        -->
                         {{ article.created|timesince_zh }}
                     </span>
-            </p>
+                </p>
+            </div>
+            <hr style="width: 100%;"/>
+            {% endfor %}
         </div>
-        <hr style="width: 100%;"/>
-        {% endfor %}
-    </div>
     </div>
 
     <!-- 页码导航 -->
@@ -233,6 +234,7 @@
             }
         });
     }
+
 
 </script>
 {% endblock script %}

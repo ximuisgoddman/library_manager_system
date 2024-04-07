@@ -372,7 +372,8 @@ def article_update(request, id):
             if request.FILES.get('avatar'):
                 article.avatar = request.FILES.get('avatar')
             print("request.POST.get('tags'):", request.POST.get('tags'), len(request.POST.get('tags').split(',')))
-            article.tags.set(request.POST.get('tags'), clear=True)
+            tags_list = request.POST.get('tags').split(',')  # 将逗号分隔的字符串分割成单个标签
+            article.tags.set(tags_list, clear=True)
             article.save()
             # 完成后返回到修改后的文章中。需传入文章的 id 值
             return redirect("article:article_detail", id=id)
@@ -407,10 +408,22 @@ class IncreaseLikesView(View):
         if request.POST.get('like_status') == 'true':
             article.likes -= 1
             article.save()
+            notify.send(
+                request.user,
+                recipient=article.author,
+                verb='点赞了您的文章',
+                target=article,
+            )
             return HttpResponse('del_success')
         else:
             article.likes += 1
             article.save()
+            notify.send(
+                request.user,
+                recipient=article.author,
+                verb='取消点赞了您的文章',
+                target=article,
+            )
             return HttpResponse('add_success')
 
 
@@ -421,10 +434,23 @@ class IncreaseCollectsView(View):
         if request.POST.get('collect_status') == 'true':
             article.collects -= 1
             article.save()
+
+            notify.send(
+                request.user,
+                recipient=article.author,
+                verb='取消收藏了您的文章',
+                target=article,
+            )
             return HttpResponse('del_success')
         else:
             article.collects += 1
             article.save()
+            notify.send(
+                request.user,
+                recipient=article.author,
+                verb='收藏了您的文章',
+                target=article,
+            )
             return HttpResponse('add_success')
 
 

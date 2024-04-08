@@ -258,19 +258,22 @@
         }
 
         function handleFilteredSongs(response) {
-            console.log("FFresponse:", response.song_list);
-            songs = JSON.parse(response.song_list);
-            setTimeout(function () {
-                for (var i = 0; i < songs.length; i++) {
-                    var songId = songs[i]['song_id'];
-                    var audio = document.getElementById("audio-" + songId);
-                    console.log("filter_audio:", audio);
-                    // 添加 ended 事件处理程序
-                    audio.addEventListener("ended", playNextSong);
-                    audioElements[songId] = audio;
-                }
-            }, 1000);
-        }
+        console.log("FFresponse:", response.song_list);
+        var selectedValue = document.getElementById("song_author_Filter").value;
+        var song_classification_Filter = document.getElementById("song_classification_Filter").value;
+        window.location.href = "{% url 'online_song_list' %}?song_author=" + selectedValue + "&song_classification=" + song_classification_Filter;
+        songs = JSON.parse(response.song_list);
+        setTimeout(function () {
+            for (var i = 0; i < songs.length; i++) {
+                var songId = songs[i]['song_id'];
+                var audio = document.getElementById("audio-" + songId);
+                console.log("filter_audio:", audio);
+                // 添加 ended 事件处理程序
+                audio.addEventListener("ended", playNextSong);
+                audioElements[songId] = audio;
+            }
+        }, 1000);
+    }
 
         function updateCountdown(totalSeconds) {
             // 处理进度，显示剩余时间

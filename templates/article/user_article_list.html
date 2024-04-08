@@ -86,28 +86,37 @@
                     <div><strong>粉丝数：</strong> {{ author_followers }}</div>
                 </div>
             </div>
+            <div class="columns">
+                {% for each_column in all_columns%}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'article:article_list' %}?column={{ each_column }}">
+                        {{ each_column}}</a>
+                </li>
+                {%endfor%}
+            </div>
         </div>
         <!-- 列表循环 -->
         <div class="col-10 mt-2">
-            {% for article in articles %}
-            <!-- 文章内容 -->
+            <div class="row">
+                {% for article in articles %}
+                <!-- 文章内容 -->
 
-            <!-- 标题图 -->
-            {% if article.avatar %}
-            <div class="col-3">
-                <img src="{{ article.avatar.url }}"
-                     alt="avatar"
-                     style="max-width:100%; border-radius: 20px"
-                >
-            </div>
-            {% endif %}
+                <!-- 标题图 -->
+                {% if article.avatar %}
+                <div class="col-3">
+                    <img src="{{ article.avatar.url }}"
+                         alt="avatar"
+                         style="max-width:100%; border-radius: 20px"
+                    >
+                </div>
+                {% endif %}
 
-            <div class="col">
-                <!-- 栏目 -->
-                {% if article.column %}
-                <a role="button"
-                   href="{% url 'article:article_list' %}?column={{ article.column.id }}"
-                   class="btn btn-sm mb-2
+                <div class="col-7">
+                    <!-- 栏目 -->
+                    {% if article.column %}
+                    <a role="button"
+                       href="{% url 'article:article_list' %}?column={{ article.column.id }}"
+                       class="btn btn-sm mb-2
                             {% if article.column.title == 'Django' %}
                                 btn-success
                             {% elif article.column.title == 'Java' %}
@@ -116,13 +125,13 @@
                                 btn-warning
                             {% endif %}
                         "
-                >
-                    {{ article.column }}
-                </a>
-                {% endif %}
+                    >
+                        {{ article.column }}
+                    </a>
+                    {% endif %}
 
-                <!-- 标签 -->
-                <span>
+                    <!-- 标签 -->
+                    <span>
                     {% for tag in article.tags.all %}
                         <a href="{% url 'article:article_list' %}?tag={{ tag }}"
                            class="badge badge-secondary"
@@ -132,44 +141,45 @@
                     {% endfor %}
                 </span>
 
-                <!-- 标题 -->
-                <h4>
-                    <b>
-                        <a href="{% url 'article:article_detail' article.id %}"
-                           style="color: black;"
-                        >
-                            {{ article.title }}
-                        </a>
-                    </b>
-                </h4>
-                <!-- 摘要 -->
-                <div>
-                    <p style="color: gray;">
-                        {{ article.content|slice:'100' }}...
-                    </p>
-                </div>
-                <!-- 注脚 -->
-                <p>
-                    <!-- 附加信息 -->
-                    <span>
+                    <!-- 标题 -->
+                    <h4>
+                        <b>
+                            <a href="{% url 'article:article_detail' article.id %}"
+                               style="color: black;"
+                            >
+                                {{ article.title }}
+                            </a>
+                        </b>
+                    </h4>
+                    <!-- 摘要 -->
+                    <div>
+                        <p style="color: gray;">
+                            {{ article.content|slice:'100' }}...
+                        </p>
+                    </div>
+                    <!-- 注脚 -->
+                    <p>
+                        <!-- 附加信息 -->
+                        <span>
                         <i class="fas fa-eye" style="color: lightskyblue;"></i>
                         {{ article.total_views }}&nbsp;&nbsp;&nbsp;
                     </span>
-                    <span>
+                        <span>
                         <i class="fas fa-comments" style="color: yellowgreen;"></i>
                         {{ article.comments.count }}&nbsp;&nbsp;&nbsp;
                     </span>
-                    <span>
+                        <span>
                         <i class="fas fa-clock" style="color: pink;"></i>
-                        <!--
-                        {{ article.created|date:'Y-m-d' }}
-                        -->
+                            <!--
+                            {{ article.created|date:'Y-m-d' }}
+                            -->
                         {{ article.created|timesince_zh }}
                     </span>
-                </p>
+                    </p>
+                </div>
+                <hr style="width: 100%;"/>
+                {% endfor %}
             </div>
-            <hr style="width: 100%;"/>
-            {% endfor %}
         </div>
     </div>
 
@@ -213,7 +223,6 @@
             </span>
         </div>
     </div>
-
 </div>
 
 {% endblock content %}
@@ -224,7 +233,7 @@
         $.ajax({
             url: '{% url "follow_user" article_author.id 0 %}',  // 传递正确的作者ID
             type: 'POST',
-            data: { 'csrfmiddlewaretoken': '{{ csrf_token }}' },  // 添加 CSRF 令牌
+            data: {'csrfmiddlewaretoken': '{{ csrf_token }}'},  // 添加 CSRF 令牌
             dataType: 'json',
             success: function (data) {
                 alert(data.message);

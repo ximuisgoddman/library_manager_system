@@ -10,7 +10,12 @@
 
 <!-- 写入 base.html 中定义的 content -->
 {% block content %}
+<style>
+    .aside-content {
+            margin-top: 20px; /* 上间距 */
+            margin-bottom: 20px; /* 下间距 */}
 
+</style>
 <!-- 定义放置文章标题的div容器 -->
 <div class="container">
     <!-- 面包屑导航 -->
@@ -86,14 +91,25 @@
                     <div><strong>粉丝数：</strong> {{ author_followers }}</div>
                 </div>
             </div>
-            <div class="columns">
-                {% for each_column in all_columns%}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'article:article_list' %}?column={{ each_column }}">
-                        {{ each_column}}</a>
-                </li>
-                {%endfor%}
+            <div class="aside-content">
+                <h3>分类专栏</h3>
+                <ul>
+                    {% for column_name, column_count in column_info.items %}
+                    <li>
+                        <a class="clearfix special-column-name"
+                           href="{% url 'article:article_list' %}?column={{ column_name }}">
+                            <div class="special-column-bar"></div>
+                            <!-- 添加专栏图标，可根据需要修改图标链接 -->
+                            <span class="title oneline">{{ column_name }}</span>
+                            <span class="special-column-num">{{ column_count }}篇</span>
+                        </a>
+                        <!-- 显示专栏文章数目 -->
+                    </li>
+                    {% endfor %}
+                </ul>
             </div>
+
+
         </div>
         <!-- 列表循环 -->
         <div class="col-10 mt-2">
@@ -243,6 +259,10 @@
             }
         });
     }
+
+
+
+
 
 
 </script>

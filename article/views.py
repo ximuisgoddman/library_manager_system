@@ -176,7 +176,7 @@ def user_article_list(request, user_id):
 
     if_follow = article_author.following.filter(id=request.user.id).exists()
     print("if_follow:", if_follow)
-
+    all_columns = ArticleColumn.objects.all()
     context = {
         'if_follow': if_follow,
         'author_followers': author_followers,
@@ -190,6 +190,7 @@ def user_article_list(request, user_id):
         'search': search,
         'column': column,
         'tag': tag,
+        'all_columns': all_columns
     }
     # render函数：载入模板，并返回context对象
     return render(request, 'article/user_article_list.html', context)

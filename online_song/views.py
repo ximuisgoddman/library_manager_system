@@ -62,16 +62,9 @@ def transform_chinese(input_str):
 def online_song_list(request):
     song_classifications = OnlineSongModel.objects.values_list('song_classification', flat=True).distinct()
     song_authors = OnlineSongModel.objects.values_list('song_author', flat=True).distinct()
-    if request.method == 'POST':
-        search_query = request.POST.get('search', '')
-        song_author = request.POST.get('song_author', '')
-        song_classification = request.POST.get('song_classification', '')
-
-
-    else:
-        search_query = request.GET.get('search', '')
-        song_author = request.GET.get('song_author', '')
-        song_classification = request.GET.get('song_classification', '')
+    search_query = request.GET.get('search', '')
+    song_author = request.GET.get('song_author', '')
+    song_classification = request.GET.get('song_classification', '')
 
     cache_key = 'online_song_list_{}'.format("%s_%s_%s" % (transform_chinese(song_classification),
                                                            transform_chinese(song_author),

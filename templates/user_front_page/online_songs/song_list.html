@@ -38,79 +38,63 @@
 
 <table class="table" id="songTable">
     <thead>
-        <tr>
-            <th scope="col">歌名</th>
-            <th>
-                <label for="song_author_Filter">歌手:</label>
-                <select id="song_author_Filter" class="form-select form-select-sm" style="width: 50px;"
+    <tr>
+        <th scope="col">歌名</th>
+        <th>
+            <label for="song_author_Filter">歌手:</label>
+            <select id="song_author_Filter" class="form-select form-select-sm" style="width: 50px;"
                     onchange="filterSong()">
-                    <option value="">All</option>
-                    {% for song_author in song_authors %}
-                    {% if song_author == selected_song_author %}
-                    <option value="{{ song_author }}" selected>{{ song_author }}</option>
-                    {% else %}
-                    <option value="{{ song_author }}">{{ song_author }}</option>
-                    {% endif %}
-                    {% endfor %}
-                </select>
-            </th>
-            <th>
-                <label for="song_classification_Filter">专辑:</label>
-                <select id="song_classification_Filter" class="form-select form-select-sm" style="width: 50px;"
-                    onchange="filterSong()">
-                    <option value="">All</option>
-                    {% for song_classification in song_classifications %}
-                    {% if song_classification == selected_song_classification %}
-                    <option value="{{ song_classification }}" selected>{{ song_classification }}</option>
-                    {% else %}
-                    <option value="{{ song_classification }}">{{ song_classification }}</option>
-                    {% endif %}
-                    {% endfor %}
-                </select>
-            </th>
-            <th scope="col">时长</th>
-            <th scope="col">操作</th>
-        </tr>
+                <option value="">All</option>
+                {% for song_author in song_authors %}
+                {% if song_author == selected_song_author %}
+                <option value="{{ song_author }}" selected>{{ song_author }}</option>
+                {% else %}
+                <option value="{{ song_author }}">{{ song_author }}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+        </th>
+        <th scope="col">时长</th>
+        <th scope="col">操作</th>
+    </tr>
     </thead>
     <tbody>
-        {% for song in page_obj %}
-        <tr>
-            <td>{{ song.song_title }}</td>
-            <td>{{ song.song_author }}</td>
-            <!-- <td>{{ song.song_classification }}</td> -->
-            <td>{{ song.song_format }}</td>
-            <td>{{ song.song_duration }}</td>
+    {% for song in page_obj %}
+    <tr>
+        <td>{{ song.song_title }}</td>
+        <td>{{ song.song_author }}</td>
+        <td>{{ song.song_duration }}</td>
 
-            <td>
-                <audio id="audio-{{ song.id }}">
-                    {% if song.song_format == "flac" %}
-                    <source src="{{ song.audio_file.url }}" type="audio/flac">
-                    {% elif song.song_format == "wav" %}
-                    <source src="{{ song.audio_file.url }}" type="audio/wav">
-                    {% elif song.song_format == "m4a" %}
-                    <source src="{{ song.audio_file.url }}" type="audio/mp4">
-                    {% else %}
-                    <!-- 如果无法判断文件格式，默认使用mp3格式 -->
-                    <source src="{{ song.audio_file.url }}" type="audio/mpeg">
-                    {% endif %}
-                </audio>
-                <button id="play-button-{{ song.id }}" onclick="playSong('{{ song.id }}')">播放</button>
-                <button id="add_to_favorite-{{ song.id }}">
-                    {% if user.is_authenticated %}
-                    <script>
-                        document.getElementById("add_to_favorite-{{ song.id }}").addEventListener("click", function () {
-                            addToFavorite('{{ song.id }}');
-                        });
+        <td>
+            <audio id="audio-{{ song.id }}">
+                {% if song.song_format == "flac" %}
+                <source src="{{ song.audio_file.url }}" type="audio/flac">
+                {% elif song.song_format == "wav" %}
+                <source src="{{ song.audio_file.url }}" type="audio/wav">
+                {% elif song.song_format == "m4a" %}
+                <source src="{{ song.audio_file.url }}" type="audio/mp4">
+                {% else %}
+                <!-- 如果无法判断文件格式，默认使用mp3格式 -->
+                <source src="{{ song.audio_file.url }}" type="audio/mpeg">
+                {% endif %}
+            </audio>
+            <button id="play-button-{{ song.id }}" onclick="playSong('{{ song.id }}')">播放</button>
+            <button id="add_to_favorite-{{ song.id }}">
+                {% if user.is_authenticated %}
+                <script>
+                    document.getElementById("add_to_favorite-{{ song.id }}").addEventListener("click", function () {
+                        addToFavorite('{{ song.id }}');
+                    });
 
-                    </script>
-                    喜欢
-                    {% else %}
-                    <a href="{% url 'login' %}">喜欢</a>
-                    {% endif %}
-                </button>
-            </td>
-        </tr>
-        {% endfor %}
+                </script>
+                喜欢
+                {% else %}
+                <a href="{% url 'login' %}">喜欢</a>
+                {% endif %}
+            </button>
+        </td>
+    </tr>
+    {% endfor %}
     </tbody>
 </table>
 {% if page_obj.paginator.num_pages > 1 %}
@@ -118,19 +102,19 @@
     <span class="step-links">
         {% if page_obj.has_previous %}
         <a
-            href="?page=1{% if request.GET.song_author %}&song_author={{ request.GET.song_author }}{% endif %}{% if request.GET.song_classification %}&song_classification={{ request.GET.song_classification }}{% endif %}">&laquo;
+                href="?page=1{% if request.GET.song_author %}&song_author={{ request.GET.song_author }}{% endif %}{% if request.GET.song_classification %}&song_classification={{ request.GET.song_classification }}{% endif %}">&laquo;
             第一页</a>
         <a
-            href="?page={{ page_obj.previous_page_number }}{% if request.GET.song_author %}&song_author={{ request.GET.song_author }}{% endif %}{% if request.GET.song_classification %}&song_classification={{ request.GET.song_classification }}{% endif %}">上一页</a>
+                href="?page={{ page_obj.previous_page_number }}{% if request.GET.song_author %}&song_author={{ request.GET.song_author }}{% endif %}{% if request.GET.song_classification %}&song_classification={{ request.GET.song_classification }}{% endif %}">上一页</a>
         {% endif %}
 
         <span class="current-page">{{ page_obj.number }}</span>
 
         {% if page_obj.has_next %}
         <a
-            href="?page={{ page_obj.next_page_number }}{% if request.GET.song_author %}&song_author={{ request.GET.song_author }}{% endif %}{% if request.GET.song_classification %}&song_classification={{ request.GET.song_classification }}{% endif %}">下一页</a>
+                href="?page={{ page_obj.next_page_number }}{% if request.GET.song_author %}&song_author={{ request.GET.song_author }}{% endif %}{% if request.GET.song_classification %}&song_classification={{ request.GET.song_classification }}{% endif %}">下一页</a>
         <a
-            href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.song_author %}&song_author={{ request.GET.song_author }}{% endif %}{% if request.GET.song_classification %}&song_classification={{ request.GET.song_classification }}{% endif %}">最后一页
+                href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.song_author %}&song_author={{ request.GET.song_author }}{% endif %}{% if request.GET.song_classification %}&song_classification={{ request.GET.song_classification }}{% endif %}">最后一页
             &raquo;</a>
         {% endif %}
     </span>
@@ -235,23 +219,20 @@
     }
 
     function filterSong() {
-        var selectedClassificationValue = document.getElementById("song_classification_Filter").value;
         var selectedAuthorValue = document.getElementById("song_author_Filter").value;
         $.ajax({
             url: "{% url 'online_song_list' %}",
             type: "GET",
             data: {
                 song_author: selectedAuthorValue,
-                song_classification: selectedClassificationValue
             },
             success: function (response) {
                 // 更新表格内容
                 $("#songTable tbody").html($(response).find("#songTable tbody").html());
                 // 重新添加 ended 事件监听器（排除当前正在播放的歌曲ID）
-                $("#song_classification_Filter").val(selectedClassificationValue);
                 $("#song_author_Filter").val(selectedAuthorValue);
                 console.log("GGGresponse", response)
-                handleFilteredSongs(response, selectedAuthorValue, selectedClassificationValue);
+                handleFilteredSongs(response, selectedAuthorValue);
 
             },
             error: function (xhr, status, error) {
@@ -260,19 +241,14 @@
         });
     }
 
-    function handleFilteredSongs(response, selectedAuthorValue, selectedClassificationValue) {
+    function handleFilteredSongs(response, selectedAuthorValue) {
         var url = "{% url 'online_song_list' %}?";
 
         if (selectedAuthorValue) {
             url += "song_author=" + selectedAuthorValue;
         }
 
-        if (selectedClassificationValue) {
-            url += "&song_classification=" + selectedClassificationValue;
-        }
-
         window.location.href = url;
-
         songs = JSON.parse(response.song_list);
         setTimeout(function () {
             for (var i = 0; i < songs.length; i++) {

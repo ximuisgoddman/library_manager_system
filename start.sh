@@ -17,6 +17,7 @@ python manage.py makemigrations&&
 python manage.py migrate&&
 uwsgi --ini uwsgi.ini&&
 python manage.py runserver 0.0.0.0:8000&&
+celery -A library worker -l info -P eventlet&&
 tail -f /dev/null
 
 exec "$@"

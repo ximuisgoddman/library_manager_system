@@ -98,14 +98,13 @@ ROOT_URLCONF = 'library.urls'
 # 可以看到debug窗口的ip
 INTERNAL_IPS = ['127.0.0.1']
 DEBUG_TOOLBAR_CONFIG = {
-    'SHOW_TOOLBAR_CALLBACK': lambda request: True,  # 是否显示工具栏的回调函数
+    'SHOW_TOOLBAR_CALLBACK': lambda request: False,  # 是否显示工具栏的回调函数
     'SHOW_COLLAPSED': True,  # 是否折叠工具栏的初始状态
     'ENABLE_STACKTRACES': True,  # 是否启用堆栈跟踪面板
     'RESULTS_CACHE_SIZE': 10,  # 缓存的最大查询数量
     'RESULTS_STORE_SIZE': 10,  # 存储的最大查询数量
     'SHOW_TEMPLATE_CONTEXT': True,  # 是否显示模板上下文
     'SHOW_SQL_TOTAL_TIME': True,  # 是否显示 SQL 查询的总时间
-    # 其他选项...
 }
 
 TEMPLATES = [
@@ -313,3 +312,14 @@ CKEDITOR_CONFIGS = {
 SITE_ID = 1
 # 重定向 url
 LOGIN_REDIRECT_URL = '/home'
+broker_url = 'redis://127.0.0.1:6379/0'
+
+# 设置存储结果的后台
+result_backend = 'redis://127.0.0.1:6379/0'
+
+# 可接受的内容格式
+accept_content = ["json"]
+# 任务序列化数据格式
+task_serializer = "json"
+# 结果序列化数据格式
+result_serializer = "json"

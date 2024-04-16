@@ -12,6 +12,7 @@ import json
 from django.core.paginator import Paginator
 from django.core.cache import cache
 import base64
+from online_song.tasks import test_celery
 
 
 def upload_song(request):
@@ -21,24 +22,13 @@ def upload_song(request):
             if 'file_upload' in request.FILES:
                 # 处理文件上传逻辑
                 file = request.FILES['file_upload']
-                # 在这里解析文件数据并将数据写入数据库
+                # 在这里异步解析文件数据并将数据写入数据库
                 print("file:", file)
-                songs_to_create = []
-                file_wrapper = TextIOWrapper(file, encoding='utf-8')
-                reader = csv.reader(file_wrapper)
-                for row in reader:
-                    song_filename = row[0].strip()
-                    song_full_path = os.path.join('audio', song_filename)
-                    song = OnlineSongModel(
-                        song_author=row[1],
-                        song_title=row[2],
-                        audio_file=song_full_path,
-                        song_duration=row[4],
-                        song_classification=row[3]
-                    )
-                    songs_to_create.append(song)
-                    # song.save()
-                OnlineSongModel.objects.bulk_create(songs_to_create)
+                result = test_celery.delay(str(file))
+                if result.ready():
+                    print("任务已完成")
+                else:
+                    print("任务还在执行中")
         else:
             song = form.save()
             song.save()

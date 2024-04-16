@@ -62,6 +62,7 @@ from article import views as article_view
 
 import os
 from django.http import HttpResponse
+import debug_toolbar
 
 
 def get_host_name(request):
@@ -146,7 +147,7 @@ urlpatterns = [
     # home
     # path('home/', article_list, name='home'),
     # 重置密码app
-    path('password-reset/', include('password_reset.urls')),
+    # path('password-reset/', include('password_reset.urls')),
     # 新增代码，配置app的url
     path('article/', include('article.urls', namespace='article')),
     # 评论
@@ -160,5 +161,9 @@ urlpatterns = [
     path('demo/', article.views.demo, name='demo'),
     path("upload/", article.views.upload, name="upload"),
 ]
+from django.conf import settings
+
+if settings.DEBUG:
+    urlpatterns.extend([path(r'^__debug__/', include(debug_toolbar.urls))])
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

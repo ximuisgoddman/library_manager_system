@@ -51,29 +51,21 @@ def transform_chinese(input_str):
 
 def online_song_list(request):
     all_songs = OnlineSongModel.objects.all().order_by('id')
-    song_authors = all_songs.values_list('song_author', flat=True).distinct()
+    all_song_authors = all_songs.values_list('song_author', flat=True)
     search_query = request.GET.get('search', '')
     song_author = request.GET.get('song_author', '')
 
-    cache_key = 'online_song_list_{}_{}'.format(transform_chinese(song_author),
-                                                transform_chinese(search_query))
-    print("cache_key:", cache_key)
-    songs = cache.get(cache_key)
-    if not songs:
-        if search_query:
-            all_songs = all_songs.filter(song_title__icontains=search_query)
-        if song_author:
-            all_songs = all_songs.filter(song_author__icontains=song_author)
-        songs = all_songs
-
-        cache.set(cache_key, songs, timeout=60 * 120)
-    else:
-        print("use cache")
+    if search_query:
+        all_songs = all_songs.filter(song_title__icontains=search_query)
+    if song_author:
+        all_songs = all_songs.filter(song_author__icontains=song_author)
 
     song_list = []
-    paginator = Paginator(songs, per_page=20)  # 每页显示20条数据
+    paginator = Paginator(all_songs, per_page=20)  # 每页显示20条数据
     page_number = request.GET.get('page')
-    new_cache_key = '%s_%s' % (cache_key, page_number)
+    new_cache_key = 'online_song_list_{}_{}_{}'.format(transform_chinese(song_author),
+                                                       transform_chinese(search_query),
+                                                       page_number)
     print("new_cache_key:", new_cache_key)
     page_obj = cache.get(new_cache_key)
     if not page_obj:
@@ -90,7 +82,7 @@ def online_song_list(request):
         return JsonResponse({"song_list": json.dumps(song_list)})
     return render(request, 'user_front_page/online_songs/song_list.html',
                   {'page_obj': page_obj,
-                   'song_authors': set(song_authors),
+                   'song_authors': set(all_song_authors),
                    "songs_json": json.dumps(song_list)})
 
 

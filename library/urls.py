@@ -164,6 +164,6 @@ urlpatterns = [
 from django.conf import settings
 
 if settings.DEBUG:
-    urlpatterns.extend([path(r'^__debug__/', include(debug_toolbar.urls))])
+    urlpatterns.extend([path('__debug__/', include(debug_toolbar.urls))])
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

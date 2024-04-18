@@ -98,7 +98,7 @@ ROOT_URLCONF = 'library.urls'
 # 可以看到debug窗口的ip
 INTERNAL_IPS = ['127.0.0.1']
 DEBUG_TOOLBAR_CONFIG = {
-    'SHOW_TOOLBAR_CALLBACK': lambda request: True,  # 是否显示工具栏的回调函数
+    'SHOW_TOOLBAR_CALLBACK': lambda request: False,  # 是否显示工具栏的回调函数
     'SHOW_COLLAPSED': True,  # 是否折叠工具栏的初始状态
     'ENABLE_STACKTRACES': True,  # 是否启用堆栈跟踪面板
     'RESULTS_CACHE_SIZE': 10,  # 缓存的最大查询数量

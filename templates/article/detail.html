@@ -295,19 +295,29 @@
 </script>
 <script>
     function followUser() {
-        $.ajax({
-            url: '{% url "follow_user" article.author.id article.id %}',  // 传递正确的作者ID
-            type: 'POST',
-            data: { 'csrfmiddlewaretoken': '{{ csrf_token }}' },  // 添加 CSRF 令牌
-            dataType: 'json',
-            success: function (data) {
-                alert(data.message);
-            },
-            error: function (data) {
-                alert('关注失败，请重试');
-            }
-        });
+    // 判断用户是否已登录
+    var isLogin = '{{ request.user.is_authenticated }}';
+    console.log("isLogin:",isLogin);
+    if (!isLogin) {
+        // 如果用户未登录，则重定向到登录页面
+        window.location.href = '/login/';
+        return;
     }
+
+    // 如果用户已登录，则执行关注操作
+    $.ajax({
+        url: '{% url "follow_user" article.author.id article.id %}',  // 传递正确的作者ID
+        type: 'POST',
+        data: { 'csrfmiddlewaretoken': '{{ csrf_token }}' },  // 添加 CSRF 令牌
+        dataType: 'json',
+        success: function (data) {
+            alert(data.message);
+        },
+        error: function (data) {
+            alert('关注失败，请重试');
+        }
+    });
+}
 
     // 删除文章的函数
     function confirm_delete() {

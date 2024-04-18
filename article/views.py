@@ -531,9 +531,11 @@ class ArticleCreateView(CreateView):
     template_name = 'article/create_by_class_view.html'
 
 
-@login_required(login_url='login/')
+@login_required
 def follow_user(request, author_id, article_id):
-    print("article_id@@:", article_id)
+    print("article_id@@:", article_id,request.session.get("is_login"))
+    if not request.session.get("is_login", None):
+        return redirect('/login/')
     article_author = get_object_or_404(MyUser, id=author_id)
 
     # Check if the user is not already following

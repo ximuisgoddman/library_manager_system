@@ -33,7 +33,7 @@ def my_login(request):
     :param request:
     :return:
     """
-    print("request.POST:", request.POST.get("user_type"))
+    print("@request.POST:", request.POST.get("user_type"))
     if request.method == "POST":
         if request.POST.get("user_type") == "normal":
             login_form = users_form.UserForm(request.POST)

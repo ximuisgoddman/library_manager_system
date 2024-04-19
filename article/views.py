@@ -41,6 +41,7 @@ import uuid
 
 from django.http import JsonResponse, HttpResponse
 from notifications.signals import notify
+from django.core.cache import cache
 
 
 @csrf_exempt
@@ -102,12 +103,17 @@ def article_list(request):
         # 按热度排序博文
         article_list = article_list.order_by('-total_views')
 
-    # 每页显示 1 篇文章
-    paginator = Paginator(article_list, 3)
+    # 每页显示 10 篇文章
+    paginator = Paginator(article_list, 10)
     # 获取 url 中的页码
     page = request.GET.get('page')
+    cache_key = "article_page_%s" % page
     # 将导航对象相应的页码内容返回给 articles
-    articles = paginator.get_page(page)
+    articles = cache.get(cache_key)
+    if not articles:
+        articles = paginator.get_page(page)
+        cache.set(cache_key, articles, timeout=60 * 5)  # 设置缓存时间为 5 分钟
+
     # 需要传递给模板（templates）的对象
     context = {
         'articles': articles,
@@ -120,7 +126,6 @@ def article_list(request):
     return render(request, 'article/list.html', context)
 
 
-@login_required(login_url='login/')
 def user_article_list(request, user_id):
     # 从 url 中提取查询参数
     search = request.GET.get('search')
@@ -155,15 +160,18 @@ def user_article_list(request, user_id):
         # 按热度排序博文
         article_list = article_list.order_by('-total_views')
 
-    # 每页显示 1 篇文章
-    paginator = Paginator(article_list, 3)
+    # 每页显示 10 篇文章
+    paginator = Paginator(article_list, 10)
     # 获取 url 中的页码
     page = request.GET.get('page')
     # 将导航对象相应的页码内容返回给 articles
     articles = paginator.get_page(page)
     # 需要传递给模板（templates）的对象
-
-    author_articles = ArticlePost.objects.filter(author_id=article_author)
+    cache_key = "article_for_%s" % article_author
+    author_articles = cache.get(cache_key)
+    if not author_articles:
+        author_articles = ArticlePost.objects.filter(author_id=article_author)
+        cache.set(cache_key, author_articles, timeout=60 * 5)  # 设置缓存时间为 5 分钟
     article_numbers = author_articles.count()
     author_likes = 0
     author_collects = 0
@@ -257,7 +265,7 @@ def article_detail(request, id):
         author_views += each_article.total_views
 
     if_follow = article_author.following.filter(id=request.user.id).exists()
-    print("if_follow:", if_follow)
+    print("@if_follow:", if_follow)
 
     context = {
         'if_follow': if_follow,
@@ -533,7 +541,7 @@ class ArticleCreateView(CreateView):
 
 @login_required
 def follow_user(request, author_id, article_id):
-    print("article_id@@:", article_id,request.session.get("is_login"))
+    print("article_id@@:", article_id, request.session.get("is_login"))
     if not request.session.get("is_login", None):
         return redirect('/login/')
     article_author = get_object_or_404(MyUser, id=author_id)

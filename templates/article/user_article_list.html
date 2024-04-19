@@ -12,8 +12,9 @@
 {% block content %}
 <style>
     .aside-content {
-            margin-top: 20px; /* 上间距 */
-            margin-bottom: 20px; /* 下间距 */}
+        margin-top: 20px; /* 上间距 */
+        margin-bottom: 20px; /* 下间距 */
+    }
 
 </style>
 <!-- 定义放置文章标题的div容器 -->
@@ -241,11 +242,18 @@
     </div>
 </div>
 
-{% endblock content %}
 
 {% block script %}
 <script>
     function followUser() {
+        // 判断用户是否已登录
+        var isLogin = {% if request.user.is_authenticated %}true{% else %}false{% endif %};
+        if (!isLogin) {
+            console.log("need login");
+            // 如果用户未登录，则重定向到登录页面
+            window.location.href = '/login/';
+            return;
+        }
         $.ajax({
             url: '{% url "follow_user" article_author.id 0 %}',  // 传递正确的作者ID
             type: 'POST',
@@ -255,15 +263,12 @@
                 alert(data.message);
             },
             error: function (data) {
-                alert('关注失败，请重试');
+                alert(data.message);
             }
         });
     }
 
 
-
-
-
-
 </script>
 {% endblock script %}
+{% endblock content %}

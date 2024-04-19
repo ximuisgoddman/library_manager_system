@@ -262,11 +262,12 @@
         transform: translate3d(0, 0, 0);
         will-change: position, transform;
     }
+
     /* 控制文章中图片的最大宽度为100% */
-.article-content img {
-    max-width: 100%;
-    height: 100%; /* 保持图片高度自适应 */
-}
+    .article-content img {
+        max-width: 100%;
+        height: 100%; /* 保持图片高度自适应 */
+    }
 
 
 </style>
@@ -278,46 +279,41 @@
 <script src="{% static 'csrf.js' %}"></script>
 <!-- 粘性侧边栏 -->
 <script src="{% static 'sticky_sidebar/jquery.sticky-sidebar.min.js' %}"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
     $('#sidebar').stickySidebar({
         topSpacing: 20,
         bottomSpacing: 20,
     });
-
-
 </script>
 <!-- Ckeditor自适应 -->
 <script>
     $(".django-ckeditor-widget").removeAttr('style');
-
-
-
 </script>
 <script>
-    function followUser() {
     // 判断用户是否已登录
-    var isLogin = '{{ request.user.is_authenticated }}';
-    console.log("isLogin:",isLogin);
-    if (!isLogin) {
-        // 如果用户未登录，则重定向到登录页面
-        window.location.href = '/login/';
-        return;
-    }
-
-    // 如果用户已登录，则执行关注操作
-    $.ajax({
-        url: '{% url "follow_user" article.author.id article.id %}',  // 传递正确的作者ID
-        type: 'POST',
-        data: { 'csrfmiddlewaretoken': '{{ csrf_token }}' },  // 添加 CSRF 令牌
-        dataType: 'json',
-        success: function (data) {
-            alert(data.message);
-        },
-        error: function (data) {
-            alert('关注失败，请重试');
+    var isLogin = {% if request.user.is_authenticated %}true{% else %}false{% endif %};
+    function followUser() {
+        if (!isLogin) {
+            console.log("need login");
+            // 如果用户未登录，则重定向到登录页面
+            window.location.href = '/login/';
+            return;
         }
-    });
-}
+        // 如果用户已登录，则执行关注操作
+        $.ajax({
+            url: '{% url "follow_user" article.author.id article.id %}',  // 传递正确的作者ID
+            type: 'POST',
+            data: {'csrfmiddlewaretoken': '{{ csrf_token }}'},  // 添加 CSRF 令牌
+            dataType: 'json',
+            success: function (data) {
+                alert(data.message);
+            },
+            error: function (data) {
+                alert(data.message);
+            }
+        });
+    }
 
     // 删除文章的函数
     function confirm_delete() {
@@ -348,9 +344,14 @@
 
     // 点赞功能主函数
     function validate_is_like(url, id, likes) {
+        if (!isLogin) {
+            console.log("need login");
+            // 如果用户未登录，则重定向到登录页面
+            window.location.href = '/login/';
+            return;
+        }
         // 获取 CSRF 令牌
         const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
-
         // 取出 LocalStorage 中的数据
         let storage = window.localStorage;
         const storage_str_data = storage.getItem("my_blog_likes_data");
@@ -359,7 +360,8 @@
         // 若数据不存在，则创建空字典
         if (!storage_json_data) {
             storage_json_data = {}
-        };
+        }
+        ;
         // 检查当前文章是否已点赞。是则 like_status = true
         const like_status = check_status(storage_json_data, id);
         if (like_status) {
@@ -385,7 +387,8 @@
                         storage_json_data[id] = true;
                     } catch (e) {
                         window.localStorage.clear();
-                    };
+                    }
+                    ;
 
                     const d = JSON.stringify(storage_json_data);
                     // 尝试存储点赞数据到 LocalStorage
@@ -397,14 +400,16 @@
                             window.localStorage.clear();
                             storage.setItem("my_blog_likes_data", d);
                         }
-                    };
+                    }
+                    ;
                 } else if (result === 'del_success') {
                     // 尝试修改点赞数据
                     try {
                         storage_json_data[id] = false;
                     } catch (e) {
                         window.localStorage.clear();
-                    };
+                    }
+                    ;
                     const d = JSON.stringify(storage_json_data);
                     // 尝试存储点赞数据到 LocalStorage
                     try {
@@ -415,7 +420,8 @@
                             window.localStorage.clear();
                             storage.setItem("my_blog_likes_data", d);
                         }
-                    };
+                    }
+                    ;
                 } else {
                     layer.msg("与服务器通信失败..过一会儿再试试呗~");
                 }
@@ -430,6 +436,12 @@
     // 收藏功能主函数
     function validate_is_collect(url, id, collects) {
         console.log("collects:", collects);
+        if (!isLogin) {
+            console.log("need login");
+            // 如果用户未登录，则重定向到登录页面
+            window.location.href = '/login/';
+            return;
+        }
         // 取出 LocalStorage 中的数据
         // 获取 CSRF 令牌
         const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
@@ -439,7 +451,8 @@
         // 若数据不存在，则创建空字典
         if (!storage_json_data) {
             storage_json_data = {}
-        };
+        }
+        ;
         console.log("storage_json_data:", storage_json_data);
         // 检查当前文章是否已收藏。是则 status = true
         const collect_status = check_status(storage_json_data, id);
@@ -464,7 +477,8 @@
                         storage_json_data[id] = true;
                     } catch (e) {
                         window.localStorage.clear();
-                    };
+                    }
+                    ;
 
                     const d = JSON.stringify(storage_json_data);
                     // 尝试存储收藏数据到 LocalStorage
@@ -476,14 +490,16 @@
                             window.localStorage.clear();
                             storage.setItem("my_blog_collects_data", d);
                         }
-                    };
+                    }
+                    ;
                 } else if (result === 'del_success') {
                     // 尝试修改收藏数据
                     try {
                         storage_json_data[id] = false;
                     } catch (e) {
                         window.localStorage.clear();
-                    };
+                    }
+                    ;
 
                     const d = JSON.stringify(storage_json_data);
                     // 尝试存储收藏数据到 LocalStorage
@@ -495,7 +511,8 @@
                             window.localStorage.clear();
                             storage.setItem("my_blog_collects_data", d);
                         }
-                    };
+                    }
+                    ;
                 } else {
                     layer.msg("与服务器通信失败..过一会儿再试试呗~");
                 }
@@ -505,6 +522,7 @@
             }
         });
     };
+
     // 辅助主函数，验证点赞收藏状态
     function check_status(data, id) {
         // 尝试查询点赞收藏状态
@@ -517,7 +535,8 @@
         } catch (e) {
             window.localStorage.clear();
             return false;
-        };
+        }
+        ;
     };
 
     <!-- 唤醒二级回复的 modal -->
@@ -534,7 +553,8 @@
                 comment_id +
                 '" frameborder="0" style="width: 100%; height: 100%;"></iframe>';
             $(modal_body).append(content);
-        };
+        }
+        ;
 
         $(modal_id).modal('show');
     };

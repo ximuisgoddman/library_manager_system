@@ -27,10 +27,12 @@ score = 0
 
 
 def generate_enemy(n):
+    _enemies = []
     for _ in range(n):
         enemy_x = random.randint(0, width - image_size)
         enemy_y = random.randint(-250, -50)
-        enemies_location.append({"loc_x": enemy_x, "loc_y": enemy_y})
+        _enemies.append({"loc_x": enemy_x, "loc_y": enemy_y})
+    return _enemies
 
 
 def generate_bullet(_bullet_x):
@@ -46,7 +48,6 @@ def update_space_ship_state(request):
     game_data = {
         'game_over': False,
         'cur_bullets': bullets,
-        'score': score,
         'cur_enemies': enemies_location,
         'cur_play_ship_x': play_ship_x
     }
@@ -84,7 +85,7 @@ def update_space_ship_state(request):
             each_enemy['loc_y'] += 2
             if each_enemy['loc_y'] >= height:
                 cur_enemies.remove(each_enemy)
-                generate_enemy(1)
+                cur_enemies.extend(generate_enemy(1))
         # 子弹到顶部则消失
         for each_bullet in cur_bullets:
             each_bullet['bullet_y'] -= 2
@@ -92,10 +93,10 @@ def update_space_ship_state(request):
                 cur_bullets.remove(each_bullet)
         # 战机碰撞敌机则游戏结束
         for each_enemy in cur_enemies:
-            if (abs(play_ship_x - each_enemy['loc_x'] < image_size) or
-                abs(each_enemy['loc_x'] - play_ship_x < image_size)) and \
+            if (abs(cur_play_ship_x - each_enemy['loc_x']) < image_size or
+                abs(each_enemy['loc_x'] - cur_play_ship_x) < image_size) and \
                     each_enemy['loc_y'] + image_size >= play_ship_y:
-                print(play_ship_x, each_enemy)
+                print(cur_play_ship_x, each_enemy)
                 game_data['game_over'] = True
         game_data['cur_enemies'] = cur_enemies
         game_data['cur_bullets'] = cur_bullets
@@ -105,7 +106,7 @@ def update_space_ship_state(request):
 
 
 def spaceship_shoot(request):
-    generate_enemy(5)
+    enemies_location.extend(generate_enemy(5))
     context = {'play_ship_x': play_ship_x,
                'play_ship_y': play_ship_y,
                'play_ship_img': json.dumps(play_ship_img),

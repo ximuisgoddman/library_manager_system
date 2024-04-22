@@ -12,7 +12,7 @@ play_ship_img = "game_info/game_image/汤姆猫.jpg"
 width = 800
 height = 600
 
-image_size = 50
+image_size = 40
 # 加载玩家飞船图片
 play_ship_x = width // 2 - image_size // 2
 play_ship_y = height - image_size
@@ -34,10 +34,10 @@ def generate_enemy(n):
 
 
 def generate_bullet(_bullet_x):
-    bullet_x = _bullet_x+image_size//2
+    bullet_x = _bullet_x + image_size // 2
     bullet_y = height - image_size - bullet_size
-    bullets.append({"bullet_x": bullet_x,
-                    "bullet_y": bullet_y})
+    return {"bullet_x": bullet_x,
+            "bullet_y": bullet_y}
 
 
 # 修改 update_space_ship_state 函数
@@ -58,20 +58,22 @@ def update_space_ship_state(request):
         cur_bullets = data.get('cur_bullets', None)
         cur_enemies = data.get('cur_enemies', None)
         cur_play_ship_x = data.get('cur_play_ship_x', None)
-        print("request.method :", key_event)
         if key_event == 'ArrowLeft':
             cur_play_ship_x -= 10
+            if cur_play_ship_x <= 0:
+                cur_play_ship_x = 0
         elif key_event == 'ArrowRight':
             cur_play_ship_x += 10
+            if cur_play_ship_x + image_size >= width:
+                cur_play_ship_x = width - image_size
         elif key_event == 'ArrowUp':
-            generate_bullet(cur_play_ship_x)
-            cur_bullets.extend(bullets)
+            cur_bullets.extend([generate_bullet(cur_play_ship_x)])
         # 碰撞则 #删除子弹 删除敌机
         for each_enemy in cur_enemies:
             for each_bullet in cur_bullets:
                 if each_bullet['bullet_x'] >= each_enemy['loc_x'] \
                         and each_bullet['bullet_x'] <= each_enemy['loc_x'] + image_size \
-                        and each_bullet['bullet_y'] < each_enemy['loc_y'] + image_size:
+                        and each_bullet['bullet_y'] <= each_enemy['loc_y'] + image_size:
                     cur_bullets.remove(each_bullet)
                     each_enemy['loc_x'] = random.randint(0, width - image_size)
                     each_enemy['loc_y'] = random.randint(-250, -50)
@@ -80,25 +82,25 @@ def update_space_ship_state(request):
         # 敌机到底部则消失
         for each_enemy in cur_enemies:
             each_enemy['loc_y'] += 2
-            print("YY")
             if each_enemy['loc_y'] >= height:
                 cur_enemies.remove(each_enemy)
                 generate_enemy(1)
         # 子弹到顶部则消失
         for each_bullet in cur_bullets:
-            each_bullet['bullet_y']-=2
+            each_bullet['bullet_y'] -= 2
             if each_bullet['bullet_y'] >= height:
                 cur_bullets.remove(each_bullet)
         # 战机碰撞敌机则游戏结束
         for each_enemy in cur_enemies:
-            if (play_ship_x - each_enemy['loc_x'] < image_size or each_enemy['loc_x'] - play_ship_x < image_size) and \
+            if (abs(play_ship_x - each_enemy['loc_x'] < image_size) or
+                abs(each_enemy['loc_x'] - play_ship_x < image_size)) and \
                     each_enemy['loc_y'] + image_size >= play_ship_y:
+                print(play_ship_x, each_enemy)
                 game_data['game_over'] = True
         game_data['cur_enemies'] = cur_enemies
         game_data['cur_bullets'] = cur_bullets
         game_data['score'] = score
         game_data['cur_play_ship_x'] = cur_play_ship_x
-        print("game_data:",game_data)
         return JsonResponse(game_data)
 
 

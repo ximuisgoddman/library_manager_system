@@ -418,26 +418,36 @@ class IncreaseLikesView(View):
     def post(self, request, *args, **kwargs):
         print("IncreaseLikesView request.POST:", request.POST.get('like_status'))
         article = ArticlePost.objects.get(id=kwargs.get('id'))
+        article_likes_cache = cache.get("article_%s_likes" % kwargs.get('id'))
+        if not article_likes_cache:
+            article_likes_cache = article.likes
+        print(article_likes_cache, type(article_likes_cache))
         if request.POST.get('like_status') == 'true':
-            article.likes -= 1
-            article.save()
+            article_likes_cache += 1
             notify.send(
                 request.user,
                 recipient=article.author,
                 verb='点赞了您的文章',
                 target=article,
             )
-            return HttpResponse('del_success')
+            return_msg = 'del_success'
         else:
-            article.likes += 1
-            article.save()
+            article_likes_cache -= 1
             notify.send(
                 request.user,
                 recipient=article.author,
                 verb='取消点赞了您的文章',
                 target=article,
             )
-            return HttpResponse('add_success')
+            return_msg = 'add_success'
+        # 写入缓存，周期性任务来刷新数据库 celery --broker=redis://127.0.0.1:6379/0 -A library beat
+        cache.set("article_%s_likes" % kwargs.get('id'), article_likes_cache, timeout=60 * 60)
+        print("@@:", cache.get("article_%s_likes" % kwargs.get('id')))
+        # 直接和数据库交互进行保存
+        # article.likes = article_likes_cache
+        # article.save()
+        
+        return HttpResponse(return_msg)
 
 
 # 收藏数+1

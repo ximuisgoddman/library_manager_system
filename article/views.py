@@ -178,8 +178,16 @@ def user_article_list(request, user_id):
     author_views = 0
     author_followers = article_author.following.count()
     for each_article in author_articles:
-        author_likes += each_article.likes
-        author_collects += each_article.collects
+        _cache_article_likes = cache.get("article_%s_likes" % each_article.id)
+        if _cache_article_likes:
+            author_likes += _cache_article_likes
+        else:
+            author_likes += each_article.likes
+        _cache_article_collect = cache.get("article_%s_collect" % each_article.id)
+        if _cache_article_collect:
+            author_collects += _cache_article_collect
+        else:
+            author_collects += each_article.collects
         author_views += each_article.total_views
 
     if_follow = article_author.following.filter(id=request.user.id).exists()
@@ -260,13 +268,26 @@ def article_detail(request, id):
     author_views = 0
     author_followers = article_author.following.count()
     for each_article in author_articles:
-        author_likes += each_article.likes
-        author_collects += each_article.collects
+        _cache_article_likes = cache.get("article_%s_likes" % each_article.id)
+        if _cache_article_likes:
+            author_likes += _cache_article_likes
+        else:
+            author_likes += each_article.likes
+        _cache_article_collect = cache.get("article_%s_collect" % each_article.id)
+        if _cache_article_collect:
+            author_collects += _cache_article_collect
+        else:
+            author_collects += each_article.collects
         author_views += each_article.total_views
 
     if_follow = article_author.following.filter(id=request.user.id).exists()
     print("@if_follow:", if_follow)
-
+    article_likes = cache.get("article_%s_likes" % article.id)
+    if not article_likes:
+        article_likes = article.likes
+    article_collects = cache.get("article_%s_collect" % article.id)
+    if not article_collects:
+        article_collects = article.collects
     context = {
         'if_follow': if_follow,
         'author_followers': author_followers,
@@ -275,6 +296,8 @@ def article_detail(request, id):
         'author_collects': author_collects,
         'author_views': author_views,
         'article': article,
+        'article_likes': article_likes,
+        'article_collects': article_collects,
         'toc': md.toc,
         'comments': comments,
         'pre_article': pre_article,
@@ -446,7 +469,7 @@ class IncreaseLikesView(View):
         # 直接和数据库交互进行保存
         # article.likes = article_likes_cache
         # article.save()
-        
+
         return HttpResponse(return_msg)
 
 
@@ -454,9 +477,11 @@ class IncreaseLikesView(View):
 class IncreaseCollectsView(View):
     def post(self, request, *args, **kwargs):
         article = ArticlePost.objects.get(id=kwargs.get('id'))
+        article_collect_cache = cache.get("article_%s_collect" % kwargs.get('id'))
+        if not article_collect_cache:
+            article_collect_cache = article.collects
         if request.POST.get('collect_status') == 'true':
-            article.collects -= 1
-            article.save()
+            article_collect_cache += 1
 
             notify.send(
                 request.user,
@@ -464,17 +489,21 @@ class IncreaseCollectsView(View):
                 verb='取消收藏了您的文章',
                 target=article,
             )
-            return HttpResponse('del_success')
+            return_msg = 'del_success'
         else:
-            article.collects += 1
-            article.save()
+            article_collect_cache -= 1
             notify.send(
                 request.user,
                 recipient=article.author,
                 verb='收藏了您的文章',
                 target=article,
             )
-            return HttpResponse('add_success')
+            return_msg = 'add_success'
+        cache.set("article_%s_collect" % kwargs.get('id'), article_collect_cache, timeout=60 * 60)
+        # 直接和数据库交互进行保存
+        # article.collects = article_collect_cache
+        # article.save()
+        return HttpResponse(return_msg)
 
 
 def article_list_example(request):

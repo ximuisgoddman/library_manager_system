@@ -18,6 +18,7 @@ python manage.py migrate&&
 uwsgi --ini uwsgi.ini&&
 python manage.py runserver 0.0.0.0:8000&&
 celery -A library worker -l info -P eventlet&&
+celery --broker=redis://127.0.0.1:6379/0 -A library beat&&
 tail -f /dev/null
 
 exec "$@"

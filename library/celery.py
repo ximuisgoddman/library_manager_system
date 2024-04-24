@@ -18,7 +18,7 @@ app.autodiscover_tasks(['article.tasks.update_article_likes', 'online_song.tasks
 app.conf.beat_schedule = {
     'update_likes_every_hour': {
         'task': 'article.tasks.update_article_likes',
-        'schedule': timedelta(seconds=10),
+        'schedule': timedelta(seconds=30),
     },
 }
 

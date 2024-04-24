@@ -9,7 +9,6 @@ from django.core.cache import cache
 def update_article_likes():
     all_article_ids = ArticlePost.objects.values('id')
     for each_id in all_article_ids:
-        _likes = cache.get("library::1:article_%s_likes" % each_id)
-        print("KK:", _likes)
+        _likes = cache.get("article_%s_likes" % each_id['id'])
         if _likes:
-            ArticlePost.objects.get(id=each_id).update(likes=_likes)
+            ArticlePost.objects.filter(id=each_id['id']).update(likes=_likes)

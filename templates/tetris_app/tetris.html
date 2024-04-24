@@ -9,7 +9,8 @@
 <body style="background-color: black;">
     <canvas id="tetrisCanvas" width="800" height="600"></canvas>
     <div id="scoreDisplay"
-        style="color: rgb(255, 255, 255); font-size: 24px; position: absolute; top: 20px; left: 20px;"></div>
+        style="color: rgb(113, 36, 214); font-size: 24px; position: absolute; top: 80px; left: 20px;">
+    </div>
     <!-- Custom dialog box for game over -->
     <div id="gameOverDialog"
         style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
@@ -28,7 +29,7 @@
         const COLORS = JSON.parse('{{ COLORS_DATA | safe }}');
         let game_over = false; // 定义游戏状态变量
         let gameInterval; // 定义定时器变量
-
+        var score = JSON.parse('{{score|safe}}');
 
         // 初始化游戏并启动交互
         function initGame() {
@@ -144,7 +145,6 @@
             }
             // 请求更新游戏状态
             function sendUpdateToServer(key) {
-                console.log("game_over@:", game_over);
                 if (game_over) {
                     showGameOverDialog(); // 如果游戏结束，不再向服务器发送请求
                 }
@@ -165,12 +165,12 @@
                         // 在这里，你可以使用data.play_matrix来更新游戏区域
                         // 使用data.current_piece来更新当前方块的位置
                         // 使用data.score来更新得分信息
-                        console.log("data.game_over:", data.game_over);
                         if (data.game_over) {
                             // 清空整个页面
                             showGameOverDialog();
                             // 如果需要重新开始游戏，可以重新加载页面
                             // window.location.reload();
+                            score=0;
                         } else {
                             // 清空画布
                             ctx.clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -182,8 +182,9 @@
                             const currentPiece = data.current_piece;
                             console.log("currentPiece:", currentPiece);
                             drawPiece(currentPiece);
-                            updateScoreDisplay(data.score);
+                            score = data.score
                         }
+                    updateScoreDisplay(score);
                     },
                     error: function (xhr, status, error) {
                         console.error(error);
@@ -198,17 +199,14 @@
             // 定时器，模拟方块的定时下落
             const fallingInterval = 1000; // 下落间隔时间（毫秒）
             gameInterval = setInterval(function () {
+                if (!game_over) {
                 // 向服务器发送向下的键盘事件
-                sendUpdateToServer('ArrowDown');
+                sendUpdateToServer('ArrowDown');}
             }, fallingInterval);
-
         }
-
-
         document.addEventListener('DOMContentLoaded', function () {
             initGame();
         });
     </script>
 </body>
-
 {% endblock %}

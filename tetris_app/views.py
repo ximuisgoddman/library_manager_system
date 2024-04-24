@@ -167,4 +167,5 @@ def tetris(request):
                                                       'PLAY_X': PLAY_X,
                                                       'PLAY_Y': PLAY_Y,
                                                       'BLOCK_SIZE': BLOCK_SIZE,
-                                                      'PLAY_MATRIX': json.dumps(play_matrix)})
+                                                      'PLAY_MATRIX': json.dumps(play_matrix),
+                                                      'score': 0})

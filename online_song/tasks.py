@@ -7,7 +7,7 @@ from library.settings import BASE_DIR
 
 
 @shared_task
-def test_celery(file_name):
+def sync_upload_song(file_name):
     songs_to_create = []
     file_name = os.path.join(BASE_DIR, "my_resource/music", file_name)
     print("file_name:", file_name)

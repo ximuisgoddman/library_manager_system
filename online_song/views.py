@@ -12,7 +12,7 @@ import json
 from django.core.paginator import Paginator
 from django.core.cache import cache
 import base64
-from online_song.tasks import test_celery
+from online_song.tasks import sync_upload_song
 
 
 def upload_song(request):
@@ -24,7 +24,7 @@ def upload_song(request):
                 file = request.FILES['file_upload']
                 # 在这里异步解析文件数据并将数据写入数据库
                 print("file:", file)
-                result = test_celery.delay(str(file))
+                result = sync_upload_song.delay(str(file))
                 if result.ready():
                     print("任务已完成")
                 else:

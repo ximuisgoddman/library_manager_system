@@ -14,10 +14,10 @@ app = Celery('library', broker='redis://127.0.0.1:6379/0', backend='redis://127.
 app.config_from_object('django.conf:settings')
 
 # 自动从所有已注册的django app中加载任务
-app.autodiscover_tasks(['article.tasks.update_article_likes', 'online_song.tasks.test_celery'])
+app.autodiscover_tasks(['article.tasks.update_article_likes_collect', 'online_song.tasks.sync_upload_song'])
 app.conf.beat_schedule = {
     'update_likes_every_hour': {
-        'task': 'article.tasks.update_article_likes',
+        'task': 'article.tasks.update_article_likes_collect',
         'schedule': timedelta(seconds=30),
     },
 }

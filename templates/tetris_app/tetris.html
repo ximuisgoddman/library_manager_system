@@ -27,25 +27,25 @@
         const BLOCK_SIZE = JSON.parse('{{ BLOCK_SIZE | safe }}');
         const SHAPES = JSON.parse('{{ SHAPES_DATA | safe }}');
         const COLORS = JSON.parse('{{ COLORS_DATA | safe }}');
-        let game_over = false; // 定义游戏状态变量
+        const play_matrix = JSON.parse('{{ PLAY_MATRIX | safe }}');
+        const WINDOW_WIDTH = JSON.parse('{{ WINDOW_WIDTH | safe }}');
+        const WINDOW_HEIGHT = JSON.parse('{{ WINDOW_HEIGHT | safe }}');
+        const PLAY_WIDTH = JSON.parse('{{ PLAY_WIDTH | safe }}');
+        const PLAY_HEIGHT = JSON.parse('{{ PLAY_HEIGHT | safe }}');
+        var COLS = PLAY_HEIGHT / BLOCK_SIZE;
+        var ROWs = PLAY_WIDTH / BLOCK_SIZE;
+        const PLAY_X = JSON.parse('{{ PLAY_X | safe }}');
+        const PLAY_Y = JSON.parse('{{ PLAY_Y | safe }}');
         let gameInterval; // 定义定时器变量
         var score = JSON.parse('{{score|safe}}');
 
         // 初始化游戏并启动交互
         function initGame() {
             // 初始化游戏区域和方块
-            const play_matrix = JSON.parse('{{ PLAY_MATRIX | safe }}');
+            var confirmBtn = document.getElementById('confirmBtn');
+            var retryBtn = document.getElementById('retryBtn');
+            let game_over = false; // 定义游戏状态变量
             let current_piece = null;
-            const WINDOW_WIDTH = JSON.parse('{{ WINDOW_WIDTH | safe }}');
-            const WINDOW_HEIGHT = JSON.parse('{{ WINDOW_HEIGHT | safe }}');
-            const PLAY_WIDTH = JSON.parse('{{ PLAY_WIDTH | safe }}');
-            const PLAY_HEIGHT = JSON.parse('{{ PLAY_HEIGHT | safe }}');
-            var COLS = PLAY_HEIGHT / BLOCK_SIZE;
-            var ROWs = PLAY_WIDTH / BLOCK_SIZE;
-            const PLAY_X = JSON.parse('{{ PLAY_X | safe }}');
-            const PLAY_Y = JSON.parse('{{ PLAY_Y | safe }}');
-            const confirmBtn = document.getElementById('confirmBtn');
-            const retryBtn = document.getElementById('retryBtn');
 
             function rgbToCssColor(rgbArray) {
                 const [r, g, b] = rgbArray;
@@ -101,11 +101,6 @@
                 return piece;
             }
 
-            // 处理键盘事件
-            document.addEventListener('keydown', function (event) {
-                const key = event.key;
-                sendUpdateToServer(key);
-            });
             function getCookie(name) {
                 let cookieValue = null;
                 if (document.cookie && document.cookie !== '') {
@@ -137,12 +132,20 @@
 
                 // Handle the Retry button click
                 retryBtn.addEventListener('click', function () {
+                    debugger;
                     // Reload the current page to start a new game
-                    // debugger;
-                    window.location.reload();
+                    ctx.clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+                    // window.location.reload();
                     game_over = false;
+                    drawGameArea(play_matrix);
                 });
             }
+            // 处理键盘事件
+            document.addEventListener('keydown', function (event) {
+                const key = event.key;
+                console.log('Key pressed:', key);
+                sendUpdateToServer(key);
+            });
             // 请求更新游戏状态
             function sendUpdateToServer(key) {
                 if (game_over) {
@@ -159,7 +162,7 @@
                         'X-CSRFToken': csrfToken
                     },
                     success: function (data) {
-                        game_over = data.game_over;
+                        game_over = JSON.parse(data.game_over);
                         // 服务器返回更新后的游戏数据
                         // 根据data中的内容来更新游戏画布
                         // 在这里，你可以使用data.play_matrix来更新游戏区域
@@ -170,11 +173,9 @@
                             showGameOverDialog();
                             // 如果需要重新开始游戏，可以重新加载页面
                             // window.location.reload();
-                            score=0;
                         } else {
                             // 清空画布
                             ctx.clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-
                             // 绘制游戏区域
                             console.log("data.play_matrix:", data.play_matrix)
                             drawGameArea(data.play_matrix);
@@ -184,7 +185,7 @@
                             drawPiece(currentPiece);
                             score = data.score
                         }
-                    updateScoreDisplay(score);
+                        updateScoreDisplay(score);
                     },
                     error: function (xhr, status, error) {
                         console.error(error);
@@ -200,8 +201,9 @@
             const fallingInterval = 1000; // 下落间隔时间（毫秒）
             gameInterval = setInterval(function () {
                 if (!game_over) {
-                // 向服务器发送向下的键盘事件
-                sendUpdateToServer('ArrowDown');}
+                    // 向服务器发送向下的键盘事件
+                    sendUpdateToServer('ArrowDown');
+                }
             }, fallingInterval);
         }
         document.addEventListener('DOMContentLoaded', function () {

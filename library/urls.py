@@ -42,6 +42,7 @@ from lottery import views as lottery_view
 from tetris_app import views as tetris_view
 from snake import views as snake_view
 from spaceship_shoot import views as spaceship_shoot_view
+from pacman import views as pacman_view
 
 # from my_blog import views as blog_view
 sys.path.append(book_path)
@@ -50,10 +51,7 @@ sys.path.append(user_path)
 from .admin_front_page_views import user_info_manage_view
 from .library_front_page_views import library_front_page_views
 from django.contrib import admin
-# 记得引入include
-from django.urls import path, include
 
-from django.conf import settings
 from django.conf.urls.static import static
 
 from django.urls import path, include
@@ -160,6 +158,8 @@ urlpatterns = [
 
     path('demo/', article.views.demo, name='demo'),
     path("upload/", article.views.upload, name="upload"),
+
+    path('pacman/', pacman_view.pacman, name='pacman')
 ]
 from django.conf import settings
 

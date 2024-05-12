@@ -159,6 +159,10 @@ def tetris(request):
     colors_data = json.dumps(COLORS)
     play_matrix = [[0] * (PLAY_WIDTH // BLOCK_SIZE) for _ in range(PLAY_HEIGHT // BLOCK_SIZE)]
 
+    # 每次进入页面都重新初始化游戏状态
+    current_piece = create_new_piece()
+    game_over = False
+
     return render(request, 'tetris_app/tetris.html', {'SHAPES_DATA': shapes_data,
                                                       'COLORS_DATA': colors_data,
                                                       'WINDOW_WIDTH': WINDOW_WIDTH,

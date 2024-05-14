@@ -43,6 +43,10 @@ from tetris_app import views as tetris_view
 from snake import views as snake_view
 from spaceship_shoot import views as spaceship_shoot_view
 from pacman import views as pacman_view
+from space_invaders import views as space_invaders_view
+from game2048 import views as game2048_view
+from sliding_puzzle import views as sliding_puzzle_view
+from super_mario import views as super_mario_view
 
 # from my_blog import views as blog_view
 sys.path.append(book_path)
@@ -159,7 +163,11 @@ urlpatterns = [
     path('demo/', article.views.demo, name='demo'),
     path("upload/", article.views.upload, name="upload"),
 
-    path('pacman/', pacman_view.pacman, name='pacman')
+    path('pacman/', pacman_view.pacman, name='pacman'),
+    path('space_invaders/', space_invaders_view.space_invaders, name='space_invaders'),
+    path('game2048/', game2048_view.game2048, name='game2048'),
+    path('sliding_puzzle/', sliding_puzzle_view.sliding_puzzle, name='sliding_puzzle'),
+    path('super_mario/', super_mario_view.super_mario_bros, name='super_mario')
 ]
 from django.conf import settings
 

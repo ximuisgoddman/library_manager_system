@@ -1,229 +1,47 @@
-{% extends 'user_front_page/base.html' %}
-
-{% block content %}
-
-<head>
-    <title>Snake Game</title>
-    <style>
-        canvas {
-            border: 1px solid black;
-        }
-    </style>
-</head>
-
-<body>
-    <h1>Snake Game</h1>
+<!DOCTYPE html>
+<html>
+  <head lang="en">
     {% load static %}
-    <canvas id="gameCanvas" width="640" height="480" tabindex="0"></canvas>
-    <!-- 添加一个隐藏的<img>元素用于加载蛇头图片 -->
-    <img id="snakeHeadImage" src="{% static 'game_image/汤姆猫.jpg' %}" style="display: none;">
-    <div id="scoreDisplay"
-        style="color: rgb(113, 36, 214); font-size: 24px; position: absolute; top: 80px; left: 20px;">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Snake v8</title>
+    <!-- Link our styles from main.css -->
+    <link rel="stylesheet" type="text/css" href="{% static 'snake/main.css' %}" />
+  </head>
+  <body>
+    <!-- #gameContainer is the main game board-->
+    <div id="gameContainer"></div>
+
+    <!-- #scoreContainer contains the scores  -->
+    <div id="scoreContainer">
+      <div class="scoreBoard">Food: <span id="pointsEarned">0</span></div>
+      <div class="scoreBoard">Blocks: <span id="blocksTravelled">0</span></div>
     </div>
-    <div id="gameOverDialog"
-        style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
-        <p>Game Over!</p>
-        <p>Do you want to retry?</p>
-        <button id="confirmBtn">Confirm</button>
-        <button id="retryBtn">Retry</button>
+
+    <!-- #onScreenControllers contains the navigation buttons for mobile screens -->
+    <div id="onScreenControllers">
+      <button id="leftButton">◀️</button>
+      <div>
+        <button id="upButton">🔼</button>
+        <button id="downButton">🔽</button>
+      </div>
+      <button id="rightButton">▶️</button>
     </div>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        let gameInterval;
-        const canvas = document.getElementById('gameCanvas');
-        const context = canvas.getContext('2d');
-        const WINDOW_WIDTH = JSON.parse('{{ WINDOW_WIDTH|safe }}');
-        const WINDOW_HEIGHT = JSON.parse('{{ WINDOW_HEIGHT|safe }}');
-        const MOVE_SPEED = JSON.parse('{{ move_speed|safe }}');
-        const SNAKE_SIZE = JSON.parse('{{ snake_size|safe }}');
-        const dialog = document.getElementById('gameOverDialog');
-        const confirmBtn = document.getElementById('confirmBtn');
-        const retryBtn = document.getElementById('retryBtn');
 
-        document.addEventListener('DOMContentLoaded', function () {
+    <div class="developerDetails">
+      <div>
+        Developed by
+        <a href="https://rabiroshan.com/" target="_blank">Rabi Roshan.</a>
+      </div>
+      <div>
+        View source code on
+        <a href="https://github.com/RabiRoshan/snake_game" target="_blank"
+          >GitHub.</a
+        >
+      </div>
+    </div>
+  </body>
 
-            var Origin_foods = JSON.parse('{{ Origin_foods|safe }}');
-            var Origin_Snakes = JSON.parse('{{ Origin_Snakes|safe }}');
-            let game_over = false;
-            let x1 = WINDOW_WIDTH / 2;
-            let y1 = WINDOW_HEIGHT / 2;
-            let snake_speed_x = 0;
-            let snake_speed_y = 0;
-            var if_extend_food = false;
-            var length_of_snake = 1;
-
-            // 预加载蛇头图片
-            const snakeHeadImage = document.getElementById('snakeHeadImage');
-            snakeHeadImage.onload = function () {
-                // 在加载完成后绘制蛇头图片
-                drawSnake(Origin_Snakes);
-            };
-
-            // 更新分数显示
-            function updateScoreDisplay(score) {
-                console.log("score:", score);
-                const scoreDisplay = document.getElementById('scoreDisplay');
-                scoreDisplay.innerHTML = 'Score: ' + score;
-            }
-
-            function drawSnake(Snakes) {
-                for (let i = 0; i < Snakes.length; i++) {
-                    context.fillStyle = 'green';
-                    context.fillRect(Snakes[i].x, Snakes[i].y, SNAKE_SIZE, SNAKE_SIZE);
-                }
-                // 绘制蛇头图片
-                context.drawImage(snakeHeadImage, x1, y1, SNAKE_SIZE, SNAKE_SIZE);
-            }
-
-            function drawFood(foods) {
-                for (let i = 0; i < foods.length; i++) {
-                    context.fillStyle = 'red';
-                    context.fillRect(foods[i].x, foods[i].y, SNAKE_SIZE, SNAKE_SIZE);
-                }
-            }
-
-            // Function to show the game over dialog
-            function showGameOverDialog() {
-                console.log("END!");
-                console.log("dialog:", dialog);
-                dialog.style.display = 'block';
-
-                if (confirmBtn && retryBtn) {
-                    dialog.style.display = 'block';
-
-                    // 清除定时器，防止继续发送更新请求
-                    clearInterval(gameInterval);
-
-                    confirmBtn.addEventListener('click', function () {
-                        // Redirect to the /front page
-                        window.location.href = '/relax_moment';
-                    });
-
-                    // Handle the Retry button click
-                    retryBtn.addEventListener('click', function () {
-                        // Reload the current page to start a new game
-                        window.location.reload();
-                        game_over = false;
-                    });
-
-
-                } else {
-                    console.error("One or both buttons not found.");
-                }
-            }
-
-
-            // 处理键盘事件
-            document.addEventListener('keydown', function (event) {
-                const key = event.key;
-                console.log('Key pressed:', key);
-                sendUpdateToServer(key);
-            });
-
-            function sendUpdateToServer(key) {
-                if (game_over) {
-                    showGameOverDialog();
-                }
-                switch (key) {
-                    case 'ArrowLeft':
-                        snake_speed_x = -SNAKE_SIZE;
-                        snake_speed_y = 0;
-                        break;
-                    case 'ArrowRight':
-                        snake_speed_x = SNAKE_SIZE;
-                        snake_speed_y = 0;
-                        break;
-                    case 'ArrowUp':
-                        snake_speed_y = -SNAKE_SIZE;
-                        snake_speed_x = 0;
-                        break;
-                    case 'ArrowDown':
-                        snake_speed_y = SNAKE_SIZE;
-                        snake_speed_x = 0;
-                        break;
-                    default:
-                        break;
-                }
-                x1 += snake_speed_x
-                y1 += snake_speed_y
-                if (Origin_foods.length < 5) {
-                    if_extend_food = true
-                } else {
-                    if_extend_food = false
-                }
-                // 绘制贪吃蛇，snake_head在列表的队尾
-                let snake_head = { "x": x1, "y": y1 }
-                Origin_Snakes.push(snake_head)
-                console.log("Origin_Snakes:", snake_head, Origin_foods.length, if_extend_food);
-                const csrfToken = getCookie('csrftoken');
-                $.ajax({
-                    type: 'POST',
-                    url: '/update_snake_state/',
-                    data: JSON.stringify({
-                        "x1": x1,
-                        "y1": y1,
-                        "foods": Origin_foods,
-                        "snakes": Origin_Snakes,
-                        "if_extend_food": if_extend_food,
-                        "length_of_snake": length_of_snake
-                    }),
-                    dataType: 'json',
-                    headers: {
-                        'X-CSRFToken': csrfToken
-                    },
-                    success: function (data) {
-                        console.log("data.game_over:", data.game_over);
-                        game_over = JSON.parse(data.game_over);
-                        if (data.game_over) {
-                            console.log("END!");
-                            // window.location.reload(); 刷新当前页面,等同F5
-                            showGameOverDialog();
-                        } else {
-                            context.clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-                            Origin_Snakes = JSON.parse(data.snakes);
-                            Origin_foods = JSON.parse(data.foods);
-                            length_of_snake = JSON.parse(data.length_of_snake);
-                            console.log("length_of_snake:", length_of_snake);
-                            drawSnake(Origin_Snakes);
-                            drawFood(Origin_foods);
-                            updateScoreDisplay(Origin_Snakes.length-1);
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        console.log(error);
-                    }
-                });
-            }
-
-            // 获取Cookie
-            function getCookie(name) {
-                let cookieValue = null;
-                if (document.cookie && document.cookie !== '') {
-                    const cookies = document.cookie.split(';');
-                    for (let i = 0; i < cookies.length; i++) {
-                        const cookie = cookies[i].trim();
-                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                            break;
-                        }
-                    }
-                }
-                return cookieValue;
-            }
-
-            // 绘制初始蛇和食物
-            drawSnake(Origin_Snakes);
-            drawFood(Origin_foods);
-
-            // 启动游戏循环定时器
-            const moveInterval = 1000;
-            gameInterval = setInterval(() => {
-                if (!game_over) {
-                    sendUpdateToServer("");  // 发送空按键事件来更新游戏状态
-                }
-            }, moveInterval);
-        });
-    </script>
-</body>
-
-{% endblock %}
+  <!-- #Load our jscript.js containing the game logic -->
+  <script src="{% static 'snake/jscript.js' %}"></script>
+</html>

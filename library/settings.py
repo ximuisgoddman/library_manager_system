@@ -75,7 +75,8 @@ INSTALLED_APPS = [
     'comment',
     'notice',
     'mdeditor',
-    'corsheaders'
+    'corsheaders',
+    'space_invaders'
 ]
 
 AUTH_USER_MODEL = 'users.MyUser'

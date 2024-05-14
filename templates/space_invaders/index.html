@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>Space Invaders</title>
+    <script>
+        const STATIC_SPACE_INVADERS = "{% static 'space_invaders' %}";
+    </script>
+    <link rel="stylesheet" href="{% static 'space_invaders/css/style.css' %}">
+    <script data-main="{% static 'space_invaders/javascript/main' %}" src="{% static 'space_invaders/javascript/lib/require.js' %}"></script>
+</head>
+<body>
+    <div id="game">
+    </div>
+</body>
+</html>

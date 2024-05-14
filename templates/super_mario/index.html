@@ -1,0 +1,66 @@
+<!doctype html>
+<html style="touch-action: none;" manifest="offline.appcache">
+    <head>
+        {% load static %}
+        <title>Super Mario Bros Level 1-1 - Backbone Game Engine</title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <link href="{% static 'super-mario-bros/favicon.ico' %}" rel="shortcut icon" type="image/x-icon" />
+        <link href="{% static 'super-mario-bros/apple_touch_icon.png' %}" rel="apple-touch-icon" />
+
+        <meta name="viewport" content="width=960, user-scalable=no"/>
+        <meta name="mobileoptimized" content="0" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+
+        <script src="{% static 'super-mario-bros/3rd/qtree.js' %}" type="text/javascript"></script>
+        <script src="{% static 'super-mario-bros/3rd/underscore.js' %}" type="text/javascript"></script>
+        <script src="{% static 'super-mario-bros/3rd/backbone.native.js' %}" type="text/javascript"></script>
+        <script src="{% static 'super-mario-bros/3rd/backbone.js' %}" type="text/javascript"></script>
+
+        <script src="{% static 'super-mario-bros/src/adjust-viewport.js' %}" type="text/javascript"></script>
+        <script src="{% static 'super-mario-bros/src/shapes.js' %}" type="text/javascript"></script>
+        <script src="{% static 'super-mario-bros/src/core.js' %}" type="text/javascript"></script>
+        <script src="{% static 'super-mario-bros/src/character.js' %}" type="text/javascript"></script>
+        <script src="{% static 'super-mario-bros/src/input.js' %}" type="text/javascript"></script>
+        <script src="{% static 'super-mario-bros/src/hero.js' %}" type="text/javascript"></script>
+        <script src="{% static 'super-mario-bros/src/world.js' %}" type="text/javascript"></script>
+        <script src="{% static 'super-mario-bros/src/local-storage.js' %}" type="text/javascript"></script>
+        <script src="{% static 'super-mario-bros/src/camera.js' %}" type="text/javascript"></script>
+        <script src="{% static 'super-mario-bros/src/editor.js' %}" type="text/javascript"></script>
+
+        <script src="{% static 'super-mario-bros/super-mario-bros/mario.js' %}" type="text/javascript"></script>
+        <script src="{% static 'super-mario-bros/super-mario-bros/tiles.js' %}" type="text/javascript"></script>
+        <script src="{% static 'super-mario-bros/super-mario-bros/artifacts.js' %}" type="text/javascript"></script>
+        <script src="{% static 'super-mario-bros/super-mario-bros/enemies.js' %}" type="text/javascript"></script>
+        <script src="{% static 'super-mario-bros/super-mario-bros/display.js' %}" type="text/javascript"></script>
+        <script src="{% static 'super-mario-bros/super-mario-bros/level_1-1.js' %}" type="text/javascript"></script>
+        <script src="{% static 'super-mario-bros/super-mario-bros/main.js' %}" type="text/javascript"></script>
+
+        <style>
+            body {
+                margin: 0;
+                background-color: #000;
+            }
+            canvas {
+                position: fixed;
+                top: 0;
+                left: 0;
+            }
+        </style>
+
+    </head>
+
+    <body>
+        <img id="mario" src="{% static 'super-mario-bros/super-mario-bros/super-mario-2x.png' %}" style="display:none;" />
+        <img id="tiles" src="{% static 'super-mario-bros/super-mario-bros/super-mario-tiles-2x.png' %}" style="display:none;" />
+        <img id="enemies" src="{% static 'super-mario-bros/super-mario-bros/super-mario-enemies-2x.png' %}" style="display:none;" />
+        <img id="icons" src="{% static 'super-mario-bros/super-mario-bros/icons.png' %}" style="display:none;" />
+
+        <canvas id="foreground" width="960" height="700">
+            Your browser does not support canvas element.
+        </canvas>
+    </body>
+
+</html>

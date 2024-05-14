@@ -1,6 +1,5 @@
 const config = {};
 const fps = 60;
-
 (() => {
 
     // common
@@ -234,7 +233,7 @@ const fps = 60;
 
     config.images = (() => {
 
-        const path = './img/';
+        const path = STATIC_PATH + 'img/';
 
         let images = {
             boom: path + 'boom.png',
@@ -245,7 +244,6 @@ const fps = 60;
             enemyBullet: path + 'enemyBullet.png',
             fuel: path + 'fuel2.png',
         };
-
         return Object.assign(
             batchAdd(path+'/star/','star_',12,'png'),
             batchAdd(path+'/meteorites/','meteorites_',4,'png'),
@@ -255,7 +253,7 @@ const fps = 60;
     })();
 
     config.audios = (()=>{
-        const path = './sound/';
+        const path = STATIC_PATH+'/sound/';
         return {
             bg : path + 'background.mp3',
             destroyed : path + 'destroyed.mp3',

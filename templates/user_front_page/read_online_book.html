@@ -5,34 +5,104 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EPUB Viewer</title>
+    <style>
+        .night-mode { background-color: #f5deb3; color: black; }
+        .content-container {
+            height: 80vh; /* Adjust this value to your needs */
+            overflow-y: auto;
+            position: relative;
+        }
+        .settings-panel {
+            display: none;
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translate(-50%, -20%);
+            background: white;
+            border: 1px solid #ccc;
+            padding: 20px;
+            z-index: 1000;
+        }
+        .settings-panel button {
+            display: block;
+            margin: 10px 0;
+        }
+        .pagination-buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+    </style>
     <script>
-        // 读取本地存储的书签信息
-        window.onload = function() {
+        document.addEventListener("DOMContentLoaded", function() {
             var bookmark = localStorage.getItem('bookmark');
             if (bookmark) {
-                // 如果有保存的书签信息，则跳转到书签位置
-                document.getElementById(bookmark).scrollIntoView();
+                var container = document.querySelector('.content-container');
+                container.scrollTop = parseInt(bookmark, 10);
             }
+            adjustFontSize(18);  // Set default font size
+        });
+
+        function addBookmark() {
+            var container = document.querySelector('.content-container');
+            var scrollPosition = container.scrollTop;
+            localStorage.setItem('bookmark', scrollPosition);
+            alert('书签已添加！');
         }
 
-        // 添加书签功能
-        function addBookmark(id) {
-            // 将书签信息保存到本地存储
-            localStorage.setItem('bookmark', id);
-            alert('书签已添加！');
+        function adjustFontSize(size) {
+            document.querySelector('.content-container').style.fontSize = size + 'px';
+        }
+
+        function toggleNightMode() {
+            document.querySelector('.content-container').classList.toggle('night-mode');
+        }
+
+        function nextPage() {
+            var container = document.querySelector('.content-container');
+            var currentScroll = container.scrollTop;
+            var containerHeight = container.clientHeight;
+            var newScroll = currentScroll + containerHeight;
+            container.scrollTo({ top: newScroll, behavior: 'smooth' });
+        }
+
+        function previousPage() {
+            var container = document.querySelector('.content-container');
+            var currentScroll = container.scrollTop;
+            var containerHeight = container.clientHeight;
+            var newScroll = currentScroll - containerHeight;
+            container.scrollTo({ top: newScroll, behavior: 'smooth' });
+        }
+
+        function toggleSettings() {
+            var panel = document.getElementById('settings-panel');
+            panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
         }
     </script>
 </head>
 <body>
-    <h1>EPUB Viewer</h1>
-    <div>
+    <div class="content-container">
         {% for chapter in chapters %}
-            <h2 id="chapter{{ forloop.counter }}">{{ chapter.title }}</h2>
-            <!-- 在每个章节标题下添加书签按钮 -->
-            <button onclick="addBookmark('chapter{{ forloop.counter }}')">添加书签</button>
-            <!-- 直接输出 BeautifulSoup 对象 -->
-            {{ chapter.content|safe }}
+            <div class="chapter">
+                <h2 id="chapter{{ forloop.counter }}">{{ chapter.title }}</h2>
+                {{ chapter.content|safe }}
+            </div>
         {% endfor %}
+    </div>
+    <div class="pagination-buttons">
+        <button onclick="previousPage()">上一页</button>
+        <button onclick="nextPage()">下一页</button>
+        <button onclick="addBookmark()">添加书签</button>
+    </div>
+    <div>
+        <button onclick="toggleSettings()">设置</button>
+    </div>
+    <div id="settings-panel" class="settings-panel">
+        <button onclick="toggleNightMode()">护眼模式</button>
+        <button onclick="adjustFontSize(14)">小字体</button>
+        <button onclick="adjustFontSize(18)">中字体</button>
+        <button onclick="adjustFontSize(22)">大字体</button>
+        <button onclick="toggleSettings()">关闭设置</button>
     </div>
 </body>
 {% endblock %}

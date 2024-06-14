@@ -128,6 +128,13 @@ import zipfile
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
+import os
+import zipfile
+from bs4 import BeautifulSoup
+from .models import OnlineBooksModel
+
 
 @login_required
 def read_online_book(request, book_id):
@@ -156,7 +163,6 @@ def read_online_book(request, book_id):
                     # 处理图片和其他资源
                     for img_tag in soup.find_all("img", src=True):
                         src = img_tag["src"]
-                        print("SRC:", src)
                         handle_resource(src, resource_dir, epub_zip)
 
                     for link_tag in soup.find_all("link", href=True):
@@ -172,7 +178,8 @@ def read_online_book(request, book_id):
                     content = str(soup)
                     chapters.append({'title': title, 'content': content})
 
-    return render(request, "user_front_page/read_online_book.html", {'chapters': chapters})
+    return render(request, "user_front_page/read_online_book.html", {'chapters': chapters,
+                                                                     'chapter_count': len(chapters)})
 
 
 def handle_resource(src, resource_dir, epub_zip):

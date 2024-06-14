@@ -11,10 +11,12 @@ def sync_upload_song(file_name):
     songs_to_create = []
     file_name = os.path.join(BASE_DIR, "my_resource/music", file_name)
     print("file_name:", file_name)
-    with open(file_name, 'r', newline='', encoding='utf-8') as csvfile:
+    with open(file_name, 'r', encoding='utf-8') as fr:
         # 创建 CSV Reader 对象
-        csvreader = csv.reader(csvfile)
-        for row in csvreader:
+        csvreader = fr.readlines()
+        for each_row in csvreader:
+            row=each_row.strip().split("|")
+            print(row)
             song_filename = row[0].strip()
             song_full_path = os.path.join('audio', song_filename)
             song = OnlineSongModel(

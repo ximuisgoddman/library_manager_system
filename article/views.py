@@ -436,17 +436,18 @@ def article_update(request, id):
         return render(request, 'article/update.html', context)
 
 
+
 # 点赞数 +1
 class IncreaseLikesView(View):
     def post(self, request, *args, **kwargs):
-        print("IncreaseLikesView request.POST:", request.POST.get('like_status'))
+        print("IncreaseLikesView request.POST:", request.POST.get('like_status'), args, kwargs)
         article = ArticlePost.objects.get(id=kwargs.get('id'))
         article_likes_cache = cache.get("article_%s_likes" % kwargs.get('id'))
         if not article_likes_cache:
             article_likes_cache = article.likes
         print(article_likes_cache, type(article_likes_cache))
         if request.POST.get('like_status') == 'true':
-            article_likes_cache += 1
+            article_likes_cache -= 1
             notify.send(
                 request.user,
                 recipient=article.author,
@@ -455,7 +456,7 @@ class IncreaseLikesView(View):
             )
             return_msg = 'del_success'
         else:
-            article_likes_cache -= 1
+            article_likes_cache += 1
             notify.send(
                 request.user,
                 recipient=article.author,
@@ -466,11 +467,11 @@ class IncreaseLikesView(View):
         # 写入缓存，周期性任务来刷新数据库 celery --broker=redis://127.0.0.1:6379/0 -A library beat
         cache.set("article_%s_likes" % kwargs.get('id'), article_likes_cache, timeout=60 * 60)
         print("@@:", cache.get("article_%s_likes" % kwargs.get('id')))
-        # 直接和数据库交互进行保存
-        # article.likes = article_likes_cache
-        # article.save()
+        # 直接和数据库交互进行保存,如果打开celery之后，下面这两句注释掉
+        article.likes = article_likes_cache
+        article.save()
 
-        return HttpResponse(return_msg)
+        return HttpResponse(json.dumps({"return_msg": return_msg, "article_likes": article_likes_cache}))
 
 
 # 收藏数+1
@@ -481,7 +482,7 @@ class IncreaseCollectsView(View):
         if not article_collect_cache:
             article_collect_cache = article.collects
         if request.POST.get('collect_status') == 'true':
-            article_collect_cache += 1
+            article_collect_cache -= 1
 
             notify.send(
                 request.user,
@@ -490,8 +491,9 @@ class IncreaseCollectsView(View):
                 target=article,
             )
             return_msg = 'del_success'
+
         else:
-            article_collect_cache -= 1
+            article_collect_cache += 1
             notify.send(
                 request.user,
                 recipient=article.author,
@@ -501,9 +503,10 @@ class IncreaseCollectsView(View):
             return_msg = 'add_success'
         cache.set("article_%s_collect" % kwargs.get('id'), article_collect_cache, timeout=60 * 60)
         # 直接和数据库交互进行保存
-        # article.collects = article_collect_cache
-        # article.save()
-        return HttpResponse(return_msg)
+        article.collects = article_collect_cache
+        article.save()
+        return HttpResponse(json.dumps({"return_msg": return_msg, "article_collect": article_collect_cache}))
+
 
 
 def article_list_example(request):

@@ -354,23 +354,15 @@
         const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
         // 取出 LocalStorage 中的数据
         let storage = window.localStorage;
-        const storage_str_data = storage.getItem("my_blog_likes_data");
-        console.log("storage_str_data:", storage_str_data)
+        let storage_str_data = storage.getItem("my_blog_likes_data");
         let storage_json_data = JSON.parse(storage_str_data);
         // 若数据不存在，则创建空字典
         if (!storage_json_data) {
             storage_json_data = {}
         }
-        ;
         // 检查当前文章是否已点赞。是则 like_status = true
         const like_status = check_status(storage_json_data, id);
-        if (like_status) {
-            $('span#likes_number').text(likes - 1).css('color', '#dc3545');
-            // 点过赞则立即退出函数
-        } else {
-            // 用 Jquery 找到点赞数量，并 +1
-            $('span#likes_number').text(likes + 1).css('color', '#dc3545');
-        }
+        console.log("storage_str_data:",storage_json_data,like_status,"likes:",likes);
         // 用 ajax 向后端发送 post 请求，并包含 CSRF 令牌
         $.ajax({
             url: url,
@@ -380,15 +372,23 @@
                 'like_status': like_status
             },
             success: function (result) {
-                console.log("result:", result);
-                if (result === 'add_success') {
+                var data = JSON.parse(result);
+                console.log("result:", data);
+                if (like_status) {
+                    $('span#likes_number').text(data["article_likes"]).css('color', '#dc3545');
+                    // 点过赞则立即退出函数
+                } else {
+                    // 用 Jquery 找到点赞数量，并 +1
+                    $('span#likes_number').text(data["article_likes"]).css('color', '#dc3545');
+                }
+                if (data["return_msg"] === 'add_success') {
                     // 尝试修改点赞数据
                     try {
                         storage_json_data[id] = true;
                     } catch (e) {
                         window.localStorage.clear();
                     }
-                    ;
+
 
                     const d = JSON.stringify(storage_json_data);
                     // 尝试存储点赞数据到 LocalStorage
@@ -401,15 +401,15 @@
                             storage.setItem("my_blog_likes_data", d);
                         }
                     }
-                    ;
-                } else if (result === 'del_success') {
+
+                } else if (data["return_msg"] === 'del_success') {
                     // 尝试修改点赞数据
                     try {
                         storage_json_data[id] = false;
                     } catch (e) {
                         window.localStorage.clear();
                     }
-                    ;
+
                     const d = JSON.stringify(storage_json_data);
                     // 尝试存储点赞数据到 LocalStorage
                     try {
@@ -421,7 +421,7 @@
                             storage.setItem("my_blog_likes_data", d);
                         }
                     }
-                    ;
+
                 } else {
                     layer.msg("与服务器通信失败..过一会儿再试试呗~");
                 }
@@ -452,16 +452,10 @@
         if (!storage_json_data) {
             storage_json_data = {}
         }
-        ;
+
         console.log("storage_json_data:", storage_json_data);
         // 检查当前文章是否已收藏。是则 status = true
         const collect_status = check_status(storage_json_data, id);
-        if (collect_status) {
-            $('span#collects_number').text(collects - 1).css('color', '#dc3545');
-        } else {
-            // 用 Jquery 找到收藏数量，并 +1
-            $('span#collects_number').text(collects + 1).css('color', '#dc3545');
-        }
         // 用 ajax 向后端发送 post 请求
         $.ajax({
             url: url,
@@ -471,14 +465,20 @@
                 "collect_status": collect_status
             },
             success: function (result) {
-                if (result === 'add_success') {
+                var data = JSON.parse(result);
+                if (collect_status) {
+                    $('span#collects_number').text(data["article_collect"]).css('color', '#dc3545');
+                } else {
+                // 用 Jquery 找到收藏数量，并 +1
+                    $('span#collects_number').text(data["article_collect"]).css('color', '#dc3545');
+                }
+                if (data["return_msg"] === 'add_success') {
                     // 尝试修改收藏数据
                     try {
                         storage_json_data[id] = true;
                     } catch (e) {
                         window.localStorage.clear();
                     }
-                    ;
 
                     const d = JSON.stringify(storage_json_data);
                     // 尝试存储收藏数据到 LocalStorage
@@ -491,15 +491,14 @@
                             storage.setItem("my_blog_collects_data", d);
                         }
                     }
-                    ;
-                } else if (result === 'del_success') {
+
+                } else if (data["return_msg"] === 'del_success') {
                     // 尝试修改收藏数据
                     try {
                         storage_json_data[id] = false;
                     } catch (e) {
                         window.localStorage.clear();
                     }
-                    ;
 
                     const d = JSON.stringify(storage_json_data);
                     // 尝试存储收藏数据到 LocalStorage
@@ -512,7 +511,7 @@
                             storage.setItem("my_blog_collects_data", d);
                         }
                     }
-                    ;
+
                 } else {
                     layer.msg("与服务器通信失败..过一会儿再试试呗~");
                 }
@@ -521,7 +520,7 @@
                 layer.msg("点赞请求失败，请稍后重试");
             }
         });
-    };
+    }
 
     // 辅助主函数，验证点赞收藏状态
     function check_status(data, id) {
@@ -536,8 +535,7 @@
             window.localStorage.clear();
             return false;
         }
-        ;
-    };
+    }
 
     <!-- 唤醒二级回复的 modal -->
     // 加载 modal
@@ -554,10 +552,8 @@
                 '" frameborder="0" style="width: 100%; height: 100%;"></iframe>';
             $(modal_body).append(content);
         }
-        ;
-
         $(modal_id).modal('show');
-    };
+    }
 
     // 处理二级回复
     function post_reply_and_show_it(new_comment_id) {
@@ -566,7 +562,7 @@
         next_url = next_url.charAt(next_url.length - 1) == '/' ? next_url.slice(0, -1) : next_url;
         // 刷新并定位到锚点
         window.location.replace(next_url + "#comment_elem_" + new_comment_id);
-    };
+    }
 
 
 </script>

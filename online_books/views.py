@@ -1,23 +1,16 @@
-from django.shortcuts import render
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from .online_books_form import OnlineBooksForm
-from .models import OnlineBooksModel
+from .online_books_form import OnlineBooksForm, BookShelfForm
+from .models import OnlineBooksModel, BookShelfModel
 from users.models import MyUser
-from django.http import QueryDict
-from bookshelf.models import BookShelfModel
-from bookshelf.book_shelf_form import BookShelfForm
 from django.core.cache import cache
-import os
 from io import TextIOWrapper
 import csv
-from django.http import HttpResponse
-import ebooklib
-from ebooklib import epub
-from io import BytesIO
-import shutil
 import requests
-import html
+import shutil
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
+import os
+import zipfile
+from bs4 import BeautifulSoup
 
 
 def user_online_book_list(request):
@@ -109,31 +102,6 @@ def online_book_delete(request, book_id):
         book.delete()
         return redirect('admin_online_book_list')
     return render(request, 'online_books/online_book_delete.html', {'book': book})
-
-
-from bs4 import BeautifulSoup
-
-import os
-import requests
-from bs4 import BeautifulSoup
-from ebooklib import epub
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
-import zipfile
-import os
-import requests
-import shutil
-from bs4 import BeautifulSoup
-import zipfile
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
-
-from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth.decorators import login_required
-import os
-import zipfile
-from bs4 import BeautifulSoup
-from .models import OnlineBooksModel
 
 
 @login_required
@@ -231,3 +199,45 @@ def add_book_shelf(request, book_id):
     for x in bookshelfs:
         print("@@", x.id, x.book_name, x.book_image)
     return render(request, 'book_shelf/user_book_shelf/user_book_shelf_list.html', {'bookshelfs': bookshelfs})
+
+
+@login_required
+def user_book_shelf_list(request, book_shelf_user_id):
+    if not request.session.get("is_login", None):
+        return redirect('/login/')
+    print("book_shelf_user_id:", book_shelf_user_id, isinstance(book_shelf_user_id, MyUser))
+    bookshelfs = BookShelfModel.objects.filter(book_shelf_user_id=book_shelf_user_id)
+    return render(request, 'book_shelf/user_book_shelf/user_book_shelf_list.html', {'bookshelfs': bookshelfs})
+
+
+@login_required
+def user_book_shelf_detail(request, record_id):
+    if not request.session.get("is_login", None):
+        return redirect('/login/')
+    try:
+        bookshelf = get_object_or_404(BookShelfModel, id=record_id)
+    except Exception as e:
+        print("加入书架失败", e)
+    else:
+        return render(request, 'book_shelf/user_book_shelf/user_book_shelf_detail.html', {'bookshelf': bookshelf})
+
+
+@login_required
+def admin_book_shelf_list(request, book_shelf_user_id):
+    if not request.session.get("is_login", None):
+        return redirect('/login/')
+    print("book_shelf_user_id:", book_shelf_user_id, isinstance(book_shelf_user_id, MyUser))
+    bookshelfs = BookShelfModel.objects.filter(book_shelf_user_id=book_shelf_user_id)
+    return render(request, 'book_shelf/admin_book_shelf/admin_book_shelf_list.html', {'bookshelfs': bookshelfs})
+
+
+@login_required
+def admin_book_shelf_detail(request, record_id):
+    if not request.session.get("is_login", None):
+        return redirect('/login/')
+    try:
+        bookshelf = get_object_or_404(BookShelfModel, id=record_id)
+    except Exception as e:
+        print("加入书架失败", e)
+    else:
+        return render(request, 'book_shelf/admin_book_shelf/admin_book_shelf_detail.html', {'bookshelf': bookshelf})

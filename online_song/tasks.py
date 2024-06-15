@@ -15,7 +15,7 @@ def sync_upload_song(file_name):
         # 创建 CSV Reader 对象
         csvreader = fr.readlines()
         for each_row in csvreader:
-            row=each_row.strip().split("|")
+            row = each_row.strip().split("|")
             print(row)
             song_filename = row[0].strip()
             song_full_path = os.path.join('audio', song_filename)

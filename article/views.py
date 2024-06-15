@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 # 引入HttpResponse
 from django.http import HttpResponse
 # 导入数据模型ArticlePost, ArticleColumn
-from .models import ArticlePost, ArticleColumn
+from .models import ArticlePost, ArticleColumn, MyFavoriteArtile
 # 引入刚才定义的ArticlePostForm表单类
 from .forms import ArticlePostForm
 # 引入markdown模块
@@ -34,6 +34,7 @@ from .forms import MDEditorForm
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import os
+import json
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 import time
@@ -436,16 +437,17 @@ def article_update(request, id):
         return render(request, 'article/update.html', context)
 
 
-
 # 点赞数 +1
 class IncreaseLikesView(View):
     def post(self, request, *args, **kwargs):
-        print("IncreaseLikesView request.POST:", request.POST.get('like_status'), args, kwargs)
         article = ArticlePost.objects.get(id=kwargs.get('id'))
         article_likes_cache = cache.get("article_%s_likes" % kwargs.get('id'))
         if not article_likes_cache:
             article_likes_cache = article.likes
         print(article_likes_cache, type(article_likes_cache))
+        if_like,created=MyFavoriteArtile.objects.get_or_create(favorite_article_user_id=request.user,
+                                                               favorite_article_id=article.id)
+        print("IncreaseLikesView request.POST:", request.user,article.id,if_like)
         if request.POST.get('like_status') == 'true':
             article_likes_cache -= 1
             notify.send(
@@ -455,6 +457,9 @@ class IncreaseLikesView(View):
                 target=article,
             )
             return_msg = 'del_success'
+            if if_like:
+                if_like.delete()
+
         else:
             article_likes_cache += 1
             notify.send(
@@ -506,7 +511,6 @@ class IncreaseCollectsView(View):
         article.collects = article_collect_cache
         article.save()
         return HttpResponse(json.dumps({"return_msg": return_msg, "article_collect": article_collect_cache}))
-
 
 
 def article_list_example(request):

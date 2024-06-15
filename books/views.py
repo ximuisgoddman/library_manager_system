@@ -1,11 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .book_form import BookForm
-from .models import Book
-from users.models import MyUser
-from borrow_record.borrow_record_form import BorrowRecordForm
+from .book_form import BookForm, BorrowRecordForm
+from .models import Book, BorrowRecord
 from django.http import QueryDict
-from borrow_record.models import BorrowRecord
 import datetime
 from django.http import HttpResponse
 import redis
@@ -13,14 +10,10 @@ import logging
 import csv
 from io import TextIOWrapper
 import os
-from django.utils.text import slugify
 
 # 获得logger实例
 logger = logging.getLogger('myapp')
 from django.db.models import Q
-from django.http import JsonResponse
-from django.views.decorators.http import require_GET
-from .models import Book
 from django.core.paginator import Paginator
 from django.core.cache import cache
 
@@ -243,3 +236,51 @@ def book_borrow(request, book_id):
     finally:
         # 释放锁
         redis_client.delete(lock_key)
+
+
+@login_required
+def user_borrow_record(request, record_user_id):
+    print("qqrequest.user:", request.user, record_user_id)
+    if not request.session.get("is_login", None):
+        return redirect('/login/')
+    borrow_records = BorrowRecord.objects.filter(record_user_id=record_user_id)
+    return render(request, 'borrow_record/user_borrow_record/user_borrow_record_list.html',
+                  {'borrow_records': borrow_records})
+
+
+@login_required
+def user_borrow_record_detail(request, record_id):
+    print("request.user:", request.user, record_id)
+    if not request.session.get("is_login", None):
+        return redirect('/login/')
+    try:
+        record = get_object_or_404(BorrowRecord, id=record_id)
+    except Exception as e:
+        print("图书未借阅", e)
+    else:
+        print("@@@", record.id, record.book_id)
+        return render(request, 'borrow_record/user_borrow_record/user_borrow_record_detail.html', {'record': record})
+
+
+@login_required
+def admin_borrow_record(request, record_user_id):
+    print("qqrequest.user:", request.user, record_user_id)
+    if not request.session.get("is_login", None):
+        return redirect('/login/')
+    borrow_records = BorrowRecord.objects.filter(record_user_id=record_user_id)
+    return render(request, 'borrow_record/admin_borrow_record/admin_borrow_record_list.html',
+                  {'borrow_records': borrow_records})
+
+
+@login_required
+def admin_borrow_record_detail(request, record_id):
+    print("request.user:", request.user, record_id)
+    if not request.session.get("is_login", None):
+        return redirect('/login/')
+    try:
+        record = get_object_or_404(BorrowRecord, id=record_id)
+    except Exception as e:
+        print("图书未借阅", e)
+    else:
+        print("@@@", record.id, record.book_id)
+        return render(request, 'borrow_record/admin_borrow_record/admin_borrow_record_detail.html', {'record': record})

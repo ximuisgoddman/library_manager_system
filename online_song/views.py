@@ -1,10 +1,8 @@
 from django.shortcuts import render
 from .online_song_form import OnlineSongForm
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import OnlineSongModel
+from .models import OnlineSongModel, MyFavoriteMusic
 from django.contrib.auth.decorators import login_required
-from myfavoritemusic.models import MyFavoriteMusic
-from io import TextIOWrapper
 from django.http import JsonResponse
 import csv
 import os
@@ -129,3 +127,29 @@ def add_to_favorite(request):
             return JsonResponse({"status": "error", "message": "歌曲已存在于favorite列表中"})
     else:
         return JsonResponse({"status": "error", "message": "未登录或请求方法错误"})
+
+
+def my_favorite_music_list(request):
+    songs = MyFavoriteMusic.objects.all()
+    search_query = request.GET.get('search', '')
+    songs = songs.filter(song_title__icontains=search_query)
+    song_list = []
+    for each_song in songs:
+        song_list.append({"song_id": each_song.id,
+                          "song_title": each_song.song_title,
+                          "audio_file": each_song.audio_file.url,
+                          "song_author": each_song.song_author,
+                          "song_classification": each_song.song_classification})
+
+    return render(request, 'user_front_page/online_songs/my_favorite_music.html',
+                  {'songs': songs, "songs_json": json.dumps(song_list)})
+
+
+@login_required
+def delete_favorite_music(request, music_id):
+    favorite_music = MyFavoriteMusic.objects.get(music_id=music_id)
+    if request.method == 'POST':
+        favorite_music.delete()
+        return redirect('my_favorite_music_list')
+    return render(request, 'user_front_page/online_songs/delete_favorite_music.html',
+                  {'favorite_music': favorite_music})

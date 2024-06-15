@@ -2,7 +2,7 @@ import os
 import shutil
 
 from mutagen.mp3 import MP3
-import re
+import random
 
 import wave
 
@@ -49,8 +49,8 @@ def get_wav_duration(file_path):
         return None
 
 
-def get_music_info(music_path):
-    count = 0
+def get_music_info(music_path, file_path):
+    all_lines = []
     for x in os.listdir(music_path):
         if x.endswith(".git"):
             continue
@@ -60,7 +60,7 @@ def get_music_info(music_path):
                 author, song_name = each_file.split(".")[0].split("-")
             except Exception as e:
                 print(os.path.join(music_path, x, each_file), e)
-            if each_file.endswith(".mp3"):
+            if each_file.lower().endswith(".mp3"):
                 try:
                     audio = MP3(os.path.join(music_path, x, each_file))
                     # zhuanji = audio["TALB"]
@@ -70,50 +70,34 @@ def get_music_info(music_path):
                     print(os.path.join(music_path, x, each_file), e)
                     zhuanji = "--"
 
-            if each_file.endswith(".wav"):
+            elif each_file.endswith(".wav"):
                 duration = get_wav_duration(os.path.join(music_path, x, each_file))
                 if duration is not None:
                     timestamp = "%02d:%02d" % (int(duration) // 60, int(duration) % 60)
-                    # shutil.copy(os.path.join(music_path, x, each_file), "D:\my_program\py\library_manager\media\\audio")
-                    # count+=1
-                    # with open("my_music2.txt", 'a', encoding='utf-8') as fw:
-                    #     fw.write(
-                    #         "%s,%s,%s,%s,%s\n" % (each_file, author.strip(), song_name.strip(), zhuanji, timestamp))
-            #
-            #         if count>20:
-            #             break
-            #     else:
-            #         print("无法获取音频时长。", each_file)
+                else:
+                    print("无法获取音频时长。", each_file)
 
-            if each_file.endswith(".flac"):
+            elif each_file.endswith(".flac"):
                 duration = get_flac_duration(os.path.join(music_path, x, each_file))
                 if duration is not None:
                     timestamp = "%02d:%02d" % (int(duration) // 60, int(duration) % 60)
-            #         shutil.copy(os.path.join(music_path, x, each_file), "D:\my_program\py\library_manager\media\\audio")
-            #         count+=1
-            #         with open("my_music2.txt", 'a', encoding='utf-8') as fw:
-            #             fw.write(
-            #                 "%s,%s,%s,%s,%s\n" % (each_file, author.strip(), song_name.strip(), zhuanji, timestamp))
-            #
-            #         if count>20:
-            #             break
-            #     else:
-            #         print("无法获取音频时长。", each_file)
+                else:
+                    print("无法获取音频时长。", each_file)
             elif each_file.endswith(".m4a"):
                 duration = get_m4a_duration(os.path.join(music_path, x, each_file))
                 if duration is not None:
                     timestamp = "%02d:%02d" % (int(duration) // 60, int(duration) % 60)
-            # else:
-            #     print("Error format", os.path.join(music_path, x, each_file))
-            shutil.copy(os.path.join(music_path, x, each_file), "D:\my_program\py\library_manager_system-master\media/audio")
-            with open("my_music.txt", 'a', encoding='utf-8') as fw:
-                fw.write(
-                    "%s,%s,%s,%s,%s\n" % (
-                    each_file, author.strip(), song_name.strip(),
-                    zhuanji, timestamp))
+            else:
+                print("Error format", os.path.join(music_path, x, each_file))
+            # shutil.copy(os.path.join(music_path, x, each_file), "D:\my_program\py\library_manager_system-master\media/audio")
+            each_line = "%s|%s|%s|%s|%s\n" % (each_file, author.strip(), song_name.strip(), zhuanji, timestamp)
+            all_lines.append(each_line)
+    random.shuffle(all_lines)
+    with open(file_path, 'a', encoding='utf-8') as fw:
+        fw.writelines(all_lines)
 
 
-get_music_info("D:\BaiduNetdiskDownload\music")
+get_music_info("D:\BaiduNetdiskDownload\english_music", "english_music.txt")
 
 # music_path = "D:\BaiduNetdiskDownload\music\吴青峰"
 # for x in os.listdir(music_path):
@@ -129,19 +113,19 @@ get_music_info("D:\BaiduNetdiskDownload\music")
 
 
 #
-music_path = "D:\my_program\py\library_manager_system-master\media"
-count = 0
-for x in os.listdir(music_path):
-    for y in os.listdir(os.path.join(music_path, x)):
-        if x.endswith(".git"):
-            continue
-
-        try:
-            count += 1
-            # author,name=y.split(".")[0].split("-")
-            # if "," in author or x in name:
-            #     os.rename(os.path.join(music_path,x,y),os.path.join(music_path,x,y.replace(",","&")))
-
-        except Exception as e:
-            print(x, y, e)
-print(count)
+# music_path = "D:\my_program\py\library_manager_system-master\media"
+# count = 0
+# for x in os.listdir(music_path):
+#     for y in os.listdir(os.path.join(music_path, x)):
+#         if x.endswith(".git"):
+#             continue
+#
+#         try:
+#             count += 1
+#             # author,name=y.split(".")[0].split("-")
+#             # if "," in author or x in name:
+#             #     os.rename(os.path.join(music_path,x,y),os.path.join(music_path,x,y.replace(",","&")))
+#
+#         except Exception as e:
+#             print(x, y, e)
+# print(count)

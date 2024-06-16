@@ -109,8 +109,8 @@ urlpatterns = [
 
     path('user_book_shelf_list/<int:book_shelf_user_id>', online_book_views.user_book_shelf_list,
          name='user_book_shelf_list'),
-    path('user_book_shelf_detail/<int:record_id>/', online_book_views.user_book_shelf_detail,
-         name='user_book_shelf_detail'),
+    path('delete_book_shelf/<int:book_id>/', online_book_views.delete_book_shelf,
+         name='delete_book_shelf'),
 
     path('admin_book_shelf_list/<int:book_shelf_user_id>', online_book_views.admin_book_shelf_list,
          name='admin_book_shelf_list'),
@@ -124,7 +124,8 @@ urlpatterns = [
     path("online_song_update/<int:song_id>/update/", online_song_view.online_song_update, name='online_song_update'),
     path("online_song_delete/<int:song_id>/update/", online_song_view.online_song_delete, name='online_song_delete'),
     path("add_to_favorite", online_song_view.add_to_favorite, name='add_to_favorite'),
-    path("my_favorite_music_list", online_song_view.my_favorite_music_list, name='my_favorite_music_list'),
+    path("my_favorite_music_list/<int:favorite_music_user_id>", online_song_view.my_favorite_music_list,
+         name='my_favorite_music_list'),
     path("delete_favorite_music/<int:music_id>/", online_song_view.delete_favorite_music,
          name='delete_favorite_music'),
 

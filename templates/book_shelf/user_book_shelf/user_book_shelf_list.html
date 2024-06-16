@@ -23,7 +23,8 @@
             <td>{{ bookshelf.book_publisher }}</td>
             <td>{{ bookshelf.book_author }}</td>
             <td>
-                <a href="{% url 'user_book_shelf_detail' bookshelf.id %}" class="btn btn-secondary btn-sm">View</a>
+                <a href="{% url 'read_online_book' bookshelf.book_id %}" class="btn btn-success btn-sm me-2 btn-fixed-size">Read</a>
+                <a href="{% url 'delete_book_shelf' bookshelf.book_id %}" class="btn btn-success btn-sm me-2 btn-fixed-size">Del from BookShelf</a>
             </td>
         </tr>
         {% endfor %}

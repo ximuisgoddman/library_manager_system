@@ -20,7 +20,6 @@
     width: 50px; /* 设置按钮的宽度 */
     height: 30px; /* 设置按钮的高度 */
 }
-
 </style>
 <table class="table">
     <thead>
@@ -43,7 +42,10 @@
         <td>{{book.book_classification}}</td>
         <td>
             <a href="{% url 'read_online_book' book.id %}" class="btn btn-success btn-sm me-2 btn-fixed-size">Read</a>
-            <a href="{% url 'add_book_shelf' book.id %}" class="btn btn-success btn-sm me-2 btn-fixed-size">Add to BookShelf</a>
+            <form action="{% url 'add_book_shelf' book.id %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-success btn-sm me-2 btn-fixed-size">Add to BookShelf</button>
+            </form>
         </td>
     </tr>
     {% endfor %}

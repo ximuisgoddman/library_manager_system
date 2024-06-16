@@ -176,10 +176,10 @@ def add_book_shelf(request, book_id):
     if not request.session.get("is_login", None):
         return redirect('/login/')
 
-    bookshelf = BookShelfModel.objects.filter(id=book_id, book_shelf_user_id=request.user.id).first()
+    bookshelf = BookShelfModel.objects.filter(book_id=book_id, book_shelf_user_id=request.user.id).first()
     if bookshelf:
         print("already add to shelf")
-        return render(request, 'book_shelf/user_book_shelf/user_book_shelf_detail.html', {'bookshelf': bookshelf})
+        return render(request, 'book_shelf/user_book_shelf/user_book_shelf_list.html', {'bookshelf': bookshelf})
 
     online_book = OnlineBooksModel.objects.filter(id=book_id).first()
     print("online_book", online_book, type(online_book.book_image))
@@ -193,11 +193,7 @@ def add_book_shelf(request, book_id):
             book_shelf_user_id=request.user
         )
         bookshelf.save()
-
     bookshelfs = BookShelfModel.objects.all()
-    print("Len", len(bookshelfs), request.FILES)
-    for x in bookshelfs:
-        print("@@", x.id, x.book_name, x.book_image)
     return render(request, 'book_shelf/user_book_shelf/user_book_shelf_list.html', {'bookshelfs': bookshelfs})
 
 
@@ -205,21 +201,23 @@ def add_book_shelf(request, book_id):
 def user_book_shelf_list(request, book_shelf_user_id):
     if not request.session.get("is_login", None):
         return redirect('/login/')
-    print("book_shelf_user_id:", book_shelf_user_id, isinstance(book_shelf_user_id, MyUser))
     bookshelfs = BookShelfModel.objects.filter(book_shelf_user_id=book_shelf_user_id)
     return render(request, 'book_shelf/user_book_shelf/user_book_shelf_list.html', {'bookshelfs': bookshelfs})
 
 
 @login_required
-def user_book_shelf_detail(request, record_id):
+def delete_book_shelf(request, book_id):
     if not request.session.get("is_login", None):
         return redirect('/login/')
     try:
-        bookshelf = get_object_or_404(BookShelfModel, id=record_id)
+        bookshelf = get_object_or_404(BookShelfModel, book_id=book_id)
+        if request.method == 'POST':
+            bookshelf.delete()
+            return redirect('user_book_shelf_list', book_shelf_user_id=bookshelf.book_shelf_user_id.id)
     except Exception as e:
-        print("加入书架失败", e)
+        print("删除书架失败", e)
     else:
-        return render(request, 'book_shelf/user_book_shelf/user_book_shelf_detail.html', {'bookshelf': bookshelf})
+        return render(request, 'book_shelf/user_book_shelf/delete_book_shelf.html', {'bookshelf': bookshelf})
 
 
 @login_required

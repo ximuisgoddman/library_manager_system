@@ -129,8 +129,8 @@ def add_to_favorite(request):
         return JsonResponse({"status": "error", "message": "未登录或请求方法错误"})
 
 
-def my_favorite_music_list(request):
-    songs = MyFavoriteMusic.objects.all()
+def my_favorite_music_list(request, favorite_music_user_id):
+    songs = MyFavoriteMusic.objects.filter(favorite_music_user_id=favorite_music_user_id)
     search_query = request.GET.get('search', '')
     songs = songs.filter(song_title__icontains=search_query)
     song_list = []
@@ -150,6 +150,6 @@ def delete_favorite_music(request, music_id):
     favorite_music = MyFavoriteMusic.objects.get(music_id=music_id)
     if request.method == 'POST':
         favorite_music.delete()
-        return redirect('my_favorite_music_list')
+        return redirect('my_favorite_music_list', favorite_music_user_id=favorite_music.favorite_music_user_id.id)
     return render(request, 'user_front_page/online_songs/delete_favorite_music.html',
                   {'favorite_music': favorite_music})

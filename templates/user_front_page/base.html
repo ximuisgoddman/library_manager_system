@@ -101,7 +101,8 @@
                             <a class="dropdown-item" href="#" onclick="user_delete()">删除用户</a>
                             <a class="dropdown-item" href="{% url 'user_book_shelf_list' user.id %}">我的书架</a>
                             <a class="dropdown-item" href="{% url 'user_borrow_record' user.id %}">我的借阅</a>
-                            <a class="dropdown-item" href="{% url 'my_favorite_music_list' user.id %}">我喜欢</a>
+                            <a class="dropdown-item" href="{% url 'my_favorite_music_list' user.id %}">收藏歌曲</a>
+                            <a class="dropdown-item" href="{% url 'my_collect_article_list' user.id %}">收藏文章</a>
                         </div>
                     <li class="dropdown-item">
                         <a class="nav-link" href="{% url 'logout' %}">登出</a>

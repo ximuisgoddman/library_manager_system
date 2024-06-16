@@ -1,10 +1,6 @@
 # 引入redirect重定向模块
 from django.shortcuts import render, redirect, get_object_or_404
 # 引入User模型
-from django.contrib.auth.models import User
-# 引入HttpResponse
-from django.http import HttpResponse
-# 导入数据模型ArticlePost, ArticleColumn
 from .models import ArticlePost, ArticleColumn, MyFavoriteArtile
 # 引入刚才定义的ArticlePostForm表单类
 from .forms import ArticlePostForm
@@ -444,10 +440,8 @@ class IncreaseLikesView(View):
         article_likes_cache = cache.get("article_%s_likes" % kwargs.get('id'))
         if not article_likes_cache:
             article_likes_cache = article.likes
-        print(article_likes_cache, type(article_likes_cache))
-        if_like,created=MyFavoriteArtile.objects.get_or_create(favorite_article_user_id=request.user,
-                                                               favorite_article_id=article.id)
-        print("IncreaseLikesView request.POST:", request.user,article.id,if_like)
+        print("IncreaseLikesView request.POST:", request.user, article.id)
+
         if request.POST.get('like_status') == 'true':
             article_likes_cache -= 1
             notify.send(
@@ -457,8 +451,6 @@ class IncreaseLikesView(View):
                 target=article,
             )
             return_msg = 'del_success'
-            if if_like:
-                if_like.delete()
 
         else:
             article_likes_cache += 1
@@ -486,6 +478,8 @@ class IncreaseCollectsView(View):
         article_collect_cache = cache.get("article_%s_collect" % kwargs.get('id'))
         if not article_collect_cache:
             article_collect_cache = article.collects
+        if_collect, _ = MyFavoriteArtile.objects.get_or_create(favorite_article_user_id=request.user,
+                                                               favorite_article_id=article)
         if request.POST.get('collect_status') == 'true':
             article_collect_cache -= 1
 
@@ -496,6 +490,8 @@ class IncreaseCollectsView(View):
                 target=article,
             )
             return_msg = 'del_success'
+            if if_collect:
+                if_collect.delete()
 
         else:
             article_collect_cache += 1
@@ -618,3 +614,58 @@ def follow_user(request, author_id, article_id):
         )
         article_author.following.remove(request.user)
         return JsonResponse({'status': 'error', 'message': '您已取消关注'})
+
+
+@login_required
+def my_collect_article_list(request, user_id):
+    # 从 url 中提取查询参数
+    search = request.GET.get('search')
+    order = request.GET.get('order')
+    column = request.GET.get('column')
+    tag = request.GET.get('tag')
+    # 1. 获取特定用户收藏的所有文章的 favorite_article_id
+    favorite_article_ids = MyFavoriteArtile.objects.filter(favorite_article_user_id=user_id).values_list(
+        'favorite_article_id', flat=True)
+    print("@@GET_all_article_id:", favorite_article_ids)
+    # 2. 使用获取到的 favorite_article_id 来获取对应的 ArticlePost 对象
+    article_list = ArticlePost.objects.filter(id__in=favorite_article_ids)
+
+    # 搜索查询集
+    if search:
+        article_list = article_list.filter(
+            Q(title__icontains=search) |
+            Q(content__icontains=search)
+        )
+    else:
+        # 将 search 参数重置为空
+        search = ''
+
+    # 栏目查询集
+    if column is not None and column.isdigit():
+        article_list = article_list.filter(column=column)
+
+    # 标签查询集
+    if tag and tag != 'None':
+        article_list = article_list.filter(tags__name__in=[tag])
+
+    # 查询集排序
+    if order == 'total_views':
+        # 按热度排序博文
+        article_list = article_list.order_by('-total_views')
+
+    # 每页显示 10 篇文章
+    paginator = Paginator(article_list, 10)
+    # 获取 url 中的页码
+    page = request.GET.get('page')
+    # 将导航对象相应的页码内容返回给 articles
+    articles = paginator.get_page(page)
+
+    # 需要传递给模板（templates）的对象
+    context = {
+        'articles': articles,
+        'order': order,
+        'search': search,
+        'column': column,
+        'tag': tag,
+    }
+    return render(request, 'article/my_collect_articles.html', context)

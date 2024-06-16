@@ -80,7 +80,7 @@ urlpatterns = [
     path('user_edit/<int:user_id>', user_views.user_edit, name='user_edit'),
     path('user_delete/<int:user_id>', user_views.user_delete, name='user_delete'),
     path('follow_user/<int:author_id>/<int:article_id>', article_view.follow_user, name='follow_user'),
-
+    path('my_collect_article_list/<int:user_id>', article_view.my_collect_article_list, name='my_collect_article_list'),
     path('books/list', book_views.book_list, name='book_list'),
     path('books/', book_views.book_front_page, name='book_front_page'),
     path('books/add/', book_views.book_create, name='book_create'),

@@ -15,25 +15,47 @@
         </form>
     </div>
 </div>
-<style>
-    .btn-fixed-size {
-    width: 50px; /* 设置按钮的宽度 */
-    height: 30px; /* 设置按钮的高度 */
-}
-</style>
-<table class="table">
+
+<table class="table" id="onlineBookTable">
     <thead>
     <tr>
         <th scope="col">图书封面</th>
         <th scope="col">图书名称</th>
         <th scope="col">图书作者</th>
-        <th scope="col">出版社</th>
-        <th scope="col">图书类别</th>
+        <th>
+            <label for="publisherFilter">出版社:</label>
+            <select id="publisherFilter" class="form-select form-select-sm" style="width: 50px;"
+                    onchange="filterBooks()">
+                <option value="">All</option>
+                {% for publisher in publishers %}
+                {% if publisher == selected_publisher %}
+                <option value="{{ publisher }}" selected>{{ publisher }}</option>
+                {% else %}
+                <option value="{{ publisher }}">{{ publisher }}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+        </th>
+
+        <th>
+            <label for="bookClassFilter">分类</label>
+            <select id="bookClassFilter" class="form-select form-select-sm" style="width: 50px;"
+                    onchange="filterBooks()">
+                <option value="">All</option>
+                {% for bookClass in bookClasses %}
+                {% if bookClass == selected_bookClass %}
+                <option value="{{ bookClass }}" selected>{{ bookClass }}</option>
+                {% else %}
+                <option value="{{ bookClass }}">{{ bookClass }}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+        </th>
         <th scope="col">操作</th>
     </tr>
     </thead>
     <tbody>
-    {% for book in books %}
+    {% for book in page_obj %}
     <tr>
         <td><img src="{{ book.book_image.url }}" width="100"></td>
         <td>{{ book.book_name }}</td>
@@ -51,4 +73,49 @@
     {% endfor %}
     </tbody>
 </table>
+{% if page_obj.paginator.num_pages > 1 %}
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; 第一页</a>
+            <a href="?page={{ page_obj.previous_page_number }}">上一页</a>
+        {% endif %}
+
+        <span class="current-page">{{ page_obj.number }}</span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">下一页</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">最后一页 &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+{% endif %}
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function filterBooks() {
+        var publisherFilter = document.getElementById("publisherFilter").value;
+        var bookClassFilter = document.getElementById("bookClassFilter").value;
+
+        $.ajax({
+            url: "{% url 'user_online_book_list' %}",
+            type: "GET",
+            data: {
+                book_publisher: publisherFilter,
+                book_class: bookClassFilter
+            },
+            success: function (response) {
+                // 更新表格内容
+                $("#onlineBookTable tbody").html($(response).find("#onlineBookTable tbody").html());
+            },
+
+
+            error: function (xhr, status, error) {
+                // 处理错误情况
+            }
+        });
+    }
+</script>
+
 {% endblock %}

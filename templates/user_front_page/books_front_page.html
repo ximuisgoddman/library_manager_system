@@ -17,32 +17,6 @@
 </div>
 
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    function filterBooks() {
-        var publisherFilter = document.getElementById("publisherFilter").value;
-        var bookClassFilter = document.getElementById("bookClassFilter").value;
-
-        $.ajax({
-            url: "{% url 'book_front_page' %}",
-            type: "GET",
-            data: {
-                publisher: publisherFilter,
-                book_class: bookClassFilter
-            },
-            success: function (response) {
-                // 更新表格内容
-                $("#bookTable tbody").html($(response).find("#bookTable tbody").html());
-            },
-
-
-            error: function (xhr, status, error) {
-                // 处理错误情况
-            }
-        });
-    }
-</script>
-
 <table class="table" id="bookTable">
     <!-- 表头和表格内容 -->
     <thead>
@@ -121,5 +95,31 @@
     </span>
 </div>
 {% endif %}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function filterBooks() {
+        var publisherFilter = document.getElementById("publisherFilter").value;
+        var bookClassFilter = document.getElementById("bookClassFilter").value;
+
+        $.ajax({
+            url: "{% url 'book_front_page' %}",
+            type: "GET",
+            data: {
+                publisher: publisherFilter,
+                book_class: bookClassFilter
+            },
+            success: function (response) {
+                // 更新表格内容
+                $("#bookTable tbody").html($(response).find("#bookTable tbody").html());
+            },
+
+
+            error: function (xhr, status, error) {
+                // 处理错误情况
+            }
+        });
+    }
+</script>
 
 {% endblock %}

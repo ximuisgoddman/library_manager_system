@@ -46,12 +46,12 @@ def upload_lottery_info(request):
                     )
                     lottery.save()
 
-                return redirect('book_list')
+                return redirect('admin_book_list')
             else:
                 book = form.save(commit=False)
                 book.owner = request.user
                 book.save()
-                return redirect('book_list')
+                return redirect('admin_book_list')
     else:
         form = LotteryForm()
     return render(request, 'lottery/lottery_upload.html', {'form': form})

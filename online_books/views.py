@@ -11,16 +11,36 @@ from django.contrib.auth.decorators import login_required
 import os
 import zipfile
 from bs4 import BeautifulSoup
+from django.db.models import Q
+from django.core.paginator import Paginator
 
 
 def user_online_book_list(request):
+    book_publishers = OnlineBooksModel.objects.values_list('book_publisher', flat=True).distinct()
+    bookClasses = OnlineBooksModel.objects.values_list('book_classification', flat=True).distinct()
+
+    book_publisher = request.GET.get('book_publisher', '')
+    book_class = request.GET.get('book_class', '')
     search_query = request.GET.get('search', '')
     cache_key = 'user_online_book_list_{}'.format(search_query)
     online_books = cache.get(cache_key)
     if online_books is None:
-        online_books = OnlineBooksModel.objects.filter(book_name__icontains=search_query)
+        online_books = OnlineBooksModel.objects.all()
         cache.set(cache_key, online_books, timeout=60 * 5)  # 设置缓存时间为 5 分钟
-    return render(request, 'user_front_page/online_books_front_page.html', {'books': online_books})
+    # 根据作者或者书名搜索
+    online_books = online_books.filter(Q(book_name__icontains=search_query) | Q(book_author__icontains=search_query))
+    # 过滤出版社和图书类别
+    online_books = online_books.filter(book_publisher__icontains=book_publisher)
+    online_books = online_books.filter(book_classification__icontains=book_class).order_by('id')
+    print(book_publisher,len(online_books))
+    paginator = Paginator(online_books, per_page=10)  # 每页显示10条数据
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'user_front_page/online_books_front_page.html',
+                  {'page_obj': page_obj,
+                   'publishers': book_publishers,
+                   'bookClasses': bookClasses})
 
 
 # Create your views here.

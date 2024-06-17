@@ -92,7 +92,7 @@ def my_login(request):
                         if next_url:
                             request.session['next_url'] = next_url
                         else:
-                            request.session['next_url'] = reverse('book_list')
+                            request.session['next_url'] = reverse('admin_book_list')
                         return redirect(request.session['next_url'])
                     else:
                         message = "密码不正确！"

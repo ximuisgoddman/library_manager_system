@@ -50,7 +50,7 @@ def book_front_page(request):
 
 
 @login_required
-def book_list(request):
+def admin_book_list(request):
     if not request.session.get("is_login", None):
         return redirect('/login/')
 
@@ -71,7 +71,7 @@ def book_list(request):
     books = books.filter(publisher__icontains=publisher)
     books = books.filter(book_classification__icontains=book_class)
 
-    return render(request, 'books/book_list.html', {
+    return render(request, 'books/admin_book_list.html', {
         'books': books,
         'publishers': publishers,
         'bookClasses': bookClasses})
@@ -123,12 +123,12 @@ def book_create(request):
                     book.owner = request.user
                     book.save()
 
-                return redirect('book_list')
+                return redirect('admin_book_list')
             else:
                 book = form.save(commit=False)
                 book.owner = request.user
                 book.save()
-                return redirect('book_list')
+                return redirect('admin_book_list')
     else:
         form = BookForm()
 
@@ -143,7 +143,7 @@ def book_update(request, book_id):
     form = BookForm(request.POST or None, instance=book)
     if form.is_valid():
         form.save()
-        return redirect('book_list')
+        return redirect('admin_book_list')
     return render(request, 'books/book_create.html', {'form': form})
 
 
@@ -154,7 +154,7 @@ def book_delete(request, book_id):
     book = Book.objects.get(id=book_id)
     if request.method == 'POST':
         book.delete()
-        return redirect('book_list')
+        return redirect('admin_book_list')
     return render(request, 'books/book_delete.html', {'book': book})
 
 

@@ -26,7 +26,7 @@
         var bookClassFilter = document.getElementById("bookClassFilter").value;
 
         $.ajax({
-            url: "{% url 'book_list' %}",
+            url: "{% url 'admin_book_list' %}",
             type: "GET",
             data: {
                 publisher: publisherFilter,

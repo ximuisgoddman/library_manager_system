@@ -77,15 +77,16 @@
 <div class="pagination">
     <span class="step-links">
         {% if page_obj.has_previous %}
-            <a href="?page=1">&laquo; 第一页</a>
-            <a href="?page={{ page_obj.previous_page_number }}">上一页</a>
+            <!-- 在页面上生成一个超链接，点击超链接时会跳转到指定的 URL，并保留当前页面的查询参数 -->
+            <a href="?page=1{% if request.GET.book_publisher %}&book_publisher={{ request.GET.book_publisher }}{% endif %}{% if request.GET.book_class %}&book_class={{ request.GET.book_class }}{% endif %}">&laquo; 第一页</a>
+            <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.book_publisher %}&book_publisher={{ request.GET.book_publisher }}{% endif %}{% if request.GET.book_class %}&book_class={{ request.GET.book_class }}{% endif %}">上一页</a>
         {% endif %}
 
         <span class="current-page">{{ page_obj.number }}</span>
 
         {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}">下一页</a>
-            <a href="?page={{ page_obj.paginator.num_pages }}">最后一页 &raquo;</a>
+            <a href="?page={{ page_obj.next_page_number }}{% if request.GET.book_publisher %}&book_publisher={{ request.GET.book_publisher }}{% endif %}{% if request.GET.book_class %}&book_class={{ request.GET.book_class }}{% endif %}">下一页</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.book_publisher %}&book_publisher={{ request.GET.book_publisher }}{% endif %}{% if request.GET.book_class %}&book_class={{ request.GET.book_class }}{% endif %}">最后一页 &raquo;</a>
         {% endif %}
     </span>
 </div>
@@ -108,9 +109,16 @@
             success: function (response) {
                 // 更新表格内容
                 $("#onlineBookTable tbody").html($(response).find("#onlineBookTable tbody").html());
+                var cur_url="{% url 'user_online_book_list' %}?";
+                if (publisherFilter&&bookClassFilter){
+                    cur_url+="book_publisher="+publisherFilter+"&book_class="+bookClassFilter
+                }else{
+                    if (publisherFilter){cur_url+="book_publisher="+publisherFilter}
+                    if (bookClassFilter){cur_url+="book_class="+bookClassFilter}
+                }
+                // 通过 JavaScript 将当前页面重定向到新的 URL，以实现动态更新页面内容和查询参数的效果
+                window.location.href = cur_url;
             },
-
-
             error: function (xhr, status, error) {
                 // 处理错误情况
             }

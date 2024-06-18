@@ -33,17 +33,8 @@ from books import views as book_views
 from users import views as user_views
 from online_song import views as online_song_view
 from online_books import views as online_book_views
-from relax_moment import views as relax_moment_view
 from lottery import views as lottery_view
-
-from tetris_app import views as tetris_view
-from snake import views as snake_view
-from spaceship_shoot import views as spaceship_shoot_view
-from pacman import views as pacman_view
-from space_invaders import views as space_invaders_view
-from game2048 import views as game2048_view
-from sliding_puzzle import views as sliding_puzzle_view
-from super_mario import views as super_mario_view
+from online_games import views as online_games_view
 
 # from my_blog import views as blog_view
 sys.path.append(book_path)
@@ -129,17 +120,10 @@ urlpatterns = [
     path("delete_favorite_music/<int:music_id>/", online_song_view.delete_favorite_music,
          name='delete_favorite_music'),
 
-    path("relax_moment/", relax_moment_view.relax_moment, name='relax_moment'),
-    path("update_game_state/", tetris_view.update_game_state, name='update_game_state'),
 
-    path("tetris/", tetris_view.tetris, name='tetris'),
-    path("snake/", snake_view.snake, name="snake"),
-    path("update_snake_state/", snake_view.update_snake_state, name='update_snake_state'),
 
     path("lottery_view/", lottery_view.lottery_view, name='lottery_view'),
     path("upload_lottery_info/", lottery_view.upload_lottery_info, name='upload_lottery_info'),
-    path("spaceship_shoot/", spaceship_shoot_view.spaceship_shoot, name="spaceship_shoot"),
-    path("update_space_ship_state/", spaceship_shoot_view.update_space_ship_state, name='update_space_ship_state'),
     path('users_manage/', user_info_manage_view.users_manage, name='users_manage'),
     path('', library_front_page_views.library_front_page, name='home'),
     path('favicon.ico', RedirectView.as_view(url='/static/ico/favicon.ico')),
@@ -158,12 +142,15 @@ urlpatterns = [
 
     path('demo/', article.views.demo, name='demo'),
     path("upload/", article.views.upload, name="upload"),
+    path("spaceship_shoot/", online_games_view.spaceship_shoot, name="spaceship_shoot"),
+    path('pacman/', online_games_view.pacman, name='pacman'),
+    path('game2048/', online_games_view.game2048, name='game2048'),
+    path('sliding_puzzle/', online_games_view.sliding_puzzle, name='sliding_puzzle'),
+    path('super_mario/', online_games_view.super_mario_bros, name='super_mario'),
+    path("online_games/", online_games_view.online_games, name='online_games'),
 
-    path('pacman/', pacman_view.pacman, name='pacman'),
-    path('space_invaders/', space_invaders_view.space_invaders, name='space_invaders'),
-    path('game2048/', game2048_view.game2048, name='game2048'),
-    path('sliding_puzzle/', sliding_puzzle_view.sliding_puzzle, name='sliding_puzzle'),
-    path('super_mario/', super_mario_view.super_mario_bros, name='super_mario')
+    path("tetris/", online_games_view.tetris, name='tetris'),
+    path("snake/", online_games_view.snake, name="snake"),
 ]
 from django.conf import settings
 

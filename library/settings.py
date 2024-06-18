@@ -36,14 +36,13 @@ INSTALLED_APPS = [
     # 性能分析工具
     'debug_toolbar',
     'lottery',
-    'spaceship_shoot',
     'snake',
-    'tetris_app',
     'relax_moment',
     'online_song',
     'books',
     'users',
     'online_books',
+    'online_games',
     'admin_users',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -72,7 +71,6 @@ INSTALLED_APPS = [
     'notice',
     'mdeditor',
     'corsheaders',
-    'space_invaders'
 ]
 
 AUTH_USER_MODEL = 'users.MyUser'

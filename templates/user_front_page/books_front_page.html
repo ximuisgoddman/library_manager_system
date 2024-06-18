@@ -82,15 +82,15 @@
 <div class="pagination">
     <span class="step-links">
         {% if page_obj.has_previous %}
-            <a href="?page=1">&laquo; 第一页</a>
-            <a href="?page={{ page_obj.previous_page_number }}">上一页</a>
+            <a href="?page=1{% if request.GET.publisher %}&publisher={{ request.GET.publisher }}{% endif %}{% if request.GET.book_class %}&book_class={{ request.GET.book_class }}{% endif %}">&laquo; 第一页</a>
+            <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.publisher %}&publisher={{ request.GET.publisher }}{% endif %}{% if request.GET.book_class %}&book_class={{ request.GET.book_class }}{% endif %}">上一页</a>
         {% endif %}
 
         <span class="current-page">{{ page_obj.number }}</span>
 
         {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}">下一页</a>
-            <a href="?page={{ page_obj.paginator.num_pages }}">最后一页 &raquo;</a>
+            <a href="?page={{ page_obj.next_page_number }}{% if request.GET.publisher %}&publisher={{ request.GET.publisher }}{% endif %}{% if request.GET.book_class %}&book_class={{ request.GET.book_class }}{% endif %}">下一页</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.publisher %}&publisher={{ request.GET.publisher }}{% endif %}{% if request.GET.book_class %}&book_class={{ request.GET.book_class }}{% endif %}">最后一页 &raquo;</a>
         {% endif %}
     </span>
 </div>
@@ -112,6 +112,14 @@
             success: function (response) {
                 // 更新表格内容
                 $("#bookTable tbody").html($(response).find("#bookTable tbody").html());
+                var cur_url="{% url 'book_front_page' %}?";
+                if (publisherFilter&&bookClassFilter){
+                    cur_url+="publisher="+publisherFilter+"&book_class="+bookClassFilter
+                }else{
+                    if (publisherFilter){cur_url+="publisher="+publisherFilter}
+                    if (bookClassFilter){cur_url+="book_class="+bookClassFilter}
+                }
+                window.location.href = cur_url;
             },
 
 

@@ -25,6 +25,7 @@ from django.conf.urls.static import static
 from django.views.generic.base import RedirectView
 
 import article.views
+import online_games.views
 
 book_path = os.path.abspath(os.path.join(os.getcwd(), "..", "books"))
 user_path = os.path.abspath(os.path.join(os.getcwd(), "..", "users"))
@@ -120,8 +121,6 @@ urlpatterns = [
     path("delete_favorite_music/<int:music_id>/", online_song_view.delete_favorite_music,
          name='delete_favorite_music'),
 
-
-
     path("lottery_view/", lottery_view.lottery_view, name='lottery_view'),
     path("upload_lottery_info/", lottery_view.upload_lottery_info, name='upload_lottery_info'),
     path('users_manage/', user_info_manage_view.users_manage, name='users_manage'),
@@ -151,6 +150,8 @@ urlpatterns = [
 
     path("tetris/", online_games_view.tetris, name='tetris'),
     path("snake/", online_games_view.snake, name="snake"),
+    path("racing/", online_games_view.racing, name="racing"),
+    path("minesweeper/", online_games_view.minesweeper, name="minesweeper"),
 ]
 from django.conf import settings
 

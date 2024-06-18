@@ -36,7 +36,6 @@ INSTALLED_APPS = [
     # 性能分析工具
     'debug_toolbar',
     'lottery',
-    'snake',
     'relax_moment',
     'online_song',
     'books',

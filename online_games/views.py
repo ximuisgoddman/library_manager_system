@@ -33,4 +33,12 @@ def snake(request):
 
 
 def tetris(request):
-    return render(request, 'tetris_app/tetris.html', )
+    return render(request, 'tetris_app/tetris.html')
+
+
+def racing(request):
+    return render(request, 'racing/index.html')
+
+
+def minesweeper(request):
+    return render(request, 'minesweeper/index.html')

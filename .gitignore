@@ -1,0 +1,5 @@
+/media/
+# Ignore migrations and __pycache__ directories in every app
+**/migrations/
+**/__pycache__/
+*.pyc

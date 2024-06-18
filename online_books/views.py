@@ -32,7 +32,7 @@ def user_online_book_list(request):
     # 过滤出版社和图书类别
     online_books = online_books.filter(book_publisher__icontains=book_publisher)
     online_books = online_books.filter(book_classification__icontains=book_class).order_by('id')
-    print(book_publisher,len(online_books))
+    print(book_publisher, len(online_books))
     paginator = Paginator(online_books, per_page=10)  # 每页显示10条数据
 
     page_number = request.GET.get('page')
@@ -196,10 +196,11 @@ def add_book_shelf(request, book_id):
     if not request.session.get("is_login", None):
         return redirect('/login/')
 
-    bookshelf = BookShelfModel.objects.filter(book_id=book_id, book_shelf_user_id=request.user.id).first()
+    bookshelf = BookShelfModel.objects.filter(book_id=book_id, book_shelf_user_id=request.user.id)
     if bookshelf:
-        print("already add to shelf")
-        return render(request, 'book_shelf/user_book_shelf/user_book_shelf_list.html', {'bookshelf': bookshelf})
+        print("already add to shelf", bookshelf)
+        return render(request, 'book_shelf/user_book_shelf/user_book_shelf_list.html',
+                      {'bookshelfs': BookShelfModel.objects.filter(book_shelf_user_id=request.user.id)})
 
     online_book = OnlineBooksModel.objects.filter(id=book_id).first()
     print("online_book", online_book, type(online_book.book_image))
@@ -213,7 +214,7 @@ def add_book_shelf(request, book_id):
             book_shelf_user_id=request.user
         )
         bookshelf.save()
-    bookshelfs = BookShelfModel.objects.all()
+    bookshelfs = BookShelfModel.objects.filter(book_shelf_user_id=request.user.id)
     return render(request, 'book_shelf/user_book_shelf/user_book_shelf_list.html', {'bookshelfs': bookshelfs})
 
 

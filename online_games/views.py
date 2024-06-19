@@ -42,3 +42,19 @@ def racing(request):
 
 def minesweeper(request):
     return render(request, 'minesweeper/index.html')
+
+
+def build_tower(request):
+    return render(request, 'build_tower/index.html')
+
+
+def cut_cubes(request):
+    return render(request, 'cut_cubes/index.html')
+
+
+def crossing_the_bridge(request):
+    return render(request, 'crossing_the_bridge/index.html')
+
+
+def breakthrough(request):
+    return render(request, 'breakthrough/index.html')

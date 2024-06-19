@@ -1,0 +1,28 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		{% load static %}
+		<meta charset="utf-8">
+		<title>海拥 | JS闯关小游戏</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="keywords" content="海拥，游戏，JS闯关小游戏" />
+		<link rel="stylesheet" href="{% static 'breakthrough/css/style.css' %}">
+	</head>
+	<body>
+		<h2>简单的 JavaScript 游戏
+		请用电脑打开，上下左右控制方向
+		吃完所有金币进入下一关</h2>
+		<script src="{% static 'breakthrough/js/script.js' %}"></script>
+		<script>
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?a9430a37066911650e26adadcc42798a";
+          var s = document.getElementsByTagName("script")[0]; 
+          s.parentNode.insertBefore(hm, s);
+        })();
+        </script>
+	</body>
+	
+</html>

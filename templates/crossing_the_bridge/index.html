@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+<meta charset="UTF-8">
+ {% load static %}
+<link rel="stylesheet" href="{% static 'crossing_the_bridge/css/style.css' %}">
+</head>
+<body>
+ {% load static %}
+<script src="{% static 'crossing_the_bridge/js/script.js' %}"></script>
+ <script type="module">
+import { quotes } from "http://haiyong.site/wp-includes/js/quotes.js";
+let randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+console.log(
+  `%c✨ ${randomQuote}`,
+  "font-size:20px; background:#FFF; color:#581845;padding:10px; border: 3px solid #581845;border-radius:10px;"
+);</script>
+<div style="text-align:center;">
+</div>
+</body>
+</html>
+

@@ -152,6 +152,11 @@ urlpatterns = [
     path("snake/", online_games_view.snake, name="snake"),
     path("racing/", online_games_view.racing, name="racing"),
     path("minesweeper/", online_games_view.minesweeper, name="minesweeper"),
+    path("build_tower/", online_games_view.build_tower, name="build_tower"),
+    path("cut_cubes/", online_games_view.cut_cubes, name="cut_cubes"),
+    path("crossing_the_bridge/", online_games_view.crossing_the_bridge, name="crossing_the_bridge"),
+    path("breakthrough/", online_games_view.breakthrough, name="breakthrough"),
+
 ]
 from django.conf import settings
 

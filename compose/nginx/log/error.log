@@ -3318,3 +3318,1087 @@
 2024/02/24 04:34:46 [error] 30#30: *9 open() "/usr/share/nginx/html/static/ico/favicon.ico" failed (2: No such file or directory), client: 172.19.0.1, server: nb.luolin123.club, request: "GET /static/ico/favicon.ico HTTP/1.1", host: "nb.luolin123.club"
 2024/02/24 04:34:59 [error] 31#31: *2 open() "/usr/share/nginx/html/static/css/Particle.css" failed (2: No such file or directory), client: 172.19.0.1, server: nb.luolin123.club, request: "GET /static/css/Particle.css HTTP/1.1", host: "nb.luolin123.club", referrer: "http://nb.luolin123.club/home/"
 2024/02/24 04:34:59 [error] 29#29: *1 open() "/usr/share/nginx/html/static/js/Particles.js" failed (2: No such file or directory), client: 172.19.0.1, server: nb.luolin123.club, request: "GET /static/js/Particles.js HTTP/1.1", host: "nb.luolin123.club", referrer: "http://nb.luolin123.club/home/"
+2024/07/20 11:26:49 [notice] 1#1: using the "epoll" event method
+2024/07/20 11:26:49 [notice] 1#1: nginx/1.27.0
+2024/07/20 11:26:49 [notice] 1#1: built by gcc 12.2.0 (Debian 12.2.0-14) 
+2024/07/20 11:26:49 [notice] 1#1: OS: Linux 5.15.153.1-microsoft-standard-WSL2
+2024/07/20 11:26:49 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2024/07/20 11:26:49 [notice] 1#1: start worker processes
+2024/07/20 11:26:49 [notice] 1#1: start worker process 29
+2024/07/20 11:26:49 [notice] 1#1: start worker process 30
+2024/07/20 11:26:49 [notice] 1#1: start worker process 31
+2024/07/20 11:26:49 [notice] 1#1: start worker process 32
+2024/07/20 11:26:49 [notice] 1#1: start worker process 33
+2024/07/20 11:26:49 [notice] 1#1: start worker process 34
+2024/07/20 11:26:49 [notice] 1#1: start worker process 35
+2024/07/20 11:26:49 [notice] 1#1: start worker process 36
+2024/07/20 11:26:49 [notice] 1#1: start worker process 37
+2024/07/20 11:26:49 [notice] 1#1: start worker process 38
+2024/07/20 11:26:49 [notice] 1#1: start worker process 39
+2024/07/20 11:26:49 [notice] 1#1: start worker process 40
+2024/07/20 11:26:49 [notice] 1#1: start cache manager process 41
+2024/07/20 11:26:49 [notice] 1#1: start cache loader process 42
+2024/07/20 11:27:49 [notice] 42#42: http file cache: /path/to/cache 0.000M, bsize: 4096
+2024/07/20 11:27:49 [notice] 1#1: signal 17 (SIGCHLD) received from 42
+2024/07/20 11:27:49 [notice] 1#1: cache loader process 42 exited with code 0
+2024/07/20 11:27:49 [notice] 1#1: signal 29 (SIGIO) received
+2024/07/20 11:28:24 [error] 30#30: *2 open() "/usr/share/nginx/html/favicon.ico" failed (2: No such file or directory), client: 172.18.0.1, server: localhost, request: "GET /favicon.ico HTTP/1.1", host: "127.0.0.1:8088", referrer: "http://127.0.0.1:8088/"
+2024/07/20 11:31:22 [error] 35#35: *8 open() "/usr/share/nginx/html/favicon.ico" failed (2: No such file or directory), client: 172.18.0.1, server: localhost, request: "GET /favicon.ico HTTP/1.1", host: "localhost:8088", referrer: "http://localhost:8088/"
+2024/07/20 11:33:41 [notice] 1#1: signal 3 (SIGQUIT) received, shutting down
+2024/07/20 11:33:41 [notice] 31#31: gracefully shutting down
+2024/07/20 11:33:41 [notice] 34#34: gracefully shutting down
+2024/07/20 11:33:41 [notice] 35#35: gracefully shutting down
+2024/07/20 11:33:41 [notice] 33#33: gracefully shutting down
+2024/07/20 11:33:41 [notice] 32#32: gracefully shutting down
+2024/07/20 11:33:41 [notice] 38#38: gracefully shutting down
+2024/07/20 11:33:41 [notice] 41#41: exiting
+2024/07/20 11:33:41 [notice] 30#30: gracefully shutting down
+2024/07/20 11:33:41 [notice] 36#36: gracefully shutting down
+2024/07/20 11:33:41 [notice] 29#29: gracefully shutting down
+2024/07/20 11:33:41 [notice] 39#39: gracefully shutting down
+2024/07/20 11:33:41 [notice] 37#37: gracefully shutting down
+2024/07/20 11:33:41 [notice] 40#40: gracefully shutting down
+2024/07/20 11:33:41 [notice] 31#31: exiting
+2024/07/20 11:33:41 [notice] 35#35: exiting
+2024/07/20 11:33:41 [notice] 38#38: exiting
+2024/07/20 11:33:41 [notice] 34#34: exiting
+2024/07/20 11:33:41 [notice] 33#33: exiting
+2024/07/20 11:33:41 [notice] 32#32: exiting
+2024/07/20 11:33:41 [notice] 33#33: exit
+2024/07/20 11:33:41 [notice] 30#30: exiting
+2024/07/20 11:33:41 [notice] 34#34: exit
+2024/07/20 11:33:41 [notice] 29#29: exiting
+2024/07/20 11:33:41 [notice] 36#36: exiting
+2024/07/20 11:33:41 [notice] 37#37: exiting
+2024/07/20 11:33:41 [notice] 39#39: exiting
+2024/07/20 11:33:41 [notice] 31#31: exit
+2024/07/20 11:33:41 [notice] 40#40: exiting
+2024/07/20 11:33:41 [notice] 35#35: exit
+2024/07/20 11:33:41 [notice] 38#38: exit
+2024/07/20 11:33:41 [notice] 32#32: exit
+2024/07/20 11:33:41 [notice] 30#30: exit
+2024/07/20 11:33:41 [notice] 29#29: exit
+2024/07/20 11:33:41 [notice] 36#36: exit
+2024/07/20 11:33:41 [notice] 37#37: exit
+2024/07/20 11:33:41 [notice] 39#39: exit
+2024/07/20 11:33:41 [notice] 40#40: exit
+2024/07/20 11:33:41 [notice] 1#1: signal 17 (SIGCHLD) received from 41
+2024/07/20 11:33:41 [notice] 1#1: worker process 30 exited with code 0
+2024/07/20 11:33:41 [notice] 1#1: worker process 31 exited with code 0
+2024/07/20 11:33:41 [notice] 1#1: worker process 32 exited with code 0
+2024/07/20 11:33:41 [notice] 1#1: worker process 33 exited with code 0
+2024/07/20 11:33:41 [notice] 1#1: worker process 34 exited with code 0
+2024/07/20 11:33:41 [notice] 1#1: worker process 35 exited with code 0
+2024/07/20 11:33:41 [notice] 1#1: cache manager process 41 exited with code 0
+2024/07/20 11:33:41 [notice] 1#1: signal 29 (SIGIO) received
+2024/07/20 11:33:41 [notice] 1#1: signal 17 (SIGCHLD) received from 35
+2024/07/20 11:33:41 [notice] 1#1: signal 17 (SIGCHLD) received from 36
+2024/07/20 11:33:41 [notice] 1#1: worker process 36 exited with code 0
+2024/07/20 11:33:41 [notice] 1#1: signal 29 (SIGIO) received
+2024/07/20 11:33:41 [notice] 1#1: signal 17 (SIGCHLD) received from 40
+2024/07/20 11:33:41 [notice] 1#1: worker process 29 exited with code 0
+2024/07/20 11:33:41 [notice] 1#1: worker process 37 exited with code 0
+2024/07/20 11:33:41 [notice] 1#1: worker process 38 exited with code 0
+2024/07/20 11:33:41 [notice] 1#1: worker process 40 exited with code 0
+2024/07/20 11:33:41 [notice] 1#1: signal 29 (SIGIO) received
+2024/07/20 11:33:41 [notice] 1#1: signal 17 (SIGCHLD) received from 29
+2024/07/20 11:33:41 [notice] 1#1: signal 17 (SIGCHLD) received from 39
+2024/07/20 11:33:41 [notice] 1#1: worker process 39 exited with code 0
+2024/07/20 11:33:41 [notice] 1#1: exit
+2024/07/20 11:33:56 [notice] 1#1: using the "epoll" event method
+2024/07/20 11:33:56 [notice] 1#1: nginx/1.27.0
+2024/07/20 11:33:56 [notice] 1#1: built by gcc 12.2.0 (Debian 12.2.0-14) 
+2024/07/20 11:33:56 [notice] 1#1: OS: Linux 5.15.153.1-microsoft-standard-WSL2
+2024/07/20 11:33:56 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2024/07/20 11:33:56 [notice] 1#1: start worker processes
+2024/07/20 11:33:56 [notice] 1#1: start worker process 29
+2024/07/20 11:33:56 [notice] 1#1: start worker process 30
+2024/07/20 11:33:56 [notice] 1#1: start worker process 31
+2024/07/20 11:33:56 [notice] 1#1: start worker process 32
+2024/07/20 11:33:56 [notice] 1#1: start worker process 33
+2024/07/20 11:33:56 [notice] 1#1: start worker process 34
+2024/07/20 11:33:56 [notice] 1#1: start worker process 35
+2024/07/20 11:33:56 [notice] 1#1: start worker process 36
+2024/07/20 11:33:56 [notice] 1#1: start worker process 37
+2024/07/20 11:33:56 [notice] 1#1: start worker process 38
+2024/07/20 11:33:56 [notice] 1#1: start worker process 39
+2024/07/20 11:33:56 [notice] 1#1: start worker process 40
+2024/07/20 11:33:56 [notice] 1#1: start cache manager process 41
+2024/07/20 11:33:56 [notice] 1#1: start cache loader process 42
+2024/07/20 11:34:56 [notice] 42#42: http file cache: /path/to/cache 0.000M, bsize: 4096
+2024/07/20 11:34:56 [notice] 1#1: signal 17 (SIGCHLD) received from 42
+2024/07/20 11:34:56 [notice] 1#1: cache loader process 42 exited with code 0
+2024/07/20 11:34:56 [notice] 1#1: signal 29 (SIGIO) received
+2024/07/21 05:48:41 [notice] 1#1: signal 3 (SIGQUIT) received, shutting down
+2024/07/21 05:48:41 [notice] 35#35: gracefully shutting down
+2024/07/21 05:48:41 [notice] 33#33: gracefully shutting down
+2024/07/21 05:48:41 [notice] 32#32: gracefully shutting down
+2024/07/21 05:48:41 [notice] 31#31: gracefully shutting down
+2024/07/21 05:48:41 [notice] 34#34: gracefully shutting down
+2024/07/21 05:48:41 [notice] 36#36: gracefully shutting down
+2024/07/21 05:48:41 [notice] 38#38: gracefully shutting down
+2024/07/21 05:48:41 [notice] 41#41: exiting
+2024/07/21 05:48:41 [notice] 39#39: gracefully shutting down
+2024/07/21 05:48:41 [notice] 37#37: gracefully shutting down
+2024/07/21 05:48:41 [notice] 29#29: gracefully shutting down
+2024/07/21 05:48:41 [notice] 40#40: gracefully shutting down
+2024/07/21 05:48:41 [notice] 30#30: gracefully shutting down
+2024/07/21 05:48:41 [notice] 35#35: exiting
+2024/07/21 05:48:41 [notice] 31#31: exiting
+2024/07/21 05:48:41 [notice] 33#33: exiting
+2024/07/21 05:48:41 [notice] 32#32: exiting
+2024/07/21 05:48:41 [notice] 37#37: exiting
+2024/07/21 05:48:41 [notice] 38#38: exiting
+2024/07/21 05:48:41 [notice] 39#39: exiting
+2024/07/21 05:48:41 [notice] 36#36: exiting
+2024/07/21 05:48:41 [notice] 40#40: exiting
+2024/07/21 05:48:41 [notice] 34#34: exiting
+2024/07/21 05:48:41 [notice] 29#29: exiting
+2024/07/21 05:48:41 [notice] 30#30: exiting
+2024/07/21 05:48:41 [notice] 35#35: exit
+2024/07/21 05:48:41 [notice] 39#39: exit
+2024/07/21 05:48:41 [notice] 38#38: exit
+2024/07/21 05:48:41 [notice] 29#29: exit
+2024/07/21 05:48:41 [notice] 37#37: exit
+2024/07/21 05:48:41 [notice] 33#33: exit
+2024/07/21 05:48:41 [notice] 36#36: exit
+2024/07/21 05:48:41 [notice] 30#30: exit
+2024/07/21 05:48:41 [notice] 32#32: exit
+2024/07/21 05:48:41 [notice] 31#31: exit
+2024/07/21 05:48:41 [notice] 40#40: exit
+2024/07/21 05:48:41 [notice] 34#34: exit
+2024/07/21 05:48:41 [notice] 1#1: signal 17 (SIGCHLD) received from 33
+2024/07/21 05:48:41 [notice] 1#1: worker process 33 exited with code 0
+2024/07/21 05:48:41 [notice] 1#1: worker process 40 exited with code 0
+2024/07/21 05:48:41 [notice] 1#1: signal 29 (SIGIO) received
+2024/07/21 05:48:41 [notice] 1#1: signal 17 (SIGCHLD) received from 38
+2024/07/21 05:48:41 [notice] 1#1: worker process 37 exited with code 0
+2024/07/21 05:48:41 [notice] 1#1: worker process 36 exited with code 0
+2024/07/21 05:48:41 [notice] 1#1: worker process 30 exited with code 0
+2024/07/21 05:48:41 [notice] 1#1: worker process 32 exited with code 0
+2024/07/21 05:48:41 [notice] 1#1: worker process 38 exited with code 0
+2024/07/21 05:48:41 [notice] 1#1: worker process 39 exited with code 0
+2024/07/21 05:48:41 [notice] 1#1: signal 29 (SIGIO) received
+2024/07/21 05:48:41 [notice] 1#1: signal 17 (SIGCHLD) received from 37
+2024/07/21 05:48:41 [notice] 1#1: signal 17 (SIGCHLD) received from 35
+2024/07/21 05:48:41 [notice] 1#1: worker process 31 exited with code 0
+2024/07/21 05:48:41 [notice] 1#1: worker process 34 exited with code 0
+2024/07/21 05:48:41 [notice] 1#1: worker process 35 exited with code 0
+2024/07/21 05:48:41 [notice] 1#1: signal 29 (SIGIO) received
+2024/07/21 05:48:41 [notice] 1#1: signal 17 (SIGCHLD) received from 31
+2024/07/21 05:48:41 [notice] 1#1: signal 17 (SIGCHLD) received from 41
+2024/07/21 05:48:41 [notice] 1#1: worker process 29 exited with code 0
+2024/07/21 05:48:41 [notice] 1#1: cache manager process 41 exited with code 0
+2024/07/21 05:48:41 [notice] 1#1: exit
+2024/07/21 05:48:56 [notice] 1#1: using the "epoll" event method
+2024/07/21 05:48:56 [notice] 1#1: nginx/1.27.0
+2024/07/21 05:48:56 [notice] 1#1: built by gcc 12.2.0 (Debian 12.2.0-14) 
+2024/07/21 05:48:56 [notice] 1#1: OS: Linux 5.15.153.1-microsoft-standard-WSL2
+2024/07/21 05:48:56 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2024/07/21 05:48:56 [notice] 1#1: start worker processes
+2024/07/21 05:48:56 [notice] 1#1: start worker process 30
+2024/07/21 05:48:56 [notice] 1#1: start worker process 31
+2024/07/21 05:48:56 [notice] 1#1: start worker process 32
+2024/07/21 05:48:56 [notice] 1#1: start worker process 33
+2024/07/21 05:48:56 [notice] 1#1: start worker process 34
+2024/07/21 05:48:56 [notice] 1#1: start worker process 35
+2024/07/21 05:48:56 [notice] 1#1: start worker process 36
+2024/07/21 05:48:56 [notice] 1#1: start worker process 37
+2024/07/21 05:48:56 [notice] 1#1: start worker process 38
+2024/07/21 05:48:56 [notice] 1#1: start worker process 39
+2024/07/21 05:48:56 [notice] 1#1: start worker process 40
+2024/07/21 05:48:56 [notice] 1#1: start worker process 41
+2024/07/21 05:48:56 [notice] 1#1: start cache manager process 42
+2024/07/21 05:48:56 [notice] 1#1: start cache loader process 43
+2024/07/21 05:49:56 [notice] 43#43: http file cache: /path/to/cache 0.000M, bsize: 4096
+2024/07/21 05:49:57 [notice] 1#1: signal 17 (SIGCHLD) received from 43
+2024/07/21 05:49:57 [notice] 1#1: cache loader process 43 exited with code 0
+2024/07/21 05:49:57 [notice] 1#1: signal 29 (SIGIO) received
+2024/07/21 05:53:07 [notice] 1#1: signal 3 (SIGQUIT) received, shutting down
+2024/07/21 05:53:07 [notice] 42#42: exiting
+2024/07/21 05:53:07 [notice] 34#34: gracefully shutting down
+2024/07/21 05:53:07 [notice] 32#32: gracefully shutting down
+2024/07/21 05:53:07 [notice] 31#31: gracefully shutting down
+2024/07/21 05:53:07 [notice] 30#30: gracefully shutting down
+2024/07/21 05:53:07 [notice] 37#37: gracefully shutting down
+2024/07/21 05:53:07 [notice] 35#35: gracefully shutting down
+2024/07/21 05:53:07 [notice] 36#36: gracefully shutting down
+2024/07/21 05:53:07 [notice] 33#33: gracefully shutting down
+2024/07/21 05:53:07 [notice] 39#39: gracefully shutting down
+2024/07/21 05:53:07 [notice] 40#40: gracefully shutting down
+2024/07/21 05:53:07 [notice] 41#41: gracefully shutting down
+2024/07/21 05:53:07 [notice] 38#38: gracefully shutting down
+2024/07/21 05:53:07 [notice] 34#34: exiting
+2024/07/21 05:53:07 [notice] 32#32: exiting
+2024/07/21 05:53:07 [notice] 30#30: exiting
+2024/07/21 05:53:07 [notice] 37#37: exiting
+2024/07/21 05:53:07 [notice] 31#31: exiting
+2024/07/21 05:53:07 [notice] 35#35: exiting
+2024/07/21 05:53:07 [notice] 36#36: exiting
+2024/07/21 05:53:07 [notice] 33#33: exiting
+2024/07/21 05:53:07 [notice] 39#39: exiting
+2024/07/21 05:53:07 [notice] 40#40: exiting
+2024/07/21 05:53:07 [notice] 41#41: exiting
+2024/07/21 05:53:07 [notice] 38#38: exiting
+2024/07/21 05:53:07 [notice] 30#30: exit
+2024/07/21 05:53:07 [notice] 34#34: exit
+2024/07/21 05:53:07 [notice] 38#38: exit
+2024/07/21 05:53:07 [notice] 32#32: exit
+2024/07/21 05:53:07 [notice] 37#37: exit
+2024/07/21 05:53:07 [notice] 31#31: exit
+2024/07/21 05:53:07 [notice] 35#35: exit
+2024/07/21 05:53:07 [notice] 36#36: exit
+2024/07/21 05:53:07 [notice] 39#39: exit
+2024/07/21 05:53:07 [notice] 40#40: exit
+2024/07/21 05:53:07 [notice] 33#33: exit
+2024/07/21 05:53:07 [notice] 41#41: exit
+2024/07/21 05:53:07 [notice] 1#1: signal 17 (SIGCHLD) received from 37
+2024/07/21 05:53:07 [notice] 1#1: worker process 30 exited with code 0
+2024/07/21 05:53:07 [notice] 1#1: worker process 31 exited with code 0
+2024/07/21 05:53:07 [notice] 1#1: worker process 32 exited with code 0
+2024/07/21 05:53:07 [notice] 1#1: worker process 34 exited with code 0
+2024/07/21 05:53:07 [notice] 1#1: worker process 35 exited with code 0
+2024/07/21 05:53:07 [notice] 1#1: worker process 37 exited with code 0
+2024/07/21 05:53:07 [notice] 1#1: worker process 38 exited with code 0
+2024/07/21 05:53:07 [notice] 1#1: worker process 39 exited with code 0
+2024/07/21 05:53:07 [notice] 1#1: worker process 40 exited with code 0
+2024/07/21 05:53:07 [notice] 1#1: cache manager process 42 exited with code 0
+2024/07/21 05:53:07 [notice] 1#1: signal 29 (SIGIO) received
+2024/07/21 05:53:07 [notice] 1#1: signal 17 (SIGCHLD) received from 39
+2024/07/21 05:53:07 [notice] 1#1: signal 17 (SIGCHLD) received from 41
+2024/07/21 05:53:07 [notice] 1#1: worker process 41 exited with code 0
+2024/07/21 05:53:07 [notice] 1#1: signal 29 (SIGIO) received
+2024/07/21 05:53:07 [notice] 1#1: signal 17 (SIGCHLD) received from 36
+2024/07/21 05:53:07 [notice] 1#1: worker process 36 exited with code 0
+2024/07/21 05:53:07 [notice] 1#1: signal 29 (SIGIO) received
+2024/07/21 05:53:07 [notice] 1#1: signal 17 (SIGCHLD) received from 33
+2024/07/21 05:53:07 [notice] 1#1: worker process 33 exited with code 0
+2024/07/21 05:53:07 [notice] 1#1: exit
+2024/07/21 05:53:28 [notice] 1#1: using the "epoll" event method
+2024/07/21 05:53:28 [notice] 1#1: nginx/1.27.0
+2024/07/21 05:53:28 [notice] 1#1: built by gcc 12.2.0 (Debian 12.2.0-14) 
+2024/07/21 05:53:28 [notice] 1#1: OS: Linux 5.15.153.1-microsoft-standard-WSL2
+2024/07/21 05:53:28 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2024/07/21 05:53:28 [notice] 1#1: start worker processes
+2024/07/21 05:53:28 [notice] 1#1: start worker process 29
+2024/07/21 05:53:28 [notice] 1#1: start worker process 30
+2024/07/21 05:53:28 [notice] 1#1: start worker process 31
+2024/07/21 05:53:28 [notice] 1#1: start worker process 32
+2024/07/21 05:53:28 [notice] 1#1: start worker process 33
+2024/07/21 05:53:28 [notice] 1#1: start worker process 34
+2024/07/21 05:53:28 [notice] 1#1: start worker process 35
+2024/07/21 05:53:28 [notice] 1#1: start worker process 36
+2024/07/21 05:53:28 [notice] 1#1: start worker process 37
+2024/07/21 05:53:28 [notice] 1#1: start worker process 38
+2024/07/21 05:53:28 [notice] 1#1: start worker process 39
+2024/07/21 05:53:28 [notice] 1#1: start worker process 40
+2024/07/21 05:53:28 [notice] 1#1: start cache manager process 41
+2024/07/21 05:53:28 [notice] 1#1: start cache loader process 42
+2024/07/21 05:54:28 [notice] 42#42: http file cache: /path/to/cache 0.000M, bsize: 4096
+2024/07/21 05:54:28 [notice] 1#1: signal 17 (SIGCHLD) received from 42
+2024/07/21 05:54:28 [notice] 1#1: cache loader process 42 exited with code 0
+2024/07/21 05:54:28 [notice] 1#1: signal 29 (SIGIO) received
+2024/07/21 06:05:49 [error] 36#36: *15 open() "/usr/share/nginx/html/static/register.css" failed (2: No such file or directory), client: 172.22.0.1, server: nb.luolin123.club, request: "GET /static/register.css HTTP/1.1", host: "localhost:8088", referrer: "http://localhost:8088/register/"
+2024/07/21 06:05:52 [error] 36#36: *15 open() "/usr/share/nginx/html/static/register.css" failed (2: No such file or directory), client: 172.22.0.1, server: nb.luolin123.club, request: "GET /static/register.css HTTP/1.1", host: "localhost:8088", referrer: "http://localhost:8088/register/"
+2024/07/21 06:06:21 [error] 36#36: *15 open() "/usr/share/nginx/html/static/register.css" failed (2: No such file or directory), client: 172.22.0.1, server: nb.luolin123.club, request: "GET /static/register.css HTTP/1.1", host: "localhost:8088", referrer: "http://localhost:8088/register/"
+2024/07/21 08:56:50 [notice] 1#1: signal 3 (SIGQUIT) received, shutting down
+2024/07/21 08:56:50 [notice] 29#29: gracefully shutting down
+2024/07/21 08:56:50 [notice] 30#30: gracefully shutting down
+2024/07/21 08:56:50 [notice] 32#32: gracefully shutting down
+2024/07/21 08:56:50 [notice] 31#31: gracefully shutting down
+2024/07/21 08:56:50 [notice] 38#38: gracefully shutting down
+2024/07/21 08:56:50 [notice] 40#40: gracefully shutting down
+2024/07/21 08:56:50 [notice] 37#37: gracefully shutting down
+2024/07/21 08:56:50 [notice] 39#39: gracefully shutting down
+2024/07/21 08:56:50 [notice] 32#32: exiting
+2024/07/21 08:56:50 [notice] 36#36: gracefully shutting down
+2024/07/21 08:56:50 [notice] 41#41: exiting
+2024/07/21 08:56:50 [notice] 39#39: exiting
+2024/07/21 08:56:50 [notice] 35#35: gracefully shutting down
+2024/07/21 08:56:50 [notice] 33#33: gracefully shutting down
+2024/07/21 08:56:50 [notice] 34#34: gracefully shutting down
+2024/07/21 08:56:50 [notice] 29#29: exiting
+2024/07/21 08:56:50 [notice] 30#30: exiting
+2024/07/21 08:56:50 [notice] 31#31: exiting
+2024/07/21 08:56:50 [notice] 30#30: exit
+2024/07/21 08:56:50 [notice] 40#40: exiting
+2024/07/21 08:56:50 [notice] 38#38: exiting
+2024/07/21 08:56:50 [notice] 36#36: exiting
+2024/07/21 08:56:50 [notice] 37#37: exiting
+2024/07/21 08:56:50 [notice] 39#39: exit
+2024/07/21 08:56:50 [notice] 32#32: exit
+2024/07/21 08:56:50 [notice] 35#35: exiting
+2024/07/21 08:56:50 [notice] 29#29: exit
+2024/07/21 08:56:50 [notice] 31#31: exit
+2024/07/21 08:56:50 [notice] 40#40: exit
+2024/07/21 08:56:50 [notice] 33#33: exiting
+2024/07/21 08:56:50 [notice] 34#34: exiting
+2024/07/21 08:56:50 [notice] 38#38: exit
+2024/07/21 08:56:50 [notice] 36#36: exit
+2024/07/21 08:56:50 [notice] 37#37: exit
+2024/07/21 08:56:50 [notice] 35#35: exit
+2024/07/21 08:56:50 [notice] 33#33: exit
+2024/07/21 08:56:50 [notice] 34#34: exit
+2024/07/21 08:56:50 [notice] 1#1: signal 17 (SIGCHLD) received from 41
+2024/07/21 08:56:50 [notice] 1#1: worker process 29 exited with code 0
+2024/07/21 08:56:50 [notice] 1#1: worker process 30 exited with code 0
+2024/07/21 08:56:50 [notice] 1#1: cache manager process 41 exited with code 0
+2024/07/21 08:56:50 [notice] 1#1: signal 29 (SIGIO) received
+2024/07/21 08:56:50 [notice] 1#1: signal 17 (SIGCHLD) received from 29
+2024/07/21 08:56:50 [notice] 1#1: signal 17 (SIGCHLD) received from 32
+2024/07/21 08:56:50 [notice] 1#1: worker process 31 exited with code 0
+2024/07/21 08:56:50 [notice] 1#1: worker process 32 exited with code 0
+2024/07/21 08:56:50 [notice] 1#1: worker process 35 exited with code 0
+2024/07/21 08:56:50 [notice] 1#1: worker process 37 exited with code 0
+2024/07/21 08:56:50 [notice] 1#1: signal 29 (SIGIO) received
+2024/07/21 08:56:50 [notice] 1#1: signal 17 (SIGCHLD) received from 37
+2024/07/21 08:56:50 [notice] 1#1: worker process 34 exited with code 0
+2024/07/21 08:56:50 [notice] 1#1: worker process 33 exited with code 0
+2024/07/21 08:56:50 [notice] 1#1: worker process 36 exited with code 0
+2024/07/21 08:56:50 [notice] 1#1: worker process 39 exited with code 0
+2024/07/21 08:56:50 [notice] 1#1: worker process 40 exited with code 0
+2024/07/21 08:56:50 [notice] 1#1: signal 29 (SIGIO) received
+2024/07/21 08:56:50 [notice] 1#1: signal 17 (SIGCHLD) received from 34
+2024/07/21 08:56:50 [notice] 1#1: signal 17 (SIGCHLD) received from 38
+2024/07/21 08:56:50 [notice] 1#1: worker process 38 exited with code 0
+2024/07/21 08:56:50 [notice] 1#1: exit
+2024/07/21 08:57:06 [notice] 1#1: using the "epoll" event method
+2024/07/21 08:57:06 [notice] 1#1: nginx/1.27.0
+2024/07/21 08:57:06 [notice] 1#1: built by gcc 12.2.0 (Debian 12.2.0-14) 
+2024/07/21 08:57:06 [notice] 1#1: OS: Linux 5.15.153.1-microsoft-standard-WSL2
+2024/07/21 08:57:06 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2024/07/21 08:57:06 [notice] 1#1: start worker processes
+2024/07/21 08:57:06 [notice] 1#1: start worker process 29
+2024/07/21 08:57:06 [notice] 1#1: start worker process 30
+2024/07/21 08:57:06 [notice] 1#1: start worker process 31
+2024/07/21 08:57:06 [notice] 1#1: start worker process 32
+2024/07/21 08:57:06 [notice] 1#1: start worker process 33
+2024/07/21 08:57:06 [notice] 1#1: start worker process 34
+2024/07/21 08:57:06 [notice] 1#1: start worker process 35
+2024/07/21 08:57:06 [notice] 1#1: start worker process 36
+2024/07/21 08:57:06 [notice] 1#1: start worker process 37
+2024/07/21 08:57:06 [notice] 1#1: start worker process 38
+2024/07/21 08:57:06 [notice] 1#1: start worker process 39
+2024/07/21 08:57:06 [notice] 1#1: start worker process 40
+2024/07/21 08:57:06 [notice] 1#1: start cache manager process 41
+2024/07/21 08:57:06 [notice] 1#1: start cache loader process 42
+2024/07/21 08:57:06 [error] 30#30: *2 connect() failed (111: Connection refused) while connecting to upstream, client: 172.22.0.1, server: nb.luolin123.club, request: "GET /admin_online_song_list/ HTTP/1.1", upstream: "http://172.22.0.3:8000/admin_online_song_list/", host: "localhost:8088", referrer: "http://localhost:8088/users_manage/"
+2024/07/21 08:57:06 [warn] 30#30: *2 upstream server temporarily disabled while connecting to upstream, client: 172.22.0.1, server: nb.luolin123.club, request: "GET /admin_online_song_list/ HTTP/1.1", upstream: "http://172.22.0.3:8000/admin_online_song_list/", host: "localhost:8088", referrer: "http://localhost:8088/users_manage/"
+2024/07/21 08:57:06 [error] 30#30: *2 connect() failed (111: Connection refused) while connecting to upstream, client: 172.22.0.1, server: nb.luolin123.club, request: "GET /admin_online_song_list/ HTTP/1.1", upstream: "http://172.22.0.4:8000/admin_online_song_list/", host: "localhost:8088", referrer: "http://localhost:8088/users_manage/"
+2024/07/21 08:57:06 [warn] 30#30: *2 upstream server temporarily disabled while connecting to upstream, client: 172.22.0.1, server: nb.luolin123.club, request: "GET /admin_online_song_list/ HTTP/1.1", upstream: "http://172.22.0.4:8000/admin_online_song_list/", host: "localhost:8088", referrer: "http://localhost:8088/users_manage/"
+2024/07/21 08:57:06 [error] 30#30: *2 connect() failed (111: Connection refused) while connecting to upstream, client: 172.22.0.1, server: nb.luolin123.club, request: "GET /admin_online_song_list/ HTTP/1.1", upstream: "http://172.22.0.2:8000/admin_online_song_list/", host: "localhost:8088", referrer: "http://localhost:8088/users_manage/"
+2024/07/21 08:57:06 [warn] 30#30: *2 upstream server temporarily disabled while connecting to upstream, client: 172.22.0.1, server: nb.luolin123.club, request: "GET /admin_online_song_list/ HTTP/1.1", upstream: "http://172.22.0.2:8000/admin_online_song_list/", host: "localhost:8088", referrer: "http://localhost:8088/users_manage/"
+2024/07/21 08:57:08 [error] 30#30: *2 no live upstreams while connecting to upstream, client: 172.22.0.1, server: nb.luolin123.club, request: "GET /admin_online_song_list/ HTTP/1.1", upstream: "http://django/admin_online_song_list/", host: "localhost:8088", referrer: "http://localhost:8088/users_manage/"
+2024/07/21 08:57:09 [error] 30#30: *2 no live upstreams while connecting to upstream, client: 172.22.0.1, server: nb.luolin123.club, request: "GET /admin_online_song_list/ HTTP/1.1", upstream: "http://django/admin_online_song_list/", host: "localhost:8088", referrer: "http://localhost:8088/users_manage/"
+2024/07/21 08:58:06 [notice] 42#42: http file cache: /path/to/cache 0.000M, bsize: 4096
+2024/07/21 08:58:06 [notice] 1#1: signal 17 (SIGCHLD) received from 42
+2024/07/21 08:58:06 [notice] 1#1: cache loader process 42 exited with code 0
+2024/07/21 08:58:06 [notice] 1#1: signal 29 (SIGIO) received
+2024/07/21 09:00:35 [notice] 1#1: signal 3 (SIGQUIT) received, shutting down
+2024/07/21 09:00:35 [notice] 30#30: gracefully shutting down
+2024/07/21 09:00:35 [notice] 31#31: gracefully shutting down
+2024/07/21 09:00:35 [notice] 41#41: exiting
+2024/07/21 09:00:35 [notice] 33#33: gracefully shutting down
+2024/07/21 09:00:35 [notice] 32#32: gracefully shutting down
+2024/07/21 09:00:35 [notice] 37#37: gracefully shutting down
+2024/07/21 09:00:35 [notice] 35#35: gracefully shutting down
+2024/07/21 09:00:35 [notice] 34#34: gracefully shutting down
+2024/07/21 09:00:35 [notice] 38#38: gracefully shutting down
+2024/07/21 09:00:35 [notice] 36#36: gracefully shutting down
+2024/07/21 09:00:35 [notice] 39#39: gracefully shutting down
+2024/07/21 09:00:35 [notice] 40#40: gracefully shutting down
+2024/07/21 09:00:35 [notice] 29#29: gracefully shutting down
+2024/07/21 09:00:35 [notice] 30#30: exiting
+2024/07/21 09:00:35 [notice] 31#31: exiting
+2024/07/21 09:00:35 [notice] 37#37: exiting
+2024/07/21 09:00:35 [notice] 35#35: exiting
+2024/07/21 09:00:35 [notice] 32#32: exiting
+2024/07/21 09:00:35 [notice] 34#34: exiting
+2024/07/21 09:00:35 [notice] 38#38: exiting
+2024/07/21 09:00:35 [notice] 33#33: exiting
+2024/07/21 09:00:35 [notice] 36#36: exiting
+2024/07/21 09:00:35 [notice] 40#40: exiting
+2024/07/21 09:00:35 [notice] 30#30: exit
+2024/07/21 09:00:35 [notice] 39#39: exiting
+2024/07/21 09:00:35 [notice] 31#31: exit
+2024/07/21 09:00:35 [notice] 38#38: exit
+2024/07/21 09:00:35 [notice] 35#35: exit
+2024/07/21 09:00:35 [notice] 33#33: exit
+2024/07/21 09:00:35 [notice] 34#34: exit
+2024/07/21 09:00:35 [notice] 37#37: exit
+2024/07/21 09:00:35 [notice] 36#36: exit
+2024/07/21 09:00:35 [notice] 40#40: exit
+2024/07/21 09:00:35 [notice] 32#32: exit
+2024/07/21 09:00:35 [notice] 29#29: exiting
+2024/07/21 09:00:35 [notice] 39#39: exit
+2024/07/21 09:00:35 [notice] 29#29: exit
+2024/07/21 09:00:35 [notice] 1#1: signal 17 (SIGCHLD) received from 31
+2024/07/21 09:00:35 [notice] 1#1: worker process 30 exited with code 0
+2024/07/21 09:00:35 [notice] 1#1: worker process 31 exited with code 0
+2024/07/21 09:00:35 [notice] 1#1: worker process 36 exited with code 0
+2024/07/21 09:00:35 [notice] 1#1: worker process 40 exited with code 0
+2024/07/21 09:00:35 [notice] 1#1: cache manager process 41 exited with code 0
+2024/07/21 09:00:35 [notice] 1#1: signal 29 (SIGIO) received
+2024/07/21 09:00:35 [notice] 1#1: signal 17 (SIGCHLD) received from 41
+2024/07/21 09:00:35 [notice] 1#1: signal 17 (SIGCHLD) received from 35
+2024/07/21 09:00:35 [notice] 1#1: worker process 35 exited with code 0
+2024/07/21 09:00:35 [notice] 1#1: signal 29 (SIGIO) received
+2024/07/21 09:00:35 [notice] 1#1: signal 17 (SIGCHLD) received from 38
+2024/07/21 09:00:35 [notice] 1#1: worker process 38 exited with code 0
+2024/07/21 09:00:35 [notice] 1#1: signal 29 (SIGIO) received
+2024/07/21 09:00:35 [notice] 1#1: signal 17 (SIGCHLD) received from 39
+2024/07/21 09:00:35 [notice] 1#1: worker process 32 exited with code 0
+2024/07/21 09:00:35 [notice] 1#1: worker process 29 exited with code 0
+2024/07/21 09:00:35 [notice] 1#1: worker process 33 exited with code 0
+2024/07/21 09:00:35 [notice] 1#1: worker process 34 exited with code 0
+2024/07/21 09:00:35 [notice] 1#1: worker process 39 exited with code 0
+2024/07/21 09:00:35 [notice] 1#1: signal 29 (SIGIO) received
+2024/07/21 09:00:35 [notice] 1#1: signal 17 (SIGCHLD) received from 32
+2024/07/21 09:00:35 [notice] 1#1: signal 17 (SIGCHLD) received from 37
+2024/07/21 09:00:35 [notice] 1#1: worker process 37 exited with code 0
+2024/07/21 09:00:35 [notice] 1#1: exit
+2024/07/21 09:01:54 [notice] 1#1: using the "epoll" event method
+2024/07/21 09:01:54 [notice] 1#1: nginx/1.27.0
+2024/07/21 09:01:54 [notice] 1#1: built by gcc 12.2.0 (Debian 12.2.0-14) 
+2024/07/21 09:01:54 [notice] 1#1: OS: Linux 5.15.153.1-microsoft-standard-WSL2
+2024/07/21 09:01:54 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2024/07/21 09:01:54 [notice] 1#1: start worker processes
+2024/07/21 09:01:54 [notice] 1#1: start worker process 29
+2024/07/21 09:01:54 [notice] 1#1: start worker process 30
+2024/07/21 09:01:54 [notice] 1#1: start worker process 31
+2024/07/21 09:01:54 [notice] 1#1: start worker process 32
+2024/07/21 09:01:54 [notice] 1#1: start worker process 33
+2024/07/21 09:01:54 [notice] 1#1: start worker process 34
+2024/07/21 09:01:54 [notice] 1#1: start worker process 35
+2024/07/21 09:01:54 [notice] 1#1: start worker process 36
+2024/07/21 09:01:54 [notice] 1#1: start worker process 37
+2024/07/21 09:01:54 [notice] 1#1: start worker process 38
+2024/07/21 09:01:54 [notice] 1#1: start worker process 39
+2024/07/21 09:01:54 [notice] 1#1: start worker process 40
+2024/07/21 09:01:54 [notice] 1#1: start cache manager process 41
+2024/07/21 09:01:54 [notice] 1#1: start cache loader process 42
+2024/07/21 09:02:22 [error] 30#30: *2 "/usr/share/nginx/html/admin_online_song_list/index.html" is not found (2: No such file or directory), client: 172.24.0.1, server: localhost, request: "GET /admin_online_song_list/ HTTP/1.1", host: "localhost:8088", referrer: "http://localhost:8088/users_manage/"
+2024/07/21 09:02:54 [notice] 42#42: http file cache: /path/to/cache 0.000M, bsize: 4096
+2024/07/21 09:02:55 [notice] 1#1: signal 17 (SIGCHLD) received from 42
+2024/07/21 09:02:55 [notice] 1#1: cache loader process 42 exited with code 0
+2024/07/21 09:02:55 [notice] 1#1: signal 29 (SIGIO) received
+2024/07/21 09:04:23 [notice] 1#1: using the "epoll" event method
+2024/07/21 09:04:23 [notice] 1#1: nginx/1.27.0
+2024/07/21 09:04:23 [notice] 1#1: built by gcc 12.2.0 (Debian 12.2.0-14) 
+2024/07/21 09:04:23 [notice] 1#1: OS: Linux 5.15.153.1-microsoft-standard-WSL2
+2024/07/21 09:04:23 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2024/07/21 09:04:23 [notice] 1#1: start worker processes
+2024/07/21 09:04:23 [notice] 1#1: start worker process 29
+2024/07/21 09:04:23 [notice] 1#1: start worker process 30
+2024/07/21 09:04:23 [notice] 1#1: start worker process 31
+2024/07/21 09:04:23 [notice] 1#1: start worker process 32
+2024/07/21 09:04:23 [notice] 1#1: start worker process 33
+2024/07/21 09:04:23 [notice] 1#1: start worker process 34
+2024/07/21 09:04:23 [notice] 1#1: start worker process 35
+2024/07/21 09:04:23 [notice] 1#1: start worker process 36
+2024/07/21 09:04:23 [notice] 1#1: start worker process 37
+2024/07/21 09:04:23 [notice] 1#1: start worker process 38
+2024/07/21 09:04:23 [notice] 1#1: start worker process 39
+2024/07/21 09:04:23 [notice] 1#1: start worker process 40
+2024/07/21 09:04:23 [notice] 1#1: start cache manager process 41
+2024/07/21 09:04:23 [notice] 1#1: start cache loader process 42
+2024/07/21 09:05:23 [notice] 42#42: http file cache: /path/to/cache 0.000M, bsize: 4096
+2024/07/21 09:05:26 [notice] 1#1: signal 17 (SIGCHLD) received from 42
+2024/07/21 09:05:26 [notice] 1#1: cache loader process 42 exited with code 0
+2024/07/21 09:05:26 [notice] 1#1: signal 29 (SIGIO) received
+2024/07/21 09:15:23 [notice] 1#1: signal 3 (SIGQUIT) received, shutting down
+2024/07/21 09:15:23 [notice] 29#29: gracefully shutting down
+2024/07/21 09:15:23 [notice] 30#30: gracefully shutting down
+2024/07/21 09:15:23 [notice] 35#35: gracefully shutting down
+2024/07/21 09:15:23 [notice] 32#32: gracefully shutting down
+2024/07/21 09:15:23 [notice] 31#31: gracefully shutting down
+2024/07/21 09:15:23 [notice] 33#33: gracefully shutting down
+2024/07/21 09:15:23 [notice] 32#32: exiting
+2024/07/21 09:15:23 [notice] 34#34: gracefully shutting down
+2024/07/21 09:15:23 [notice] 38#38: gracefully shutting down
+2024/07/21 09:15:23 [notice] 40#40: gracefully shutting down
+2024/07/21 09:15:23 [notice] 37#37: gracefully shutting down
+2024/07/21 09:15:23 [notice] 39#39: gracefully shutting down
+2024/07/21 09:15:23 [notice] 36#36: gracefully shutting down
+2024/07/21 09:15:23 [notice] 41#41: exiting
+2024/07/21 09:15:23 [notice] 37#37: exiting
+2024/07/21 09:15:23 [notice] 35#35: exiting
+2024/07/21 09:15:23 [notice] 33#33: exiting
+2024/07/21 09:15:23 [notice] 31#31: exiting
+2024/07/21 09:15:23 [notice] 34#34: exiting
+2024/07/21 09:15:23 [notice] 32#32: exit
+2024/07/21 09:15:23 [notice] 38#38: exiting
+2024/07/21 09:15:23 [notice] 40#40: exiting
+2024/07/21 09:15:23 [notice] 35#35: exit
+2024/07/21 09:15:23 [notice] 37#37: exit
+2024/07/21 09:15:23 [notice] 39#39: exiting
+2024/07/21 09:15:23 [notice] 33#33: exit
+2024/07/21 09:15:23 [notice] 31#31: exit
+2024/07/21 09:15:23 [notice] 36#36: exiting
+2024/07/21 09:15:23 [notice] 34#34: exit
+2024/07/21 09:15:23 [notice] 38#38: exit
+2024/07/21 09:15:23 [notice] 36#36: exit
+2024/07/21 09:15:23 [notice] 40#40: exit
+2024/07/21 09:15:23 [notice] 39#39: exit
+2024/07/21 09:15:24 [notice] 1#1: signal 17 (SIGCHLD) received from 39
+2024/07/21 09:15:24 [notice] 1#1: worker process 39 exited with code 0
+2024/07/21 09:15:24 [notice] 1#1: signal 29 (SIGIO) received
+2024/07/21 09:15:24 [notice] 1#1: signal 17 (SIGCHLD) received from 38
+2024/07/21 09:15:24 [notice] 1#1: worker process 32 exited with code 0
+2024/07/21 09:15:24 [notice] 1#1: worker process 33 exited with code 0
+2024/07/21 09:15:24 [notice] 1#1: worker process 34 exited with code 0
+2024/07/21 09:15:24 [notice] 1#1: worker process 36 exited with code 0
+2024/07/21 09:15:24 [notice] 1#1: worker process 37 exited with code 0
+2024/07/21 09:15:24 [notice] 1#1: worker process 38 exited with code 0
+2024/07/21 09:15:24 [notice] 1#1: worker process 40 exited with code 0
+2024/07/21 09:15:24 [notice] 1#1: signal 29 (SIGIO) received
+2024/07/21 09:15:24 [notice] 1#1: signal 17 (SIGCHLD) received from 37
+2024/07/21 09:15:24 [notice] 1#1: signal 17 (SIGCHLD) received from 41
+2024/07/21 09:15:24 [notice] 1#1: cache manager process 41 exited with code 0
+2024/07/21 09:15:24 [notice] 1#1: signal 29 (SIGIO) received
+2024/07/21 09:15:24 [notice] 1#1: signal 17 (SIGCHLD) received from 35
+2024/07/21 09:15:24 [notice] 1#1: worker process 35 exited with code 0
+2024/07/21 09:15:24 [notice] 1#1: signal 29 (SIGIO) received
+2024/07/21 09:15:24 [notice] 1#1: signal 17 (SIGCHLD) received from 31
+2024/07/21 09:15:24 [notice] 1#1: worker process 31 exited with code 0
+2024/07/21 09:15:24 [notice] 1#1: signal 29 (SIGIO) received
+2024/07/21 09:15:42 [notice] 1#1: using the "epoll" event method
+2024/07/21 09:15:42 [notice] 1#1: nginx/1.27.0
+2024/07/21 09:15:42 [notice] 1#1: built by gcc 12.2.0 (Debian 12.2.0-14) 
+2024/07/21 09:15:42 [notice] 1#1: OS: Linux 5.15.153.1-microsoft-standard-WSL2
+2024/07/21 09:15:42 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2024/07/21 09:15:42 [notice] 1#1: start worker processes
+2024/07/21 09:15:42 [notice] 1#1: start worker process 29
+2024/07/21 09:15:42 [notice] 1#1: start worker process 30
+2024/07/21 09:15:42 [notice] 1#1: start worker process 31
+2024/07/21 09:15:42 [notice] 1#1: start worker process 32
+2024/07/21 09:15:42 [notice] 1#1: start worker process 33
+2024/07/21 09:15:42 [notice] 1#1: start worker process 34
+2024/07/21 09:15:42 [notice] 1#1: start worker process 35
+2024/07/21 09:15:42 [notice] 1#1: start worker process 36
+2024/07/21 09:15:42 [notice] 1#1: start worker process 37
+2024/07/21 09:15:42 [notice] 1#1: start worker process 38
+2024/07/21 09:15:42 [notice] 1#1: start worker process 39
+2024/07/21 09:15:42 [notice] 1#1: start worker process 40
+2024/07/21 09:15:42 [notice] 1#1: start cache manager process 41
+2024/07/21 09:15:42 [notice] 1#1: start cache loader process 42
+2024/07/21 09:16:43 [notice] 42#42: http file cache: /path/to/cache 0.000M, bsize: 4096
+2024/07/21 09:16:43 [notice] 1#1: signal 17 (SIGCHLD) received from 42
+2024/07/21 09:16:43 [notice] 1#1: cache loader process 42 exited with code 0
+2024/07/21 09:16:43 [notice] 1#1: signal 29 (SIGIO) received
+2024/07/21 09:17:29 [notice] 1#1: signal 3 (SIGQUIT) received, shutting down
+2024/07/21 09:17:29 [notice] 29#29: gracefully shutting down
+2024/07/21 09:17:29 [notice] 31#31: gracefully shutting down
+2024/07/21 09:17:29 [notice] 30#30: gracefully shutting down
+2024/07/21 09:17:29 [notice] 35#35: gracefully shutting down
+2024/07/21 09:17:29 [notice] 37#37: gracefully shutting down
+2024/07/21 09:17:29 [notice] 32#32: gracefully shutting down
+2024/07/21 09:17:29 [notice] 34#34: gracefully shutting down
+2024/07/21 09:17:29 [notice] 38#38: gracefully shutting down
+2024/07/21 09:17:29 [notice] 33#33: gracefully shutting down
+2024/07/21 09:17:29 [notice] 34#34: exiting
+2024/07/21 09:17:29 [notice] 36#36: gracefully shutting down
+2024/07/21 09:17:29 [notice] 41#41: exiting
+2024/07/21 09:17:29 [notice] 40#40: gracefully shutting down
+2024/07/21 09:17:29 [notice] 39#39: gracefully shutting down
+2024/07/21 09:17:29 [notice] 37#37: exiting
+2024/07/21 09:17:29 [notice] 35#35: exiting
+2024/07/21 09:17:29 [notice] 40#40: exiting
+2024/07/21 09:17:29 [notice] 29#29: exiting
+2024/07/21 09:17:29 [notice] 32#32: exiting
+2024/07/21 09:17:29 [notice] 31#31: exiting
+2024/07/21 09:17:29 [notice] 30#30: exiting
+2024/07/21 09:17:29 [notice] 38#38: exiting
+2024/07/21 09:17:29 [notice] 37#37: exit
+2024/07/21 09:17:29 [notice] 31#31: exit
+2024/07/21 09:17:29 [notice] 29#29: exit
+2024/07/21 09:17:29 [notice] 30#30: exit
+2024/07/21 09:17:29 [notice] 33#33: exiting
+2024/07/21 09:17:29 [notice] 36#36: exiting
+2024/07/21 09:17:29 [notice] 34#34: exit
+2024/07/21 09:17:29 [notice] 40#40: exit
+2024/07/21 09:17:29 [notice] 35#35: exit
+2024/07/21 09:17:29 [notice] 32#32: exit
+2024/07/21 09:17:29 [notice] 39#39: exiting
+2024/07/21 09:17:29 [notice] 38#38: exit
+2024/07/21 09:17:29 [notice] 33#33: exit
+2024/07/21 09:17:29 [notice] 36#36: exit
+2024/07/21 09:17:29 [notice] 39#39: exit
+2024/07/21 09:17:29 [notice] 1#1: signal 17 (SIGCHLD) received from 41
+2024/07/21 09:17:29 [notice] 1#1: cache manager process 41 exited with code 0
+2024/07/21 09:17:29 [notice] 1#1: worker process 31 exited with code 0
+2024/07/21 09:17:29 [notice] 1#1: worker process 29 exited with code 0
+2024/07/21 09:17:29 [notice] 1#1: worker process 30 exited with code 0
+2024/07/21 09:17:29 [notice] 1#1: worker process 33 exited with code 0
+2024/07/21 09:17:29 [notice] 1#1: worker process 34 exited with code 0
+2024/07/21 09:17:29 [notice] 1#1: worker process 35 exited with code 0
+2024/07/21 09:17:29 [notice] 1#1: worker process 36 exited with code 0
+2024/07/21 09:17:29 [notice] 1#1: worker process 37 exited with code 0
+2024/07/21 09:17:29 [notice] 1#1: worker process 38 exited with code 0
+2024/07/21 09:17:29 [notice] 1#1: worker process 39 exited with code 0
+2024/07/21 09:17:29 [notice] 1#1: signal 29 (SIGIO) received
+2024/07/21 09:17:29 [notice] 1#1: signal 17 (SIGCHLD) received from 35
+2024/07/21 09:17:29 [notice] 1#1: signal 17 (SIGCHLD) received from 40
+2024/07/21 09:17:29 [notice] 1#1: worker process 40 exited with code 0
+2024/07/21 09:17:29 [notice] 1#1: signal 29 (SIGIO) received
+2024/07/21 09:17:29 [notice] 1#1: signal 17 (SIGCHLD) received from 32
+2024/07/21 09:17:29 [notice] 1#1: worker process 32 exited with code 0
+2024/07/21 09:17:29 [notice] 1#1: exit
+2024/07/21 09:17:50 [notice] 1#1: using the "epoll" event method
+2024/07/21 09:17:50 [notice] 1#1: nginx/1.27.0
+2024/07/21 09:17:50 [notice] 1#1: built by gcc 12.2.0 (Debian 12.2.0-14) 
+2024/07/21 09:17:50 [notice] 1#1: OS: Linux 5.15.153.1-microsoft-standard-WSL2
+2024/07/21 09:17:50 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2024/07/21 09:17:50 [notice] 1#1: start worker processes
+2024/07/21 09:17:50 [notice] 1#1: start worker process 29
+2024/07/21 09:17:50 [notice] 1#1: start worker process 30
+2024/07/21 09:17:50 [notice] 1#1: start worker process 31
+2024/07/21 09:17:50 [notice] 1#1: start worker process 32
+2024/07/21 09:17:50 [notice] 1#1: start worker process 33
+2024/07/21 09:17:50 [notice] 1#1: start worker process 34
+2024/07/21 09:17:50 [notice] 1#1: start worker process 35
+2024/07/21 09:17:50 [notice] 1#1: start worker process 36
+2024/07/21 09:17:50 [notice] 1#1: start worker process 37
+2024/07/21 09:17:50 [notice] 1#1: start worker process 38
+2024/07/21 09:17:50 [notice] 1#1: start worker process 39
+2024/07/21 09:17:50 [notice] 1#1: start worker process 40
+2024/07/21 09:17:50 [notice] 1#1: start cache manager process 41
+2024/07/21 09:17:50 [notice] 1#1: start cache loader process 42
+2024/07/21 09:18:31 [notice] 1#1: signal 3 (SIGQUIT) received, shutting down
+2024/07/21 09:18:31 [notice] 29#29: gracefully shutting down
+2024/07/21 09:18:31 [notice] 39#39: gracefully shutting down
+2024/07/21 09:18:31 [notice] 30#30: gracefully shutting down
+2024/07/21 09:18:31 [notice] 31#31: gracefully shutting down
+2024/07/21 09:18:31 [notice] 33#33: gracefully shutting down
+2024/07/21 09:18:31 [notice] 33#33: exiting
+2024/07/21 09:18:31 [notice] 34#34: gracefully shutting down
+2024/07/21 09:18:31 [notice] 32#32: gracefully shutting down
+2024/07/21 09:18:31 [notice] 35#35: gracefully shutting down
+2024/07/21 09:18:31 [notice] 35#35: exiting
+2024/07/21 09:18:31 [notice] 36#36: gracefully shutting down
+2024/07/21 09:18:31 [notice] 37#37: gracefully shutting down
+2024/07/21 09:18:31 [notice] 38#38: gracefully shutting down
+2024/07/21 09:18:31 [notice] 41#41: exiting
+2024/07/21 09:18:31 [notice] 40#40: gracefully shutting down
+2024/07/21 09:18:31 [notice] 42#42: exiting
+2024/07/21 09:18:31 [notice] 29#29: exiting
+2024/07/21 09:18:31 [notice] 39#39: exiting
+2024/07/21 09:18:31 [notice] 31#31: exiting
+2024/07/21 09:18:31 [notice] 33#33: exit
+2024/07/21 09:18:31 [notice] 34#34: exiting
+2024/07/21 09:18:31 [notice] 32#32: exiting
+2024/07/21 09:18:31 [notice] 35#35: exit
+2024/07/21 09:18:31 [notice] 36#36: exiting
+2024/07/21 09:18:31 [notice] 37#37: exiting
+2024/07/21 09:18:31 [notice] 38#38: exiting
+2024/07/21 09:18:31 [notice] 40#40: exiting
+2024/07/21 09:18:31 [notice] 29#29: exit
+2024/07/21 09:18:31 [notice] 39#39: exit
+2024/07/21 09:18:31 [notice] 31#31: exit
+2024/07/21 09:18:31 [notice] 34#34: exit
+2024/07/21 09:18:31 [notice] 32#32: exit
+2024/07/21 09:18:31 [notice] 36#36: exit
+2024/07/21 09:18:31 [notice] 37#37: exit
+2024/07/21 09:18:31 [notice] 38#38: exit
+2024/07/21 09:18:31 [notice] 40#40: exit
+2024/07/21 09:18:31 [notice] 1#1: signal 17 (SIGCHLD) received from 42
+2024/07/21 09:18:31 [notice] 1#1: worker process 31 exited with code 0
+2024/07/21 09:18:31 [notice] 1#1: worker process 32 exited with code 0
+2024/07/21 09:18:31 [notice] 1#1: worker process 34 exited with code 0
+2024/07/21 09:18:31 [notice] 1#1: worker process 36 exited with code 0
+2024/07/21 09:18:31 [notice] 1#1: worker process 37 exited with code 0
+2024/07/21 09:18:31 [notice] 1#1: worker process 38 exited with code 0
+2024/07/21 09:18:31 [notice] 1#1: worker process 39 exited with code 0
+2024/07/21 09:18:31 [notice] 1#1: worker process 40 exited with code 0
+2024/07/21 09:18:31 [notice] 1#1: cache loader process 42 exited with code 0
+2024/07/21 09:18:31 [notice] 1#1: signal 29 (SIGIO) received
+2024/07/21 09:18:31 [notice] 1#1: signal 17 (SIGCHLD) received from 32
+2024/07/21 09:18:31 [notice] 1#1: signal 17 (SIGCHLD) received from 29
+2024/07/21 09:18:31 [notice] 1#1: worker process 29 exited with code 0
+2024/07/21 09:18:31 [notice] 1#1: worker process 33 exited with code 0
+2024/07/21 09:18:31 [notice] 1#1: signal 29 (SIGIO) received
+2024/07/21 09:18:31 [notice] 1#1: signal 17 (SIGCHLD) received from 33
+2024/07/21 09:18:31 [notice] 1#1: signal 17 (SIGCHLD) received from 41
+2024/07/21 09:18:31 [notice] 1#1: worker process 35 exited with code 0
+2024/07/21 09:18:31 [notice] 1#1: cache manager process 41 exited with code 0
+2024/07/21 09:18:31 [notice] 1#1: signal 29 (SIGIO) received
+2024/07/21 09:18:31 [notice] 1#1: signal 17 (SIGCHLD) received from 35
+2024/07/21 09:19:32 [notice] 1#1: using the "epoll" event method
+2024/07/21 09:19:32 [notice] 1#1: nginx/1.27.0
+2024/07/21 09:19:32 [notice] 1#1: built by gcc 12.2.0 (Debian 12.2.0-14) 
+2024/07/21 09:19:32 [notice] 1#1: OS: Linux 5.15.153.1-microsoft-standard-WSL2
+2024/07/21 09:19:32 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2024/07/21 09:19:32 [notice] 1#1: start worker processes
+2024/07/21 09:19:32 [notice] 1#1: start worker process 29
+2024/07/21 09:19:32 [notice] 1#1: start worker process 30
+2024/07/21 09:19:32 [notice] 1#1: start worker process 31
+2024/07/21 09:19:32 [notice] 1#1: start worker process 32
+2024/07/21 09:19:32 [notice] 1#1: start worker process 33
+2024/07/21 09:19:32 [notice] 1#1: start worker process 34
+2024/07/21 09:19:32 [notice] 1#1: start worker process 35
+2024/07/21 09:19:32 [notice] 1#1: start worker process 36
+2024/07/21 09:19:32 [notice] 1#1: start worker process 37
+2024/07/21 09:19:32 [notice] 1#1: start worker process 38
+2024/07/21 09:19:32 [notice] 1#1: start worker process 39
+2024/07/21 09:19:32 [notice] 1#1: start worker process 40
+2024/07/21 09:19:32 [notice] 1#1: start cache manager process 41
+2024/07/21 09:19:32 [notice] 1#1: start cache loader process 42
+2024/07/21 09:20:33 [notice] 42#42: http file cache: /path/to/cache 0.000M, bsize: 4096
+2024/07/21 09:20:33 [notice] 1#1: signal 17 (SIGCHLD) received from 42
+2024/07/21 09:20:33 [notice] 1#1: cache loader process 42 exited with code 0
+2024/07/21 09:20:33 [notice] 1#1: signal 29 (SIGIO) received
+2024/07/21 09:20:59 [notice] 1#1: signal 3 (SIGQUIT) received, shutting down
+2024/07/21 09:20:59 [notice] 29#29: gracefully shutting down
+2024/07/21 09:20:59 [notice] 31#31: gracefully shutting down
+2024/07/21 09:20:59 [notice] 30#30: gracefully shutting down
+2024/07/21 09:20:59 [notice] 32#32: gracefully shutting down
+2024/07/21 09:20:59 [notice] 33#33: gracefully shutting down
+2024/07/21 09:20:59 [notice] 35#35: gracefully shutting down
+2024/07/21 09:20:59 [notice] 37#37: gracefully shutting down
+2024/07/21 09:20:59 [notice] 36#36: gracefully shutting down
+2024/07/21 09:20:59 [notice] 38#38: gracefully shutting down
+2024/07/21 09:20:59 [notice] 34#34: gracefully shutting down
+2024/07/21 09:20:59 [notice] 40#40: gracefully shutting down
+2024/07/21 09:20:59 [notice] 41#41: exiting
+2024/07/21 09:20:59 [notice] 39#39: gracefully shutting down
+2024/07/21 09:20:59 [notice] 29#29: exiting
+2024/07/21 09:20:59 [notice] 30#30: exiting
+2024/07/21 09:20:59 [notice] 32#32: exiting
+2024/07/21 09:20:59 [notice] 35#35: exiting
+2024/07/21 09:20:59 [notice] 33#33: exiting
+2024/07/21 09:20:59 [notice] 37#37: exiting
+2024/07/21 09:20:59 [notice] 36#36: exiting
+2024/07/21 09:20:59 [notice] 38#38: exiting
+2024/07/21 09:20:59 [notice] 34#34: exiting
+2024/07/21 09:20:59 [notice] 40#40: exiting
+2024/07/21 09:20:59 [notice] 39#39: exiting
+2024/07/21 09:20:59 [notice] 29#29: exit
+2024/07/21 09:20:59 [notice] 30#30: exit
+2024/07/21 09:20:59 [notice] 32#32: exit
+2024/07/21 09:20:59 [notice] 35#35: exit
+2024/07/21 09:20:59 [notice] 33#33: exit
+2024/07/21 09:20:59 [notice] 37#37: exit
+2024/07/21 09:20:59 [notice] 36#36: exit
+2024/07/21 09:20:59 [notice] 38#38: exit
+2024/07/21 09:20:59 [notice] 34#34: exit
+2024/07/21 09:20:59 [notice] 40#40: exit
+2024/07/21 09:20:59 [notice] 39#39: exit
+2024/07/21 09:20:59 [notice] 1#1: signal 17 (SIGCHLD) received from 34
+2024/07/21 09:20:59 [notice] 1#1: worker process 29 exited with code 0
+2024/07/21 09:20:59 [notice] 1#1: worker process 30 exited with code 0
+2024/07/21 09:20:59 [notice] 1#1: worker process 34 exited with code 0
+2024/07/21 09:20:59 [notice] 1#1: worker process 35 exited with code 0
+2024/07/21 09:20:59 [notice] 1#1: worker process 37 exited with code 0
+2024/07/21 09:20:59 [notice] 1#1: worker process 39 exited with code 0
+2024/07/21 09:20:59 [notice] 1#1: worker process 40 exited with code 0
+2024/07/21 09:20:59 [notice] 1#1: signal 29 (SIGIO) received
+2024/07/21 09:20:59 [notice] 1#1: signal 17 (SIGCHLD) received from 30
+2024/07/21 09:20:59 [notice] 1#1: signal 17 (SIGCHLD) received from 33
+2024/07/21 09:20:59 [notice] 1#1: worker process 33 exited with code 0
+2024/07/21 09:20:59 [notice] 1#1: signal 29 (SIGIO) received
+2024/07/21 09:20:59 [notice] 1#1: signal 17 (SIGCHLD) received from 41
+2024/07/21 09:20:59 [notice] 1#1: worker process 32 exited with code 0
+2024/07/21 09:20:59 [notice] 1#1: worker process 36 exited with code 0
+2024/07/21 09:20:59 [notice] 1#1: cache manager process 41 exited with code 0
+2024/07/21 09:20:59 [notice] 1#1: signal 29 (SIGIO) received
+2024/07/21 09:20:59 [notice] 1#1: signal 17 (SIGCHLD) received from 36
+2024/07/21 09:20:59 [notice] 1#1: signal 17 (SIGCHLD) received from 38
+2024/07/21 09:20:59 [notice] 1#1: worker process 38 exited with code 0
+2024/07/21 09:20:59 [notice] 1#1: signal 29 (SIGIO) received
+2024/07/21 09:24:30 [notice] 1#1: using the "epoll" event method
+2024/07/21 09:24:30 [notice] 1#1: nginx/1.27.0
+2024/07/21 09:24:30 [notice] 1#1: built by gcc 12.2.0 (Debian 12.2.0-14) 
+2024/07/21 09:24:30 [notice] 1#1: OS: Linux 5.15.153.1-microsoft-standard-WSL2
+2024/07/21 09:24:30 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2024/07/21 09:24:30 [notice] 1#1: start worker processes
+2024/07/21 09:24:30 [notice] 1#1: start worker process 29
+2024/07/21 09:24:30 [notice] 1#1: start worker process 30
+2024/07/21 09:24:30 [notice] 1#1: start worker process 31
+2024/07/21 09:24:30 [notice] 1#1: start worker process 32
+2024/07/21 09:24:30 [notice] 1#1: start worker process 33
+2024/07/21 09:24:30 [notice] 1#1: start worker process 34
+2024/07/21 09:24:30 [notice] 1#1: start worker process 35
+2024/07/21 09:24:30 [notice] 1#1: start worker process 36
+2024/07/21 09:24:30 [notice] 1#1: start worker process 37
+2024/07/21 09:24:30 [notice] 1#1: start worker process 38
+2024/07/21 09:24:30 [notice] 1#1: start worker process 39
+2024/07/21 09:24:30 [notice] 1#1: start worker process 40
+2024/07/21 09:24:30 [notice] 1#1: start cache manager process 41
+2024/07/21 09:24:30 [notice] 1#1: start cache loader process 42
+2024/07/21 09:25:31 [notice] 42#42: http file cache: /path/to/cache 0.000M, bsize: 4096
+2024/07/21 09:25:31 [notice] 1#1: signal 17 (SIGCHLD) received from 42
+2024/07/21 09:25:31 [notice] 1#1: cache loader process 42 exited with code 0
+2024/07/21 09:25:31 [notice] 1#1: signal 29 (SIGIO) received
+2024/07/21 10:51:10 [notice] 1#1: signal 3 (SIGQUIT) received, shutting down
+2024/07/21 10:51:10 [notice] 31#31: gracefully shutting down
+2024/07/21 10:51:10 [notice] 30#30: gracefully shutting down
+2024/07/21 10:51:10 [notice] 32#32: gracefully shutting down
+2024/07/21 10:51:10 [notice] 29#29: gracefully shutting down
+2024/07/21 10:51:10 [notice] 34#34: gracefully shutting down
+2024/07/21 10:51:10 [notice] 33#33: gracefully shutting down
+2024/07/21 10:51:10 [notice] 34#34: exiting
+2024/07/21 10:51:10 [notice] 36#36: gracefully shutting down
+2024/07/21 10:51:10 [notice] 35#35: gracefully shutting down
+2024/07/21 10:51:10 [notice] 41#41: exiting
+2024/07/21 10:51:10 [notice] 38#38: gracefully shutting down
+2024/07/21 10:51:10 [notice] 37#37: gracefully shutting down
+2024/07/21 10:51:10 [notice] 38#38: exiting
+2024/07/21 10:51:10 [notice] 39#39: gracefully shutting down
+2024/07/21 10:51:10 [notice] 37#37: exiting
+2024/07/21 10:51:10 [notice] 40#40: gracefully shutting down
+2024/07/21 10:51:10 [notice] 30#30: exiting
+2024/07/21 10:51:10 [notice] 32#32: exiting
+2024/07/21 10:51:10 [notice] 31#31: exiting
+2024/07/21 10:51:10 [notice] 32#32: exit
+2024/07/21 10:51:10 [notice] 29#29: exiting
+2024/07/21 10:51:10 [notice] 33#33: exiting
+2024/07/21 10:51:10 [notice] 36#36: exiting
+2024/07/21 10:51:10 [notice] 33#33: exit
+2024/07/21 10:51:10 [notice] 34#34: exit
+2024/07/21 10:51:10 [notice] 35#35: exiting
+2024/07/21 10:51:10 [notice] 38#38: exit
+2024/07/21 10:51:10 [notice] 39#39: exiting
+2024/07/21 10:51:10 [notice] 37#37: exit
+2024/07/21 10:51:10 [notice] 30#30: exit
+2024/07/21 10:51:10 [notice] 40#40: exiting
+2024/07/21 10:51:10 [notice] 31#31: exit
+2024/07/21 10:51:10 [notice] 29#29: exit
+2024/07/21 10:51:10 [notice] 36#36: exit
+2024/07/21 10:51:10 [notice] 35#35: exit
+2024/07/21 10:51:10 [notice] 39#39: exit
+2024/07/21 10:51:10 [notice] 40#40: exit
+2024/07/21 10:51:11 [notice] 1#1: signal 17 (SIGCHLD) received from 41
+2024/07/21 10:51:11 [notice] 1#1: worker process 32 exited with code 0
+2024/07/21 10:51:11 [notice] 1#1: worker process 33 exited with code 0
+2024/07/21 10:51:11 [notice] 1#1: worker process 38 exited with code 0
+2024/07/21 10:51:11 [notice] 1#1: cache manager process 41 exited with code 0
+2024/07/21 10:51:11 [notice] 1#1: signal 29 (SIGIO) received
+2024/07/21 10:51:11 [notice] 1#1: signal 17 (SIGCHLD) received from 32
+2024/07/21 10:51:11 [notice] 1#1: signal 17 (SIGCHLD) received from 37
+2024/07/21 10:51:11 [notice] 1#1: worker process 37 exited with code 0
+2024/07/21 10:51:11 [notice] 1#1: worker process 40 exited with code 0
+2024/07/21 10:51:11 [notice] 1#1: signal 29 (SIGIO) received
+2024/07/21 10:51:11 [notice] 1#1: signal 17 (SIGCHLD) received from 34
+2024/07/21 10:51:11 [notice] 1#1: worker process 29 exited with code 0
+2024/07/21 10:51:11 [notice] 1#1: worker process 30 exited with code 0
+2024/07/21 10:51:11 [notice] 1#1: worker process 31 exited with code 0
+2024/07/21 10:51:11 [notice] 1#1: worker process 34 exited with code 0
+2024/07/21 10:51:11 [notice] 1#1: worker process 35 exited with code 0
+2024/07/21 10:51:11 [notice] 1#1: worker process 36 exited with code 0
+2024/07/21 10:51:11 [notice] 1#1: worker process 39 exited with code 0
+2024/07/21 10:51:11 [notice] 1#1: exit
+2024/07/21 10:51:29 [notice] 1#1: using the "epoll" event method
+2024/07/21 10:51:29 [notice] 1#1: nginx/1.27.0
+2024/07/21 10:51:29 [notice] 1#1: built by gcc 12.2.0 (Debian 12.2.0-14) 
+2024/07/21 10:51:29 [notice] 1#1: OS: Linux 5.15.153.1-microsoft-standard-WSL2
+2024/07/21 10:51:29 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2024/07/21 10:51:29 [notice] 1#1: start worker processes
+2024/07/21 10:51:29 [notice] 1#1: start worker process 29
+2024/07/21 10:51:29 [notice] 1#1: start worker process 30
+2024/07/21 10:51:29 [notice] 1#1: start worker process 31
+2024/07/21 10:51:29 [notice] 1#1: start worker process 32
+2024/07/21 10:51:29 [notice] 1#1: start worker process 33
+2024/07/21 10:51:29 [notice] 1#1: start worker process 34
+2024/07/21 10:51:29 [notice] 1#1: start worker process 35
+2024/07/21 10:51:29 [notice] 1#1: start worker process 36
+2024/07/21 10:51:29 [notice] 1#1: start worker process 37
+2024/07/21 10:51:29 [notice] 1#1: start worker process 38
+2024/07/21 10:51:29 [notice] 1#1: start worker process 39
+2024/07/21 10:51:29 [notice] 1#1: start worker process 40
+2024/07/21 10:51:29 [notice] 1#1: start cache manager process 41
+2024/07/21 10:51:29 [notice] 1#1: start cache loader process 42
+2024/07/21 10:52:23 [notice] 1#1: signal 3 (SIGQUIT) received, shutting down
+2024/07/21 10:52:23 [notice] 29#29: gracefully shutting down
+2024/07/21 10:52:23 [notice] 30#30: gracefully shutting down
+2024/07/21 10:52:23 [notice] 31#31: gracefully shutting down
+2024/07/21 10:52:23 [notice] 32#32: gracefully shutting down
+2024/07/21 10:52:23 [notice] 34#34: gracefully shutting down
+2024/07/21 10:52:23 [notice] 40#40: gracefully shutting down
+2024/07/21 10:52:23 [notice] 36#36: gracefully shutting down
+2024/07/21 10:52:23 [notice] 38#38: gracefully shutting down
+2024/07/21 10:52:23 [notice] 32#32: exiting
+2024/07/21 10:52:23 [notice] 37#37: gracefully shutting down
+2024/07/21 10:52:23 [notice] 41#41: exiting
+2024/07/21 10:52:23 [notice] 29#29: exiting
+2024/07/21 10:52:23 [notice] 34#34: exiting
+2024/07/21 10:52:23 [notice] 30#30: exiting
+2024/07/21 10:52:23 [notice] 39#39: gracefully shutting down
+2024/07/21 10:52:23 [notice] 35#35: gracefully shutting down
+2024/07/21 10:52:23 [notice] 40#40: exiting
+2024/07/21 10:52:23 [notice] 40#40: exit
+2024/07/21 10:52:23 [notice] 33#33: gracefully shutting down
+2024/07/21 10:52:23 [notice] 36#36: exiting
+2024/07/21 10:52:23 [notice] 36#36: exit
+2024/07/21 10:52:23 [notice] 42#42: exiting
+2024/07/21 10:52:23 [notice] 37#37: exiting
+2024/07/21 10:52:23 [notice] 37#37: exit
+2024/07/21 10:52:23 [notice] 29#29: exit
+2024/07/21 10:52:23 [notice] 33#33: exiting
+2024/07/21 10:52:23 [notice] 33#33: exit
+2024/07/21 10:52:23 [notice] 32#32: exit
+2024/07/21 10:52:23 [notice] 38#38: exiting
+2024/07/21 10:52:23 [notice] 34#34: exit
+2024/07/21 10:52:23 [notice] 30#30: exit
+2024/07/21 10:52:23 [notice] 39#39: exiting
+2024/07/21 10:52:23 [notice] 39#39: exit
+2024/07/21 10:52:23 [notice] 35#35: exiting
+2024/07/21 10:52:23 [notice] 38#38: exit
+2024/07/21 10:52:23 [notice] 35#35: exit
+2024/07/21 10:52:23 [notice] 1#1: signal 17 (SIGCHLD) received from 37
+2024/07/21 10:52:23 [notice] 1#1: worker process 37 exited with code 0
+2024/07/21 10:52:23 [notice] 1#1: worker process 29 exited with code 0
+2024/07/21 10:52:23 [notice] 1#1: worker process 30 exited with code 0
+2024/07/21 10:52:23 [notice] 1#1: worker process 32 exited with code 0
+2024/07/21 10:52:23 [notice] 1#1: worker process 34 exited with code 0
+2024/07/21 10:52:23 [notice] 1#1: worker process 33 exited with code 0
+2024/07/21 10:52:23 [notice] 1#1: worker process 35 exited with code 0
+2024/07/21 10:52:23 [notice] 1#1: worker process 36 exited with code 0
+2024/07/21 10:52:23 [notice] 1#1: worker process 38 exited with code 0
+2024/07/21 10:52:23 [notice] 1#1: worker process 39 exited with code 0
+2024/07/21 10:52:23 [notice] 1#1: worker process 40 exited with code 0
+2024/07/21 10:52:23 [notice] 1#1: cache loader process 42 exited with code 0
+2024/07/21 10:52:23 [notice] 1#1: signal 29 (SIGIO) received
+2024/07/21 10:52:23 [notice] 1#1: signal 17 (SIGCHLD) received from 39
+2024/07/21 10:52:23 [notice] 1#1: signal 17 (SIGCHLD) received from 41
+2024/07/21 10:52:23 [notice] 1#1: cache manager process 41 exited with code 0
+2024/07/21 10:52:23 [notice] 1#1: signal 29 (SIGIO) received
+2024/07/21 10:52:58 [notice] 1#1: using the "epoll" event method
+2024/07/21 10:52:58 [notice] 1#1: nginx/1.27.0
+2024/07/21 10:52:58 [notice] 1#1: built by gcc 12.2.0 (Debian 12.2.0-14) 
+2024/07/21 10:52:58 [notice] 1#1: OS: Linux 5.15.153.1-microsoft-standard-WSL2
+2024/07/21 10:52:58 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2024/07/21 10:52:58 [notice] 1#1: start worker processes
+2024/07/21 10:52:58 [notice] 1#1: start worker process 29
+2024/07/21 10:52:58 [notice] 1#1: start worker process 30
+2024/07/21 10:52:58 [notice] 1#1: start worker process 31
+2024/07/21 10:52:58 [notice] 1#1: start worker process 32
+2024/07/21 10:52:58 [notice] 1#1: start worker process 33
+2024/07/21 10:52:58 [notice] 1#1: start worker process 34
+2024/07/21 10:52:58 [notice] 1#1: start worker process 35
+2024/07/21 10:52:58 [notice] 1#1: start worker process 36
+2024/07/21 10:52:58 [notice] 1#1: start worker process 37
+2024/07/21 10:52:58 [notice] 1#1: start worker process 38
+2024/07/21 10:52:58 [notice] 1#1: start worker process 39
+2024/07/21 10:52:58 [notice] 1#1: start worker process 40
+2024/07/21 10:52:58 [notice] 1#1: start cache manager process 41
+2024/07/21 10:52:58 [notice] 1#1: start cache loader process 42
+2024/07/21 10:53:58 [notice] 42#42: http file cache: /path/to/cache 0.000M, bsize: 4096
+2024/07/21 10:53:59 [notice] 1#1: signal 17 (SIGCHLD) received from 42
+2024/07/21 10:53:59 [notice] 1#1: cache loader process 42 exited with code 0
+2024/07/21 10:53:59 [notice] 1#1: signal 29 (SIGIO) received
+2024/07/21 10:54:14 [error] 38#38: *14 open() "/usr/share/nginx/html/static/css/bootstrap.min.css.map" failed (2: No such file or directory), client: 192.168.32.1, server: nb.luolin123.club, request: "GET /static/css/bootstrap.min.css.map HTTP/1.1", host: "localhost:8088"
+2024/07/21 10:54:28 [error] 38#38: *14 open() "/usr/share/nginx/html/static/fonts/glyphicons-halflings-regular.woff2" failed (2: No such file or directory), client: 192.168.32.1, server: nb.luolin123.club, request: "GET /static/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1", host: "localhost:8088", referrer: "http://localhost:8088/static/css/bootstrap.min.css"
+2024/07/21 10:54:28 [error] 38#38: *14 open() "/usr/share/nginx/html/static/fonts/glyphicons-halflings-regular.woff" failed (2: No such file or directory), client: 192.168.32.1, server: nb.luolin123.club, request: "GET /static/fonts/glyphicons-halflings-regular.woff HTTP/1.1", host: "localhost:8088", referrer: "http://localhost:8088/static/css/bootstrap.min.css"
+2024/07/21 10:54:28 [error] 38#38: *14 open() "/usr/share/nginx/html/static/fonts/glyphicons-halflings-regular.ttf" failed (2: No such file or directory), client: 192.168.32.1, server: nb.luolin123.club, request: "GET /static/fonts/glyphicons-halflings-regular.ttf HTTP/1.1", host: "localhost:8088", referrer: "http://localhost:8088/static/css/bootstrap.min.css"
+2024/07/21 10:55:25 [error] 38#38: *14 open() "/usr/share/nginx/html/static/css/bootstrap.min.css.map" failed (2: No such file or directory), client: 192.168.32.1, server: nb.luolin123.club, request: "GET /static/css/bootstrap.min.css.map HTTP/1.1", host: "localhost:8088"
+2024/07/21 10:55:27 [error] 38#38: *14 open() "/usr/share/nginx/html/static/css/bootstrap.min.css.map" failed (2: No such file or directory), client: 192.168.32.1, server: nb.luolin123.club, request: "GET /static/css/bootstrap.min.css.map HTTP/1.1", host: "localhost:8088"
+2024/07/21 10:55:27 [error] 38#38: *14 open() "/usr/share/nginx/html/static/css/bootstrap.min.css.map" failed (2: No such file or directory), client: 192.168.32.1, server: nb.luolin123.club, request: "GET /static/css/bootstrap.min.css.map HTTP/1.1", host: "localhost:8088"
+2024/07/21 10:55:27 [error] 38#38: *14 open() "/usr/share/nginx/html/static/css/bootstrap.min.css.map" failed (2: No such file or directory), client: 192.168.32.1, server: nb.luolin123.club, request: "GET /static/css/bootstrap.min.css.map HTTP/1.1", host: "localhost:8088"
+2024/07/21 10:55:37 [error] 32#32: *20 open() "/usr/share/nginx/html/static/css/bootstrap.min.css.map" failed (2: No such file or directory), client: 192.168.32.1, server: nb.luolin123.club, request: "GET /static/css/bootstrap.min.css.map HTTP/1.1", host: "localhost:8088"
+2024/07/21 10:56:00 [error] 37#37: *24 open() "/usr/share/nginx/html/static/css/bootstrap.min.css.map" failed (2: No such file or directory), client: 192.168.32.1, server: nb.luolin123.club, request: "GET /static/css/bootstrap.min.css.map HTTP/1.1", host: "localhost:8088"
+2024/07/21 10:56:00 [error] 39#39: *23 open() "/usr/share/nginx/html/static/fonts/glyphicons-halflings-regular.woff2" failed (2: No such file or directory), client: 192.168.32.1, server: nb.luolin123.club, request: "GET /static/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1", host: "localhost:8088", referrer: "http://localhost:8088/static/css/bootstrap.min.css"
+2024/07/21 10:56:00 [error] 39#39: *23 open() "/usr/share/nginx/html/static/fonts/glyphicons-halflings-regular.woff" failed (2: No such file or directory), client: 192.168.32.1, server: nb.luolin123.club, request: "GET /static/fonts/glyphicons-halflings-regular.woff HTTP/1.1", host: "localhost:8088", referrer: "http://localhost:8088/static/css/bootstrap.min.css"
+2024/07/21 10:56:00 [error] 39#39: *23 open() "/usr/share/nginx/html/static/fonts/glyphicons-halflings-regular.ttf" failed (2: No such file or directory), client: 192.168.32.1, server: nb.luolin123.club, request: "GET /static/fonts/glyphicons-halflings-regular.ttf HTTP/1.1", host: "localhost:8088", referrer: "http://localhost:8088/static/css/bootstrap.min.css"
+2024/07/21 11:28:29 [error] 40#40: *25 open() "/usr/share/nginx/html/static/css/bootstrap.min.css.map" failed (2: No such file or directory), client: 192.168.32.1, server: nb.luolin123.club, request: "GET /static/css/bootstrap.min.css.map HTTP/1.1", host: "localhost:8088"
+2024/07/21 11:28:33 [error] 40#40: *25 open() "/usr/share/nginx/html/static/css/bootstrap.min.css.map" failed (2: No such file or directory), client: 192.168.32.1, server: nb.luolin123.club, request: "GET /static/css/bootstrap.min.css.map HTTP/1.1", host: "localhost:8088"
+2024/07/21 11:29:10 [error] 40#40: *25 open() "/usr/share/nginx/html/static/fonts/glyphicons-halflings-regular.woff2" failed (2: No such file or directory), client: 192.168.32.1, server: nb.luolin123.club, request: "GET /static/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1", host: "localhost:8088", referrer: "http://localhost:8088/static/css/bootstrap.min.css"
+2024/07/21 11:29:10 [error] 40#40: *25 open() "/usr/share/nginx/html/static/fonts/glyphicons-halflings-regular.woff" failed (2: No such file or directory), client: 192.168.32.1, server: nb.luolin123.club, request: "GET /static/fonts/glyphicons-halflings-regular.woff HTTP/1.1", host: "localhost:8088", referrer: "http://localhost:8088/static/css/bootstrap.min.css"
+2024/07/21 11:29:10 [error] 40#40: *25 open() "/usr/share/nginx/html/static/fonts/glyphicons-halflings-regular.ttf" failed (2: No such file or directory), client: 192.168.32.1, server: nb.luolin123.club, request: "GET /static/fonts/glyphicons-halflings-regular.ttf HTTP/1.1", host: "localhost:8088", referrer: "http://localhost:8088/static/css/bootstrap.min.css"
+2024/07/21 11:31:02 [warn] 30#30: *28 a client request body is buffered to a temporary file /var/cache/nginx/client_temp/0000000001, client: 192.168.32.1, server: nb.luolin123.club, request: "POST /upload_song HTTP/1.1", host: "localhost:8088", referrer: "http://localhost:8088/upload_song"
+2024/07/21 11:31:59 [notice] 1#1: signal 3 (SIGQUIT) received, shutting down
+2024/07/21 11:31:59 [notice] 30#30: gracefully shutting down
+2024/07/21 11:31:59 [notice] 29#29: gracefully shutting down
+2024/07/21 11:31:59 [notice] 31#31: gracefully shutting down
+2024/07/21 11:31:59 [notice] 32#32: gracefully shutting down
+2024/07/21 11:31:59 [notice] 33#33: gracefully shutting down
+2024/07/21 11:31:59 [notice] 34#34: gracefully shutting down
+2024/07/21 11:31:59 [notice] 35#35: gracefully shutting down
+2024/07/21 11:31:59 [notice] 36#36: gracefully shutting down
+2024/07/21 11:31:59 [notice] 41#41: exiting
+2024/07/21 11:31:59 [notice] 37#37: gracefully shutting down
+2024/07/21 11:31:59 [notice] 38#38: gracefully shutting down
+2024/07/21 11:31:59 [notice] 40#40: gracefully shutting down
+2024/07/21 11:31:59 [notice] 39#39: gracefully shutting down
+2024/07/21 11:31:59 [notice] 29#29: exiting
+2024/07/21 11:31:59 [notice] 31#31: exiting
+2024/07/21 11:31:59 [notice] 32#32: exiting
+2024/07/21 11:31:59 [notice] 33#33: exiting
+2024/07/21 11:31:59 [notice] 34#34: exiting
+2024/07/21 11:31:59 [notice] 35#35: exiting
+2024/07/21 11:31:59 [notice] 36#36: exiting
+2024/07/21 11:31:59 [notice] 37#37: exiting
+2024/07/21 11:31:59 [notice] 38#38: exiting
+2024/07/21 11:31:59 [notice] 40#40: exiting
+2024/07/21 11:31:59 [notice] 39#39: exiting
+2024/07/21 11:31:59 [notice] 29#29: exit
+2024/07/21 11:31:59 [notice] 31#31: exit
+2024/07/21 11:31:59 [notice] 32#32: exit
+2024/07/21 11:31:59 [notice] 33#33: exit
+2024/07/21 11:31:59 [notice] 34#34: exit
+2024/07/21 11:31:59 [notice] 35#35: exit
+2024/07/21 11:31:59 [notice] 36#36: exit
+2024/07/21 11:31:59 [notice] 37#37: exit
+2024/07/21 11:31:59 [notice] 38#38: exit
+2024/07/21 11:31:59 [notice] 40#40: exit
+2024/07/21 11:31:59 [notice] 39#39: exit
+2024/07/21 11:31:59 [notice] 1#1: signal 17 (SIGCHLD) received from 40
+2024/07/21 11:31:59 [notice] 1#1: worker process 29 exited with code 0
+2024/07/21 11:31:59 [notice] 1#1: worker process 31 exited with code 0
+2024/07/21 11:31:59 [notice] 1#1: worker process 40 exited with code 0
+2024/07/21 11:31:59 [notice] 1#1: cache manager process 41 exited with code 0
+2024/07/21 11:31:59 [notice] 1#1: signal 29 (SIGIO) received
+2024/07/21 11:31:59 [notice] 1#1: signal 17 (SIGCHLD) received from 29
+2024/07/21 11:31:59 [notice] 1#1: signal 17 (SIGCHLD) received from 38
+2024/07/21 11:31:59 [notice] 1#1: worker process 32 exited with code 0
+2024/07/21 11:31:59 [notice] 1#1: worker process 34 exited with code 0
+2024/07/21 11:31:59 [notice] 1#1: worker process 36 exited with code 0
+2024/07/21 11:31:59 [notice] 1#1: worker process 38 exited with code 0
+2024/07/21 11:31:59 [notice] 1#1: signal 29 (SIGIO) received
+2024/07/21 11:31:59 [notice] 1#1: signal 17 (SIGCHLD) received from 34
+2024/07/21 11:31:59 [notice] 1#1: signal 17 (SIGCHLD) received from 37
+2024/07/21 11:31:59 [notice] 1#1: worker process 33 exited with code 0
+2024/07/21 11:31:59 [notice] 1#1: worker process 35 exited with code 0
+2024/07/21 11:31:59 [notice] 1#1: worker process 37 exited with code 0
+2024/07/21 11:31:59 [notice] 1#1: worker process 39 exited with code 0
+2024/07/21 11:31:59 [notice] 1#1: signal 29 (SIGIO) received
+2024/07/21 11:31:59 [notice] 1#1: signal 17 (SIGCHLD) received from 39
+2024/07/21 11:32:02 [notice] 30#30: exiting
+2024/07/21 11:32:02 [notice] 30#30: exit
+2024/07/21 11:32:02 [notice] 1#1: signal 17 (SIGCHLD) received from 30
+2024/07/21 11:32:02 [notice] 1#1: worker process 30 exited with code 0
+2024/07/21 11:32:02 [notice] 1#1: exit
+2024/07/21 11:32:27 [notice] 1#1: using the "epoll" event method
+2024/07/21 11:32:27 [notice] 1#1: nginx/1.27.0
+2024/07/21 11:32:27 [notice] 1#1: built by gcc 12.2.0 (Debian 12.2.0-14) 
+2024/07/21 11:32:27 [notice] 1#1: OS: Linux 5.15.153.1-microsoft-standard-WSL2
+2024/07/21 11:32:27 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2024/07/21 11:32:27 [notice] 1#1: start worker processes
+2024/07/21 11:32:27 [notice] 1#1: start worker process 29
+2024/07/21 11:32:27 [notice] 1#1: start worker process 30
+2024/07/21 11:32:27 [notice] 1#1: start worker process 31
+2024/07/21 11:32:27 [notice] 1#1: start worker process 32
+2024/07/21 11:32:27 [notice] 1#1: start worker process 33
+2024/07/21 11:32:27 [notice] 1#1: start worker process 34
+2024/07/21 11:32:27 [notice] 1#1: start worker process 35
+2024/07/21 11:32:27 [notice] 1#1: start worker process 36
+2024/07/21 11:32:27 [notice] 1#1: start worker process 37
+2024/07/21 11:32:27 [notice] 1#1: start worker process 38
+2024/07/21 11:32:27 [notice] 1#1: start worker process 39
+2024/07/21 11:32:27 [notice] 1#1: start worker process 40
+2024/07/21 11:32:27 [notice] 1#1: start cache manager process 41
+2024/07/21 11:32:27 [notice] 1#1: start cache loader process 42
+2024/07/21 11:32:36 [warn] 29#29: *1 a client request body is buffered to a temporary file /var/cache/nginx/client_temp/0000000001, client: 192.168.32.1, server: nb.luolin123.club, request: "POST /upload_song HTTP/1.1", host: "localhost:8088", referrer: "http://localhost:8088/upload_song"
+2024/07/21 11:32:36 [error] 29#29: *1 open() "/usr/share/nginx/html/static/css/bootstrap.min.css.map" failed (2: No such file or directory), client: 192.168.32.1, server: nb.luolin123.club, request: "GET /static/css/bootstrap.min.css.map HTTP/1.1", host: "localhost:8088"
+2024/07/21 11:32:40 [error] 29#29: *1 open() "/usr/share/nginx/html/static/css/bootstrap.min.css.map" failed (2: No such file or directory), client: 192.168.32.1, server: nb.luolin123.club, request: "GET /static/css/bootstrap.min.css.map HTTP/1.1", host: "localhost:8088"
+2024/07/21 11:32:57 [error] 29#29: *1 open() "/usr/share/nginx/html/static/fonts/glyphicons-halflings-regular.woff2" failed (2: No such file or directory), client: 192.168.32.1, server: nb.luolin123.club, request: "GET /static/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1", host: "localhost:8088", referrer: "http://localhost:8088/static/css/bootstrap.min.css"
+2024/07/21 11:32:57 [error] 29#29: *1 open() "/usr/share/nginx/html/static/fonts/glyphicons-halflings-regular.woff" failed (2: No such file or directory), client: 192.168.32.1, server: nb.luolin123.club, request: "GET /static/fonts/glyphicons-halflings-regular.woff HTTP/1.1", host: "localhost:8088", referrer: "http://localhost:8088/static/css/bootstrap.min.css"
+2024/07/21 11:32:57 [error] 29#29: *1 open() "/usr/share/nginx/html/static/fonts/glyphicons-halflings-regular.ttf" failed (2: No such file or directory), client: 192.168.32.1, server: nb.luolin123.club, request: "GET /static/fonts/glyphicons-halflings-regular.ttf HTTP/1.1", host: "localhost:8088", referrer: "http://localhost:8088/static/css/bootstrap.min.css"
+2024/07/21 11:33:13 [warn] 29#29: *1 a client request body is buffered to a temporary file /var/cache/nginx/client_temp/0000000002, client: 192.168.32.1, server: nb.luolin123.club, request: "POST /upload_song HTTP/1.1", host: "localhost:8088", referrer: "http://localhost:8088/upload_song"
+2024/07/21 11:33:14 [error] 29#29: *1 open() "/usr/share/nginx/html/static/css/bootstrap.min.css.map" failed (2: No such file or directory), client: 192.168.32.1, server: nb.luolin123.club, request: "GET /static/css/bootstrap.min.css.map HTTP/1.1", host: "localhost:8088"
+2024/07/21 11:33:27 [notice] 42#42: http file cache: /path/to/cache 0.000M, bsize: 4096
+2024/07/21 11:33:28 [notice] 1#1: signal 17 (SIGCHLD) received from 42
+2024/07/21 11:33:28 [notice] 1#1: cache loader process 42 exited with code 0
+2024/07/21 11:33:28 [notice] 1#1: signal 29 (SIGIO) received
+2024/07/21 11:33:36 [error] 31#31: *8 open() "/usr/share/nginx/html/static/fonts/glyphicons-halflings-regular.woff2" failed (2: No such file or directory), client: 192.168.32.1, server: nb.luolin123.club, request: "GET /static/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1", host: "localhost:8088", referrer: "http://localhost:8088/static/css/bootstrap.min.css"
+2024/07/21 11:33:36 [error] 31#31: *8 open() "/usr/share/nginx/html/static/fonts/glyphicons-halflings-regular.woff" failed (2: No such file or directory), client: 192.168.32.1, server: nb.luolin123.club, request: "GET /static/fonts/glyphicons-halflings-regular.woff HTTP/1.1", host: "localhost:8088", referrer: "http://localhost:8088/static/css/bootstrap.min.css"
+2024/07/21 11:33:36 [error] 31#31: *8 open() "/usr/share/nginx/html/static/fonts/glyphicons-halflings-regular.ttf" failed (2: No such file or directory), client: 192.168.32.1, server: nb.luolin123.club, request: "GET /static/fonts/glyphicons-halflings-regular.ttf HTTP/1.1", host: "localhost:8088", referrer: "http://localhost:8088/static/css/bootstrap.min.css"

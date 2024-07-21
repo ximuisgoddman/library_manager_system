@@ -1,4 +1,4 @@
-FROM python:3.7
+FROM python:3.8
 
 # 设置 Python 环境变量
 ENV PYTHONUNBUFFERED 1

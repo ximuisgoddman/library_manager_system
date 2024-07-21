@@ -125,6 +125,7 @@ WSGI_APPLICATION = 'library.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+
 DATABASES = {
     'default':
         {
@@ -136,16 +137,7 @@ DATABASES = {
             'PASSWORD': os.getenv('MYSQL_PASSWORD'),  # 数据库密码
         }
 }
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': os.getenv('MYSQL_DATABASE'),
-#         'USER': os.getenv('MYSQL_USER'),
-#         'PASSWORD': os.getenv('MYSQL_PASSWORD'),
-#         'HOST': 'db',
-#         'PORT': '3306',
-#     }
-# }
+
 # LOGGING = {
 #     'version': 1,
 #     'disable_existing_loggers': False,
@@ -191,17 +183,28 @@ CACHES = {
         "KEY_PREFIX": "library:",  # 指定缓存键的前缀，以便将缓存键命名空间化
     }
 }
-
-# CACHES = {
-#     "default": {
-#         "BACKEND": "django_redis.cache.RedisCache",
-#         "LOCATION": "redis://redis:6379/0",
-#         "OPTIONS": {
-#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
-#         },
-#         "KEY_PREFIX": "library:",
-#     }
-# }
+IF_RUN_ON_DOCKER = os.getenv("IF_RUN_ON_DOCKER")
+if IF_RUN_ON_DOCKER:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': os.getenv('MYSQL_DATABASE'),
+            'USER': os.getenv('MYSQL_USER'),
+            'PASSWORD': os.getenv('MYSQL_PASSWORD'),
+            'HOST': 'db',
+            'PORT': '3306',
+        }
+    }
+    CACHES = {
+        "default": {
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": "redis://redis:6379/0",
+            "OPTIONS": {
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            },
+            "KEY_PREFIX": "library:",
+        }
+    }
 
 # 指定Django会话存储的后端和缓存别名
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"

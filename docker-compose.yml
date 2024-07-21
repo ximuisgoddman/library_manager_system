@@ -43,8 +43,8 @@ services:
 
   web1:
     build: .
-    ports:
-      - "8081:8000"
+    expose:
+      - "8000"
     volumes:
       - .:/var/www/html/myproject # 挂载项目代码
       - static_vol:/var/www/html/myproject/static # 以数据卷挂载容器内static文件
@@ -62,8 +62,8 @@ services:
     stdin_open: true
   web2:
     build: .
-    ports:
-      - "8082:8000"
+    expose:
+      - "8000"
     volumes:
       - .:/var/www/html/myproject # 挂载项目代码
       - static_vol:/var/www/html/myproject/static # 以数据卷挂载容器内static文件
@@ -81,8 +81,8 @@ services:
     stdin_open: true
   web3:
     build: .
-    ports:
-      - "8083:8000"
+    expose:
+      - "8000"
     volumes:
       - .:/var/www/html/myproject # 挂载项目代码
       - static_vol:/var/www/html/myproject/static # 以数据卷挂载容器内static文件

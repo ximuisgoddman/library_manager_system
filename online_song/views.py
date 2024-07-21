@@ -22,11 +22,15 @@ def upload_song(request):
                 file = request.FILES['file_upload']
                 # 在这里异步解析文件数据并将数据写入数据库
                 print("file:", file)
-                result = sync_upload_song.delay(str(file))
-                if result.ready():
-                    print("任务已完成")
+                USE_CELERY=os.getenv("os.getenv")
+                if USE_CELERY:
+                    result = sync_upload_song.delay(str(file))
+                    if result.ready():
+                        print("任务已完成")
+                    else:
+                        print("任务还在执行中")
                 else:
-                    print("任务还在执行中")
+                    sync_upload_song(str(file))
         else:
             song = form.save()
             song.save()

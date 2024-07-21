@@ -89,15 +89,15 @@ def get_music_info(music_path, file_path):
                     timestamp = "%02d:%02d" % (int(duration) // 60, int(duration) % 60)
             else:
                 print("Error format", os.path.join(music_path, x, each_file))
-            # shutil.copy(os.path.join(music_path, x, each_file), "D:\my_program\py\library_manager_system-master\media/audio")
-            each_line = "%s|%s|%s|%s|%s\n" % (each_file, author.strip(), song_name.strip(), zhuanji, timestamp)
-            all_lines.append(each_line)
-    random.shuffle(all_lines)
-    with open(file_path, 'a', encoding='utf-8') as fw:
-        fw.writelines(all_lines)
+            shutil.copy(os.path.join(music_path, x, each_file), "D:/biancheng\library_manager_system\media/audio")
+    #         each_line = "%s|%s|%s|%s|%s\n" % (each_file, author.strip(), song_name.strip(), zhuanji, timestamp)
+    #         all_lines.append(each_line)
+    # random.shuffle(all_lines)
+    # with open(file_path, 'a', encoding='utf-8') as fw:
+    #     fw.writelines(all_lines)
 
 
-get_music_info("D:\BaiduNetdiskDownload\english_music", "english_music.txt")
+get_music_info("D:/ali_yun\music\english_music", "english_music.txt")
 
 # music_path = "D:\BaiduNetdiskDownload\music\吴青峰"
 # for x in os.listdir(music_path):

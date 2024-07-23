@@ -59,7 +59,7 @@ INSTALLED_APPS = [
     # 可添加需要的第三方登录
     'allauth.socialaccount.providers.github',
     'allauth.socialaccount.providers.weibo',
-    'password_reset',
+    # 'password_reset',
     'taggit',
     'ckeditor',
     'mptt',
@@ -184,7 +184,7 @@ CACHES = {
     }
 }
 IF_RUN_ON_DOCKER = os.getenv("IF_RUN_ON_DOCKER")
-if IF_RUN_ON_DOCKER:
+if IF_RUN_ON_DOCKER and IF_RUN_ON_DOCKER.lower() == 'true':
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',

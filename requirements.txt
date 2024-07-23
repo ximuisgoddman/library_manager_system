@@ -27,6 +27,7 @@ django-ckeditor==6.3.2
 django-cors-headers==4.1.0
 django-js-asset==2.0.0
 django-markdownx==4.0.5
+django-cors-headers
 django-mdeditor==0.1.20
 django-model-utils==4.3.1
 django-mptt==0.14.0
@@ -61,7 +62,7 @@ notifications==0.3.2
 oauthlib==3.2.2
 packaging==23.0
 parsel==1.7.0
-Pillow==9.4.0
+Pillow==9.5.0
 pip==23.3.1
 prompt-toolkit==3.0.39
 Protego==0.2.1

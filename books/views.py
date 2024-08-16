@@ -17,7 +17,10 @@ from django.db.models import Q
 from django.core.paginator import Paginator
 from django.core.cache import cache
 
+from django.conf import settings
 
+# 指定Django默认配置文件模块
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'library.settings')
 def book_front_page(request):
     publishers = Book.objects.values_list('publisher', flat=True).distinct()
     bookClasses = Book.objects.values_list('book_classification', flat=True).distinct()
@@ -175,7 +178,7 @@ def book_borrow(request, book_id):
         return render(request, 'user_front_page/books_front_page.html', {'books': books})
 
     # 创建redis客户端,连接到 Redis 服务器
-    redis_client = redis.StrictRedis(host='localhost', port=6379, db=0)
+    redis_client = redis.StrictRedis(host='redis' if settings.IF_RUN_ON_DOCKER else 'localhost', port=6379, db=0)
     # 使用 setnx() 方法尝试获取锁。如果获取失败，则说明有其他请求已经获取了锁，这里直接返回 HttpResponse('borrowing in progress')
     lock_key = f"borrow_lock_{book_id}"
     is_locked = redis_client.setnx(lock_key, 1)

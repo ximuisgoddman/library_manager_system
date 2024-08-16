@@ -5,7 +5,8 @@ ENV PYTHONUNBUFFERED 1
 
 # 安装 MySQL 客户端库
 RUN apt-get update && apt-get install -y --fix-missing default-libmysqlclient-dev
-
+# 更新包列表并安装 netcat-openbsd 和 iputils-ping
+RUN apt-get update && apt-get install -y netcat-openbsd iputils-ping
 
 # 创建项目目录并设置工作目录
 RUN mkdir /app

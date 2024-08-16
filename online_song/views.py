@@ -11,6 +11,10 @@ from django.core.paginator import Paginator
 from django.core.cache import cache
 import base64
 from online_song.tasks import sync_upload_song
+from django.conf import settings
+
+# 指定Django默认配置文件模块
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'library.settings')
 
 
 def upload_song(request):
@@ -22,8 +26,8 @@ def upload_song(request):
                 file = request.FILES['file_upload']
                 # 在这里异步解析文件数据并将数据写入数据库
                 print("file:", file)
-                USE_CELERY=os.getenv("os.getenv")
-                if USE_CELERY:
+                user_celery = settings.USE_CELERY
+                if user_celery:
                     result = sync_upload_song.delay(str(file))
                     if result.ready():
                         print("任务已完成")

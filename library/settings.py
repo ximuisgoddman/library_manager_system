@@ -183,13 +183,24 @@ CACHES = {
         "KEY_PREFIX": "library:",  # 指定缓存键的前缀，以便将缓存键命名空间化
     }
 }
+BROKER_URL = 'redis://127.0.0.1:6379/0'
+
+# 设置存储结果的后台
+RESULT_BACKEND = 'redis://127.0.0.1:6379/0'
+USE_CELERY = os.getenv("USE_CELERY")
+if USE_CELERY and USE_CELERY.lower() == 'true':
+    USE_CELERY = True
+
 IF_RUN_ON_DOCKER = os.getenv("IF_RUN_ON_DOCKER")
 if IF_RUN_ON_DOCKER and IF_RUN_ON_DOCKER.lower() == 'true':
+    IF_RUN_ON_DOCKER = True
+
+if IF_RUN_ON_DOCKER:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
             'NAME': os.getenv('MYSQL_DATABASE'),
-            'USER': os.getenv('MYSQL_USER'),
+            'USER': 'root',
             'PASSWORD': os.getenv('MYSQL_PASSWORD'),
             'HOST': 'db',
             'PORT': '3306',
@@ -205,6 +216,10 @@ if IF_RUN_ON_DOCKER and IF_RUN_ON_DOCKER.lower() == 'true':
             "KEY_PREFIX": "library:",
         }
     }
+    BROKER_URL = 'redis://redis:6379/0'
+
+    # 设置存储结果的后台
+    RESULT_BACKEND = 'redis://redis:6379/0'
 
 # 指定Django会话存储的后端和缓存别名
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
@@ -309,11 +324,6 @@ CKEDITOR_CONFIGS = {
 SITE_ID = 1
 # 重定向 url
 LOGIN_REDIRECT_URL = '/home'
-broker_url = 'redis://127.0.0.1:6379/0'
-
-# 设置存储结果的后台
-result_backend = 'redis://127.0.0.1:6379/0'
-
 # 可接受的内容格式
 accept_content = ["json"]
 # 任务序列化数据格式

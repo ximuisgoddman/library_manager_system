@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+from . import utils
 
 load_dotenv()
 
@@ -184,16 +185,11 @@ CACHES = {
     }
 }
 BROKER_URL = 'redis://127.0.0.1:6379/0'
-
 # 设置存储结果的后台
 RESULT_BACKEND = 'redis://127.0.0.1:6379/0'
-USE_CELERY = os.getenv("USE_CELERY")
-if USE_CELERY and USE_CELERY.lower() == 'true':
-    USE_CELERY = True
 
-IF_RUN_ON_DOCKER = os.getenv("IF_RUN_ON_DOCKER")
-if IF_RUN_ON_DOCKER and IF_RUN_ON_DOCKER.lower() == 'true':
-    IF_RUN_ON_DOCKER = True
+USE_CELERY = utils.str_to_bool(os.getenv("USE_CELERY"))
+IF_RUN_ON_DOCKER = utils.str_to_bool(os.getenv("IF_RUN_ON_DOCKER"))
 
 if IF_RUN_ON_DOCKER:
     DATABASES = {

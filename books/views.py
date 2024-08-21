@@ -7,20 +7,21 @@ import datetime
 from django.http import HttpResponse
 import redis
 import logging
-import csv
-from io import TextIOWrapper
 import os
+from library.utils import handle_uploaded_file
+from .tasks import sync_upload_book
 
 # 获得logger实例
 logger = logging.getLogger('myapp')
 from django.db.models import Q
 from django.core.paginator import Paginator
 from django.core.cache import cache
-
 from django.conf import settings
 
 # 指定Django默认配置文件模块
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'library.settings')
+
+
 def book_front_page(request):
     publishers = Book.objects.values_list('publisher', flat=True).distinct()
     bookClasses = Book.objects.values_list('book_classification', flat=True).distinct()
@@ -104,32 +105,22 @@ def book_create(request):
                 # 处理文件上传逻辑
                 file = request.FILES['file_upload']
                 # 在这里解析文件数据并将数据写入数据库
-                print("file:", file)
-                file_wrapper = TextIOWrapper(file, encoding='utf-8')
-                reader = csv.reader(file_wrapper)
-                for row in reader:
-                    # 解析CSV文件内容并创建书籍对象
-                    # book_image_path = row[7]
-                    book_image_filename = row[0].strip() + '.jpg'
-                    book_image_full_path = os.path.join('offline_book_images/', book_image_filename)
-                    book = Book(
-                        book_name=row[0],
-                        author=row[1],
-                        publisher=row[2],
-                        publish_time=row[3],
-                        book_numbers=row[4],
-                        current_number=row[5],
-                        book_classification=row[6],
-                        book_image=book_image_full_path  # 设置书籍图片路径
-                    )
-                    print("book_image_full_path", book_image_full_path)
-                    book.owner = request.user
-                    book.save()
+                file_path = handle_uploaded_file(file)
+                user_celery = settings.USE_CELERY
+                print("file:", file, user_celery, bool(user_celery))
+                if user_celery:
+                    result = sync_upload_book.delay(file_path)
+                    if result.ready():
+                        print("任务已完成")
+                    else:
+                        print("任务还在执行中")
+                else:
+                    sync_upload_book(file_path)
 
                 return redirect('admin_book_list')
             else:
                 book = form.save(commit=False)
-                book.owner = request.user
+                # book.owner = request.user
                 book.save()
                 return redirect('admin_book_list')
     else:

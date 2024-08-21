@@ -12,7 +12,7 @@ from django.core.cache import cache
 import base64
 from online_song.tasks import sync_upload_song
 from django.conf import settings
-
+from library.utils import handle_uploaded_file
 # 指定Django默认配置文件模块
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'library.settings')
 
@@ -25,16 +25,17 @@ def upload_song(request):
                 # 处理文件上传逻辑
                 file = request.FILES['file_upload']
                 # 在这里异步解析文件数据并将数据写入数据库
-                print("file:", file)
+                file_path = handle_uploaded_file(file)
+                print("file:", file_path)
                 user_celery = settings.USE_CELERY
                 if user_celery:
-                    result = sync_upload_song.delay(str(file))
+                    result = sync_upload_song.delay(file_path)
                     if result.ready():
                         print("任务已完成")
                     else:
                         print("任务还在执行中")
                 else:
-                    sync_upload_song(str(file))
+                    sync_upload_song(file_path)
         else:
             song = form.save()
             song.save()

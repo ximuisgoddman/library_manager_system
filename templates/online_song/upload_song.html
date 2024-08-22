@@ -1,20 +1,60 @@
 {% extends 'admin_front_page/base.html' %}
 
 {% block content %}
-<div class="container">
-    <div class="row">
-      <div class="col-md-6 offset-md-3">
-        <div class="card">
-          <div class="card-header">
-            <h1 class="text-center">Add Book</h1>
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card shadow-lg border-0 rounded">
+          <div class="card-header bg-primary text-white text-center">
+            <h2>Add Songs</h2>
           </div>
-          <div class="card-body">
+          <div class="card-body p-4">
             <form method="post" enctype="multipart/form-data">
               {% csrf_token %}
-              {{ form.as_p }}
-              <div class="text-center">
-                <button type="submit" class="btn btn-primary">Save</button>
-                <a href="{% url 'admin_book_list' %}" class="btn btn-secondary">Cancel</a>
+
+              <div class="mb-3">
+                {{ form.file_upload.label_tag }}
+                {{ form.file_upload }}
+                {% if form.file_upload.errors %}
+                  <div class="text-danger">{{ form.file_upload.errors }}</div>
+                {% endif %}
+              </div>
+
+              <div class="mb-3">
+                {{ form.song_author.label_tag }}
+                {{ form.song_author }}
+                {% if form.song_author.errors %}
+                  <div class="text-danger">{{ form.song_author.errors }}</div>
+                {% endif %}
+              </div>
+
+              <div class="mb-3">
+                {{ form.song_title.label_tag }}
+                {{ form.song_title }}
+                {% if form.song_title.errors %}
+                  <div class="text-danger">{{ form.song_title.errors }}</div>
+                {% endif %}
+              </div>
+
+              <div class="mb-3">
+                {{ form.song_duration.label_tag }}
+                {{ form.song_duration }}
+                {% if form.song_duration.errors %}
+                  <div class="text-danger">{{ form.song_duration.errors }}</div>
+                {% endif %}
+              </div>
+
+              <div class="mb-3">
+                {{ form.song_classification.label_tag }}
+                {{ form.song_classification }}
+                {% if form.song_classification.errors %}
+                  <div class="text-danger">{{ form.song_classification.errors }}</div>
+                {% endif %}
+              </div>
+
+              <div class="text-center mt-4">
+                <button type="submit" class="btn btn-success btn-lg px-5">Save</button>
+                <a href="{% url 'admin_online_book_list' %}" class="btn btn-secondary btn-lg px-5 ms-3">Cancel</a>
               </div>
             </form>
           </div>

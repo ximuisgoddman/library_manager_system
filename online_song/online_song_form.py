@@ -3,7 +3,7 @@ from .models import OnlineSongModel
 
 
 class OnlineSongForm(forms.ModelForm):
-    file_upload = forms.FileField(required=False)
+    file_upload = forms.FileField(required=False, label="批量上传")
 
     class Meta:
         model = OnlineSongModel
@@ -15,3 +15,7 @@ class OnlineSongForm(forms.ModelForm):
             'song_author': "作曲",
             'song_classification': "分类"
         }
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'

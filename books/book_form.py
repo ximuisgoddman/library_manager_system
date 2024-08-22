@@ -9,7 +9,7 @@ class BookForm(forms.ModelForm):
         ('CC', 'CC'),
     ]
     book_classification = forms.ChoiceField(choices=BOOK_CLASS_CHOICES)
-    file_upload = forms.FileField(required=False)  # 添加文件上传字段
+    file_upload = forms.FileField(required=False, label="批量上传")  # 添加文件上传字段
 
     class Meta:
         model = Book
@@ -28,6 +28,10 @@ class BookForm(forms.ModelForm):
         widgets = {
             'publish_time': forms.DateInput(attrs={'type': 'date'})
         }
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
 
 
 class BorrowRecordForm(forms.ModelForm):

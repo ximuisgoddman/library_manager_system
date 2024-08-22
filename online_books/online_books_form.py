@@ -3,7 +3,7 @@ from .models import OnlineBooksModel, BookShelfModel
 
 
 class OnlineBooksForm(forms.ModelForm):
-    file_upload = forms.FileField(required=False)  # 添加文件上传字段
+    file_upload = forms.FileField(required=False, label="批量上传")  # 添加文件上传字段
 
     class Meta:
         model = OnlineBooksModel
@@ -16,6 +16,11 @@ class OnlineBooksForm(forms.ModelForm):
             'book_image': '图书封面',
             'book_classification': '图书分类'
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
 
 
 class BookShelfForm(forms.ModelForm):

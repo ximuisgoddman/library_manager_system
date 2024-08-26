@@ -10,48 +10,60 @@ from .models import LotteryPrize
 from .lottery_form import LotteryForm
 
 
+import random
+from django.shortcuts import render
+from .models import LotteryPrize  # Ensure you have the correct import for your model
+
+import random
+from django.shortcuts import render
+from .models import LotteryPrize
+
+
+import random
+from django.shortcuts import render
+from .models import LotteryPrize
+
+from django.shortcuts import render
+import random
+
 def lottery_view(request):
-    prizes = LotteryPrize.objects.all()  # 替换为您的奖品模型
+    prizes = LotteryPrize.objects.all()
+    prize_count = len(prizes)  # 获取奖品数量
     random_degree = random.randint(0, 359)  # 生成一个0到359之间的随机度数
 
+    # 计算每个奖品的角度
+    prize_angles = []
+    for i in range(prize_count):
+        angle = i * 360 / prize_count
+        prize_angles.append(angle)
+
     return render(request, "lottery/online_lottery.html", {
-        "prizes": prizes,
+        "prizes": zip(prizes, prize_angles),
+        "prize_count": prize_count,
         "random_degree": random_degree,
     })
 
 
+
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
+import csv
+import os
+from io import TextIOWrapper
+from .models import LotteryPrize
+
+
 @login_required
 def upload_lottery_info(request):
-    if not request.session.get("is_login", None):
-        return redirect('/login/')
     if request.method == 'POST':
         form = LotteryForm(request.POST, request.FILES)
         if form.is_valid():
-            if 'file_upload' in request.FILES:
-                # 处理文件上传逻辑
-                file = request.FILES['file_upload']
-                # 在这里解析文件数据并将数据写入数据库
-                print("file:", file)
-                file_wrapper = TextIOWrapper(file, encoding='utf-8')
-                reader = csv.reader(file_wrapper)
-                for row in reader:
-                    # 解析CSV文件内容并创建书籍对象
-                    # book_image_path = row[7]
-                    lottery_image_filename = row[0].strip() + '.jpg'
-                    lottery_image_full_path = os.path.join('lottery_prizes/', lottery_image_filename)
-                    lottery = LotteryPrize(
-                        name=row[0],
-                        percentage=row[1],
-                        image=lottery_image_full_path  # 设置书籍图片路径
-                    )
-                    lottery.save()
-
-                return redirect('admin_book_list')
-            else:
-                book = form.save(commit=False)
-                book.owner = request.user
-                book.save()
-                return redirect('admin_book_list')
+            form.save()  # Save the form data to the database
+            return redirect('lottery_view')  # Redirect to a list or confirmation page
     else:
         form = LotteryForm()
+
     return render(request, 'lottery/lottery_upload.html', {'form': form})
+

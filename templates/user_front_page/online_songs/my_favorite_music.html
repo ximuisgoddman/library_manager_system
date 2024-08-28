@@ -98,9 +98,9 @@
         var seekTime = duration * progressRatio;
         console.log("@3", seekTime);
         // 跳转到指定时间播放
-        currentlyPlayingSong.addEventListener("loadedmetadata", function () {
+        // currentlyPlayingSong.addEventListener("loadedmetadata", function () {
             currentlyPlayingSong.currentTime = seekTime;
-        });
+        // });
 
     });
 

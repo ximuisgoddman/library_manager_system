@@ -139,54 +139,58 @@ def read_online_book(request, book_id):
         # 提取章节内容并转换为 HTML 格式
         chapters = []
         for filename in epub_zip.namelist():
-            if filename.endswith('.html'):
+            if filename.endswith(('.html', '.xhtml')):  # 只处理 HTML 或 XHTML 文件
                 with epub_zip.open(filename, 'r') as f:
-                    # 解码 HTML 编码的字符串
                     decoded_content = f.read().decode('utf-8')
-                    # 使用 BeautifulSoup 解析 HTML 内容
                     soup = BeautifulSoup(decoded_content, 'html.parser')
 
                     # 处理图片和其他资源
                     for img_tag in soup.find_all("img", src=True):
                         src = img_tag["src"]
-                        handle_resource(src, resource_dir, epub_zip)
+                        new_src = handle_resource(src, resource_dir, epub_zip)
+                        if new_src:
+                            img_tag["src"] = new_src
 
                     for link_tag in soup.find_all("link", href=True):
                         href = link_tag["href"]
-                        handle_resource(href, resource_dir, epub_zip)
+                        new_href = handle_resource(href, resource_dir, epub_zip)
+                        if new_href:
+                            link_tag["href"] = new_href
 
                     for script_tag in soup.find_all("script", src=True):
                         src = script_tag["src"]
-                        handle_resource(src, resource_dir, epub_zip)
+                        new_src = handle_resource(src, resource_dir, epub_zip)
+                        if new_src:
+                            script_tag["src"] = new_src
 
                     # 获取章节标题和内容
                     title = os.path.basename(filename)
                     content = str(soup)
                     chapters.append({'title': title, 'content': content})
 
-    return render(request, "user_front_page/read_online_book.html", {'chapters': chapters,
-                                                                     'chapter_count': len(chapters)})
+    return render(request, "user_front_page/read_online_book.html",
+                  {'chapters': chapters, 'chapter_count': len(chapters)})
 
 
 def handle_resource(src, resource_dir, epub_zip):
     if src.startswith("http"):
-        # 如果资源是一个 URL，则下载它
         response = requests.get(src)
         filename = os.path.basename(src)
         dest_path = os.path.join(resource_dir, filename)
         with open(dest_path, "wb") as f:
             f.write(response.content)
+        return f'/media/{os.path.relpath(dest_path, "media")}'
     else:
-        # 如果资源是一个文件路径，则拷贝它
         try:
             with epub_zip.open(src, 'r') as src_file:
                 filename = os.path.basename(src)
                 dest_path = os.path.join(resource_dir, filename)
                 with open(dest_path, "wb") as dest_file:
-                    print("src_file:", src_file)
                     shutil.copyfileobj(src_file, dest_file)
+            return f'/media/{os.path.relpath(dest_path, "media")}'
         except KeyError:
             print(f"File {src} not found in EPUB archive.")
+            return None
 
 
 @login_required

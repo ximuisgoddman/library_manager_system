@@ -98,6 +98,9 @@
     </tbody>
 </table>
 {% if page_obj.paginator.num_pages > 1 %}
+<div id="favorite-alert" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); padding:20px; background-color:#4CAF50; color:white; border-radius:5px;">
+    歌曲已成功添加到收藏列表！
+</div>
 <div class="pagination">
     <span class="step-links">
         {% if page_obj.has_previous %}
@@ -430,24 +433,34 @@
 
 
     function addToFavorite(songId) {
-        // 发送AJAX请求将歌曲添加到“favorite”列表
-        $.ajax({
-            url: "{% url 'add_to_favorite' %}",
-            method: "POST",
-            data: {
-                songId: songId,
-                csrfmiddlewaretoken: "{{ csrf_token }}",
-            },
-            success: function (response) {
-                // 添加成功后的处理逻辑
-                console.log("歌曲已添加到favorite列表");
-            },
-            error: function (xhr, errmsg, err) {
-                // 错误处理逻辑
-                console.log("添加到favorite列表时出错");
-            }
-        });
-    }
+    // 发送AJAX请求将歌曲添加到“favorite”列表
+    $.ajax({
+        url: "{% url 'add_to_favorite' %}",
+        method: "POST",
+        data: {
+            songId: songId,
+            csrfmiddlewaretoken: "{{ csrf_token }}",
+        },
+        success: function (response) {
+            // 显示弹窗
+            var alertBox = document.getElementById("favorite-alert");
+            alertBox.style.display = "block";
+
+            // 1秒后隐藏弹窗
+            setTimeout(function () {
+                alertBox.style.display = "none";
+            }, 1000);
+
+            console.log("歌曲已添加到favorite列表");
+        },
+        error: function (xhr, errmsg, err) {
+            // 错误处理逻辑
+            alert("添加歌曲到收藏列表时出错，请稍后重试。");
+            console.log("添加到favorite列表时出错");
+        }
+    });
+}
+
 
 </script>
 

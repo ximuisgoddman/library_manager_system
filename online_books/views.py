@@ -143,14 +143,23 @@ def read_online_book(request, book_id):
                 with epub_zip.open(filename, 'r') as f:
                     decoded_content = f.read().decode('utf-8')
                     soup = BeautifulSoup(decoded_content, 'html.parser')
+                    print(soup)
 
-                    # 处理图片和其他资源
+                    # 处理 <img> 标签和其他资源
                     for img_tag in soup.find_all("img", src=True):
                         src = img_tag["src"]
                         new_src = handle_resource(src, resource_dir, epub_zip)
                         if new_src:
                             img_tag["src"] = new_src
 
+                    # 处理 <image> 标签（SVG 图片）
+                    for image_tag in soup.find_all("image", {"xlink:href": True}):
+                        href = image_tag["xlink:href"]
+                        new_href = handle_resource(href, resource_dir, epub_zip)
+                        if new_href:
+                            image_tag["xlink:href"] = new_href
+
+                    # 处理其他资源
                     for link_tag in soup.find_all("link", href=True):
                         href = link_tag["href"]
                         new_href = handle_resource(href, resource_dir, epub_zip)
@@ -181,6 +190,8 @@ def handle_resource(src, resource_dir, epub_zip):
             f.write(response.content)
         return f'/media/{os.path.relpath(dest_path, "media")}'
     else:
+        # 处理相对路径
+        src = src.lstrip('./')  # 去除相对路径的 "./"
         try:
             with epub_zip.open(src, 'r') as src_file:
                 filename = os.path.basename(src)

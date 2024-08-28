@@ -13,6 +13,7 @@ import base64
 from online_song.tasks import sync_upload_song
 from django.conf import settings
 from library.utils import handle_uploaded_file
+
 # 指定Django默认配置文件模块
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'library.settings')
 
@@ -110,6 +111,27 @@ def online_song_delete(request, song_id):
         song.delete()
         return redirect('admin_online_song_list')
     return render(request, 'online_song/delete_online_song.html', {'song': song})
+
+
+def play_online_song(request, song_id):
+    # 获取歌曲对象
+    song = get_object_or_404(OnlineSongModel, pk=song_id)
+    lrc_file_path = 'D:/ali_yun\music\chinese_music\陈奕迅_new/%s - %s.lrc' % (song.song_author, song.song_title)
+    # lrc_file_path = f"media/lyrics/{song_id}.lrc"  # LRC 歌词文件路径
+    lyrics = ""
+    # 读取 LRC 歌词文件内容
+    try:
+        with open(lrc_file_path, 'r', encoding='utf-8') as file:
+            lyrics = file.read()
+    except FileNotFoundError:
+        print(f"LRC file not found: {lrc_file_path}")  # 调试信息
+
+    print("@@:",lyrics,lrc_file_path)
+    context = {
+        'song': song,
+        'lyrics': lyrics,
+    }
+    return render(request, "user_front_page/online_songs/play_song.html", context)
 
 
 @login_required

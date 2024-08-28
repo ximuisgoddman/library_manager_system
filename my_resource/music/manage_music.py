@@ -1,131 +1,152 @@
-import os
-import shutil
-
 from mutagen.mp3 import MP3
-import random
-
-import wave
-
+from mutagen.id3 import ID3, APIC, USLT
+from mutagen.mp4 import MP4, MP4Cover
 from mutagen.flac import FLAC
+import os
+import re
 
-from mutagen.mp4 import MP4
 
+def extract_info(file_path, save_path):
+    # 获取文件的扩展名
+    file_extension = file_path.split('.')[-1].lower()
 
-def get_m4a_duration(file_path):
-    try:
-        audio = MP4(file_path)
-        duration = audio.info.length
-        return duration
-    except Exception as e:
-        print("Error while getting duration:", e)
+    if file_extension == 'mp3':
+        return extract_mp3_info(file_path, save_path)
+    elif file_extension in ['m4a', 'mp4']:
+        return extract_mp4_info(file_path, save_path)
+    elif file_extension == 'flac':
+        return extract_flac_info(file_path, save_path)
+    else:
+        print(f"Unsupported file type: {file_extension}")
         return None
 
 
-def get_flac_duration(file_path):
-    try:
-        audio = FLAC(file_path)
-        duration = audio.info.length
-        return duration
-    except Exception as e:
-        print("Error while getting duration:", e)
-        return None
+def extract_mp3_info(file_path, save_path):
+    audio = MP3(file_path, ID3=ID3)
+
+    album = audio.tags.get('TALB')
+    title = audio.tags.get('TIT2')
+    artist = audio.tags.get('TPE1')
+    lyrics = audio.tags.get('USLT')  # Unsynchronized lyrics/text transcription frame
+    duration = audio.info.length  # 获取时长
+
+    cover = None
+    for tag in audio.tags.values():
+        if isinstance(tag, APIC):
+            cover = tag.data
+            break
+
+    lyrics_text = None
+    if lyrics:
+        try:
+            lyrics_text = lyrics.text if isinstance(lyrics, USLT) else lyrics
+        except Exception as e:
+            print("Failed to decode lyrics:", e)
+
+    # 保存歌词为LRC文件
+    if lyrics_text:
+        save_lyrics_as_lrc(save_path, artist, title, lyrics_text)
+    if cover:
+        save_cover_image(save_path, artist, title, cover)
+    return {
+        'album': album.text[0] if album else None,
+        'title': title.text[0] if title else None,
+        'artist': artist.text[0] if artist else None,
+        'duration': duration
+    }
 
 
-def get_wav_duration(file_path):
-    try:
-        with wave.open(file_path, 'rb') as wav_file:
-            # 获取音频的帧率（每秒的采样数）
-            frame_rate = wav_file.getframerate()
+def extract_mp4_info(file_path, save_path):
+    audio = MP4(file_path)
 
-            # 获取音频的总帧数
-            num_frames = wav_file.getnframes()
+    album = audio.tags.get('\xa9alb')
+    title = audio.tags.get('\xa9nam')
+    artist = audio.tags.get('\xa9ART')
+    lyrics = audio.tags.get('\xa9lyr')
+    duration = audio.info.length if audio.info else None  # 获取时长
 
-            # 计算音频时长（秒）
-            duration = num_frames / float(frame_rate)
+    cover = None
+    if 'covr' in audio.tags:
+        cover = audio.tags['covr'][0]
 
-            return duration
-    except wave.Error as e:
-        print("Error reading WAV file:", e)
-        return None
+    lyrics_text = lyrics[0] if lyrics else None
 
-
-def get_music_info(music_path, file_path):
-    all_lines = []
-    for x in os.listdir(music_path):
-        if x.endswith(".git"):
-            continue
-        for each_file in os.listdir(os.path.join(music_path, x)):
-            author, song_name, zhuanji, timestamp = "", "", "", ""
-            try:
-                author, song_name = each_file.split(".")[0].split("-")
-            except Exception as e:
-                print(os.path.join(music_path, x, each_file), e)
-            if each_file.lower().endswith(".mp3"):
-                try:
-                    audio = MP3(os.path.join(music_path, x, each_file))
-                    # zhuanji = audio["TALB"]
-                    timestamp = "%02d:%02d" % (int(audio.info.length) // 60, int(audio.info.length) % 60)
-
-                except Exception as e:
-                    print(os.path.join(music_path, x, each_file), e)
-                    zhuanji = "--"
-
-            elif each_file.endswith(".wav"):
-                duration = get_wav_duration(os.path.join(music_path, x, each_file))
-                if duration is not None:
-                    timestamp = "%02d:%02d" % (int(duration) // 60, int(duration) % 60)
-                else:
-                    print("无法获取音频时长。", each_file)
-
-            elif each_file.endswith(".flac"):
-                duration = get_flac_duration(os.path.join(music_path, x, each_file))
-                if duration is not None:
-                    timestamp = "%02d:%02d" % (int(duration) // 60, int(duration) % 60)
-                else:
-                    print("无法获取音频时长。", each_file)
-            elif each_file.endswith(".m4a"):
-                duration = get_m4a_duration(os.path.join(music_path, x, each_file))
-                if duration is not None:
-                    timestamp = "%02d:%02d" % (int(duration) // 60, int(duration) % 60)
-            else:
-                print("Error format", os.path.join(music_path, x, each_file))
-            shutil.copy(os.path.join(music_path, x, each_file), "D:/biancheng\library_manager_system\media/audio")
-    #         each_line = "%s|%s|%s|%s|%s\n" % (each_file, author.strip(), song_name.strip(), zhuanji, timestamp)
-    #         all_lines.append(each_line)
-    # random.shuffle(all_lines)
-    # with open(file_path, 'a', encoding='utf-8') as fw:
-    #     fw.writelines(all_lines)
+    # 保存歌词为LRC文件
+    if lyrics_text:
+        save_lyrics_as_lrc(save_path, artist, title, lyrics_text)
+        # 保存封面图片
+    if cover:
+        save_cover_image(save_path, artist, title, cover)
+    return {
+        'album': album[0] if album else None,
+        'title': title[0] if title else None,
+        'artist': artist[0] if artist else None,
+        'duration': duration
+    }
 
 
-get_music_info("D:/ali_yun\music\english_music", "english_music.txt")
+def extract_flac_info(file_path, save_path):
+    audio = FLAC(file_path)
 
-# music_path = "D:\BaiduNetdiskDownload\music\吴青峰"
-# for x in os.listdir(music_path):
-#     # print(x.split(".")[0])
-#     if "吴青峰" in x.split(".")[0].split("-")[1]:
-#         # print(x)
-#         os.rename(os.path.join(music_path, x), os.path.join(music_path, "%s-%s.%s" % (
-#         x.split("-")[1].split(".")[0].strip(), x.split("-")[0].strip(), x.split(".")[-1])))
-# if "苏打绿" not in x:
-#     os.rename(os.path.join(music_path, x), os.path.join(music_path, "苏打绿-%s" %x))
-# else:
-#     os.rename(os.path.join(music_path, x), os.path.join(music_path, "%s-%s.%s"%(x.split("-")[1].split(".")[0].strip(),x.split("-")[0].strip(),x.split(".")[-1])))
+    album = audio.get('album')
+    title = audio.get('title')
+    artist = audio.get('artist')
+    lyrics = audio.get('lyrics')
+    duration = audio.info.length  # 获取时长
+
+    cover = None
+    if audio.pictures:
+        cover = audio.pictures[0].data
+
+    lyrics_text = lyrics[0] if lyrics else None
+
+    # 保存歌词为LRC文件
+    if lyrics_text:
+        save_lyrics_as_lrc(save_path, artist, title, lyrics_text)
+    if cover:
+        save_cover_image(save_path, artist, title, cover)
+    return {
+        'album': album[0] if album else None,
+        'title': title[0] if title else None,
+        'artist': artist[0] if artist else None,
+        'duration': duration
+    }
 
 
-#
-# music_path = "D:\my_program\py\library_manager_system-master\media"
-# count = 0
-# for x in os.listdir(music_path):
-#     for y in os.listdir(os.path.join(music_path, x)):
-#         if x.endswith(".git"):
-#             continue
-#
-#         try:
-#             count += 1
-#             # author,name=y.split(".")[0].split("-")
-#             # if "," in author or x in name:
-#             #     os.rename(os.path.join(music_path,x,y),os.path.join(music_path,x,y.replace(",","&")))
-#
-#         except Exception as e:
-#             print(x, y, e)
-# print(count)
+def clean_filename(filename):
+    """移除文件名中的无效字符"""
+    return re.sub(r'[\/:*?"<>|]', '', filename)
+
+
+def save_lyrics_as_lrc(file_path, artist, file_name, lyrics_text):
+    """保存歌词为LRC文件"""
+    file_name = "%s_%s" % (clean_filename(artist[0].strip()), clean_filename(file_name[0].strip())) + '.lrc'
+    save_path = os.path.join(file_path, "online_songs", "lrc_file", file_name)
+    with open(save_path, 'w', encoding='utf-8') as f:
+        f.write(lyrics_text)
+    print(f"Lyrics saved to {file_name}")
+
+
+def save_cover_image(file_path, artist, image_name, cover_data):
+    """保存封面图片到本地"""
+    # 尝试判断图像格式，默认保存为JPEG
+    image_extension = '.jpg'
+    # 如果cover_data是MP4格式的封面
+    if isinstance(cover_data, list):
+        cover_data = cover_data[0]
+        if cover_data.imageformat == MP4Cover.FORMAT_PNG:
+            image_extension = '.png'
+
+    image_name = "%s_%s" % (clean_filename(artist[0].strip()), clean_filename(image_name[0].strip())) + image_extension
+    with open(os.path.join(file_path, "online_songs", "image", image_name), 'wb') as img_file:
+        img_file.write(cover_data)
+    print(f"Cover image saved to {image_name}")
+
+
+# print(extract_info("D:/ali_yun\music\chinese_music\陈奕迅_new/陈奕迅 - 16月6日晴.m4a",
+#                    "D:/biancheng\python\library_manager_system\media"))
+
+if __name__ == '__main__':
+    my_path = "D:/ali_yun\music\chinese_music\陈奕迅_new"
+    for x in os.listdir(my_path):
+        extract_info(os.path.join(my_path, x), "D:/biancheng\python\library_manager_system\media")

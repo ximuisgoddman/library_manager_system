@@ -75,6 +75,7 @@ def online_song_list(request):
                                                        transform_chinese(search_query),
                                                        page_number)
     print("new_cache_key:", new_cache_key)
+    print()
     page_obj = cache.get(new_cache_key)
     if not page_obj:
         page_obj = paginator.get_page(page_number)
@@ -116,7 +117,9 @@ def online_song_delete(request, song_id):
 def play_online_song(request, song_id):
     # 获取歌曲对象
     song = get_object_or_404(OnlineSongModel, pk=song_id)
-    lrc_file_path = 'D:/ali_yun\music\chinese_music\陈奕迅_new/%s - %s.lrc' % (song.song_author, song.song_title)
+    print(song)
+    lrc_file_path = os.path.join(settings.BASE_DIR, "media", str(song.lrc_file))
+
     # lrc_file_path = f"media/lyrics/{song_id}.lrc"  # LRC 歌词文件路径
     lyrics = ""
     # 读取 LRC 歌词文件内容
@@ -126,7 +129,7 @@ def play_online_song(request, song_id):
     except FileNotFoundError:
         print(f"LRC file not found: {lrc_file_path}")  # 调试信息
 
-    print("@@:",lyrics,lrc_file_path)
+    print("@@:", lyrics, lrc_file_path)
     context = {
         'song': song,
         'lyrics': lyrics,

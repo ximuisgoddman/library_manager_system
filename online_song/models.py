@@ -4,10 +4,10 @@ from users.models import MyUser
 
 # Create your models here.
 class OnlineSongModel(models.Model):
-    song_image = models.ImageField(upload_to='online_songs/image/')
+    song_image = models.ImageField(upload_to='online_songs/image/', max_length=500)
     song_title = models.CharField(max_length=100)
-    audio_file = models.FileField(upload_to='online_songs/audio/')
-    lrc_file = models.FileField(upload_to='online_songs/lrc_file/')
+    audio_file = models.FileField(upload_to='online_songs/audio/', max_length=500)
+    lrc_file = models.FileField(upload_to='online_songs/lrc_file/', max_length=500)
     song_duration = models.CharField(max_length=100)
     song_author = models.CharField(max_length=100, db_index=True)
     song_classification = models.CharField(max_length=100, db_index=True)

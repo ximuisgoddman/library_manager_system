@@ -39,6 +39,7 @@
 <table class="table" id="songTable">
     <thead>
         <tr>
+             <th scope="col">封面</th>
             <th scope="col">歌名</th>
             <th>
                 <label for="song_author_Filter">歌手:</label>
@@ -55,16 +56,18 @@
                 </select>
             </th>
             <th scope="col">时长</th>
+             <th scope="col">专辑</th>
             <th scope="col">操作</th>
         </tr>
     </thead>
     <tbody>
         {% for song in page_obj %}
         <tr>
+            <td><img src="{{ song.song_image.url }}" width="100"></td>
             <td>{{ song.song_title }}</td>
             <td>{{ song.song_author }}</td>
             <td>{{ song.song_duration }}</td>
-
+            <td>{{ song.song_classification }}</td>
             <td>
                 <audio id="audio-{{ song.id }}">
                     {% if song.song_format == "flac" %}

@@ -13,14 +13,15 @@ def sync_upload_song(file_path):
         file_wrapper = TextIOWrapper(file, encoding='utf-8')
         reader = csv.reader(file_wrapper, delimiter='|')
         for row in reader:
-            song_filename = row[0].strip()
-            song_full_path = os.path.join('audio', song_filename)
+            print("@@@@:", row, row[6].strip())
             song = OnlineSongModel(
-                song_author=row[1],
-                song_title=row[2],
-                audio_file=song_full_path,
-                song_duration=row[4],
-                song_classification=row[3]
+                song_author=row[0],
+                song_title=row[1],
+                audio_file=os.path.join("online_songs/audio/", row[2]),
+                song_duration=row[3],
+                song_classification=row[4],
+                lrc_file=os.path.join("online_songs/lrc_file/", row[5]),
+                song_image=os.path.join("online_songs/image/", row[6].strip())
             )
             songs_to_create.append(song)
             # song.save()

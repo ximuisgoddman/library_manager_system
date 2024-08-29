@@ -87,12 +87,65 @@ def online_song_list(request):
                           "song_duration": each_song.song_duration.replace("'", " "),
                           "song_author": each_song.song_author.replace("'", " ")})
         each_song.song_format = each_song.audio_file.url.split(".")[-1].lower()
-    if request.method == 'POST':
-        return JsonResponse({"song_list": json.dumps(song_list)})
+    # if request.method == 'POST':
+    #     return JsonResponse({"song_list": json.dumps(song_list)})
     return render(request, 'user_front_page/online_songs/song_list.html',
                   {'page_obj': page_obj,
+                   'selected_song_author': song_author,
                    'song_authors': set(all_song_authors),
-                   "songs_json": json.dumps(song_list)})
+                   "songs_json": json.dumps(song_list),
+                   "current_song": page_obj[0],  # 页面第一首歌
+                   "current_song_json":json.dumps(song_list[0])
+                   })
+
+
+def play_online_song(request, song_id):
+    # 获取歌曲对象
+    current_song = get_object_or_404(OnlineSongModel, pk=song_id)
+
+    search_query = request.GET.get('search', '')
+    song_author = request.GET.get('song_author', '')
+    song_classification = request.GET.get('song_classification', '')
+    page_number = request.GET.get('page', 1)
+    filtered_songs = OnlineSongModel.objects.all().order_by('id')
+    song_list = []
+    page_obj = []
+    if search_query:
+        filtered_songs = filtered_songs.filter(song_title__icontains=search_query)
+    if song_author:
+        filtered_songs = filtered_songs.filter(song_author=song_author)
+    if song_classification:
+        filtered_songs = filtered_songs.filter(song_classification=song_classification)
+    print("LEN:", len(filtered_songs))
+    page_obj = Paginator(filtered_songs, per_page=20).get_page(page_number)
+    print(len(page_obj))
+    for each_song in page_obj:
+        song_list.append({"song_id": each_song.id,
+                          "song_title": each_song.song_title.replace("'", " "),
+                          "audio_file": each_song.audio_file.url.replace("'", " "),
+                          "song_duration": each_song.song_duration.replace("'", " "),
+                          "song_author": each_song.song_author.replace("'", " ")})
+
+    # 歌词文件路径
+    lrc_file_path = os.path.join(settings.BASE_DIR, "media", str(current_song.lrc_file))
+
+    lyrics = ""
+    # 读取 LRC 歌词文件内容
+    try:
+        with open(lrc_file_path, 'r', encoding='utf-8') as file:
+            lyrics = file.read()
+    except FileNotFoundError:
+        print(f"LRC file not found: {lrc_file_path}")  # 调试信息
+
+    context = {
+        'current_song': current_song,
+        'lyrics': lyrics,
+        'artist': current_song.song_author,  # 歌手
+        'album': current_song.song_classification,
+        "songs_json": json.dumps(song_list)
+        # 专辑
+    }
+    return render(request, "user_front_page/online_songs/play_song.html", context)
 
 
 @login_required
@@ -112,29 +165,6 @@ def online_song_delete(request, song_id):
         song.delete()
         return redirect('admin_online_song_list')
     return render(request, 'online_song/delete_online_song.html', {'song': song})
-
-
-def play_online_song(request, song_id):
-    # 获取歌曲对象
-    song = get_object_or_404(OnlineSongModel, pk=song_id)
-    print(song)
-    lrc_file_path = os.path.join(settings.BASE_DIR, "media", str(song.lrc_file))
-
-    # lrc_file_path = f"media/lyrics/{song_id}.lrc"  # LRC 歌词文件路径
-    lyrics = ""
-    # 读取 LRC 歌词文件内容
-    try:
-        with open(lrc_file_path, 'r', encoding='utf-8') as file:
-            lyrics = file.read()
-    except FileNotFoundError:
-        print(f"LRC file not found: {lrc_file_path}")  # 调试信息
-
-    print("@@:", lyrics, lrc_file_path)
-    context = {
-        'song': song,
-        'lyrics': lyrics,
-    }
-    return render(request, "user_front_page/online_songs/play_song.html", context)
 
 
 @login_required

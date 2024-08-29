@@ -1,212 +1,236 @@
 {% extends 'user_front_page/base.html' %}
 
 {% block content %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
 <div class="row">
+    <!-- 左侧部分 -->
+    <div class="col-md-4" style="margin-top: 100px;">
+        <!-- 旋转封面 -->
+        <div class="cover-container">
+            <img id="cover-image" src="{{ current_song.song_image.url }}" alt="{{ current_song.song_title }}"
+                class="rotating-cover">
+        </div>
+        <!-- 歌手和专辑信息 -->
+        <div class="song-info">
+            <h2>{{ current_song.song_title }}</h2>
+            <p><strong>歌手:</strong> {{ artist }}</p>
+            <p><strong>专辑:</strong> {{ album }}</p>
+            <p><strong>时长:</strong> {{ current_song.song_duration }}</p>
+        </div>
+    </div>
+
+    <!-- 右侧部分 -->
     <div class="col-md-8">
-        <h1>{{ song.title }} - 歌词同步显示</h1>
-    </div>
-</div>
+        <!-- 歌词滚动显示 -->
+        <div id="lyrics-container">
+            <div id="lyrics"></div>
+        </div>
 
-<div>
-    <audio id="audio-player" controls>
-        <source src="{{ song.audio_file.url }}" type="audio/mpeg">
-        您的浏览器不支持 HTML5 音频。
-    </audio>
+        <!-- 播放器控件 -->
+        <div id="player" style="display: flex; align-items: center; margin-top: 20px;">
+            <button id="previous-button" onclick="playPreviousSong()" class="player-button">
+                <i class="fas fa-step-backward"></i>
+            </button>
 
-    <div id="player">
-        <button id="previous-button" onclick="playPreviousSong()">上一首</button>
-        <progress id="progress" value="0" max="1"></progress>
-        <span id="countdown">00:00</span>
-        <span id="current-song-title">{{ song.title }}</span>
-        <button id="play-pause-button" onclick="togglePlayPause()">播放</button>
-        <button id="next-button" onclick="playNextSong()">下一首</button>
-        <label for="play-mode">播放模式：</label>
-        <select id="play-mode" onchange="changePlayMode()">
-            <option value="random">随机播放</option>
-            <option value="sequential">顺序播放</option>
-            <option value="repeat">单曲循环</option>
-        </select>
+            <audio id="audio-player" controls style="flex-grow: 1; margin: 0 10px;"
+                data-song-id="{{ current_song.id }}">
+                <source src="{{ current_song.audio_file.url }}" type="audio/mpeg">
+                您的浏览器不支持 HTML5 音频。
+            </audio>
 
-        <label for="volume">音量：</label>
-        <input type="range" id="volume" min="0" max="1" step="0.001" value="0.2" onchange="updateVolume()">
-    </div>
+            <button id="next-button" onclick="playNextSong()" class="player-button">
+                <i class="fas fa-step-forward"></i>
+            </button>
 
-    <div id="lyrics-container">
-        <div id="lyrics"></div>
+            <!-- 播放模式按钮 -->
+            <div class="play-mode-buttons" style="margin-left: 10px; display: flex; gap: 5px;">
+                <button id="play-mode-random" onclick="changePlayMode('random')" title="随机播放">
+                    <i class="fas fa-random"></i>
+                </button>
+                <button id="play-mode-sequential" onclick="changePlayMode('sequential')" title="顺序播放">
+                    <i class="fas fa-list"></i>
+                </button>
+                <button id="play-mode-repeat" onclick="changePlayMode('repeat')" title="单曲循环">
+                    <i class="fas fa-redo"></i>
+                </button>
+            </div>
+        </div>
     </div>
 </div>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        var audioPlayer = document.getElementById("audio-player");
-        var lyricsContainer = document.getElementById("lyrics");
-        var progress = document.getElementById("progress");
-        var countdownElement = document.getElementById("countdown");
-        var playPauseButton = document.getElementById("play-pause-button");
-        var volumeSlider = document.getElementById("volume");
-        var currentSongTitle = document.getElementById("current-song-title");
+    var songs = JSON.parse('{{ songs_json | safe }}');
+    var playMode = "random"; // 默认播放模式为随机播放
+    var audioPlayer = document.getElementById("audio-player");
+    var currentlyPlayingSong = audioPlayer.getAttribute('data-song-id');
 
-        // 从 Django 传递的歌词数据
-        var lyricsText = `{{ lyrics|safe }}`; // 用 safe 过滤器确保歌词文本的安全
-
-        // 解析 LRC 歌词
-        function parseLyrics(lyrics) {
-            var lines = lyrics.split("\n");
-            var parsed = [];
-            lines.forEach(function (line) {
-                var match = line.match(/\[(\d{2}):(\d{2}\.\d{2})\](.*)/);
-                if (match) {
-                    var minutes = parseInt(match[1], 10);
-                    var seconds = parseFloat(match[2]);
-                    var time = minutes * 60 + seconds;
-                    var text = match[3].trim();
-                    parsed.push({ time: time, text: text });
-                }
-            });
-            return parsed;
+    function playSong(songId) {
+        console.log("nextSongId:", songId);
+        // 查找要播放的歌曲信息
+        var song = songs.find(s => s.song_id.toString() === songId.toString());
+        if (song) {
+            audioPlayer.src = song.audio_file;
+            audioPlayer.setAttribute('data-song-id', songId);
+            audioPlayer.load();
+            audioPlayer.play();
         }
+    }
 
-        // 显示歌词
-        function displayLyrics(parsedLyrics) {
-            lyricsContainer.innerHTML = '';
-            parsedLyrics.forEach(function (lyric) {
-                var line = document.createElement("div");
-                line.className = "lyric-line";
-                line.setAttribute("data-time", lyric.time);
-                line.textContent = lyric.text;
-                lyricsContainer.appendChild(line);
-            });
-        }
-
-        // 同步歌词
-        function syncLyrics(currentTime, parsedLyrics) {
-            var lines = document.querySelectorAll(".lyric-line");
-            var activeLine;
-
-            parsedLyrics.forEach(function (lyric, index) {
-                if (currentTime >= lyric.time) {
-                    activeLine = lines[index];
-                }
-            });
-
-            if (activeLine) {
-                lines.forEach(function (line) { line.classList.remove("active"); });
-                activeLine.classList.add("active");
-                activeLine.scrollIntoView({ behavior: "smooth", block: "center" });
+    function playNextSong() {
+        // 播放下一首歌曲
+        var currentSongId = audioPlayer.getAttribute('data-song-id');
+        var currentSongIndex = -1;
+        for (var i = 0; i < songs.length; i++) {
+            if (currentSongId == songs[i]['song_id'].toString()) {
+                currentSongIndex = i;
+                break;
             }
         }
+        if (currentSongIndex === -1) return; // 当前歌曲不在列表中
 
-        // 播放/暂停按钮
-        function togglePlayPause() {
-            if (audioPlayer.paused) {
-                audioPlayer.play();
-                playPauseButton.textContent = '暂停';
+        var nextSongIndex;
+        if (playMode === "sequential") {
+            nextSongIndex = (currentSongIndex + 1) % songs.length;
+        } else if (playMode === "random") {
+            nextSongIndex = Math.floor(Math.random() * songs.length);
+        } else if (playMode === "repeat") {
+            nextSongIndex = currentSongIndex;
+        }
+
+        var nextSongId = songs[nextSongIndex]['song_id'];
+        playSong(nextSongId);
+    }
+
+    function playPreviousSong() {
+        // 播放上一首歌曲
+        var currentSongId = audioPlayer.getAttribute('data-song-id');
+        var currentSongIndex = songs.findIndex(s => s.song_id.toString() === currentSongId.toString());
+        console.log("currentSongId:", currentSongId);
+        if (currentSongIndex === -1) return; // 当前歌曲不在列表中
+
+        var previousSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
+        var previousSongId = songs[previousSongIndex].song_id;
+        playSong(previousSongId);
+    }
+
+    function changePlayMode(mode) {
+        playMode = mode;
+        console.log("切换播放模式:", playMode);
+        updatePlayModeButton();
+    }
+
+    function updatePlayModeButton() {
+        // 更新播放模式按钮的显示
+        var buttons = document.querySelectorAll('.play-mode-buttons button');
+        buttons.forEach(function (button) {
+            if (button.id === `play-mode-${playMode}`) {
+                button.classList.add('active');
             } else {
-                audioPlayer.pause();
-                playPauseButton.textContent = '播放';
+                button.classList.remove('active');
             }
-        }
+        });
+    }
 
-        // 音量控制
-        function updateVolume() {
-            audioPlayer.volume = volumeSlider.value;
-        }
-
-        // 更新进度条
-        function updateProgressBar() {
-            if (audioPlayer && isFinite(audioPlayer.duration) && isFinite(audioPlayer.currentTime)) {
-                progress.value = audioPlayer.currentTime / audioPlayer.duration;
-                updateCountdown(audioPlayer.duration - audioPlayer.currentTime);
-            }
-        }
-
-        // 更新倒计时
-        function updateCountdown(totalSeconds) {
-            var minutes = Math.floor(totalSeconds / 60);
-            var seconds = totalSeconds % 60;
-
-            var minutesDisplay = minutes < 10 ? "0" + minutes : minutes;
-            var secondsDisplay = seconds < 10 ? "0" + seconds : seconds;
-            countdownElement.textContent = minutesDisplay + ":" + secondsDisplay;
-        }
-
-        // 播放下一首
-        function playNextSong() {
-            console.log("playNextSong被调用");
-            var currentSongId = currentlyPlayingSong.getAttribute('data-song-id');
-            var currentSongIndex = -1;
-            for (var i = 0; i < songs.length; i++) {
-                var tmp = songs[i]['song_id'].toString();
-                if (tmp === currentSongId) {
-                    currentSongIndex = i;
-                    break;
-                }
-            }
-            console.log("next当前歌曲：", currentSongIndex)
-            var nextSongIndex;
-            if (playMode === "sequential") {
-                nextSongIndex = (currentSongIndex + 1) % songs.length;
-            } else if (playMode === "random") {
-                nextSongIndex = Math.floor(Math.random() * songs.length);
-            } else if (playMode === "repeat") {
-                nextSongIndex = currentSongIndex;
-            }
-            console.log("next要播放", songs[nextSongIndex]['song_id']);
-            // currentlyPlayingSong = audioElements[songs[nextSongIndex]['song_id']];
-            playSong(songs[nextSongIndex]['song_id']);
-        }
-
-        function playPreviousSong() {
-            var currentSongId = currentlyPlayingSong.getAttribute('data-song-id');
-            var currentSongIndex = -1;
-            for (var i = 0; i < songs.length; i++) {
-
-                var tmp = songs[i]['song_id'].toString();
-                if (tmp === currentSongId) {
-                    currentSongIndex = i;
-                    break;
-                }
-            }
-            console.log("pre当前歌曲：", currentSongIndex, currentSongId)
-            var previousSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
-            console.log("pre要播放的歌曲", songs[previousSongIndex]['song_id'])
-            playSong(songs[previousSongIndex]['song_id']);
-        }
-
-        function changePlayMode() {
-            playMode = playModeSelect.value;
-        }
-
-        // 解析并显示歌词
+    document.addEventListener("DOMContentLoaded", function () {
+        var lyricsText = `{{ lyrics | safe }}`;
         var parsedLyrics = parseLyrics(lyricsText);
         displayLyrics(parsedLyrics);
-
-        // 监听音频时间更新事件
+        // 添加自动播放
+        var audioPlayer = document.getElementById("audio-player");
+        audioPlayer.play().catch(function (error) {
+            // 处理自动播放失败的情况（例如浏览器限制）
+            console.log("自动播放失败:", error);
+        });
         audioPlayer.addEventListener("timeupdate", function () {
             var currentTime = audioPlayer.currentTime;
             syncLyrics(currentTime, parsedLyrics);
         });
 
-        // 进度条点击跳转
-        progress.addEventListener("click", function (event) {
-            var clickPosition = event.clientX - progress.getBoundingClientRect().left;
-            var progressBarWidth = progress.offsetWidth;
-            var progressRatio = clickPosition / progressBarWidth;
-            var seekTime = audioPlayer.duration * progressRatio;
-            audioPlayer.currentTime = seekTime;
+        updatePlayModeButton(); // 更新播放模式按钮的显示
+    });
+
+    function parseLyrics(lyrics) {
+        var lines = lyrics.split("\n");
+        var parsed = [];
+        lines.forEach(function (line) {
+            var match = line.match(/\[(\d{2}):(\d{2}\.\d{2})\](.*)/);
+            if (match) {
+                var minutes = parseInt(match[1], 10);
+                var seconds = parseFloat(match[2]);
+                var time = minutes * 60 + seconds;
+                var text = match[3].trim();
+                parsed.push({ time: time, text: text });
+            }
+        });
+        return parsed;
+    }
+
+    function displayLyrics(parsedLyrics) {
+        var lyricsContainer = document.getElementById("lyrics");
+        lyricsContainer.innerHTML = '';
+        parsedLyrics.forEach(function (lyric) {
+            var line = document.createElement("div");
+            line.className = "lyric-line";
+            line.setAttribute("data-time", lyric.time);
+            line.textContent = lyric.text;
+            lyricsContainer.appendChild(line);
+        });
+    }
+
+    function syncLyrics(currentTime, parsedLyrics) {
+        var lines = document.querySelectorAll(".lyric-line");
+        var activeLine;
+
+        parsedLyrics.forEach(function (lyric, index) {
+            if (currentTime >= lyric.time) {
+                activeLine = lines[index];
+            }
         });
 
-        // 音量滑块
-        volumeSlider.addEventListener("input", updateVolume);
-
-        // 更新进度条
-        setInterval(updateProgressBar, 1000);
-    });
+        if (activeLine) {
+            lines.forEach(function (line) { line.classList.remove("active"); });
+            activeLine.classList.add("active");
+            activeLine.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+    }
 </script>
 
+
 <style>
+    .cover-container {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .rotating-cover {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        transition: transform 0.5s linear;
+    }
+
+    .rotating {
+        animation: rotate 5s linear infinite;
+    }
+
+    @keyframes rotate {
+        from {
+            transform: rotate(0deg);
+        }
+
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    .song-info {
+        text-align: center;
+        margin-top: 10px;
+    }
+
     #lyrics-container {
-        height: 300px;
+        height: 600px;
         overflow-y: auto;
         background-color: #f9f9f9;
         padding: 10px;
@@ -226,7 +250,21 @@
     }
 
     #player {
+        display: flex;
+        align-items: center;
+        justify-content: center;
         margin-top: 20px;
+    }
+
+    .player-button {
+        background: none;
+        border: none;
+        font-size: 24px;
+        margin: 0 10px;
+    }
+
+    .player-select {
+        margin-left: 10px;
     }
 
     #progress {

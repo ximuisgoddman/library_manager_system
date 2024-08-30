@@ -184,6 +184,8 @@
     var songs = JSON.parse('{{ songs_json|escapejs }}');  // 获取所有歌曲信息
     var currentSongIndex = 0;  // 初始化为第一首歌
     // 页面加载后，初始化播放器
+    var audioPlayer = document.getElementById('audio-player'); // 音频播放器
+
     window.onload = function () {
         loadCurrentSong();
     };
@@ -192,17 +194,29 @@
     function loadCurrentSong() {
         if (songs.length > 0) {  // 确保歌曲列表不为空
             var currentSong = songs[currentSongIndex];
-            document.getElementById('audio-source').src = currentSong.audio_file;
-            var audioPlayer = document.getElementById('audio-player');
-            audioPlayer.load();  // 重新加载音频
-            document.getElementById('current-song-title').innerText = currentSong.song_title;
-            audioPlayer.play();  // 自动播放
+            var audioSource = document.getElementById('audio-source');
+            audioSource.src = currentSong.audio_file;
+
             currentSongId = currentSong['song_id'];
-            console.log("currentSongId:", currentSongId);
+            currentSongTitle = currentSong['song_title'];
+            console.log("currentSongId:",currentSongId);
+            // 更新当前播放歌曲标题
+            var songTitleElement = document.getElementById('current-song-title');
+            songTitleElement.textContent = currentSongTitle;
+            songTitleElement.href = "{% url 'play_online_song' song_id=0 %}".replace('0', currentSongId);
+
+            // 重新加载音频
+            audioPlayer.load();
+            audioPlayer.play();
+            // 添加 ended 事件监听器
+            audioPlayer.removeEventListener('ended', playNextSong); // 移除旧的监听器
+            audioPlayer.addEventListener('ended', playNextSong);
         } else {
             console.error("歌曲列表为空，无法加载和播放歌曲。");
         }
     }
+
+
     function playCurSong(songId) {
         // 获取当前的过滤条件
         var params = new URLSearchParams(window.location.search);  // 获取当前页面的所有查询参数

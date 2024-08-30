@@ -146,7 +146,8 @@
             var currentTime = audioPlayer.currentTime;
             syncLyrics(currentTime, parsedLyrics);
         });
-
+        // 添加自动播放下一首歌曲
+        audioPlayer.addEventListener("ended", playNextSong);
         updatePlayModeButton(); // 更新播放模式按钮的显示
     });
 

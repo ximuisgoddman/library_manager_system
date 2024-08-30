@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import OnlineSongModel, MyFavoriteMusic
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-import csv
+from django.templatetags.static import static
 import os
 import json
 from django.core.paginator import Paginator
@@ -81,6 +81,9 @@ def online_song_list(request):
         page_obj = paginator.get_page(page_number)
         cache.set(new_cache_key, page_obj, timeout=60 * 10)
     for each_song in page_obj:
+        # if not os.path.exists(os.path.join(settings.BASE_DIR, 'media', each_song.song_image.url)):
+        #     each_song.song_image = static('avatar/default.jpg')
+        #     print(each_song)
         song_list.append({"song_id": each_song.id,
                           "song_title": each_song.song_title.replace("'", " "),
                           "audio_file": each_song.audio_file.url.replace("'", " "),
@@ -94,9 +97,7 @@ def online_song_list(request):
                    'selected_song_author': song_author,
                    'song_authors': set(all_song_authors),
                    "songs_json": json.dumps(song_list),
-                   "current_song": page_obj[0],  # 页面第一首歌
-                   "current_song_json":json.dumps(song_list[0])
-                   })
+                   "current_song_json": json.dumps(song_list[0])})
 
 
 def play_online_song(request, song_id):
@@ -116,10 +117,12 @@ def play_online_song(request, song_id):
         filtered_songs = filtered_songs.filter(song_author=song_author)
     if song_classification:
         filtered_songs = filtered_songs.filter(song_classification=song_classification)
-    print("LEN:", len(filtered_songs))
     page_obj = Paginator(filtered_songs, per_page=20).get_page(page_number)
-    print(len(page_obj))
     for each_song in page_obj:
+        if not os.path.exists(os.path.join(settings.BASE_DIR, 'media', each_song.song_image.url)):
+            each_song.song_image = static('avatar/default.jpg')
+            print(each_song)
+
         song_list.append({"song_id": each_song.id,
                           "song_title": each_song.song_title.replace("'", " "),
                           "audio_file": each_song.audio_file.url.replace("'", " "),
@@ -176,12 +179,7 @@ def add_to_favorite(request):
         user = request.user
         # 创建或获取 MyFavoriteMusic 对象
         favorite_music, created = MyFavoriteMusic.objects.get_or_create(
-            music_id=song.id,
-            audio_file=song.audio_file,
-            song_title=song.song_title,
-            song_author=song.song_author,
-            song_duration=song.song_duration,
-            song_classification=song.song_classification,
+            music_id=song,
             favorite_music_user_id=user
         )
         print("favorite_music:%s, created:%s" % (favorite_music, created))
@@ -194,19 +192,36 @@ def add_to_favorite(request):
 
 
 def my_favorite_music_list(request, favorite_music_user_id):
-    songs = MyFavoriteMusic.objects.filter(favorite_music_user_id=favorite_music_user_id)
-    search_query = request.GET.get('search', '')
-    songs = songs.filter(song_title__icontains=search_query)
-    song_list = []
-    for each_song in songs:
-        song_list.append({"song_id": each_song.id,
-                          "song_title": each_song.song_title,
-                          "audio_file": each_song.audio_file.url,
-                          "song_author": each_song.song_author,
-                          "song_classification": each_song.song_classification})
+    # 获取与特定用户相关的所有收藏音乐条目
+    favorite_songs = MyFavoriteMusic.objects.filter(favorite_music_user_id=favorite_music_user_id)
 
+    # 获取搜索查询参数
+    search_query = request.GET.get('search', '')
+
+    # 获取所有相关的 OnlineSongModel 实例，并根据搜索条件进行过滤
+    all_songs = OnlineSongModel.objects.filter(
+        id__in=favorite_songs.values_list('music_id', flat=True),
+        song_title__icontains=search_query
+    )
+    paginator = Paginator(all_songs, per_page=20)  # 每页显示20条数据
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    # 构建 song_list
+    song_list = []
+    for song in page_obj:
+        song_list.append({
+            "song_id": song.id,
+            "song_title": song.song_title,
+            "audio_file": song.audio_file.url,
+            "song_author": song.song_author,
+            "song_classification": song.song_classification
+        })
+
+    # 将结果渲染到模板中
     return render(request, 'user_front_page/online_songs/my_favorite_music.html',
-                  {'songs': songs, "songs_json": json.dumps(song_list)})
+                  {'page_obj': page_obj,
+                   "songs_json": json.dumps(song_list),
+                   "current_song_json": json.dumps(song_list[0])})
 
 
 @login_required

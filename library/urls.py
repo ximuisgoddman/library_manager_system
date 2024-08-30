@@ -120,7 +120,7 @@ urlpatterns = [
          name='my_favorite_music_list'),
     path("delete_favorite_music/<int:music_id>/", online_song_view.delete_favorite_music,
          name='delete_favorite_music'),
-    path("play_online_song/<int:song_id>/play", online_song_view.play_online_song, name='play_online_song'),
+    path("play_online_song/<int:song_id>", online_song_view.play_online_song, name='play_online_song'),
     path("lottery_view/", lottery_view.lottery_view, name='lottery_view'),
     path("upload_lottery_info/", lottery_view.upload_lottery_info, name='upload_lottery_info'),
     path('users_manage/', user_info_manage_view.users_manage, name='users_manage'),

@@ -33,11 +33,12 @@
                 <i class="fas fa-step-backward"></i>
             </button>
 
-            <audio id="audio-player" controls style="flex-grow: 1; margin: 0 10px;"
+            <audio id="audio-player" controls style="flex-grow: 1; margin: 0 10px;" controlsList="nodownload"
                 data-song-id="{{ current_song.id }}">
                 <source src="{{ current_song.audio_file.url }}" type="audio/mpeg">
                 您的浏览器不支持 HTML5 音频。
             </audio>
+
 
             <button id="next-button" onclick="playNextSong()" class="player-button">
                 <i class="fas fa-step-forward"></i>
@@ -76,6 +77,21 @@
             audioPlayer.play();
         }
     }
+    function playNewSong(songId) {
+        // 获取当前的过滤条件
+        var params = new URLSearchParams(window.location.search);  // 获取当前页面的所有查询参数
+
+        // 生成播放页面的 URL
+        var playUrl = "{% url 'play_online_song' song_id=0 %}".replace('0', songId);
+
+        // 将当前的查询参数添加到播放页面的 URL
+        if (params.toString()) {
+            playUrl += '?' + params.toString();  // 如果存在查询参数，添加到链接后
+        }
+
+        console.log("跳转链接:", playUrl);  // 控制台输出调试
+        window.location.href = playUrl;  // 跳转到生成的链接
+    }
 
     function playNextSong() {
         // 播放下一首歌曲
@@ -97,9 +113,8 @@
         } else if (playMode === "repeat") {
             nextSongIndex = currentSongIndex;
         }
-
         var nextSongId = songs[nextSongIndex]['song_id'];
-        playSong(nextSongId);
+        playNewSong(nextSongId);
     }
 
     function playPreviousSong() {
@@ -111,7 +126,7 @@
 
         var previousSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
         var previousSongId = songs[previousSongIndex].song_id;
-        playSong(previousSongId);
+        playNewSong(previousSongId);
     }
 
     function changePlayMode(mode) {

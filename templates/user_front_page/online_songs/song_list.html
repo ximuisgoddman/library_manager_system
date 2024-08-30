@@ -128,10 +128,11 @@
     </button>
 
     <!-- 音频播放器 -->
-    <audio id="audio-player" controls style="flex-grow: 1; margin: 0 10px;">
+    <audio id="audio-player" controls style="flex-grow: 1; margin: 0 10px;" controlsList="nodownload">
         <!-- 音频源会通过 JavaScript 动态更新 -->
         <source id="audio-source" src="" type="audio/mpeg">
     </audio>
+
 
     <!-- 当前播放歌曲标题 -->
     <a id="current-song-title" href="#" onclick="playCurSong(currentSongId)"
@@ -199,7 +200,7 @@
 
             currentSongId = currentSong['song_id'];
             currentSongTitle = currentSong['song_title'];
-            console.log("currentSongId:",currentSongId);
+            console.log("currentSongId:", currentSongId);
             // 更新当前播放歌曲标题
             var songTitleElement = document.getElementById('current-song-title');
             songTitleElement.textContent = currentSongTitle;
@@ -234,20 +235,18 @@
     }
     // 播放上一首歌曲
     function playPreviousSong() {
-        if (currentSongIndex > 0) {
-            currentSongIndex--;
-        } else {
-            currentSongIndex = songs.length - 1;  // 如果是第一首歌，跳到最后一首
-        }
+        currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
         loadCurrentSong();
     }
 
     // 播放下一首歌曲
     function playNextSong() {
-        if (currentSongIndex < songs.length - 1) {
-            currentSongIndex++;
-        } else {
-            currentSongIndex = 0;  // 如果是最后一首歌，跳到第一首
+        if (playMode === "sequential") {
+            currentSongIndex = (currentSongIndex + 1) % songs.length;
+        } else if (playMode === "random") {
+            currentSongIndex = Math.floor(Math.random() * songs.length);
+        } else if (playMode === "repeat") {
+            currentSongIndex = currentSongIndex;
         }
         loadCurrentSong();
     }
@@ -271,7 +270,49 @@
         });
     }
 
+    function filterSong() {
+        var selectedAuthorValue = document.getElementById("song_author_Filter").value;
+        $.ajax({
+            url: "{% url 'online_song_list' %}",
+            type: "GET",
+            data: {
+                song_author: selectedAuthorValue,
+            },
+            success: function (response) {
+                // 更新表格内容
+                $("#songTable tbody").html($(response).find("#songTable tbody").html());
+                // 重新添加 ended 事件监听器（排除当前正在播放的歌曲ID）
+                $("#song_author_Filter").val(selectedAuthorValue);
+                console.log("GGGresponse", response)
+                handleFilteredSongs(response, selectedAuthorValue);
 
+            },
+            error: function (xhr, status, error) {
+                // 处理错误情况
+            }
+        });
+    }
+
+    function handleFilteredSongs(response, selectedAuthorValue) {
+        var url = "{% url 'online_song_list' %}?";
+
+        if (selectedAuthorValue) {
+            url += "song_author=" + selectedAuthorValue;
+        }
+
+        window.location.href = url;
+        songs = JSON.parse(response.song_list);
+        setTimeout(function () {
+            for (var i = 0; i < songs.length; i++) {
+                var songId = songs[i]['song_id'];
+                var audio = document.getElementById("audio-" + songId);
+                console.log("filter_audio:", audio);
+                // 添加 ended 事件处理程序
+                audio.addEventListener("ended", playNextSong);
+                audioElements[songId] = audio;
+            }
+        }, 1000);
+    }
     function addToFavorite(songId) {
         // 发送AJAX请求将歌曲添加到“favorite”列表
         $.ajax({

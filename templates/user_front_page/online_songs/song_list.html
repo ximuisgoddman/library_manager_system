@@ -2,7 +2,7 @@
 
 {% block content %}
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-
+{% load static %}
 <head>
     <!-- 其他头部内容 -->
     <!-- 引入 Howler.js CDN -->
@@ -64,7 +64,10 @@
     <tbody>
         {% for song in page_obj %}
         <tr>
-            <td><img src="{{ song.song_image.url }}" width="100"></td>
+            <td>
+                <img src="{{ song.song_image.url }}" width="100"
+                    onerror="this.onerror=null; this.src='{% static 'avatar/default.jpg' %}';">
+            </td>
             <td>{{ song.song_title }}</td>
             <td>{{ song.song_author }}</td>
             <td>{{ song.song_classification }}</td>

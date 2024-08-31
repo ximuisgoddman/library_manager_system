@@ -2,14 +2,14 @@
 
 {% block content %}
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-
+{% load static %}
 <div class="row">
     <!-- 左侧部分 -->
     <div class="col-md-4" style="margin-top: 100px;">
         <!-- 旋转封面 -->
         <div class="cover-container">
             <img id="cover-image" src="{{ current_song.song_image.url }}" alt="{{ current_song.song_title }}"
-                class="rotating-cover">
+                onerror="this.onerror=null; this.src='{% static 'avatar/default.jpg' %}';" class="rotating-cover">
         </div>
         <!-- 歌手和专辑信息 -->
         <div class="song-info">
@@ -98,6 +98,7 @@
         var currentSongId = audioPlayer.getAttribute('data-song-id');
         var currentSongIndex = -1;
         for (var i = 0; i < songs.length; i++) {
+            console.log(currentSongId , songs[i]['song_id'].toString());
             if (currentSongId == songs[i]['song_id'].toString()) {
                 currentSongIndex = i;
                 break;

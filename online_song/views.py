@@ -13,6 +13,14 @@ import base64
 from online_song.tasks import sync_upload_song
 from django.conf import settings
 from library.utils import handle_uploaded_file
+from urllib.parse import unquote
+
+
+def handle_song_file_path(song):
+    # 解码URL中的特殊字符
+    decoded_file_path = unquote(song.audio_file.url.replace("'", " "))
+    return decoded_file_path
+
 
 # 指定Django默认配置文件模块
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'library.settings')
@@ -81,12 +89,16 @@ def online_song_list(request):
         page_obj = paginator.get_page(page_number)
         cache.set(new_cache_key, page_obj, timeout=60 * 10)
     for each_song in page_obj:
-        # if not os.path.exists(os.path.join(settings.BASE_DIR, 'media', each_song.song_image.url)):
+        print(each_song.song_image.path)
+        # if not each_song.song_image or not os.path.exists(each_song.song_image.path):
+        #     print("@@@")
         #     each_song.song_image = static('avatar/default.jpg')
-        #     print(each_song)
+        # else:
+        #     each_song.song_image = each_song.song_image.url
+        print("after modify:", each_song.song_image)
         song_list.append({"song_id": each_song.id,
                           "song_title": each_song.song_title.replace("'", " "),
-                          "audio_file": each_song.audio_file.url.replace("'", " "),
+                          "audio_file": handle_song_file_path(each_song),
                           "song_duration": each_song.song_duration.replace("'", " "),
                           "song_author": each_song.song_author.replace("'", " ")})
         each_song.song_format = each_song.audio_file.url.split(".")[-1].lower()
@@ -110,7 +122,6 @@ def play_online_song(request, song_id):
     page_number = request.GET.get('page', 1)
     filtered_songs = OnlineSongModel.objects.all().order_by('id')
     song_list = []
-    page_obj = []
     if search_query:
         filtered_songs = filtered_songs.filter(song_title__icontains=search_query)
     if song_author:
@@ -118,14 +129,14 @@ def play_online_song(request, song_id):
     if song_classification:
         filtered_songs = filtered_songs.filter(song_classification=song_classification)
     page_obj = Paginator(filtered_songs, per_page=20).get_page(page_number)
-    for each_song in page_obj:
+    for each_song in filtered_songs:
         if not os.path.exists(os.path.join(settings.BASE_DIR, 'media', each_song.song_image.url)):
             each_song.song_image = static('avatar/default.jpg')
             print(each_song)
 
         song_list.append({"song_id": each_song.id,
                           "song_title": each_song.song_title.replace("'", " "),
-                          "audio_file": each_song.audio_file.url.replace("'", " "),
+                          "audio_file": handle_song_file_path(each_song),
                           "song_duration": each_song.song_duration.replace("'", " "),
                           "song_author": each_song.song_author.replace("'", " ")})
 
@@ -212,7 +223,7 @@ def my_favorite_music_list(request, favorite_music_user_id):
         song_list.append({
             "song_id": song.id,
             "song_title": song.song_title,
-            "audio_file": song.audio_file.url,
+            "audio_file": handle_song_file_path(song),
             "song_author": song.song_author,
             "song_classification": song.song_classification
         })
@@ -221,7 +232,7 @@ def my_favorite_music_list(request, favorite_music_user_id):
     return render(request, 'user_front_page/online_songs/my_favorite_music.html',
                   {'page_obj': page_obj,
                    "songs_json": json.dumps(song_list),
-                   "current_song_json": json.dumps(song_list[0])})
+                   "current_song_json": json.dumps(song_list[0]) if len(song_list) > 0 else {}})
 
 
 @login_required

@@ -9,7 +9,7 @@
         <!-- 旋转封面 -->
         <div class="cover-container">
             <img id="cover-image" src="{{ current_song.song_image.url }}" alt="{{ current_song.song_title }}"
-                onerror="this.onerror=null; this.src='{% static 'avatar/default.jpg' %}';" class="rotating-cover">
+                class="rotating-cover">
         </div>
         <!-- 歌手和专辑信息 -->
         <div class="song-info">
@@ -17,6 +17,19 @@
             <p><strong>歌手:</strong> {{ artist }}</p>
             <p><strong>专辑:</strong> {{ album }}</p>
             <p><strong>时长:</strong> {{ current_song.song_duration }}</p>
+            <button id="add_to_favorite-{{ current_song.id }}"
+                style="padding: 8px 16px; border: none; background-color: #4b1fc2; color: white; font-size: 16px; cursor: pointer; border-radius: 5px;">
+                {% if user.is_authenticated %}
+                <script>
+                    document.getElementById("add_to_favorite-{{ current_song.id }}").addEventListener("click", function () {
+                        addToFavorite('{{ current_song.id }}');
+                    });
+                </script>
+                喜欢
+                {% else %}
+                <a href="{% url 'login' %}" style="color: white; text-decoration: none;">喜欢</a>
+                {% endif %}
+            </button>
         </div>
     </div>
 
@@ -24,7 +37,11 @@
     <div class="col-md-8">
         <!-- 歌词滚动显示 -->
         <div id="lyrics-container">
-            <div id="lyrics"></div>
+            <div id="lyrics">
+                {% if lyrics == '暂无歌词' %}
+                <p>暂无歌词</p>
+                {% endif %}
+            </div>
         </div>
 
         <!-- 播放器控件 -->
@@ -59,24 +76,17 @@
         </div>
     </div>
 </div>
-
+<div id="favorite-alert"
+    style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); padding:20px; background-color:#4CAF50; color:white; border-radius:5px;">
+    歌曲已成功添加到收藏列表！
+</div>
 <script>
-    var songs = JSON.parse('{{ songs_json | safe }}');
+    var songs = JSON.parse('{{ songs_json | escapejs }}');
     var playMode = "random"; // 默认播放模式为随机播放
     var audioPlayer = document.getElementById("audio-player");
     var currentlyPlayingSong = audioPlayer.getAttribute('data-song-id');
 
-    function playSong(songId) {
-        console.log("nextSongId:", songId);
-        // 查找要播放的歌曲信息
-        var song = songs.find(s => s.song_id.toString() === songId.toString());
-        if (song) {
-            audioPlayer.src = song.audio_file;
-            audioPlayer.setAttribute('data-song-id', songId);
-            audioPlayer.load();
-            audioPlayer.play();
-        }
-    }
+
     function playNewSong(songId) {
         // 获取当前的过滤条件
         var params = new URLSearchParams(window.location.search);  // 获取当前页面的所有查询参数
@@ -98,7 +108,7 @@
         var currentSongId = audioPlayer.getAttribute('data-song-id');
         var currentSongIndex = -1;
         for (var i = 0; i < songs.length; i++) {
-            console.log(currentSongId , songs[i]['song_id'].toString());
+            console.log(currentSongId, songs[i]['song_id'].toString());
             if (currentSongId == songs[i]['song_id'].toString()) {
                 currentSongIndex = i;
                 break;
@@ -154,6 +164,7 @@
         displayLyrics(parsedLyrics);
         // 添加自动播放
         var audioPlayer = document.getElementById("audio-player");
+        audioPlayer.load();
         audioPlayer.play().catch(function (error) {
             // 处理自动播放失败的情况（例如浏览器限制）
             console.log("自动播放失败:", error);
@@ -210,6 +221,34 @@
             activeLine.classList.add("active");
             activeLine.scrollIntoView({ behavior: "smooth", block: "center" });
         }
+    }
+    function addToFavorite(songId) {
+        // 发送AJAX请求将歌曲添加到“favorite”列表
+        $.ajax({
+            url: "{% url 'add_to_favorite' %}",
+            method: "POST",
+            data: {
+                songId: songId,
+                csrfmiddlewaretoken: "{{ csrf_token }}",
+            },
+            success: function (response) {
+                // 显示弹窗
+                var alertBox = document.getElementById("favorite-alert");
+                alertBox.style.display = "block";
+
+                // 1秒后隐藏弹窗
+                setTimeout(function () {
+                    alertBox.style.display = "none";
+                }, 1000);
+
+                console.log("歌曲已添加到favorite列表");
+            },
+            error: function (xhr, errmsg, err) {
+                // 错误处理逻辑
+                alert("添加歌曲到收藏列表时出错，请稍后重试。");
+                console.log("添加到favorite列表时出错");
+            }
+        });
     }
 </script>
 
@@ -286,6 +325,65 @@
 
     #progress {
         width: 100%;
+    }
+
+    /* 更新歌词容器 */
+    #lyrics-container {
+        height: 600px;
+        overflow-y: auto;
+        background: linear-gradient(to bottom, #f9f9f9, #e0e0e0);
+        padding: 20px;
+        border-radius: 10px;
+        border: 1px solid #ddd;
+        margin-top: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* 更新每一行歌词的样式 */
+    .lyric-line {
+        margin: 10px 0;
+        font-size: 18px;
+        line-height: 1.6;
+        transition: color 0.3s ease, transform 0.3s ease;
+        position: relative;
+        padding-left: 20px;
+        /* 为每行歌词添加一些内边距 */
+    }
+
+    /* 激活的歌词行样式 */
+    .lyric-line.active {
+        color: #ff5722;
+        /* 活跃歌词的颜色 */
+        font-weight: bold;
+        transform: scale(1.1);
+        /* 激活歌词稍微放大 */
+    }
+
+    /* 为激活的歌词添加下划线和渐变背景 */
+    .lyric-line.active::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 50%;
+        width: 10px;
+        height: 100%;
+        background: linear-gradient(to bottom, #ff5722, #ffccbc);
+        transform: translateY(-50%);
+        border-radius: 5px;
+    }
+
+    /* 增加滚动条样式 */
+    #lyrics-container::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    #lyrics-container::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 10px;
+    }
+
+    #lyrics-container::-webkit-scrollbar-thumb:hover {
+        background: #555;
     }
 </style>
 {% endblock %}

@@ -2,7 +2,10 @@
 
 {% block content %}
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
 {% load static %}
+
 <head>
     <!-- 其他头部内容 -->
     <!-- 引入 Howler.js CDN -->
@@ -65,8 +68,7 @@
         {% for song in page_obj %}
         <tr>
             <td>
-                <img src="{{ song.song_image.url }}" width="100"
-                    onerror="this.onerror=null; this.src='{% static 'avatar/default.jpg' %}';">
+                <img src="{{ song.song_image.url }}" width="100">
             </td>
             <td>{{ song.song_title }}</td>
             <td>{{ song.song_author }}</td>
@@ -76,20 +78,27 @@
                 <audio id="audio-{{ song.id }}">
                     <source src="{{ song.audio_file.url }}" type="audio/mpeg">
                 </audio>
-                <button id="play-button-{{ song.id }}" onclick="playCurSong('{{ song.id }}')">播放</button>
-                <button id="add_to_favorite-{{ song.id }}">
-                    {% if user.is_authenticated %}
-                    <script>
-                        document.getElementById("add_to_favorite-{{ song.id }}").addEventListener("click", function () {
-                            addToFavorite('{{ song.id }}');
-                        });
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <button id="play-button-{{ song.id }}" onclick="playCurSong('{{ song.id }}')"
+                        style="padding: 8px 16px; border: none; background-color: #4CAF50; color: white; font-size: 16px; cursor: pointer; border-radius: 5px;">
+                        播放
+                    </button>
 
-                    </script>
-                    喜欢
-                    {% else %}
-                    <a href="{% url 'login' %}">喜欢</a>
-                    {% endif %}
-                </button>
+                    <button id="add_to_favorite-{{ song.id }}"
+                        style="padding: 8px 16px; border: none; background-color: #4b1fc2; color: white; font-size: 16px; cursor: pointer; border-radius: 5px;">
+                        {% if user.is_authenticated %}
+                        <script>
+                            document.getElementById("add_to_favorite-{{ song.id }}").addEventListener("click", function () {
+                                addToFavorite('{{ song.id }}');
+                            });
+                        </script>
+                        喜欢
+                        {% else %}
+                        <a href="{% url 'login' %}" style="color: white; text-decoration: none;">喜欢</a>
+                        {% endif %}
+                    </button>
+                </div>
+
             </td>
         </tr>
         {% endfor %}
@@ -138,10 +147,11 @@
 
 
     <!-- 当前播放歌曲标题 -->
-    <a id="current-song-title" href="#" onclick="playCurSong(currentSongId)"
+    <a id="current-song-title" href="#" onclick="playCurSong(currentSongId); event.preventDefault();"
         style="flex-shrink: 0; margin: 0 10px; text-decoration: none; color: inherit;">
         当前歌曲标题
     </a>
+
 
 
     <!-- 下一首按钮 -->
@@ -171,18 +181,14 @@
 <script>
     var player = document.getElementById("player");
     var currentSongTitle = document.getElementById("current-song-title");
-    var previousButton = document.getElementById("previous-button");
-    var playPauseButton = document.getElementById("play-pause-button");
     var nextButton = document.getElementById("next-button");
     var playModeSelect = document.getElementById("play-mode");
     var playMode = "random"; // 默认播放模式为随机播放
     var countdownElement = document.getElementById("countdown");
-    var songs = JSON.parse('{{ songs_json  | safe }}');  // 用适当的值初始化 songs 变量
     // 初始化音频元素对象
     var currentlyPlayingSong = null;
-    var currentSong = JSON.parse('{{ current_song_json| safe}}');
+    var currentSong = JSON.parse('{{ current_song_json| escapejs}}');
     var currentSongId = null;
-    var playButton = null;
     // 用于存储所有音频实例的对象
     var audioElements = {};
     var songs = JSON.parse('{{ songs_json|escapejs }}');  // 获取所有歌曲信息
@@ -224,10 +230,8 @@
     function playCurSong(songId) {
         // 获取当前的过滤条件
         var params = new URLSearchParams(window.location.search);  // 获取当前页面的所有查询参数
-
         // 生成播放页面的 URL
-        var playUrl = "{% url 'play_online_song' song_id=0 %}".replace('0', songId);
-
+        var playUrl = "/play_online_song/" + songId;
         // 将当前的查询参数添加到播放页面的 URL
         if (params.toString()) {
             playUrl += '?' + params.toString();  // 如果存在查询参数，添加到链接后

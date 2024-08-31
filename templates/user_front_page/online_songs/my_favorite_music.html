@@ -66,8 +66,7 @@
         {% for song in page_obj %}
         <tr>
             <td>
-                <img src="{{ song.song_image.url }}" width="100"
-                    onerror="this.onerror=null; this.src='{% static 'avatar/default.jpg' %}';">
+                <img src="{{ song.song_image.url }}" width="100">
             </td>
             <td>{{ song.song_title }}</td>
             <td>{{ song.song_author }}</td>
@@ -166,10 +165,9 @@
     var playModeSelect = document.getElementById("play-mode");
     var playMode = "random"; // 默认播放模式为随机播放
     var countdownElement = document.getElementById("countdown");
-    var songs = JSON.parse('{{ songs_json  | safe }}');  // 用适当的值初始化 songs 变量
     // 初始化音频元素对象
     var currentlyPlayingSong = null;
-    var currentSong = JSON.parse('{{ current_song_json| safe}}');
+    var currentSong = JSON.parse('{{ current_song_json| escapejs }}');
     var currentSongId = null;
     var playButton = null;
     // 用于存储所有音频实例的对象

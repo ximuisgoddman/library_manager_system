@@ -15,13 +15,6 @@ from django.conf import settings
 from library.utils import handle_uploaded_file
 from urllib.parse import unquote
 
-
-def handle_song_file_path(song):
-    # 解码URL中的特殊字符
-    decoded_file_path = unquote(song.audio_file.url.replace("'", " "))
-    return decoded_file_path
-
-
 # 指定Django默认配置文件模块
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'library.settings')
 
@@ -89,19 +82,13 @@ def online_song_list(request):
         page_obj = paginator.get_page(page_number)
         cache.set(new_cache_key, page_obj, timeout=60 * 10)
     for each_song in page_obj:
-        print(each_song.song_image.path)
-        # if not each_song.song_image or not os.path.exists(each_song.song_image.path):
-        #     print("@@@")
-        #     each_song.song_image = static('avatar/default.jpg')
-        # else:
-        #     each_song.song_image = each_song.song_image.url
-        print("after modify:", each_song.song_image)
+        if not each_song.song_image or not os.path.exists(each_song.song_image.path):
+            each_song.song_image = 'avatar/default.jpg'
         song_list.append({"song_id": each_song.id,
-                          "song_title": each_song.song_title.replace("'", " "),
-                          "audio_file": handle_song_file_path(each_song),
-                          "song_duration": each_song.song_duration.replace("'", " "),
-                          "song_author": each_song.song_author.replace("'", " ")})
-        each_song.song_format = each_song.audio_file.url.split(".")[-1].lower()
+                          "song_title": each_song.song_title,
+                          "audio_file": each_song.audio_file.url,
+                          "song_duration": each_song.song_duration,
+                          "song_author": each_song.song_author})
     # if request.method == 'POST':
     #     return JsonResponse({"song_list": json.dumps(song_list)})
     return render(request, 'user_front_page/online_songs/song_list.html',
@@ -109,13 +96,14 @@ def online_song_list(request):
                    'selected_song_author': song_author,
                    'song_authors': set(all_song_authors),
                    "songs_json": json.dumps(song_list),
-                   "current_song_json": json.dumps(song_list[0])})
+                   "current_song_json": json.dumps(song_list[0]) if len(song_list) > 0 else {}})
 
 
 def play_online_song(request, song_id):
     # 获取歌曲对象
     current_song = get_object_or_404(OnlineSongModel, pk=song_id)
-
+    if not current_song.song_image or not os.path.exists(current_song.song_image.path):
+        current_song.song_image = 'avatar/default.jpg'
     search_query = request.GET.get('search', '')
     song_author = request.GET.get('song_author', '')
     song_classification = request.GET.get('song_classification', '')
@@ -129,21 +117,19 @@ def play_online_song(request, song_id):
     if song_classification:
         filtered_songs = filtered_songs.filter(song_classification=song_classification)
     page_obj = Paginator(filtered_songs, per_page=20).get_page(page_number)
-    for each_song in filtered_songs:
-        if not os.path.exists(os.path.join(settings.BASE_DIR, 'media', each_song.song_image.url)):
-            each_song.song_image = static('avatar/default.jpg')
-            print(each_song)
+    for each_song in page_obj:
+        if not each_song.song_image or not os.path.exists(each_song.song_image.path):
+            each_song.song_image = 'avatar/default.jpg'
 
         song_list.append({"song_id": each_song.id,
-                          "song_title": each_song.song_title.replace("'", " "),
-                          "audio_file": handle_song_file_path(each_song),
-                          "song_duration": each_song.song_duration.replace("'", " "),
-                          "song_author": each_song.song_author.replace("'", " ")})
+                          "song_title": each_song.song_title,
+                          "audio_file": each_song.audio_file.url,
+                          "song_duration": each_song.song_duration,
+                          "song_author": each_song.song_author})
 
     # 歌词文件路径
     lrc_file_path = os.path.join(settings.BASE_DIR, "media", str(current_song.lrc_file))
-
-    lyrics = ""
+    lyrics = "暂无歌词"
     # 读取 LRC 歌词文件内容
     try:
         with open(lrc_file_path, 'r', encoding='utf-8') as file:
@@ -159,6 +145,7 @@ def play_online_song(request, song_id):
         "songs_json": json.dumps(song_list)
         # 专辑
     }
+    print("lyrics:", lyrics)
     return render(request, "user_front_page/online_songs/play_song.html", context)
 
 
@@ -219,13 +206,13 @@ def my_favorite_music_list(request, favorite_music_user_id):
     page_obj = paginator.get_page(page_number)
     # 构建 song_list
     song_list = []
-    for song in page_obj:
+    for each_song in page_obj:
         song_list.append({
-            "song_id": song.id,
-            "song_title": song.song_title,
-            "audio_file": handle_song_file_path(song),
-            "song_author": song.song_author,
-            "song_classification": song.song_classification
+            "song_id": each_song.id,
+            "song_title": each_song.song_title,
+            "audio_file": each_song.audio_file.url,
+            "song_author": each_song.song_author,
+            "song_classification": each_song.song_classification
         })
 
     # 将结果渲染到模板中

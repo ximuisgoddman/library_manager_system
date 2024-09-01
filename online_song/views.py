@@ -70,17 +70,20 @@ def online_song_list(request):
         all_songs = all_songs.filter(song_author__icontains=song_author)
 
     song_list = []
-    paginator = Paginator(all_songs, per_page=20)  # 每页显示20条数据
-    page_number = request.GET.get('page')
-    new_cache_key = 'online_song_list_{}_{}_{}'.format(transform_chinese(song_author),
-                                                       transform_chinese(search_query),
-                                                       page_number)
-    print("new_cache_key:", new_cache_key)
-    print()
+    page_size = request.GET.get('per_page') or 10
+    print("@@@:",page_size)
+    paginator = Paginator(all_songs, int(page_size))  # 每页显示20条数据
+    page_number = request.GET.get('page', 1)
+    new_cache_key = 'online_song_list_{}_{}_{}_{}'.format(transform_chinese(song_author),
+                                                          transform_chinese(search_query),
+                                                          page_size,
+                                                          page_number)
+
     page_obj = cache.get(new_cache_key)
     if not page_obj:
         page_obj = paginator.get_page(page_number)
         cache.set(new_cache_key, page_obj, timeout=60 * 10)
+    print("new_cache_key:", page_number, paginator.num_pages)
     for each_song in page_obj:
         if not each_song.song_image or not os.path.exists(each_song.song_image.path):
             each_song.song_image = 'avatar/default.jpg'

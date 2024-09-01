@@ -91,7 +91,7 @@ if __name__ == '__main__':
 my_path = "D:/ali_yun\music\chinese_music_2\周杰伦"
 for x in os.listdir(my_path):
     music_info = extract_info(os.path.join(my_path, x))
-    
+
     # my_path = "D:/ali_yun/music/chinese_music"
     # for x in os.listdir(my_path):
     #     for y in os.listdir(os.path.join(my_path, x)):

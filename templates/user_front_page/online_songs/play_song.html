@@ -30,6 +30,10 @@
                 <a href="{% url 'login' %}" style="color: white; text-decoration: none;">喜欢</a>
                 {% endif %}
             </button>
+            <button id="back-to-list" onclick="backToList()"
+                style="padding: 8px 16px; border: none; background-color: #4CAF50; color: white; font-size: 16px; cursor: pointer; border-radius: 5px;">
+                返回
+            </button>
         </div>
     </div>
 
@@ -86,7 +90,19 @@
     var audioPlayer = document.getElementById("audio-player");
     var currentlyPlayingSong = audioPlayer.getAttribute('data-song-id');
 
+    function backToList(){
+         // 获取当前的过滤条件
+         var params = new URLSearchParams(window.location.search);  // 获取当前页面的所有查询参数
+        // 生成播放页面的 URL
+        var playUrl = "/online_song_list";
+        // 将当前的查询参数添加到播放页面的 URL
+        if (params.toString()) {
+            playUrl += '?' + params.toString();  // 如果存在查询参数，添加到链接后
+        }
 
+        console.log("跳转链接:", playUrl);  // 控制台输出调试
+        window.location.href = playUrl;  // 跳转到生成的链接
+    }
     function playNewSong(songId) {
         // 获取当前的过滤条件
         var params = new URLSearchParams(window.location.search);  // 获取当前页面的所有查询参数

@@ -1,3 +1,5 @@
+import random
+
 from mutagen.mp3 import MP3
 from mutagen.id3 import ID3, APIC, USLT
 from mutagen.mp4 import MP4, MP4Cover
@@ -76,17 +78,30 @@ def extract_flac_info(file_path):
 
 # 示例调用
 if __name__ == '__main__':
-    music_file = "chinese_music.txt"
-    my_path = "D:/ali_yun/music/chinese_music"
-    for x in os.listdir(my_path):
-        for y in os.listdir(os.path.join(my_path, x)):
-            # shutil.copy(os.path.join(my_path, x, y), "D:/biancheng/english_music_audio")
-            music_info = extract_info(os.path.join(my_path, x, y))
-            with open(music_file, 'a', encoding='utf-8') as fw:
-                artist, title = y.split(".")[0].split("-")[0].strip(), y.split(".")[0].split("-")[1].strip()
-                fw.write("%s|%s|%s|%s|%s|%s|%s\n" % (
-                    artist, title,
-                    y, str(music_info['duration']).split(".")[0],
-                    music_info['album'],
-                    y.split(".")[0] + ".lrc",
-                    y.split(".")[0] + ".jpg"))
+    chinese_music_file = "chinese_music.txt"
+    english_music_file = "english_music.txt"
+    with open(chinese_music_file, 'r', encoding='utf-8') as fr:
+        ch = fr.readlines()
+    with open(english_music_file, 'r', encoding='utf-8') as fr:
+        en = fr.readlines()
+    all_song = ch + en
+    random.shuffle(all_song)
+    with open('music.txt', 'w', encoding='utf-8') as fw:
+        fw.writelines(all_song)
+my_path = "D:/ali_yun\music\chinese_music_2\周杰伦"
+for x in os.listdir(my_path):
+    music_info = extract_info(os.path.join(my_path, x))
+    
+    # my_path = "D:/ali_yun/music/chinese_music"
+    # for x in os.listdir(my_path):
+    #     for y in os.listdir(os.path.join(my_path, x)):
+    #         # shutil.copy(os.path.join(my_path, x, y), "D:/biancheng/english_music_audio")
+    #         music_info = extract_info(os.path.join(my_path, x, y))
+    #         with open(music_file, 'a', encoding='utf-8') as fw:
+    #             artist, title = y.split(".")[0].split("-")[0].strip(), y.split(".")[0].split("-")[1].strip()
+    #             fw.write("%s|%s|%s|%s|%s|%s|%s\n" % (
+    #                 artist, title,
+    #                 y, str(music_info['duration']).split(".")[0],
+    #                 music_info['album'],
+    #                 y.split(".")[0] + ".lrc",
+    #                 y.split(".")[0] + ".jpg"))

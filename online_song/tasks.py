@@ -18,7 +18,7 @@ def sync_upload_song(file_path):
                 song_author=row[0],
                 song_title=row[1],
                 audio_file=os.path.join("online_songs/audio/", row[2]),
-                song_duration=row[3],
+                song_duration="{:02}:{:02}".format(int(row[3]) // 60, int(row[3]) % 60),
                 song_classification=row[4],
                 lrc_file=os.path.join("online_songs/lrc_file/", row[5]),
                 song_image=os.path.join("online_songs/image/", row[6].strip())

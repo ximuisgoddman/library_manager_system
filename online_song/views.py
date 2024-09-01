@@ -111,6 +111,7 @@ def play_online_song(request, song_id):
     song_author = request.GET.get('song_author', '')
     song_classification = request.GET.get('song_classification', '')
     page_number = request.GET.get('page', 1)
+    page_size = request.GET.get('per_page') or 10
     filtered_songs = OnlineSongModel.objects.all().order_by('id')
     song_list = []
     if search_query:
@@ -119,7 +120,7 @@ def play_online_song(request, song_id):
         filtered_songs = filtered_songs.filter(song_author=song_author)
     if song_classification:
         filtered_songs = filtered_songs.filter(song_classification=song_classification)
-    page_obj = Paginator(filtered_songs, per_page=20).get_page(page_number)
+    page_obj = Paginator(filtered_songs, per_page=page_size).get_page(page_number)
     for each_song in page_obj:
         if not each_song.song_image or not os.path.exists(each_song.song_image.path):
             each_song.song_image = 'avatar/default.jpg'
@@ -148,7 +149,6 @@ def play_online_song(request, song_id):
         "songs_json": json.dumps(song_list)
         # 专辑
     }
-    print("lyrics:", lyrics)
     return render(request, "user_front_page/online_songs/play_song.html", context)
 
 

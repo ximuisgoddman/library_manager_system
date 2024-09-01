@@ -88,20 +88,49 @@ if __name__ == '__main__':
     random.shuffle(all_song)
     with open('music.txt', 'w', encoding='utf-8') as fw:
         fw.writelines(all_song)
-my_path = "D:/ali_yun\music\chinese_music_2\周杰伦"
-for x in os.listdir(my_path):
-    music_info = extract_info(os.path.join(my_path, x))
+# my_path = "D:/ali_yun\music\music_bak\chinese_music"
+# for x in os.listdir(my_path):
+#     music_info = extract_info(os.path.join(my_path, x))
+#     for x in os.listdir(my_path):
+#         for y in os.listdir(os.path.join(my_path, x)):
+#             # shutil.copy(os.path.join(my_path, x, y), "D:/biancheng/english_music_audio")
+#             music_info = extract_info(os.path.join(my_path, x, y))
+#             with open('chinese_music.txt', 'a', encoding='utf-8') as fw:
+#                 artist, title = y.split(".")[0].split("-")[0].strip(), y.split(".")[0].split("-")[1].strip()
+#                 fw.write("%s|%s|%s|%s|%s|%s|%s\n" % (
+#                     artist, title,
+#                     y, str(music_info['duration']).split(".")[0],
+#                     music_info['album'],
+#                     y.split(".")[0] + ".lrc",
+#                     y.split(".")[0] + ".jpg"))
 
-    # my_path = "D:/ali_yun/music/chinese_music"
-    # for x in os.listdir(my_path):
-    #     for y in os.listdir(os.path.join(my_path, x)):
-    #         # shutil.copy(os.path.join(my_path, x, y), "D:/biancheng/english_music_audio")
-    #         music_info = extract_info(os.path.join(my_path, x, y))
-    #         with open(music_file, 'a', encoding='utf-8') as fw:
-    #             artist, title = y.split(".")[0].split("-")[0].strip(), y.split(".")[0].split("-")[1].strip()
-    #             fw.write("%s|%s|%s|%s|%s|%s|%s\n" % (
-    #                 artist, title,
-    #                 y, str(music_info['duration']).split(".")[0],
-    #                 music_info['album'],
-    #                 y.split(".")[0] + ".lrc",
-    #                 y.split(".")[0] + ".jpg"))
+# count=0
+# my_path = "D:/ali_yun\music\music_bak\chinese_music"
+# for x in os.listdir(my_path):
+#     for y in os.listdir(os.path.join(my_path, x)):
+#         count+=1
+#         # shutil.copy(os.path.join(my_path, x, y), "D:/biancheng/english_music_audio")
+#         music_info = extract_info(os.path.join(my_path, x, y))
+#         with open('chinese_music.txt', 'a', encoding='utf-8') as fw:
+#             artist, title = y.split(".")[0].split("-")[0].strip(), y.split(".")[0].split("-")[1].strip()
+#             fw.write("%s|%s|%s|%s|%s|%s|%s\n" % (
+#                 artist, title,
+#                 y, str(music_info['duration']).split(".")[0],
+#                 music_info['album'],
+#                 y.split(".")[0] + ".lrc",
+#                 y.split(".")[0] + ".jpg"))
+#
+# print(count)
+
+file1='chinese_music.txt'
+file2='english_music.txt'
+with open(file1,'r',encoding='utf-8') as fr:
+    fr1=fr.readlines()
+
+with open(file2,'r',encoding='utf-8') as fr:
+    fr2=fr.readlines()
+
+frr=fr1+fr2
+random.shuffle(frr)
+with open(file1,'w',encoding='utf-8') as fw:
+    fw.writelines(frr)

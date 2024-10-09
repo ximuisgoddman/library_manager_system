@@ -205,17 +205,17 @@ if IF_RUN_ON_DOCKER:
     CACHES = {
         "default": {
             "BACKEND": "django_redis.cache.RedisCache",
-            "LOCATION": "redis://redis:6379/0",
+            "LOCATION": "redis://redis-master:6379/0",
             "OPTIONS": {
                 "CLIENT_CLASS": "django_redis.client.DefaultClient",
             },
             "KEY_PREFIX": "library:",
         }
     }
-    BROKER_URL = 'redis://redis:6379/0'
+    BROKER_URL = 'redis://redis-master:6379/0'
 
     # 设置存储结果的后台
-    RESULT_BACKEND = 'redis://redis:6379/0'
+    RESULT_BACKEND = 'redis://redis-master:6379/0'
 
 # 指定Django会话存储的后端和缓存别名
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"

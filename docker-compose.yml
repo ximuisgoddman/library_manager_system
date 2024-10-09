@@ -19,12 +19,12 @@ networks: # 自定义网络(默认桥接), 不使用links通信
 services:
   redis-master:
     image: redis:latest
-    command: redis-server /etc/redis/redis-master.conf  # 容器启动后启动redis服务器
+    command: redis-server /etc/redis/redis-master.conf # 容器启动后启动redis服务器
     networks:
       - redis_network
     volumes:
       - redis_vol:/data  # 通过挂载给redis数据备份
-      - ./compose/redis/redis-master.conf:/etc/redis/redis-master.conf# 挂载redis配置文件
+      - ./compose/redis/redis-master.conf:/etc/redis/redis-master.conf # 挂载redis配置文件
     expose:
       - "6379"
     restart: always  # always表容器运行发生错误时一直重启
@@ -43,12 +43,12 @@ services:
 
   redis-sentinel:
     image: redis:latest
-    command: redis-sentinel /etc/redis/sentinel.conf
+    command: redis-sentinel /etc/redis/redis-sentinel.conf
     networks:
       - redis_network
     volumes:
       - redis_sentinel_vol:/data
-      - ./compose/redis/sentinel.conf:/etc/redis/sentinel.conf
+      - ./compose/redis/redis-sentinel.conf:/etc/redis/redis-sentinel.conf
     expose:
       - "26379"
     restart: always
@@ -86,7 +86,7 @@ services:
       - redis_network
     depends_on:
       - db
-      - redis
+      - redis-master
     restart: always
     tty: true
     stdin_open: true
@@ -105,7 +105,7 @@ services:
       - redis_network
     depends_on:
       - db
-      - redis
+      - redis-master
     restart: always
     tty: true
     stdin_open: true
@@ -124,7 +124,7 @@ services:
       - redis_network
     depends_on:
       - db
-      - redis
+      - redis-master
     restart: always
     tty: true
     stdin_open: true

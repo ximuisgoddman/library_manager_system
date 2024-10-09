@@ -17,7 +17,7 @@ python manage.py migrate
 uwsgi --ini uwsgi.ini &
 python manage.py runserver 0.0.0.0:8000 &
 celery -A library worker -l info -P eventlet &
-celery --broker=redis://redis:6379/0 -A library beat &
+celery --broker=redis://redis-master:6379/0 -A library beat &
 
 # 阻止脚本退出
 wait

@@ -1,12 +1,12 @@
 {% extends 'user_front_page/base.html' %}
-
+{% load static %}
 {% block content %}
 <!-- 电子书展示 -->
 <div class="container my-3">
     <div class="row row-cols-1 row-cols-md-3 g-4">
         <div class="col">
             <div class="card">
-                <img src="https://via.placeholder.com/300x200.png" class="card-img-top" alt="...">
+                <img src="{% static 'avatar/default.jpeg' %}" class="card-img-top" alt="...">
                 <div class="card-body">
                     <h5 class="card-title">电子书标题</h5>
                     <p class="card-text">电子书描述信息</p>
@@ -16,7 +16,7 @@
         </div>
         <div class="col">
             <div class="card">
-                <img src="https://via.placeholder.com/300x200.png" class="card-img-top" alt="hahah">
+                <img src="{% static 'avatar/default.jpeg' %}" class="card-img-top" alt="hahah">
                 <div class="card-body">
                     <h5 class="card-title">电子书标题</h5>
                     <p class="card-text">电子书描述信息</p>
@@ -26,7 +26,7 @@
         </div>
         <div class="col">
             <div class="card">
-                <img src="https://via.placeholder.com/300x200.png" class="card-img-top" alt="...">
+                <img src="{% static 'avatar/default.jpeg' %}" class="card-img-top" alt="...">
                 <div class="card-body">
                     <h5 class="card-title">电子书标题</h5>
                     <p class="card-text">电子书描述信息</p>

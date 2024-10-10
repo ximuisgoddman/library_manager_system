@@ -1376,3 +1376,237 @@ detected binary path: /usr/local/bin/uwsgi
 !!! no internal routing support, rebuild with pcre support !!!
 chdir() to /var/www/html/library_manager_system
 chdir(): No such file or directory [core/uwsgi.c line 2628]
+*** Starting uWSGI 2.0.24 (64bit) on [Thu Oct 10 03:14:41 2024] ***
+*** Starting uWSGI 2.0.24 (64bit) on [Thu Oct 10 03:14:41 2024] ***
+*** Starting uWSGI 2.0.24 (64bit) on [Thu Oct 10 03:14:41 2024] ***
+compiled with version: 12.2.0 on 08 October 2024 14:17:26
+compiled with version: 12.2.0 on 08 October 2024 14:17:26
+compiled with version: 12.2.0 on 08 October 2024 14:17:26
+os: Linux-5.15.153.1-microsoft-standard-WSL2 #1 SMP Fri Mar 29 23:14:13 UTC 2024
+os: Linux-5.15.153.1-microsoft-standard-WSL2 #1 SMP Fri Mar 29 23:14:13 UTC 2024
+os: Linux-5.15.153.1-microsoft-standard-WSL2 #1 SMP Fri Mar 29 23:14:13 UTC 2024
+nodename: 421434dc377e
+nodename: 1dac36345fb6
+nodename: 9a3b1ec270fb
+machine: x86_64
+machine: x86_64
+machine: x86_64
+clock source: unix
+clock source: unix
+clock source: unix
+detected number of CPU cores: 12
+detected number of CPU cores: 12
+detected number of CPU cores: 12
+current working directory: /app
+current working directory: /app
+current working directory: /app
+writing pidfile to /tmp/library_manager_system-master.pid
+writing pidfile to /tmp/library_manager_system-master.pid
+writing pidfile to /tmp/library_manager_system-master.pid
+detected binary path: /usr/local/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+detected binary path: /usr/local/bin/uwsgi
+chdir() to /var/www/html/library_manager_system
+!!! no internal routing support, rebuild with pcre support !!!
+chdir(): No such file or directory [core/uwsgi.c line 2628]
+chdir() to /var/www/html/library_manager_system
+detected binary path: /usr/local/bin/uwsgi
+chdir(): No such file or directory [core/uwsgi.c line 2628]
+!!! no internal routing support, rebuild with pcre support !!!
+chdir() to /var/www/html/library_manager_system
+chdir(): No such file or directory [core/uwsgi.c line 2628]
+*** Starting uWSGI 2.0.24 (64bit) on [Thu Oct 10 03:17:37 2024] ***
+compiled with version: 12.2.0 on 08 October 2024 14:17:26
+os: Linux-5.15.153.1-microsoft-standard-WSL2 #1 SMP Fri Mar 29 23:14:13 UTC 2024
+nodename: b7fa75cfc5e3
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 12
+current working directory: /app
+writing pidfile to /tmp/library_manager_system-master.pid
+detected binary path: /usr/local/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+chdir() to /var/www/html/library_manager_system
+chdir(): No such file or directory [core/uwsgi.c line 2628]
+*** Starting uWSGI 2.0.24 (64bit) on [Thu Oct 10 03:17:37 2024] ***
+compiled with version: 12.2.0 on 08 October 2024 14:17:26
+os: Linux-5.15.153.1-microsoft-standard-WSL2 #1 SMP Fri Mar 29 23:14:13 UTC 2024
+nodename: 9f4a57721801
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 12
+current working directory: /app
+writing pidfile to /tmp/library_manager_system-master.pid
+detected binary path: /usr/local/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+chdir() to /var/www/html/library_manager_system
+chdir(): No such file or directory [core/uwsgi.c line 2628]
+*** Starting uWSGI 2.0.24 (64bit) on [Thu Oct 10 03:17:37 2024] ***
+compiled with version: 12.2.0 on 08 October 2024 14:17:26
+os: Linux-5.15.153.1-microsoft-standard-WSL2 #1 SMP Fri Mar 29 23:14:13 UTC 2024
+nodename: 673eb03886fa
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 12
+current working directory: /app
+writing pidfile to /tmp/library_manager_system-master.pid
+detected binary path: /usr/local/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+chdir() to /var/www/html/library_manager_system
+chdir(): No such file or directory [core/uwsgi.c line 2628]
+*** Starting uWSGI 2.0.24 (64bit) on [Thu Oct 10 03:21:13 2024] ***
+compiled with version: 12.2.0 on 08 October 2024 14:17:26
+os: Linux-5.15.153.1-microsoft-standard-WSL2 #1 SMP Fri Mar 29 23:14:13 UTC 2024
+nodename: ad71f5f37b53
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 12
+current working directory: /app
+writing pidfile to /tmp/library_manager_system-master.pid
+detected binary path: /usr/local/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+chdir() to /var/www/html/library_manager_system
+chdir(): No such file or directory [core/uwsgi.c line 2628]
+*** Starting uWSGI 2.0.24 (64bit) on [Thu Oct 10 03:21:16 2024] ***
+compiled with version: 12.2.0 on 08 October 2024 14:17:26
+os: Linux-5.15.153.1-microsoft-standard-WSL2 #1 SMP Fri Mar 29 23:14:13 UTC 2024
+nodename: ec47fb0378af
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 12
+current working directory: /app
+writing pidfile to /tmp/library_manager_system-master.pid
+detected binary path: /usr/local/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+chdir() to /var/www/html/library_manager_system
+chdir(): No such file or directory [core/uwsgi.c line 2628]
+*** Starting uWSGI 2.0.24 (64bit) on [Thu Oct 10 03:21:17 2024] ***
+compiled with version: 12.2.0 on 08 October 2024 14:17:26
+os: Linux-5.15.153.1-microsoft-standard-WSL2 #1 SMP Fri Mar 29 23:14:13 UTC 2024
+nodename: f795bc653327
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 12
+current working directory: /app
+writing pidfile to /tmp/library_manager_system-master.pid
+detected binary path: /usr/local/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+chdir() to /var/www/html/library_manager_system
+chdir(): No such file or directory [core/uwsgi.c line 2628]
+*** Starting uWSGI 2.0.24 (64bit) on [Thu Oct 10 14:27:55 2024] ***
+*** Starting uWSGI 2.0.24 (64bit) on [Thu Oct 10 14:27:55 2024] ***
+*** Starting uWSGI 2.0.24 (64bit) on [Thu Oct 10 14:27:55 2024] ***
+compiled with version: 12.2.0 on 08 October 2024 14:17:26
+compiled with version: 12.2.0 on 08 October 2024 14:17:26
+compiled with version: 12.2.0 on 08 October 2024 14:17:26
+os: Linux-5.15.153.1-microsoft-standard-WSL2 #1 SMP Fri Mar 29 23:14:13 UTC 2024
+os: Linux-5.15.153.1-microsoft-standard-WSL2 #1 SMP Fri Mar 29 23:14:13 UTC 2024
+nodename: bfef5e62e17d
+os: Linux-5.15.153.1-microsoft-standard-WSL2 #1 SMP Fri Mar 29 23:14:13 UTC 2024
+nodename: 6da2d1af2d00
+nodename: 5bfe022678ef
+machine: x86_64
+machine: x86_64
+machine: x86_64
+clock source: unix
+clock source: unix
+detected number of CPU cores: 12
+clock source: unix
+detected number of CPU cores: 12
+current working directory: /app
+detected number of CPU cores: 12
+current working directory: /app
+writing pidfile to /tmp/library_manager_system-master.pid
+current working directory: /app
+writing pidfile to /tmp/library_manager_system-master.pid
+writing pidfile to /tmp/library_manager_system-master.pid
+detected binary path: /usr/local/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+detected binary path: /usr/local/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+chdir() to /var/www/html/library_manager_system
+detected binary path: /usr/local/bin/uwsgi
+chdir() to /var/www/html/library_manager_system
+chdir(): No such file or directory [core/uwsgi.c line 2628]
+!!! no internal routing support, rebuild with pcre support !!!
+chdir(): No such file or directory [core/uwsgi.c line 2628]
+chdir() to /var/www/html/library_manager_system
+chdir(): No such file or directory [core/uwsgi.c line 2628]
+*** Starting uWSGI 2.0.24 (64bit) on [Thu Oct 10 14:45:03 2024] ***
+compiled with version: 12.2.0 on 08 October 2024 14:17:26
+os: Linux-5.15.153.1-microsoft-standard-WSL2 #1 SMP Fri Mar 29 23:14:13 UTC 2024
+nodename: 04f50de03e5f
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 12
+current working directory: /app
+writing pidfile to /tmp/library_manager_system-master.pid
+*** Starting uWSGI 2.0.24 (64bit) on [Thu Oct 10 14:45:03 2024] ***
+*** Starting uWSGI 2.0.24 (64bit) on [Thu Oct 10 14:45:03 2024] ***
+detected binary path: /usr/local/bin/uwsgi
+compiled with version: 12.2.0 on 08 October 2024 14:17:26
+compiled with version: 12.2.0 on 08 October 2024 14:17:26
+!!! no internal routing support, rebuild with pcre support !!!
+os: Linux-5.15.153.1-microsoft-standard-WSL2 #1 SMP Fri Mar 29 23:14:13 UTC 2024
+os: Linux-5.15.153.1-microsoft-standard-WSL2 #1 SMP Fri Mar 29 23:14:13 UTC 2024
+nodename: 2a1321d8682d
+chdir() to /var/www/html/library_manager_system
+nodename: 762cd7ef2a02
+machine: x86_64
+machine: x86_64
+chdir(): No such file or directory [core/uwsgi.c line 2628]
+clock source: unix
+clock source: unix
+detected number of CPU cores: 12
+detected number of CPU cores: 12
+current working directory: /app
+current working directory: /app
+writing pidfile to /tmp/library_manager_system-master.pid
+writing pidfile to /tmp/library_manager_system-master.pid
+detected binary path: /usr/local/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+chdir() to /var/www/html/library_manager_system
+detected binary path: /usr/local/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+chdir(): No such file or directory [core/uwsgi.c line 2628]
+chdir() to /var/www/html/library_manager_system
+chdir(): No such file or directory [core/uwsgi.c line 2628]
+*** Starting uWSGI 2.0.24 (64bit) on [Thu Oct 10 14:53:47 2024] ***
+compiled with version: 12.2.0 on 08 October 2024 14:17:26
+os: Linux-5.15.153.1-microsoft-standard-WSL2 #1 SMP Fri Mar 29 23:14:13 UTC 2024
+nodename: 14d20aefff73
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 12
+current working directory: /app
+writing pidfile to /tmp/library_manager_system-master.pid
+detected binary path: /usr/local/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+chdir() to /var/www/html/library_manager_system
+chdir(): No such file or directory [core/uwsgi.c line 2628]
+*** Starting uWSGI 2.0.24 (64bit) on [Thu Oct 10 14:53:47 2024] ***
+compiled with version: 12.2.0 on 08 October 2024 14:17:26
+os: Linux-5.15.153.1-microsoft-standard-WSL2 #1 SMP Fri Mar 29 23:14:13 UTC 2024
+nodename: 2dff239b7589
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 12
+current working directory: /app
+writing pidfile to /tmp/library_manager_system-master.pid
+detected binary path: /usr/local/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+chdir() to /var/www/html/library_manager_system
+chdir(): No such file or directory [core/uwsgi.c line 2628]
+*** Starting uWSGI 2.0.24 (64bit) on [Thu Oct 10 14:53:47 2024] ***
+compiled with version: 12.2.0 on 08 October 2024 14:17:26
+os: Linux-5.15.153.1-microsoft-standard-WSL2 #1 SMP Fri Mar 29 23:14:13 UTC 2024
+nodename: 6c80ad63e2c4
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 12
+current working directory: /app
+writing pidfile to /tmp/library_manager_system-master.pid
+detected binary path: /usr/local/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+chdir() to /var/www/html/library_manager_system
+chdir(): No such file or directory [core/uwsgi.c line 2628]

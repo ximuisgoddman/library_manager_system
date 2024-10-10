@@ -5863,3 +5863,496 @@
 2024/10/09 02:18:31 [notice] 1#1: built by gcc 12.2.0 (Debian 12.2.0-14) 
 2024/10/09 02:18:31 [notice] 1#1: OS: Linux 5.15.153.1-microsoft-standard-WSL2
 2024/10/09 02:18:31 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2024/10/10 03:13:26 [notice] 1#1: using the "epoll" event method
+2024/10/10 03:13:26 [notice] 1#1: nginx/1.27.2
+2024/10/10 03:13:26 [notice] 1#1: built by gcc 12.2.0 (Debian 12.2.0-14) 
+2024/10/10 03:13:26 [notice] 1#1: OS: Linux 5.15.153.1-microsoft-standard-WSL2
+2024/10/10 03:13:26 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2024/10/10 03:13:26 [notice] 1#1: start worker processes
+2024/10/10 03:13:26 [notice] 1#1: start worker process 22
+2024/10/10 03:13:26 [notice] 1#1: start worker process 23
+2024/10/10 03:13:26 [notice] 1#1: start worker process 24
+2024/10/10 03:13:26 [notice] 1#1: start worker process 25
+2024/10/10 03:13:26 [notice] 1#1: start worker process 26
+2024/10/10 03:13:26 [notice] 1#1: start worker process 27
+2024/10/10 03:13:26 [notice] 1#1: start worker process 28
+2024/10/10 03:13:26 [notice] 1#1: start worker process 29
+2024/10/10 03:13:26 [notice] 1#1: start worker process 30
+2024/10/10 03:13:26 [notice] 1#1: start worker process 31
+2024/10/10 03:13:26 [notice] 1#1: start worker process 32
+2024/10/10 03:13:26 [notice] 1#1: start worker process 33
+2024/10/10 03:13:26 [notice] 1#1: start cache manager process 34
+2024/10/10 03:13:26 [notice] 1#1: start cache loader process 35
+2024/10/10 03:14:27 [notice] 35#35: http file cache: /path/to/cache 0.000M, bsize: 4096
+2024/10/10 03:14:28 [notice] 1#1: signal 17 (SIGCHLD) received from 35
+2024/10/10 03:14:28 [notice] 1#1: cache loader process 35 exited with code 0
+2024/10/10 03:14:28 [notice] 1#1: signal 29 (SIGIO) received
+2024/10/10 03:17:25 [notice] 1#1: signal 3 (SIGQUIT) received, shutting down
+2024/10/10 03:17:25 [notice] 22#22: gracefully shutting down
+2024/10/10 03:17:25 [notice] 24#24: gracefully shutting down
+2024/10/10 03:17:25 [notice] 22#22: exiting
+2024/10/10 03:17:25 [notice] 26#26: gracefully shutting down
+2024/10/10 03:17:25 [notice] 26#26: exiting
+2024/10/10 03:17:25 [notice] 23#23: gracefully shutting down
+2024/10/10 03:17:25 [notice] 25#25: gracefully shutting down
+2024/10/10 03:17:25 [notice] 28#28: gracefully shutting down
+2024/10/10 03:17:25 [notice] 31#31: gracefully shutting down
+2024/10/10 03:17:25 [notice] 27#27: gracefully shutting down
+2024/10/10 03:17:25 [notice] 32#32: gracefully shutting down
+2024/10/10 03:17:25 [notice] 29#29: gracefully shutting down
+2024/10/10 03:17:25 [notice] 33#33: gracefully shutting down
+2024/10/10 03:17:25 [notice] 30#30: gracefully shutting down
+2024/10/10 03:17:25 [notice] 34#34: exiting
+2024/10/10 03:17:25 [notice] 24#24: exiting
+2024/10/10 03:17:25 [notice] 22#22: exit
+2024/10/10 03:17:25 [notice] 24#24: exit
+2024/10/10 03:17:25 [notice] 26#26: exit
+2024/10/10 03:17:25 [notice] 23#23: exiting
+2024/10/10 03:17:25 [notice] 25#25: exiting
+2024/10/10 03:17:25 [notice] 23#23: exit
+2024/10/10 03:17:25 [notice] 28#28: exiting
+2024/10/10 03:17:25 [notice] 31#31: exiting
+2024/10/10 03:17:25 [notice] 27#27: exiting
+2024/10/10 03:17:25 [notice] 32#32: exiting
+2024/10/10 03:17:25 [notice] 29#29: exiting
+2024/10/10 03:17:25 [notice] 33#33: exiting
+2024/10/10 03:17:25 [notice] 30#30: exiting
+2024/10/10 03:17:25 [notice] 25#25: exit
+2024/10/10 03:17:25 [notice] 30#30: exit
+2024/10/10 03:17:25 [notice] 28#28: exit
+2024/10/10 03:17:25 [notice] 31#31: exit
+2024/10/10 03:17:25 [notice] 27#27: exit
+2024/10/10 03:17:25 [notice] 32#32: exit
+2024/10/10 03:17:25 [notice] 29#29: exit
+2024/10/10 03:17:25 [notice] 33#33: exit
+2024/10/10 03:17:25 [notice] 1#1: signal 17 (SIGCHLD) received from 34
+2024/10/10 03:17:25 [notice] 1#1: worker process 22 exited with code 0
+2024/10/10 03:17:25 [notice] 1#1: worker process 26 exited with code 0
+2024/10/10 03:17:25 [notice] 1#1: worker process 27 exited with code 0
+2024/10/10 03:17:25 [notice] 1#1: worker process 28 exited with code 0
+2024/10/10 03:17:25 [notice] 1#1: worker process 30 exited with code 0
+2024/10/10 03:17:25 [notice] 1#1: worker process 32 exited with code 0
+2024/10/10 03:17:25 [notice] 1#1: worker process 33 exited with code 0
+2024/10/10 03:17:25 [notice] 1#1: cache manager process 34 exited with code 0
+2024/10/10 03:17:25 [notice] 1#1: signal 29 (SIGIO) received
+2024/10/10 03:17:25 [notice] 1#1: signal 17 (SIGCHLD) received from 32
+2024/10/10 03:17:25 [notice] 1#1: signal 17 (SIGCHLD) received from 29
+2024/10/10 03:17:25 [notice] 1#1: worker process 23 exited with code 0
+2024/10/10 03:17:25 [notice] 1#1: worker process 24 exited with code 0
+2024/10/10 03:17:25 [notice] 1#1: worker process 25 exited with code 0
+2024/10/10 03:17:25 [notice] 1#1: worker process 29 exited with code 0
+2024/10/10 03:17:25 [notice] 1#1: worker process 31 exited with code 0
+2024/10/10 03:17:25 [notice] 1#1: exit
+2024/10/10 03:17:37 [notice] 1#1: using the "epoll" event method
+2024/10/10 03:17:37 [notice] 1#1: nginx/1.27.2
+2024/10/10 03:17:37 [notice] 1#1: built by gcc 12.2.0 (Debian 12.2.0-14) 
+2024/10/10 03:17:37 [notice] 1#1: OS: Linux 5.15.153.1-microsoft-standard-WSL2
+2024/10/10 03:17:37 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2024/10/10 03:17:37 [notice] 1#1: start worker processes
+2024/10/10 03:17:37 [notice] 1#1: start worker process 29
+2024/10/10 03:17:37 [notice] 1#1: start worker process 30
+2024/10/10 03:17:37 [notice] 1#1: start worker process 31
+2024/10/10 03:17:37 [notice] 1#1: start worker process 32
+2024/10/10 03:17:37 [notice] 1#1: start worker process 33
+2024/10/10 03:17:37 [notice] 1#1: start worker process 34
+2024/10/10 03:17:37 [notice] 1#1: start worker process 35
+2024/10/10 03:17:37 [notice] 1#1: start worker process 36
+2024/10/10 03:17:37 [notice] 1#1: start worker process 37
+2024/10/10 03:17:37 [notice] 1#1: start worker process 38
+2024/10/10 03:17:37 [notice] 1#1: start worker process 39
+2024/10/10 03:17:37 [notice] 1#1: start worker process 40
+2024/10/10 03:17:37 [notice] 1#1: start cache manager process 41
+2024/10/10 03:17:37 [notice] 1#1: start cache loader process 42
+2024/10/10 03:18:37 [notice] 42#42: http file cache: /path/to/cache 0.000M, bsize: 4096
+2024/10/10 03:18:37 [notice] 1#1: signal 17 (SIGCHLD) received from 42
+2024/10/10 03:18:37 [notice] 1#1: cache loader process 42 exited with code 0
+2024/10/10 03:18:37 [notice] 1#1: signal 29 (SIGIO) received
+2024/10/10 03:19:16 [notice] 1#1: signal 3 (SIGQUIT) received, shutting down
+2024/10/10 03:19:16 [notice] 30#30: gracefully shutting down
+2024/10/10 03:19:16 [notice] 41#41: exiting
+2024/10/10 03:19:16 [notice] 29#29: gracefully shutting down
+2024/10/10 03:19:16 [notice] 31#31: gracefully shutting down
+2024/10/10 03:19:16 [notice] 32#32: gracefully shutting down
+2024/10/10 03:19:16 [notice] 33#33: gracefully shutting down
+2024/10/10 03:19:16 [notice] 34#34: gracefully shutting down
+2024/10/10 03:19:16 [notice] 35#35: gracefully shutting down
+2024/10/10 03:19:16 [notice] 36#36: gracefully shutting down
+2024/10/10 03:19:16 [notice] 37#37: gracefully shutting down
+2024/10/10 03:19:16 [notice] 38#38: gracefully shutting down
+2024/10/10 03:19:16 [notice] 39#39: gracefully shutting down
+2024/10/10 03:19:16 [notice] 40#40: gracefully shutting down
+2024/10/10 03:19:16 [notice] 30#30: exiting
+2024/10/10 03:19:16 [notice] 29#29: exiting
+2024/10/10 03:19:16 [notice] 29#29: exit
+2024/10/10 03:19:16 [notice] 31#31: exiting
+2024/10/10 03:19:16 [notice] 31#31: exit
+2024/10/10 03:19:16 [notice] 32#32: exiting
+2024/10/10 03:19:16 [notice] 33#33: exiting
+2024/10/10 03:19:16 [notice] 34#34: exiting
+2024/10/10 03:19:16 [notice] 35#35: exiting
+2024/10/10 03:19:16 [notice] 36#36: exiting
+2024/10/10 03:19:16 [notice] 36#36: exit
+2024/10/10 03:19:16 [notice] 37#37: exiting
+2024/10/10 03:19:16 [notice] 38#38: exiting
+2024/10/10 03:19:16 [notice] 39#39: exiting
+2024/10/10 03:19:16 [notice] 40#40: exiting
+2024/10/10 03:19:16 [notice] 40#40: exit
+2024/10/10 03:19:16 [notice] 30#30: exit
+2024/10/10 03:19:16 [notice] 32#32: exit
+2024/10/10 03:19:16 [notice] 33#33: exit
+2024/10/10 03:19:16 [notice] 34#34: exit
+2024/10/10 03:19:16 [notice] 35#35: exit
+2024/10/10 03:19:16 [notice] 37#37: exit
+2024/10/10 03:19:16 [notice] 38#38: exit
+2024/10/10 03:19:16 [notice] 39#39: exit
+2024/10/10 03:19:16 [notice] 1#1: signal 17 (SIGCHLD) received from 33
+2024/10/10 03:19:16 [notice] 1#1: worker process 29 exited with code 0
+2024/10/10 03:19:16 [notice] 1#1: worker process 31 exited with code 0
+2024/10/10 03:19:16 [notice] 1#1: worker process 33 exited with code 0
+2024/10/10 03:19:16 [notice] 1#1: worker process 37 exited with code 0
+2024/10/10 03:19:16 [notice] 1#1: signal 29 (SIGIO) received
+2024/10/10 03:19:16 [notice] 1#1: signal 17 (SIGCHLD) received from 41
+2024/10/10 03:19:16 [notice] 1#1: worker process 30 exited with code 0
+2024/10/10 03:19:16 [notice] 1#1: worker process 34 exited with code 0
+2024/10/10 03:19:16 [notice] 1#1: worker process 35 exited with code 0
+2024/10/10 03:19:16 [notice] 1#1: worker process 39 exited with code 0
+2024/10/10 03:19:16 [notice] 1#1: cache manager process 41 exited with code 0
+2024/10/10 03:19:16 [notice] 1#1: signal 29 (SIGIO) received
+2024/10/10 03:19:16 [notice] 1#1: signal 17 (SIGCHLD) received from 34
+2024/10/10 03:19:16 [notice] 1#1: signal 17 (SIGCHLD) received from 36
+2024/10/10 03:19:16 [notice] 1#1: worker process 36 exited with code 0
+2024/10/10 03:19:16 [notice] 1#1: signal 29 (SIGIO) received
+2024/10/10 03:19:16 [notice] 1#1: signal 17 (SIGCHLD) received from 38
+2024/10/10 03:19:16 [notice] 1#1: worker process 32 exited with code 0
+2024/10/10 03:19:16 [notice] 1#1: worker process 38 exited with code 0
+2024/10/10 03:19:16 [notice] 1#1: signal 29 (SIGIO) received
+2024/10/10 03:19:16 [notice] 1#1: signal 17 (SIGCHLD) received from 40
+2024/10/10 03:19:16 [notice] 1#1: worker process 40 exited with code 0
+2024/10/10 03:19:16 [notice] 1#1: exit
+2024/10/10 03:21:18 [notice] 1#1: using the "epoll" event method
+2024/10/10 03:21:18 [notice] 1#1: nginx/1.27.2
+2024/10/10 03:21:18 [notice] 1#1: built by gcc 12.2.0 (Debian 12.2.0-14) 
+2024/10/10 03:21:18 [notice] 1#1: OS: Linux 5.15.153.1-microsoft-standard-WSL2
+2024/10/10 03:21:18 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2024/10/10 03:21:18 [notice] 1#1: start worker processes
+2024/10/10 03:21:18 [notice] 1#1: start worker process 29
+2024/10/10 03:21:18 [notice] 1#1: start worker process 30
+2024/10/10 03:21:18 [notice] 1#1: start worker process 31
+2024/10/10 03:21:18 [notice] 1#1: start worker process 32
+2024/10/10 03:21:18 [notice] 1#1: start worker process 33
+2024/10/10 03:21:18 [notice] 1#1: start worker process 34
+2024/10/10 03:21:18 [notice] 1#1: start worker process 35
+2024/10/10 03:21:18 [notice] 1#1: start worker process 36
+2024/10/10 03:21:18 [notice] 1#1: start worker process 37
+2024/10/10 03:21:18 [notice] 1#1: start worker process 38
+2024/10/10 03:21:18 [notice] 1#1: start worker process 39
+2024/10/10 03:21:18 [notice] 1#1: start worker process 40
+2024/10/10 03:21:18 [notice] 1#1: start cache manager process 41
+2024/10/10 03:21:18 [notice] 1#1: start cache loader process 42
+2024/10/10 03:22:19 [notice] 42#42: http file cache: /path/to/cache 0.000M, bsize: 4096
+2024/10/10 03:22:26 [notice] 1#1: signal 17 (SIGCHLD) received from 42
+2024/10/10 03:22:26 [notice] 1#1: cache loader process 42 exited with code 0
+2024/10/10 03:22:26 [notice] 1#1: signal 29 (SIGIO) received
+2024/10/10 14:23:18 [notice] 1#1: signal 3 (SIGQUIT) received, shutting down
+2024/10/10 14:23:18 [notice] 29#29: gracefully shutting down
+2024/10/10 14:23:18 [notice] 33#33: gracefully shutting down
+2024/10/10 14:23:18 [notice] 30#30: gracefully shutting down
+2024/10/10 14:23:18 [notice] 31#31: gracefully shutting down
+2024/10/10 14:23:18 [notice] 32#32: gracefully shutting down
+2024/10/10 14:23:18 [notice] 39#39: gracefully shutting down
+2024/10/10 14:23:18 [notice] 40#40: gracefully shutting down
+2024/10/10 14:23:18 [notice] 41#41: exiting
+2024/10/10 14:23:18 [notice] 30#30: exiting
+2024/10/10 14:23:18 [notice] 36#36: gracefully shutting down
+2024/10/10 14:23:18 [notice] 37#37: gracefully shutting down
+2024/10/10 14:23:18 [notice] 35#35: gracefully shutting down
+2024/10/10 14:23:18 [notice] 34#34: gracefully shutting down
+2024/10/10 14:23:18 [notice] 38#38: gracefully shutting down
+2024/10/10 14:23:18 [notice] 29#29: exiting
+2024/10/10 14:23:18 [notice] 36#36: exiting
+2024/10/10 14:23:18 [notice] 33#33: exiting
+2024/10/10 14:23:18 [notice] 32#32: exiting
+2024/10/10 14:23:18 [notice] 31#31: exiting
+2024/10/10 14:23:18 [notice] 40#40: exiting
+2024/10/10 14:23:18 [notice] 39#39: exiting
+2024/10/10 14:23:18 [notice] 30#30: exit
+2024/10/10 14:23:18 [notice] 39#39: exit
+2024/10/10 14:23:18 [notice] 29#29: exit
+2024/10/10 14:23:18 [notice] 37#37: exiting
+2024/10/10 14:23:18 [notice] 36#36: exit
+2024/10/10 14:23:18 [notice] 33#33: exit
+2024/10/10 14:23:18 [notice] 34#34: exiting
+2024/10/10 14:23:18 [notice] 32#32: exit
+2024/10/10 14:23:18 [notice] 31#31: exit
+2024/10/10 14:23:18 [notice] 38#38: exiting
+2024/10/10 14:23:18 [notice] 40#40: exit
+2024/10/10 14:23:18 [notice] 35#35: exiting
+2024/10/10 14:23:18 [notice] 37#37: exit
+2024/10/10 14:23:18 [notice] 34#34: exit
+2024/10/10 14:23:18 [notice] 38#38: exit
+2024/10/10 14:23:18 [notice] 35#35: exit
+2024/10/10 14:23:18 [notice] 1#1: signal 17 (SIGCHLD) received from 41
+2024/10/10 14:23:18 [notice] 1#1: worker process 31 exited with code 0
+2024/10/10 14:23:18 [notice] 1#1: worker process 33 exited with code 0
+2024/10/10 14:23:18 [notice] 1#1: worker process 34 exited with code 0
+2024/10/10 14:23:18 [notice] 1#1: worker process 36 exited with code 0
+2024/10/10 14:23:18 [notice] 1#1: worker process 37 exited with code 0
+2024/10/10 14:23:18 [notice] 1#1: worker process 38 exited with code 0
+2024/10/10 14:23:18 [notice] 1#1: worker process 39 exited with code 0
+2024/10/10 14:23:18 [notice] 1#1: worker process 40 exited with code 0
+2024/10/10 14:23:18 [notice] 1#1: cache manager process 41 exited with code 0
+2024/10/10 14:23:18 [notice] 1#1: signal 29 (SIGIO) received
+2024/10/10 14:23:18 [notice] 1#1: signal 17 (SIGCHLD) received from 37
+2024/10/10 14:23:18 [notice] 1#1: signal 17 (SIGCHLD) received from 32
+2024/10/10 14:23:18 [notice] 1#1: worker process 32 exited with code 0
+2024/10/10 14:23:18 [notice] 1#1: signal 29 (SIGIO) received
+2024/10/10 14:23:18 [notice] 1#1: signal 17 (SIGCHLD) received from 35
+2024/10/10 14:23:18 [notice] 1#1: worker process 30 exited with code 0
+2024/10/10 14:23:18 [notice] 1#1: worker process 35 exited with code 0
+2024/10/10 14:23:18 [notice] 1#1: signal 29 (SIGIO) received
+2024/10/10 14:23:18 [notice] 1#1: signal 17 (SIGCHLD) received from 30
+2024/10/10 14:23:18 [notice] 1#1: worker process 29 exited with code 0
+2024/10/10 14:23:18 [notice] 1#1: exit
+2024/10/10 14:26:03 [notice] 1#1: using the "epoll" event method
+2024/10/10 14:26:03 [notice] 1#1: nginx/1.27.2
+2024/10/10 14:26:03 [notice] 1#1: built by gcc 12.2.0 (Debian 12.2.0-14) 
+2024/10/10 14:26:03 [notice] 1#1: OS: Linux 5.15.153.1-microsoft-standard-WSL2
+2024/10/10 14:26:03 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2024/10/10 14:26:03 [notice] 1#1: start worker processes
+2024/10/10 14:26:03 [notice] 1#1: start worker process 29
+2024/10/10 14:26:03 [notice] 1#1: start worker process 30
+2024/10/10 14:26:03 [notice] 1#1: start worker process 31
+2024/10/10 14:26:03 [notice] 1#1: start worker process 32
+2024/10/10 14:26:03 [notice] 1#1: start worker process 33
+2024/10/10 14:26:03 [notice] 1#1: start worker process 34
+2024/10/10 14:26:03 [notice] 1#1: start worker process 35
+2024/10/10 14:26:03 [notice] 1#1: start worker process 36
+2024/10/10 14:26:03 [notice] 1#1: start worker process 37
+2024/10/10 14:26:03 [notice] 1#1: start worker process 38
+2024/10/10 14:26:03 [notice] 1#1: start worker process 39
+2024/10/10 14:26:03 [notice] 1#1: start worker process 40
+2024/10/10 14:26:03 [notice] 1#1: start cache manager process 41
+2024/10/10 14:26:03 [notice] 1#1: start cache loader process 42
+2024/10/10 14:26:15 [error] 29#29: *1 connect() failed (111: Connection refused) while connecting to upstream, client: 172.18.0.1, server: 127.0.0.1, request: "GET / HTTP/1.1", upstream: "http://172.18.0.2:8000/", host: "localhost:8088"
+2024/10/10 14:26:15 [warn] 29#29: *1 upstream server temporarily disabled while connecting to upstream, client: 172.18.0.1, server: 127.0.0.1, request: "GET / HTTP/1.1", upstream: "http://172.18.0.2:8000/", host: "localhost:8088"
+2024/10/10 14:26:15 [error] 29#29: *1 connect() failed (111: Connection refused) while connecting to upstream, client: 172.18.0.1, server: 127.0.0.1, request: "GET / HTTP/1.1", upstream: "http://172.18.0.3:8000/", host: "localhost:8088"
+2024/10/10 14:26:15 [warn] 29#29: *1 upstream server temporarily disabled while connecting to upstream, client: 172.18.0.1, server: 127.0.0.1, request: "GET / HTTP/1.1", upstream: "http://172.18.0.3:8000/", host: "localhost:8088"
+2024/10/10 14:26:15 [error] 29#29: *1 connect() failed (111: Connection refused) while connecting to upstream, client: 172.18.0.1, server: 127.0.0.1, request: "GET / HTTP/1.1", upstream: "http://172.18.0.4:8000/", host: "localhost:8088"
+2024/10/10 14:26:15 [warn] 29#29: *1 upstream server temporarily disabled while connecting to upstream, client: 172.18.0.1, server: 127.0.0.1, request: "GET / HTTP/1.1", upstream: "http://172.18.0.4:8000/", host: "localhost:8088"
+2024/10/10 14:26:26 [error] 29#29: *1 connect() failed (111: Connection refused) while connecting to upstream, client: 172.18.0.1, server: 127.0.0.1, request: "GET / HTTP/1.1", upstream: "http://172.18.0.4:8000/", host: "localhost:8088"
+2024/10/10 14:26:26 [warn] 29#29: *1 upstream server temporarily disabled while connecting to upstream, client: 172.18.0.1, server: 127.0.0.1, request: "GET / HTTP/1.1", upstream: "http://172.18.0.4:8000/", host: "localhost:8088"
+2024/10/10 14:26:26 [error] 29#29: *1 connect() failed (111: Connection refused) while connecting to upstream, client: 172.18.0.1, server: 127.0.0.1, request: "GET / HTTP/1.1", upstream: "http://172.18.0.3:8000/", host: "localhost:8088"
+2024/10/10 14:26:26 [warn] 29#29: *1 upstream server temporarily disabled while connecting to upstream, client: 172.18.0.1, server: 127.0.0.1, request: "GET / HTTP/1.1", upstream: "http://172.18.0.3:8000/", host: "localhost:8088"
+2024/10/10 14:26:26 [error] 29#29: *1 connect() failed (111: Connection refused) while connecting to upstream, client: 172.18.0.1, server: 127.0.0.1, request: "GET / HTTP/1.1", upstream: "http://172.18.0.2:8000/", host: "localhost:8088"
+2024/10/10 14:26:26 [warn] 29#29: *1 upstream server temporarily disabled while connecting to upstream, client: 172.18.0.1, server: 127.0.0.1, request: "GET / HTTP/1.1", upstream: "http://172.18.0.2:8000/", host: "localhost:8088"
+2024/10/10 14:26:40 [error] 29#29: *1 connect() failed (111: Connection refused) while connecting to upstream, client: 172.18.0.1, server: 127.0.0.1, request: "GET / HTTP/1.1", upstream: "http://172.18.0.4:8000/", host: "localhost:8088"
+2024/10/10 14:26:40 [warn] 29#29: *1 upstream server temporarily disabled while connecting to upstream, client: 172.18.0.1, server: 127.0.0.1, request: "GET / HTTP/1.1", upstream: "http://172.18.0.4:8000/", host: "localhost:8088"
+2024/10/10 14:26:40 [error] 29#29: *1 connect() failed (111: Connection refused) while connecting to upstream, client: 172.18.0.1, server: 127.0.0.1, request: "GET / HTTP/1.1", upstream: "http://172.18.0.2:8000/", host: "localhost:8088"
+2024/10/10 14:26:40 [warn] 29#29: *1 upstream server temporarily disabled while connecting to upstream, client: 172.18.0.1, server: 127.0.0.1, request: "GET / HTTP/1.1", upstream: "http://172.18.0.2:8000/", host: "localhost:8088"
+2024/10/10 14:26:40 [error] 29#29: *1 connect() failed (111: Connection refused) while connecting to upstream, client: 172.18.0.1, server: 127.0.0.1, request: "GET / HTTP/1.1", upstream: "http://172.18.0.3:8000/", host: "localhost:8088"
+2024/10/10 14:26:40 [warn] 29#29: *1 upstream server temporarily disabled while connecting to upstream, client: 172.18.0.1, server: 127.0.0.1, request: "GET / HTTP/1.1", upstream: "http://172.18.0.3:8000/", host: "localhost:8088"
+2024/10/10 14:27:04 [notice] 42#42: http file cache: /path/to/cache 0.000M, bsize: 4096
+2024/10/10 14:27:04 [notice] 1#1: signal 17 (SIGCHLD) received from 42
+2024/10/10 14:27:04 [notice] 1#1: cache loader process 42 exited with code 0
+2024/10/10 14:27:04 [notice] 1#1: signal 29 (SIGIO) received
+2024/10/10 14:27:31 [error] 29#29: *1 connect() failed (111: Connection refused) while connecting to upstream, client: 172.18.0.1, server: 127.0.0.1, request: "GET / HTTP/1.1", upstream: "http://172.18.0.4:8000/", host: "localhost:8088"
+2024/10/10 14:27:31 [warn] 29#29: *1 upstream server temporarily disabled while connecting to upstream, client: 172.18.0.1, server: 127.0.0.1, request: "GET / HTTP/1.1", upstream: "http://172.18.0.4:8000/", host: "localhost:8088"
+2024/10/10 14:27:31 [error] 29#29: *1 connect() failed (111: Connection refused) while connecting to upstream, client: 172.18.0.1, server: 127.0.0.1, request: "GET / HTTP/1.1", upstream: "http://172.18.0.3:8000/", host: "localhost:8088"
+2024/10/10 14:27:31 [warn] 29#29: *1 upstream server temporarily disabled while connecting to upstream, client: 172.18.0.1, server: 127.0.0.1, request: "GET / HTTP/1.1", upstream: "http://172.18.0.3:8000/", host: "localhost:8088"
+2024/10/10 14:27:31 [error] 29#29: *1 connect() failed (111: Connection refused) while connecting to upstream, client: 172.18.0.1, server: 127.0.0.1, request: "GET / HTTP/1.1", upstream: "http://172.18.0.2:8000/", host: "localhost:8088"
+2024/10/10 14:27:31 [warn] 29#29: *1 upstream server temporarily disabled while connecting to upstream, client: 172.18.0.1, server: 127.0.0.1, request: "GET / HTTP/1.1", upstream: "http://172.18.0.2:8000/", host: "localhost:8088"
+2024/10/10 14:27:39 [error] 33#33: *17 connect() failed (111: Connection refused) while connecting to upstream, client: 172.18.0.1, server: 127.0.0.1, request: "GET /play_online_song/4388?page=2&per_page= HTTP/1.1", upstream: "http://172.18.0.2:8000/play_online_song/4388?page=2&per_page=", host: "127.0.0.1:8088", referrer: "http://127.0.0.1:8088/online_song_list/?page=2&per_page="
+2024/10/10 14:27:39 [warn] 33#33: *17 upstream server temporarily disabled while connecting to upstream, client: 172.18.0.1, server: 127.0.0.1, request: "GET /play_online_song/4388?page=2&per_page= HTTP/1.1", upstream: "http://172.18.0.2:8000/play_online_song/4388?page=2&per_page=", host: "127.0.0.1:8088", referrer: "http://127.0.0.1:8088/online_song_list/?page=2&per_page="
+2024/10/10 14:27:39 [error] 33#33: *17 connect() failed (111: Connection refused) while connecting to upstream, client: 172.18.0.1, server: 127.0.0.1, request: "GET /play_online_song/4388?page=2&per_page= HTTP/1.1", upstream: "http://172.18.0.3:8000/play_online_song/4388?page=2&per_page=", host: "127.0.0.1:8088", referrer: "http://127.0.0.1:8088/online_song_list/?page=2&per_page="
+2024/10/10 14:27:39 [warn] 33#33: *17 upstream server temporarily disabled while connecting to upstream, client: 172.18.0.1, server: 127.0.0.1, request: "GET /play_online_song/4388?page=2&per_page= HTTP/1.1", upstream: "http://172.18.0.3:8000/play_online_song/4388?page=2&per_page=", host: "127.0.0.1:8088", referrer: "http://127.0.0.1:8088/online_song_list/?page=2&per_page="
+2024/10/10 14:27:39 [error] 33#33: *17 connect() failed (111: Connection refused) while connecting to upstream, client: 172.18.0.1, server: 127.0.0.1, request: "GET /play_online_song/4388?page=2&per_page= HTTP/1.1", upstream: "http://172.18.0.4:8000/play_online_song/4388?page=2&per_page=", host: "127.0.0.1:8088", referrer: "http://127.0.0.1:8088/online_song_list/?page=2&per_page="
+2024/10/10 14:27:39 [warn] 33#33: *17 upstream server temporarily disabled while connecting to upstream, client: 172.18.0.1, server: 127.0.0.1, request: "GET /play_online_song/4388?page=2&per_page= HTTP/1.1", upstream: "http://172.18.0.4:8000/play_online_song/4388?page=2&per_page=", host: "127.0.0.1:8088", referrer: "http://127.0.0.1:8088/online_song_list/?page=2&per_page="
+2024/10/10 14:27:39 [error] 33#33: *17 no live upstreams while connecting to upstream, client: 172.18.0.1, server: 127.0.0.1, request: "GET /favicon.ico HTTP/1.1", upstream: "http://django/favicon.ico", host: "127.0.0.1:8088", referrer: "http://127.0.0.1:8088/play_online_song/4388?page=2&per_page="
+2024/10/10 14:34:52 [notice] 1#1: signal 3 (SIGQUIT) received, shutting down
+2024/10/10 14:34:52 [notice] 30#30: gracefully shutting down
+2024/10/10 14:34:52 [notice] 31#31: gracefully shutting down
+2024/10/10 14:34:52 [notice] 29#29: gracefully shutting down
+2024/10/10 14:34:52 [notice] 34#34: gracefully shutting down
+2024/10/10 14:34:52 [notice] 30#30: exiting
+2024/10/10 14:34:52 [notice] 31#31: exiting
+2024/10/10 14:34:52 [notice] 36#36: gracefully shutting down
+2024/10/10 14:34:52 [notice] 41#41: exiting
+2024/10/10 14:34:52 [notice] 39#39: gracefully shutting down
+2024/10/10 14:34:52 [notice] 38#38: gracefully shutting down
+2024/10/10 14:34:52 [notice] 29#29: exiting
+2024/10/10 14:34:52 [notice] 37#37: gracefully shutting down
+2024/10/10 14:34:52 [notice] 34#34: exiting
+2024/10/10 14:34:52 [notice] 35#35: gracefully shutting down
+2024/10/10 14:34:52 [notice] 34#34: exit
+2024/10/10 14:34:52 [notice] 32#32: gracefully shutting down
+2024/10/10 14:34:52 [notice] 31#31: exit
+2024/10/10 14:34:52 [notice] 40#40: gracefully shutting down
+2024/10/10 14:34:52 [notice] 30#30: exit
+2024/10/10 14:34:52 [notice] 32#32: exiting
+2024/10/10 14:34:52 [notice] 33#33: gracefully shutting down
+2024/10/10 14:34:52 [notice] 39#39: exiting
+2024/10/10 14:34:52 [notice] 38#38: exiting
+2024/10/10 14:34:52 [notice] 29#29: exit
+2024/10/10 14:34:52 [notice] 36#36: exiting
+2024/10/10 14:34:52 [notice] 37#37: exiting
+2024/10/10 14:34:52 [notice] 35#35: exiting
+2024/10/10 14:34:52 [notice] 32#32: exit
+2024/10/10 14:34:52 [notice] 40#40: exiting
+2024/10/10 14:34:52 [notice] 39#39: exit
+2024/10/10 14:34:52 [notice] 38#38: exit
+2024/10/10 14:34:52 [notice] 33#33: exiting
+2024/10/10 14:34:52 [notice] 36#36: exit
+2024/10/10 14:34:52 [notice] 37#37: exit
+2024/10/10 14:34:52 [notice] 35#35: exit
+2024/10/10 14:34:52 [notice] 40#40: exit
+2024/10/10 14:34:52 [notice] 33#33: exit
+2024/10/10 14:34:52 [notice] 1#1: signal 17 (SIGCHLD) received from 30
+2024/10/10 14:34:52 [notice] 1#1: worker process 29 exited with code 0
+2024/10/10 14:34:52 [notice] 1#1: worker process 30 exited with code 0
+2024/10/10 14:34:52 [notice] 1#1: worker process 31 exited with code 0
+2024/10/10 14:34:52 [notice] 1#1: worker process 32 exited with code 0
+2024/10/10 14:34:52 [notice] 1#1: worker process 36 exited with code 0
+2024/10/10 14:34:52 [notice] 1#1: worker process 37 exited with code 0
+2024/10/10 14:34:52 [notice] 1#1: worker process 38 exited with code 0
+2024/10/10 14:34:52 [notice] 1#1: cache manager process 41 exited with code 0
+2024/10/10 14:34:52 [notice] 1#1: signal 29 (SIGIO) received
+2024/10/10 14:34:52 [notice] 1#1: signal 17 (SIGCHLD) received from 38
+2024/10/10 14:34:52 [notice] 1#1: signal 17 (SIGCHLD) received from 40
+2024/10/10 14:34:52 [notice] 1#1: worker process 33 exited with code 0
+2024/10/10 14:34:52 [notice] 1#1: worker process 35 exited with code 0
+2024/10/10 14:34:52 [notice] 1#1: worker process 40 exited with code 0
+2024/10/10 14:34:52 [notice] 1#1: signal 29 (SIGIO) received
+2024/10/10 14:34:52 [notice] 1#1: signal 17 (SIGCHLD) received from 35
+2024/10/10 14:34:52 [notice] 1#1: signal 17 (SIGCHLD) received from 39
+2024/10/10 14:34:52 [notice] 1#1: worker process 39 exited with code 0
+2024/10/10 14:34:52 [notice] 1#1: signal 29 (SIGIO) received
+2024/10/10 14:34:52 [notice] 1#1: signal 17 (SIGCHLD) received from 34
+2024/10/10 14:34:52 [notice] 1#1: worker process 34 exited with code 0
+2024/10/10 14:34:52 [notice] 1#1: exit
+2024/10/10 14:43:21 [notice] 1#1: using the "epoll" event method
+2024/10/10 14:43:21 [notice] 1#1: nginx/1.27.2
+2024/10/10 14:43:21 [notice] 1#1: built by gcc 12.2.0 (Debian 12.2.0-14) 
+2024/10/10 14:43:21 [notice] 1#1: OS: Linux 5.15.153.1-microsoft-standard-WSL2
+2024/10/10 14:43:21 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2024/10/10 14:43:21 [notice] 1#1: start worker processes
+2024/10/10 14:43:21 [notice] 1#1: start worker process 29
+2024/10/10 14:43:21 [notice] 1#1: start worker process 30
+2024/10/10 14:43:21 [notice] 1#1: start worker process 31
+2024/10/10 14:43:21 [notice] 1#1: start worker process 32
+2024/10/10 14:43:21 [notice] 1#1: start worker process 33
+2024/10/10 14:43:21 [notice] 1#1: start worker process 34
+2024/10/10 14:43:21 [notice] 1#1: start worker process 35
+2024/10/10 14:43:21 [notice] 1#1: start worker process 36
+2024/10/10 14:43:21 [notice] 1#1: start worker process 37
+2024/10/10 14:43:21 [notice] 1#1: start worker process 38
+2024/10/10 14:43:21 [notice] 1#1: start worker process 39
+2024/10/10 14:43:21 [notice] 1#1: start worker process 40
+2024/10/10 14:43:21 [notice] 1#1: start cache manager process 41
+2024/10/10 14:43:21 [notice] 1#1: start cache loader process 42
+2024/10/10 14:44:14 [error] 29#29: *2 connect() failed (111: Connection refused) while connecting to upstream, client: 172.19.0.1, server: 127.0.0.1, request: "GET / HTTP/1.1", upstream: "http://172.19.0.4:8000/", host: "localhost:8088"
+2024/10/10 14:44:14 [warn] 29#29: *2 upstream server temporarily disabled while connecting to upstream, client: 172.19.0.1, server: 127.0.0.1, request: "GET / HTTP/1.1", upstream: "http://172.19.0.4:8000/", host: "localhost:8088"
+2024/10/10 14:44:14 [error] 29#29: *2 connect() failed (111: Connection refused) while connecting to upstream, client: 172.19.0.1, server: 127.0.0.1, request: "GET / HTTP/1.1", upstream: "http://172.19.0.3:8000/", host: "localhost:8088"
+2024/10/10 14:44:14 [warn] 29#29: *2 upstream server temporarily disabled while connecting to upstream, client: 172.19.0.1, server: 127.0.0.1, request: "GET / HTTP/1.1", upstream: "http://172.19.0.3:8000/", host: "localhost:8088"
+2024/10/10 14:44:14 [error] 29#29: *2 connect() failed (111: Connection refused) while connecting to upstream, client: 172.19.0.1, server: 127.0.0.1, request: "GET / HTTP/1.1", upstream: "http://172.19.0.2:8000/", host: "localhost:8088"
+2024/10/10 14:44:14 [warn] 29#29: *2 upstream server temporarily disabled while connecting to upstream, client: 172.19.0.1, server: 127.0.0.1, request: "GET / HTTP/1.1", upstream: "http://172.19.0.2:8000/", host: "localhost:8088"
+2024/10/10 14:44:15 [error] 29#29: *2 no live upstreams while connecting to upstream, client: 172.19.0.1, server: 127.0.0.1, request: "GET /favicon.ico HTTP/1.1", upstream: "http://django/favicon.ico", host: "localhost:8088", referrer: "http://localhost:8088/"
+2024/10/10 14:44:21 [notice] 42#42: http file cache: /path/to/cache 0.000M, bsize: 4096
+2024/10/10 14:44:22 [notice] 1#1: signal 17 (SIGCHLD) received from 42
+2024/10/10 14:44:22 [notice] 1#1: cache loader process 42 exited with code 0
+2024/10/10 14:44:22 [notice] 1#1: signal 29 (SIGIO) received
+2024/10/10 14:44:55 [error] 29#29: *2 connect() failed (111: Connection refused) while connecting to upstream, client: 172.19.0.1, server: 127.0.0.1, request: "GET / HTTP/1.1", upstream: "http://172.19.0.2:8000/", host: "localhost:8088"
+2024/10/10 14:44:55 [warn] 29#29: *2 upstream server temporarily disabled while connecting to upstream, client: 172.19.0.1, server: 127.0.0.1, request: "GET / HTTP/1.1", upstream: "http://172.19.0.2:8000/", host: "localhost:8088"
+2024/10/10 14:44:55 [error] 29#29: *2 connect() failed (111: Connection refused) while connecting to upstream, client: 172.19.0.1, server: 127.0.0.1, request: "GET / HTTP/1.1", upstream: "http://172.19.0.3:8000/", host: "localhost:8088"
+2024/10/10 14:44:55 [warn] 29#29: *2 upstream server temporarily disabled while connecting to upstream, client: 172.19.0.1, server: 127.0.0.1, request: "GET / HTTP/1.1", upstream: "http://172.19.0.3:8000/", host: "localhost:8088"
+2024/10/10 14:44:55 [error] 29#29: *2 connect() failed (111: Connection refused) while connecting to upstream, client: 172.19.0.1, server: 127.0.0.1, request: "GET / HTTP/1.1", upstream: "http://172.19.0.4:8000/", host: "localhost:8088"
+2024/10/10 14:44:55 [warn] 29#29: *2 upstream server temporarily disabled while connecting to upstream, client: 172.19.0.1, server: 127.0.0.1, request: "GET / HTTP/1.1", upstream: "http://172.19.0.4:8000/", host: "localhost:8088"
+2024/10/10 14:44:55 [error] 29#29: *2 no live upstreams while connecting to upstream, client: 172.19.0.1, server: 127.0.0.1, request: "GET /favicon.ico HTTP/1.1", upstream: "http://django/favicon.ico", host: "localhost:8088", referrer: "http://localhost:8088/"
+2024/10/10 14:52:22 [notice] 1#1: signal 3 (SIGQUIT) received, shutting down
+2024/10/10 14:52:22 [notice] 29#29: gracefully shutting down
+2024/10/10 14:52:22 [notice] 30#30: gracefully shutting down
+2024/10/10 14:52:22 [notice] 31#31: gracefully shutting down
+2024/10/10 14:52:22 [notice] 33#33: gracefully shutting down
+2024/10/10 14:52:22 [notice] 32#32: gracefully shutting down
+2024/10/10 14:52:22 [notice] 34#34: gracefully shutting down
+2024/10/10 14:52:22 [notice] 37#37: gracefully shutting down
+2024/10/10 14:52:22 [notice] 33#33: exiting
+2024/10/10 14:52:22 [notice] 35#35: gracefully shutting down
+2024/10/10 14:52:22 [notice] 38#38: gracefully shutting down
+2024/10/10 14:52:22 [notice] 40#40: gracefully shutting down
+2024/10/10 14:52:22 [notice] 32#32: exiting
+2024/10/10 14:52:22 [notice] 39#39: gracefully shutting down
+2024/10/10 14:52:22 [notice] 41#41: exiting
+2024/10/10 14:52:22 [notice] 36#36: gracefully shutting down
+2024/10/10 14:52:22 [notice] 35#35: exiting
+2024/10/10 14:52:22 [notice] 30#30: exiting
+2024/10/10 14:52:22 [notice] 31#31: exiting
+2024/10/10 14:52:22 [notice] 39#39: exiting
+2024/10/10 14:52:22 [notice] 34#34: exiting
+2024/10/10 14:52:22 [notice] 36#36: exiting
+2024/10/10 14:52:22 [notice] 33#33: exit
+2024/10/10 14:52:22 [notice] 36#36: exit
+2024/10/10 14:52:22 [notice] 37#37: exiting
+2024/10/10 14:52:22 [notice] 32#32: exit
+2024/10/10 14:52:22 [notice] 38#38: exiting
+2024/10/10 14:52:22 [notice] 40#40: exiting
+2024/10/10 14:52:22 [notice] 35#35: exit
+2024/10/10 14:52:22 [notice] 40#40: exit
+2024/10/10 14:52:22 [notice] 30#30: exit
+2024/10/10 14:52:22 [notice] 31#31: exit
+2024/10/10 14:52:22 [notice] 39#39: exit
+2024/10/10 14:52:22 [notice] 34#34: exit
+2024/10/10 14:52:22 [notice] 37#37: exit
+2024/10/10 14:52:22 [notice] 38#38: exit
+2024/10/10 14:52:22 [notice] 1#1: signal 17 (SIGCHLD) received from 34
+2024/10/10 14:52:22 [notice] 1#1: worker process 34 exited with code 0
+2024/10/10 14:52:22 [notice] 1#1: signal 29 (SIGIO) received
+2024/10/10 14:52:22 [notice] 1#1: signal 17 (SIGCHLD) received from 41
+2024/10/10 14:52:22 [notice] 1#1: worker process 30 exited with code 0
+2024/10/10 14:52:22 [notice] 1#1: worker process 32 exited with code 0
+2024/10/10 14:52:22 [notice] 1#1: worker process 33 exited with code 0
+2024/10/10 14:52:22 [notice] 1#1: worker process 36 exited with code 0
+2024/10/10 14:52:22 [notice] 1#1: worker process 37 exited with code 0
+2024/10/10 14:52:22 [notice] 1#1: worker process 38 exited with code 0
+2024/10/10 14:52:22 [notice] 1#1: worker process 39 exited with code 0
+2024/10/10 14:52:22 [notice] 1#1: worker process 40 exited with code 0
+2024/10/10 14:52:22 [notice] 1#1: cache manager process 41 exited with code 0
+2024/10/10 14:52:22 [notice] 1#1: signal 29 (SIGIO) received
+2024/10/10 14:52:22 [notice] 1#1: signal 17 (SIGCHLD) received from 36
+2024/10/10 14:52:22 [notice] 1#1: signal 17 (SIGCHLD) received from 31
+2024/10/10 14:52:22 [notice] 1#1: worker process 31 exited with code 0
+2024/10/10 14:52:22 [notice] 1#1: signal 29 (SIGIO) received
+2024/10/10 14:52:22 [notice] 1#1: signal 17 (SIGCHLD) received from 35
+2024/10/10 14:52:22 [notice] 1#1: worker process 35 exited with code 0
+2024/10/10 14:52:22 [notice] 1#1: signal 29 (SIGIO) received
+2024/10/10 14:52:28 [notice] 29#29: exiting
+2024/10/10 14:52:28 [notice] 29#29: exit
+2024/10/10 14:52:28 [notice] 1#1: signal 17 (SIGCHLD) received from 29
+2024/10/10 14:52:28 [notice] 1#1: worker process 29 exited with code 0
+2024/10/10 14:52:28 [notice] 1#1: exit
+2024/10/10 14:53:36 [notice] 1#1: using the "epoll" event method
+2024/10/10 14:53:36 [notice] 1#1: nginx/1.27.2
+2024/10/10 14:53:36 [notice] 1#1: built by gcc 12.2.0 (Debian 12.2.0-14) 
+2024/10/10 14:53:36 [notice] 1#1: OS: Linux 5.15.153.1-microsoft-standard-WSL2
+2024/10/10 14:53:36 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2024/10/10 14:53:36 [notice] 1#1: start worker processes
+2024/10/10 14:53:36 [notice] 1#1: start worker process 29
+2024/10/10 14:53:36 [notice] 1#1: start worker process 30
+2024/10/10 14:53:36 [notice] 1#1: start worker process 31
+2024/10/10 14:53:36 [notice] 1#1: start worker process 32
+2024/10/10 14:53:36 [notice] 1#1: start worker process 33
+2024/10/10 14:53:36 [notice] 1#1: start worker process 34
+2024/10/10 14:53:36 [notice] 1#1: start worker process 35
+2024/10/10 14:53:36 [notice] 1#1: start worker process 36
+2024/10/10 14:53:36 [notice] 1#1: start worker process 37
+2024/10/10 14:53:36 [notice] 1#1: start worker process 38
+2024/10/10 14:53:36 [notice] 1#1: start worker process 39
+2024/10/10 14:53:36 [notice] 1#1: start worker process 40
+2024/10/10 14:53:36 [notice] 1#1: start cache manager process 41
+2024/10/10 14:53:36 [notice] 1#1: start cache loader process 42
+2024/10/10 14:53:43 [error] 30#30: *2 connect() failed (111: Connection refused) while connecting to upstream, client: 172.19.0.1, server: 127.0.0.1, request: "GET / HTTP/1.1", upstream: "http://172.19.0.2:8000/", host: "127.0.0.1:8088"
+2024/10/10 14:53:43 [warn] 30#30: *2 upstream server temporarily disabled while connecting to upstream, client: 172.19.0.1, server: 127.0.0.1, request: "GET / HTTP/1.1", upstream: "http://172.19.0.2:8000/", host: "127.0.0.1:8088"
+2024/10/10 14:53:43 [error] 30#30: *2 connect() failed (111: Connection refused) while connecting to upstream, client: 172.19.0.1, server: 127.0.0.1, request: "GET / HTTP/1.1", upstream: "http://172.19.0.4:8000/", host: "127.0.0.1:8088"
+2024/10/10 14:53:43 [warn] 30#30: *2 upstream server temporarily disabled while connecting to upstream, client: 172.19.0.1, server: 127.0.0.1, request: "GET / HTTP/1.1", upstream: "http://172.19.0.4:8000/", host: "127.0.0.1:8088"
+2024/10/10 14:53:43 [error] 30#30: *2 connect() failed (111: Connection refused) while connecting to upstream, client: 172.19.0.1, server: 127.0.0.1, request: "GET / HTTP/1.1", upstream: "http://172.19.0.3:8000/", host: "127.0.0.1:8088"
+2024/10/10 14:53:43 [warn] 30#30: *2 upstream server temporarily disabled while connecting to upstream, client: 172.19.0.1, server: 127.0.0.1, request: "GET / HTTP/1.1", upstream: "http://172.19.0.3:8000/", host: "127.0.0.1:8088"
+2024/10/10 14:53:43 [error] 30#30: *2 no live upstreams while connecting to upstream, client: 172.19.0.1, server: 127.0.0.1, request: "GET /favicon.ico HTTP/1.1", upstream: "http://django/favicon.ico", host: "127.0.0.1:8088", referrer: "http://127.0.0.1:8088/"

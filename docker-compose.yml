@@ -3,7 +3,6 @@ version: "3"
 volumes: # 自定义数据卷
   db_vol: #定义数据卷同步存放容器内mysql数据
   redis_vol: #定义数据卷同步存放redis数据
-  redis_conf_vol:
   redis_sentinel_vol:
   media_vol: #定义数据卷同步存放web项目用户上传到media文件夹的数据
   static_vol: #定义数据卷同步存放web项目static文件夹的数据
@@ -77,6 +76,8 @@ services:
       - "8000"
     volumes:
       - .:/var/www/html/myproject # 挂载项目代码
+      - ./static:/app/static # 挂载静态文件
+      - ./media:/app/media # 挂载用户上传媒体文件
       - static_vol:/var/www/html/myproject/static # 以数据卷挂载容器内static文件
       - media_vol:/var/www/html/myproject/media # 以数据卷挂载容器内用户上传媒体文件
       - ./compose/uwsgi:/tmp # 挂载uwsgi日志
@@ -96,6 +97,8 @@ services:
       - "8000"
     volumes:
       - .:/var/www/html/myproject # 挂载项目代码
+      - ./static:/app/static # 挂载静态文件
+      - ./media:/app/media # 挂载用户上传媒体文件
       - static_vol:/var/www/html/myproject/static # 以数据卷挂载容器内static文件
       - media_vol:/var/www/html/myproject/media # 以数据卷挂载容器内用户上传媒体文件
       - ./compose/uwsgi:/tmp # 挂载uwsgi日志
@@ -115,6 +118,8 @@ services:
       - "8000"
     volumes:
       - .:/var/www/html/myproject # 挂载项目代码
+      - ./static:/app/static # 挂载静态文件
+      - ./media:/app/media # 挂载用户上传媒体文件
       - static_vol:/var/www/html/myproject/static # 以数据卷挂载容器内static文件
       - media_vol:/var/www/html/myproject/media # 以数据卷挂载容器内用户上传媒体文件
       - ./compose/uwsgi:/tmp # 挂载uwsgi日志

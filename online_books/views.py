@@ -122,64 +122,77 @@ def online_book_delete(request, book_id):
     return render(request, 'online_books/online_book_delete.html', {'book': book})
 
 
+# @login_required
+# def read_online_book(request, book_id):
+#     if not request.session.get("is_login", None):
+#         return redirect('/login/')
+#
+#     book = get_object_or_404(OnlineBooksModel, pk=book_id)
+#     epub_file_path = os.path.join("media/", book.book_save_path)
+#
+#     # 创建一个目录来保存 EPUB 文件中的资源
+#     resource_dir = os.path.join("media/", str(book_id))
+#     os.makedirs(resource_dir, exist_ok=True)
+#
+#     # 读取 EPUB 文件
+#     with zipfile.ZipFile(epub_file_path, 'r') as epub_zip:
+#         # 提取章节内容并转换为 HTML 格式
+#         chapters = []
+#         for filename in epub_zip.namelist():
+#             if filename.endswith(('.html', '.xhtml')):  # 只处理 HTML 或 XHTML 文件
+#                 with epub_zip.open(filename, 'r') as f:
+#                     decoded_content = f.read().decode('utf-8')
+#                     soup = BeautifulSoup(decoded_content, 'html.parser')
+#                     print(soup)
+#
+#                     # 处理 <img> 标签和其他资源
+#                     for img_tag in soup.find_all("img", src=True):
+#                         src = img_tag["src"]
+#                         new_src = handle_resource(src, resource_dir, epub_zip)
+#                         if new_src:
+#                             img_tag["src"] = new_src
+#
+#                     # 处理 <image> 标签（SVG 图片）
+#                     for image_tag in soup.find_all("image", {"xlink:href": True}):
+#                         href = image_tag["xlink:href"]
+#                         new_href = handle_resource(href, resource_dir, epub_zip)
+#                         if new_href:
+#                             image_tag["xlink:href"] = new_href
+#
+#                     # 处理其他资源
+#                     for link_tag in soup.find_all("link", href=True):
+#                         href = link_tag["href"]
+#                         new_href = handle_resource(href, resource_dir, epub_zip)
+#                         if new_href:
+#                             link_tag["href"] = new_href
+#
+#                     for script_tag in soup.find_all("script", src=True):
+#                         src = script_tag["src"]
+#                         new_src = handle_resource(src, resource_dir, epub_zip)
+#                         if new_src:
+#                             script_tag["src"] = new_src
+#
+#                     # 获取章节标题和内容
+#                     title = os.path.basename(filename)
+#                     content = str(soup)
+#                     chapters.append({'title': title, 'content': content})
+#
+#     return render(request, "user_front_page/read_online_book.html",
+#                   {'chapters': chapters, 'chapter_count': len(chapters)})
+
 @login_required
 def read_online_book(request, book_id):
     if not request.session.get("is_login", None):
         return redirect('/login/')
 
     book = get_object_or_404(OnlineBooksModel, pk=book_id)
-    epub_file_path = os.path.join("media/", book.book_save_path)
+    epub_file_url = os.path.join(settings.MEDIA_URL, book.book_save_path)
 
-    # 创建一个目录来保存 EPUB 文件中的资源
-    resource_dir = os.path.join("media/", str(book_id))
-    os.makedirs(resource_dir, exist_ok=True)
-
-    # 读取 EPUB 文件
-    with zipfile.ZipFile(epub_file_path, 'r') as epub_zip:
-        # 提取章节内容并转换为 HTML 格式
-        chapters = []
-        for filename in epub_zip.namelist():
-            if filename.endswith(('.html', '.xhtml')):  # 只处理 HTML 或 XHTML 文件
-                with epub_zip.open(filename, 'r') as f:
-                    decoded_content = f.read().decode('utf-8')
-                    soup = BeautifulSoup(decoded_content, 'html.parser')
-                    print(soup)
-
-                    # 处理 <img> 标签和其他资源
-                    for img_tag in soup.find_all("img", src=True):
-                        src = img_tag["src"]
-                        new_src = handle_resource(src, resource_dir, epub_zip)
-                        if new_src:
-                            img_tag["src"] = new_src
-
-                    # 处理 <image> 标签（SVG 图片）
-                    for image_tag in soup.find_all("image", {"xlink:href": True}):
-                        href = image_tag["xlink:href"]
-                        new_href = handle_resource(href, resource_dir, epub_zip)
-                        if new_href:
-                            image_tag["xlink:href"] = new_href
-
-                    # 处理其他资源
-                    for link_tag in soup.find_all("link", href=True):
-                        href = link_tag["href"]
-                        new_href = handle_resource(href, resource_dir, epub_zip)
-                        if new_href:
-                            link_tag["href"] = new_href
-
-                    for script_tag in soup.find_all("script", src=True):
-                        src = script_tag["src"]
-                        new_src = handle_resource(src, resource_dir, epub_zip)
-                        if new_src:
-                            script_tag["src"] = new_src
-
-                    # 获取章节标题和内容
-                    title = os.path.basename(filename)
-                    content = str(soup)
-                    chapters.append({'title': title, 'content': content})
-
-    return render(request, "user_front_page/read_online_book.html",
-                  {'chapters': chapters, 'chapter_count': len(chapters)})
-
+    context = {
+        'book_title': book.book_name,
+        'epub_file_url': epub_file_url,  # 传递 EPUB 文件的 URL 给前端
+    }
+    return render(request, "user_front_page/read_online_book.html", context)
 
 def handle_resource(src, resource_dir, epub_zip):
     if src.startswith("http"):

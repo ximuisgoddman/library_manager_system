@@ -1,45 +1,139 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
-    <title>抽奖游戏</title>
-    <style>
-        .roulette {
-            width: 300px;
-            height: 300px;
-            background: url('roulette.png') no-repeat;
-            position: relative;
-        }
+    <title>EPUB.js Demo</title>
+    <script src="jquery.min.js"></script>
+    <script src="jszip.min.js"></script>
+    <script src="Blob.min.js"></script>
+    <script src="deflate.min.js"></script>
+    <script src="inflate.min.js"></script>
+    <script src="epub.js"></script>
 
-        .pointer {
-            width: 5px;
-            height: 60px;
-            background: red;
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translateX(-50%) rotate(0deg);
-            transform-origin: top center;
-            transition: transform 5s ease-in-out;
-        }
-    </style>
+    <link rel="stylesheet" href="bootstrap.min.css">
+
 </head>
+<style>
+    *{
+        margin: 0px;
+        padding: 0px;
+    }
+    .botton_win{
+        position:fixed;
+        bottom: 0px;
+        left: 40%;
+    }
+    .botton_win>button{
+        width: auto;
+        height: 25px;
+        font-size: 18px;
+    }
+</style>
+
 <body>
-    <h1>抽奖游戏</h1>
-    <div class="roulette">
-        <div class="pointer" id="pointer"></div>
+<div style="width: 100%;">
+    <div id="read" style="width: 100%; height: 60%;">
+
+
     </div>
-    <button id="start">开始抽奖</button>
 
-    <script>
-        document.getElementById('start').addEventListener('click', function() {
-            let pointer = document.getElementById('pointer');
-            let randomDegree = Math.floor(Math.random() * 360);
-            let rotation = 2160 + randomDegree;  // 这个数字可以根据需要调整，控制旋转圈数
 
-            pointer.style.transition = 'transform 5s ease-in-out';
-            pointer.style.transform = 'translateX(-50%) rotate(' + rotation + 'deg)';
-        });
-    </script>
+    <div style="width: 250px;margin: auto;padding-bottom: 10px;">
+
+        背景色: <input type="color" id="backcolor" value="#ffffff" onchange="backcolor()" >
+        字体颜色: <input type="color" id="textcolor" value="#000000" onchange="backcolor()">
+
+    </div>
+
+    <div style="width: 450px;margin: auto;padding-bottom: 50px;">
+        <button class="btn btn-primary" id="prevPageBtn">上一页</button>
+        <button class="btn btn-primary" id="nextPageBtn">下一页</button>
+
+        <button class="btn btn-primary" id="xiaofont">字体缩小</button>
+        <button class="btn btn-primary" id="dafont">字体加大</button>
+
+        <a class="btn btn-primary" href="bookfileview.action">返回菜单</a>
+    </div>
+</div>
+
+
+
+<script>
+    function backcolor(){
+        console.log("saadfasdf")
+
+        var zhuti = {
+            name: "123",
+            style: {
+                body: {
+                    color:  $("#textcolor").val(),
+                    background: $("#backcolor").val(),
+                },
+            },
+        }
+        console.log(zhuti)
+
+        themes.register(zhuti.name, zhuti.style);
+
+        themes.select(zhuti.name);
+
+    }
+
+    var fontsize= 16;
+
+    var dafont = document.getElementById("dafont")
+    dafont.addEventListener("click", function () {
+        fontsize = fontsize+1
+        themes.fontSize(fontsize+"px")
+    });
+    var xiaofont = document.getElementById("xiaofont")
+    xiaofont.addEventListener("click", function () {
+        fontsize = fontsize-1
+        themes.fontSize(fontsize+"px")
+    });
+
+
+
+
+
+
+    var prevPageBtn = document.getElementById("prevPageBtn");
+    var nextPageBtn = document.getElementById("nextPageBtn");
+
+    prevPageBtn.addEventListener("click", function() {
+        rendition.prev();
+    });
+
+    nextPageBtn.addEventListener("click", function() {
+        rendition.next();
+
+    });
+
+    // var book = ePub("test.epub");
+    var book = ePub("一句顶一万句.mobi.epub");
+    // var book = ePub("12994-Shao Huo Gong.epub");
+
+    var rendition = book.renderTo("read", {
+
+    });
+
+
+
+    var themes = rendition.themes;
+
+
+    rendition.display();
+
+    book.ready.then(function () {
+        var toc = book.navigation.toc;
+        console.log(toc);
+    });
+
+
+
+</script>
 </body>
 </html>
+
+

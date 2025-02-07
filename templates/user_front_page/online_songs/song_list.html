@@ -84,7 +84,8 @@
             <th scope="col">封面</th>
             <th scope="col">歌名</th>
             <th>
-                <label for="song_author_Filter">歌手:</label>
+                <label for="song_author_search">搜索歌手:</label>
+                <input type="text" id="song_author_search" class="form-control" placeholder="输入歌手名称" style="width:150px; display:inline-block; margin-right:10px;">
                 <select id="song_author_Filter" class="form-select form-select-sm" style="width: 50px;"
                     onchange="filterSong()">
                     <option value="">All</option>
@@ -217,17 +218,9 @@
 
     <!-- 播放模式按钮 -->
     <div class="play-mode-buttons" style="display: flex; align-items: center; gap: 5px; margin-left: 10px;">
-        <button id="play-mode-random" onclick="changePlayMode('random')" title="随机播放"
+        <button id="play-mode-toggle" onclick="togglePlayMode()" title="随机播放"
             style="padding: 10px; font-size: 16px; cursor: pointer;">
             <i class="fas fa-random"></i>
-        </button>
-        <button id="play-mode-sequential" onclick="changePlayMode('sequential')" title="顺序播放"
-            style="padding: 10px; font-size: 16px; cursor: pointer;">
-            <i class="fas fa-list"></i>
-        </button>
-        <button id="play-mode-repeat" onclick="changePlayMode('repeat')" title="单曲循环"
-            style="padding: 10px; font-size: 16px; cursor: pointer;">
-            <i class="fas fa-redo"></i>
         </button>
     </div>
 </div>
@@ -402,7 +395,45 @@
             }
         });
     }
+    document.getElementById('song_author_search').addEventListener('input', function() {
+        var searchTerm = this.value.toLowerCase();
+        var select = document.getElementById('song_author_Filter');
+        for (var i = 0; i < select.options.length; i++) {
+            var option = select.options[i];
+            // 如果option的文本包含搜索关键字，则显示，否则隐藏
+            if (option.text.toLowerCase().indexOf(searchTerm) > -1 || searchTerm === '') {
+                option.style.display = '';
+            } else {
+                option.style.display = 'none';
+            }
+        }
+    });
 
+    // 定义可选的播放模式及对应的图标和提示文本
+    var playModes = [
+        { mode: 'random', icon: 'fas fa-random', title: '随机播放' },
+        { mode: 'sequential', icon: 'fas fa-list', title: '顺序播放' },
+        { mode: 'repeat', icon: 'fas fa-redo', title: '单曲循环' }
+    ];
+    // 初始模式下标，默认随机播放
+    var currentPlayModeIndex = 0;
+    // 全局变量保存当前模式
+    var playMode = playModes[currentPlayModeIndex].mode;
+
+    function togglePlayMode() {
+        // 切换到下一个模式
+        currentPlayModeIndex = (currentPlayModeIndex + 1) % playModes.length;
+        var currentModeObj = playModes[currentPlayModeIndex];
+        playMode = currentModeObj.mode;
+
+        // 更新按钮的图标和提示
+        var toggleButton = document.getElementById('play-mode-toggle');
+        toggleButton.title = currentModeObj.title;
+        toggleButton.innerHTML = '<i class="' + currentModeObj.icon + '"></i>';
+
+        console.log("切换播放模式为：" + playMode);
+        // 如有需要，这里可以调用其他函数根据新模式调整播放行为
+    }
 </script>
 
 {% endblock %}

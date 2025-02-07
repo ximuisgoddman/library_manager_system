@@ -77,24 +77,24 @@ def extract_flac_info(file_path):
 
 
 # 示例调用
-if __name__ == '__main__':
-    chinese_music_file = "chinese_music.txt"
-    english_music_file = "english_music.txt"
-    with open(chinese_music_file, 'r', encoding='utf-8') as fr:
-        ch = fr.readlines()
-    with open(english_music_file, 'r', encoding='utf-8') as fr:
-        en = fr.readlines()
-    all_song = ch + en
-    random.shuffle(all_song)
-    with open('music.txt', 'w', encoding='utf-8') as fw:
-        fw.writelines(all_song)
+# if __name__ == '__main__':
+#     chinese_music_file = "chinese_music.txt"
+#     english_music_file = "english_music.txt"
+#     with open(chinese_music_file, 'r', encoding='utf-8') as fr:
+#         ch = fr.readlines()
+#     with open(english_music_file, 'r', encoding='utf-8') as fr:
+#         en = fr.readlines()
+#     all_song = ch + en
+#     random.shuffle(all_song)
+#     with open('music.txt', 'w', encoding='utf-8') as fw:
+#         fw.writelines(all_song)
 # my_path = "D:/ali_yun\music\music_bak\chinese_music"
 # for x in os.listdir(my_path):
 #     music_info = extract_info(os.path.join(my_path, x))
 #     for x in os.listdir(my_path):
 #         for y in os.listdir(os.path.join(my_path, x)):
 #             # shutil.copy(os.path.join(my_path, x, y), "D:/biancheng/english_music_audio")
-#             music_info = extract_info(os.path.join(my_path, x, y))
+#             # music_info = extract_info(os.path.join(my_path, x, y))
 #             with open('chinese_music.txt', 'a', encoding='utf-8') as fw:
 #                 artist, title = y.split(".")[0].split("-")[0].strip(), y.split(".")[0].split("-")[1].strip()
 #                 fw.write("%s|%s|%s|%s|%s|%s|%s\n" % (
@@ -104,23 +104,26 @@ if __name__ == '__main__':
 #                     y.split(".")[0] + ".lrc",
 #                     y.split(".")[0] + ".jpg"))
 
-# count=0
+count=0
 # my_path = "D:/ali_yun\music\music_bak\chinese_music"
 # for x in os.listdir(my_path):
 #     for y in os.listdir(os.path.join(my_path, x)):
 #         count+=1
-#         # shutil.copy(os.path.join(my_path, x, y), "D:/biancheng/english_music_audio")
-#         music_info = extract_info(os.path.join(my_path, x, y))
-#         with open('chinese_music.txt', 'a', encoding='utf-8') as fw:
-#             artist, title = y.split(".")[0].split("-")[0].strip(), y.split(".")[0].split("-")[1].strip()
-#             fw.write("%s|%s|%s|%s|%s|%s|%s\n" % (
-#                 artist, title,
-#                 y, str(music_info['duration']).split(".")[0],
-#                 music_info['album'],
-#                 y.split(".")[0] + ".lrc",
-#                 y.split(".")[0] + ".jpg"))
+#         shutil.copy(os.path.join(my_path, x, y), "D:/biancheng\python\library_manager_system\media/bak/audio")
+        # music_info = extract_info(os.path.join(my_path, x, y))
+        # with open('english_music.txt', 'a', encoding='utf-8') as fw:
+        #     try:
+        #         artist, title = y[:-4].split("@")[0].strip(), y[:-4].split("@")[1].strip()
+        #     except Exception as e:
+        #         print(x,y)
+        #     fw.write("%s|%s|%s|%s|%s|%s|%s\n" % (
+        #         artist, title,
+        #         y, str(music_info['duration']).split(".")[0],
+        #         music_info['album'],
+        #         y.split(".")[0] + ".lrc",
+        #         y.split(".")[0] + ".jpg"))
 #
-# print(count)
+print(count)
 
 file1='chinese_music.txt'
 file2='english_music.txt'
@@ -132,5 +135,25 @@ with open(file2,'r',encoding='utf-8') as fr:
 
 frr=fr1+fr2
 random.shuffle(frr)
-with open(file1,'w',encoding='utf-8') as fw:
+with open('music.txt','w',encoding='utf-8') as fw:
     fw.writelines(frr)
+
+# count = 0
+# testpath = "D:/ali_yun\music\music_bak"
+# my_dic = {}
+# for root, dirs, files in os.walk(testpath):
+#     # print(root,dirs,files)
+#     for name in files:
+#         count += 1
+#         print(os.path.join(root, name))
+#         # shutil.copy(os.path.join(root, name), "D:/ali_yun\music/need_convert_format_new")
+#
+# print(count)
+# for k,v in my_dic.items():
+#     if len(v)>1:
+#         print(v)
+# os.remove(v[0])
+# for x in v:
+#     if not x.endswith(".mp3"):
+#         print(x)
+# os.remove(x)

@@ -59,8 +59,12 @@ def transform_chinese(input_str):
 
 
 def online_song_list(request):
-    all_songs = OnlineSongModel.objects.all().order_by('id')
-    all_song_authors = all_songs.values_list('song_author', flat=True)
+    all_songs = OnlineSongModel.objects.only("id",
+                                             "song_title",
+                                             "song_author",
+                                             "song_duration",
+                                             "audio_file").order_by('id')
+    all_song_authors = all_songs.order_by().values_list('song_author', flat=True).distinct()
     search_query = request.GET.get('search', '')
     song_author = request.GET.get('song_author', '')
 
@@ -71,27 +75,27 @@ def online_song_list(request):
 
     song_list = []
     page_size = request.GET.get('per_page') or 10
-    print("@@@:",page_size)
-    paginator = Paginator(all_songs, int(page_size))  # 每页显示20条数据
+    paginator = Paginator(all_songs, int(page_size))  # 每页显示10条数据
     page_number = request.GET.get('page', 1)
     new_cache_key = 'online_song_list_{}_{}_{}_{}'.format(transform_chinese(song_author),
                                                           transform_chinese(search_query),
                                                           page_size,
                                                           page_number)
-
     page_obj = cache.get(new_cache_key)
     if not page_obj:
         page_obj = paginator.get_page(page_number)
         cache.set(new_cache_key, page_obj, timeout=60 * 10)
+    # 直接缓存分页数据
     print("new_cache_key:", page_number, paginator.num_pages)
     for each_song in page_obj:
-        if not each_song.song_image or not os.path.exists(each_song.song_image.path):
-            each_song.song_image = 'avatar/default.jpg'
+        # if not each_song.song_image or not os.path.exists(each_song.song_image.path):
+        #     each_song.song_image = 'avatar/default.jpg'
         song_list.append({"song_id": each_song.id,
                           "song_title": each_song.song_title,
                           "audio_file": each_song.audio_file.url,
                           "song_duration": each_song.song_duration,
                           "song_author": each_song.song_author})
+
     # if request.method == 'POST':
     #     return JsonResponse({"song_list": json.dumps(song_list)})
     return render(request, 'user_front_page/online_songs/song_list.html',

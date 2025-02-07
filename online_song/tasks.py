@@ -24,8 +24,8 @@ def sync_upload_song(file_path):
                 song_image=os.path.join("online_songs/image/", row[6].strip())
             )
             songs_to_create.append(song)
-            # song.save()
-        OnlineSongModel.objects.bulk_create(songs_to_create)
+            song.save()
+        # OnlineSongModel.objects.bulk_create(songs_to_create)
 # @shared_task
 # def generate_static_page(page_id, page_title, page_body):
 #     # 模拟耗时任务，比如写入文件或发送邮件等操作。

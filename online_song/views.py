@@ -63,8 +63,8 @@ def online_song_list(request):
                                              "song_title",
                                              "song_author",
                                              "song_duration",
-                                             "audio_file").order_by('id')
-    all_song_authors = all_songs.order_by().values_list('song_author', flat=True).distinct()
+                                             "audio_file")
+    all_song_authors = OnlineSongModel.objects.values_list('song_author', flat=True).distinct()
     search_query = request.GET.get('search', '')
     song_author = request.GET.get('song_author', '')
 
@@ -84,12 +84,12 @@ def online_song_list(request):
     page_obj = cache.get(new_cache_key)
     if not page_obj:
         page_obj = paginator.get_page(page_number)
-        cache.set(new_cache_key, page_obj, timeout=60 * 10)
+        cache.set(new_cache_key, page_obj, timeout=60)
     # 直接缓存分页数据
     print("new_cache_key:", page_number, paginator.num_pages)
     for each_song in page_obj:
-        # if not each_song.song_image or not os.path.exists(each_song.song_image.path):
-        #     each_song.song_image = 'avatar/default.jpg'
+        if not each_song.song_image or not os.path.exists(each_song.song_image.path):
+            each_song.song_image = 'avatar/default.jpg'
         song_list.append({"song_id": each_song.id,
                           "song_title": each_song.song_title,
                           "audio_file": each_song.audio_file.url,

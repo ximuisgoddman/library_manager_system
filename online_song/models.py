@@ -17,9 +17,10 @@ class OnlineSongModel(models.Model):
 
     @property
     def safe_song_image(self):
-        if self.song_image and os.path.exists(self.song_image.path):
-            return self.song_image.url
-        return '/static/avatar/default.jpg'  # 静态文件路径
+        if not self.song_image or not os.path.exists(self.song_image.path):
+            self.song_image = '/avatar/default.jpg'  # 静态文件路径
+        print(self.song_image)
+        return self.song_image
 
 
 class MyFavoriteMusic(models.Model):

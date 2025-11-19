@@ -1,133 +1,149 @@
 {% extends 'user_front_page/base.html' %}
+{% load static %}
 
 {% block content %}
-<div class="row">
-    <div class="col-md-8">
-        <h1>Book List</h1>
-    </div>
-    <div class="col-md-4 text-end">
-        <!-- 添加筛选框 -->
-        <form method="get" class="form-inline my-3">
-            <div class="form-group mx-sm-3 mb-2">
-                <input type="text" name="search" class="form-control" placeholder="搜索 书名/作者">
-            </div>
-            <button type="submit" class="btn btn-primary mb-2">Submit</button>
-        </form>
-    </div>
-</div>
-
-
-<table class="table" id="bookTable">
-    <!-- 表头和表格内容 -->
-    <thead>
-    <tr>
-        <th>图书封面</th>
-        <th>书名</th>
-        <th>作者</th>
-        <th>当前数量</th>
-        <th>
-            <label for="publisherFilter">出版社:</label>
-            <select id="publisherFilter" class="form-select form-select-sm" style="width: 50px;"
-                    onchange="filterBooks()">
-                <option value="">All</option>
-                {% for publisher in publishers %}
-                {% if publisher == selected_publisher %}
-                <option value="{{ publisher }}" selected>{{ publisher }}</option>
-                {% else %}
-                <option value="{{ publisher }}">{{ publisher }}</option>
-                {% endif %}
-                {% endfor %}
-            </select>
-        </th>
-
-        <th>
-            <label for="bookClassFilter">分类</label>
-            <select id="bookClassFilter" class="form-select form-select-sm" style="width: 50px;"
-                    onchange="filterBooks()">
-                <option value="">All</option>
-                {% for bookClass in bookClasses %}
-                {% if bookClass == selected_bookClass %}
-                <option value="{{ bookClass }}" selected>{{ bookClass }}</option>
-                {% else %}
-                <option value="{{ bookClass }}">{{ bookClass }}</option>
-                {% endif %}
-                {% endfor %}
-            </select>
-        </th>
-        <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for book in page_obj %}
-    <tr>
-        <td><img src="{{ book.book_image.url }}" width="100"></td>
-        <td>{{ book.book_name }}</td>
-        <td>{{ book.author }}</td>
-        <td>{{ book.current_number }}</td>
-        <td>{{ book.publisher }}</td>
-        <td>{{ book.book_classification }}</td>
-        <td>
-            {% if book.current_number == 0 %}
-            <a href="#" class="btn btn-secondary btn-sm me-2 disabled" title="书籍已借阅完">Borrow</a>
+<section class="hero mb-4">
+    <div class="hero-content">
+        <span class="pill mb-3 d-inline-flex align-items-center">
+            <i class="fas fa-book mr-2"></i> 馆藏精选
+        </span>
+        <h1>线下图书 · 馆内即刻可借</h1>
+        <p>经典与新书同步上架，支持条件筛选、快速借阅、查看纸质馆藏状态。</p>
+        <div class="mt-4 d-flex flex-wrap">
+            {% if user.is_authenticated %}
+                <a href="{% url 'user_book_shelf_list' user.id %}" class="btn-soft secondary mr-3 mb-2">
+                    我的书架
+                </a>
+                <a href="{% url 'user_borrow_record' user.id %}" class="btn-soft primary mb-2">
+                    借阅记录
+                </a>
             {% else %}
-            <a href="{% url 'book_borrow' book.id %}" class="btn btn-success btn-sm me-2">Borrow</a>
+                <a href="{% url 'login' %}" class="btn-soft secondary mr-3 mb-2">
+                    登录后查看
+                </a>
+                <a href="{% url 'register' %}" class="btn-soft primary mb-2">
+                    注册账号
+                </a>
             {% endif %}
-            <a href="{% url 'user_book_detail' book.id %}" class="btn btn-success btn-sm me-2">View</a>
-        </td>
-    </tr>
-    {% endfor %}
-    </tbody>
-</table>
+        </div>
+    </div>
+</section>
+
+<section class="content-section" id="bookFilters">
+    <div class="section-title flex-column flex-md-row align-items-start align-items-md-center">
+        <div>
+            <h2>筛选纸质图书</h2>
+            <p class="text-muted mb-0">共有 {{ page_obj.paginator.count }} 本 · 第 {{ page_obj.number }} / {{ page_obj.paginator.num_pages }} 页</p>
+        </div>
+        <span class="pill mt-3 mt-md-0">实时筛选</span>
+    </div>
+    <form method="get" class="row g-3 align-items-end" id="filtersForm">
+        <div class="col-md-4">
+            <label class="form-label text-muted text-uppercase small">关键词</label>
+            <input type="text" name="search" value="{{ request.GET.search }}" class="form-control"
+                   placeholder="搜索书名 / 作者">
+        </div>
+        <div class="col-md-3">
+            <label class="form-label text-muted text-uppercase small">出版社</label>
+            <select name="publisher" id="publisherFilter" class="form-select">
+                <option value="">全部</option>
+                {% for publisher in publishers %}
+                    <option value="{{ publisher }}" {% if publisher == request.GET.publisher %}selected{% endif %}>{{ publisher }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label text-muted text-uppercase small">分类</label>
+            <select name="book_class" id="bookClassFilter" class="form-select">
+                <option value="">全部</option>
+                {% for bookClass in bookClasses %}
+                    <option value="{{ bookClass }}" {% if bookClass == request.GET.book_class %}selected{% endif %}>{{ bookClass }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-soft primary w-100" type="submit">应用筛选</button>
+        </div>
+    </form>
+</section>
+
+<section class="content-section">
+    <div class="card-grid">
+        {% for book in page_obj %}
+        <article class="media-card h-100 d-flex flex-column">
+            {% if book.book_image %}
+                <img src="{{ book.book_image.url }}" alt="{{ book.book_name }}">
+            {% else %}
+                <img src="{% static 'avatar/default.jpeg' %}" alt="{{ book.book_name }}">
+            {% endif %}
+            <div class="card-body d-flex flex-column">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="pill">{{ book.book_classification|default:"通识" }}</span>
+                    <small class="text-muted">{{ book.publisher|default:"未知出版社" }}</small>
+                </div>
+                <h5 class="card-title">{{ book.book_name }}</h5>
+                <p class="text-muted mb-3">作者：{{ book.author }}</p>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="badge badge-light text-uppercase">馆藏 {{ book.current_number }}</span>
+                    {% if book.current_number > 0 %}
+                        <span class="text-success">可借阅</span>
+                    {% else %}
+                        <span class="text-danger">暂不可借</span>
+                    {% endif %}
+                </div>
+                <div class="mt-auto d-flex flex-column gap-2">
+                    <a href="{% url 'user_book_detail' book.id %}" class="btn btn-soft secondary w-100">查看详情</a>
+                    {% if book.current_number > 0 %}
+                    <a href="{% url 'book_borrow' book.id %}" class="btn btn-soft primary w-100">借阅此书</a>
+                    {% else %}
+                    <button class="btn btn-soft secondary w-100" disabled>已借完</button>
+                    {% endif %}
+                </div>
+            </div>
+        </article>
+        {% empty %}
+        <div class="feature-card">
+            <h4>未找到匹配的纸质图书</h4>
+            <p class="text-muted mb-0">尝试更换筛选条件或关键词。</p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
 {% if page_obj.paginator.num_pages > 1 %}
-<div class="pagination">
-    <span class="step-links">
-        {% if page_obj.has_previous %}
-            <a href="?page=1{% if request.GET.publisher %}&publisher={{ request.GET.publisher }}{% endif %}{% if request.GET.book_class %}&book_class={{ request.GET.book_class }}{% endif %}">&laquo; 第一页</a>
-            <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.publisher %}&publisher={{ request.GET.publisher }}{% endif %}{% if request.GET.book_class %}&book_class={{ request.GET.book_class }}{% endif %}">上一页</a>
-        {% endif %}
-
-        <span class="current-page">{{ page_obj.number }}</span>
-
-        {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}{% if request.GET.publisher %}&publisher={{ request.GET.publisher }}{% endif %}{% if request.GET.book_class %}&book_class={{ request.GET.book_class }}{% endif %}">下一页</a>
-            <a href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.publisher %}&publisher={{ request.GET.publisher }}{% endif %}{% if request.GET.book_class %}&book_class={{ request.GET.book_class }}{% endif %}">最后一页 &raquo;</a>
-        {% endif %}
-    </span>
+<div class="content-section">
+    <nav aria-label="纸质图书分页">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page=1&{{ request.GET.urlencode }}">首页</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}&{{ request.GET.urlencode }}">上一页</a>
+            </li>
+            {% endif %}
+            <li class="page-item disabled">
+                <span class="page-link">第 {{ page_obj.number }} / {{ page_obj.paginator.num_pages }} 页</span>
+            </li>
+            {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}&{{ request.GET.urlencode }}">下一页</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}&{{ request.GET.urlencode }}">末页</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
 </div>
 {% endif %}
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    function filterBooks() {
-        var publisherFilter = document.getElementById("publisherFilter").value;
-        var bookClassFilter = document.getElementById("bookClassFilter").value;
-
-        $.ajax({
-            url: "{% url 'book_front_page' %}",
-            type: "GET",
-            data: {
-                publisher: publisherFilter,
-                book_class: bookClassFilter
-            },
-            success: function (response) {
-                // 更新表格内容
-                $("#bookTable tbody").html($(response).find("#bookTable tbody").html());
-                var cur_url="{% url 'book_front_page' %}?";
-                if (publisherFilter&&bookClassFilter){
-                    cur_url+="publisher="+publisherFilter+"&book_class="+bookClassFilter
-                }else{
-                    if (publisherFilter){cur_url+="publisher="+publisherFilter}
-                    if (bookClassFilter){cur_url+="book_class="+bookClassFilter}
-                }
-                window.location.href = cur_url;
-            },
-
-
-            error: function (xhr, status, error) {
-                // 处理错误情况
-            }
-        });
-    }
+    document.getElementById('publisherFilter').addEventListener('change', function(){
+        document.getElementById('filtersForm').submit();
+    });
+    document.getElementById('bookClassFilter').addEventListener('change', function(){
+        document.getElementById('filtersForm').submit();
+    });
 </script>
-
 {% endblock %}

@@ -149,6 +149,7 @@ urlpatterns = [
     path("online_games/", online_games_view.online_games, name='online_games'),
 
     path("tetris/", online_games_view.tetris, name='tetris'),
+    path("moto_racer/", online_games_view.moto_racer, name='moto_racer'),
     path("snake/", online_games_view.snake, name="snake"),
     path("racing/", online_games_view.racing, name="racing"),
     path("minesweeper/", online_games_view.minesweeper, name="minesweeper"),
@@ -156,6 +157,7 @@ urlpatterns = [
     path("cut_cubes/", online_games_view.cut_cubes, name="cut_cubes"),
     path("crossing_the_bridge/", online_games_view.crossing_the_bridge, name="crossing_the_bridge"),
     path("breakthrough/", online_games_view.breakthrough, name="breakthrough"),
+    path("contra/", online_games_view.contra, name="contra"),
 
 ]
 from django.conf import settings

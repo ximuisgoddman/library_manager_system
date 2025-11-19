@@ -1,489 +1,599 @@
-var LEVELS = [
-				[
-					"                                                                                ",
-					"                                                                                ",
-					"                                                                                ",
-					"                                                                                ",
-					"                                                                                ",
-					"                                                                                ",
-					"                                                                  xxx           ",
-					"                                                   xx      xx    xx!xx          ",
-					"                                    o o      xx                  x!!!x          ",
-					"                                                                 xx!xx          ",
-					"                                   xxxxx                          xvx           ",
-					"                                                                            xx  ",
-					"  xx                                      o o                                x  ",
-					"  x                     o                                                    x  ",
-					"  x                                      xxxxx                             o x  ",
-					"  x          xxxx       o                                                    x  ",
-					"  x  @       x  x                                                xxxxx       x  ",
-					"  xxxxxxxxxxxx  xxxxxxxxxxxxxxx   xxxxxxxxxxxxxxxxxxxx     xxxxxxx   xxxxxxxxx  ",
-					"                              x   x                  x     x                    ",
-					"                              x!!!x                  x!!!!!x                    ",
-					"                              x!!!x                  x!!!!!x                    ",
-					"                              xxxxx                  xxxxxxx                    ",
-					"                                                                                ",
-					"                                                                                "
-				],
-				[
-					"                                      x!!x                        xxxxxxx                                    x!x  ",
-					"                                      x!!x                     xxxx     xxxx                                 x!x  ",
-					"                                      x!!xxxxxxxxxx           xx           xx                                x!x  ",
-					"                                      xx!!!!!!!!!!xx         xx             xx                               x!x  ",
-					"                                       xxxxxxxxxx!!x         x                                    o   o   o  x!x  ",
-					"                                                xx!x         x     o   o                                    xx!x  ",
-					"                                                 x!x         x                                xxxxxxxxxxxxxxx!!x  ",
-					"                                                 xvx         x     x   x                        !!!!!!!!!!!!!!xx  ",
-					"                                                             xx  |   |   |  xx            xxxxxxxxxxxxxxxxxxxxx   ",
-					"                                                              xx!!!!!!!!!!!xx            v                        ",
-					"                                                               xxxx!!!!!xxxx                                      ",
-					"                                               x     x            xxxxxxx        xxx         xxx                  ",
-					"                                               x     x                           x x         x x                  ",
-					"                                               x     x                             x         x                    ",
-					"                                               x     x                             xx        x                    ",
-					"                                               xx    x                             x         x                    ",
-					"                                               x     x      o  o     x   x         x         x                    ",
-					"               xxxxxxx        xxx   xxx        x     x               x   x         x         x                    ",
-					"              xx     xx         x   x          x     x     xxxxxx    x   x   xxxxxxxxx       x                    ",
-					"             xx       xx        x o x          x    xx               x   x   x               x                    ",
-					"     @       x         x        x   x          x     x               x   x   x               x                    ",
-					"    xxx      x         x        x   x          x     x               x   xxxxx   xxxxxx      x                    ",
-					"    x x      x         x       xx o xx         x     x               x     o     x x         x                    ",
-					"!!!!x x!!!!!!x         x!!!!!!xx     xx!!!!!!!!xx    x!!!!!!!!!!     x     =     x x         x                    ",
-					"!!!!x x!!!!!!x         x!!!!!xx       xxxxxxxxxx     x!!!!!!!xx!     xxxxxxxxxxxxx xx  o o  xx                    ",
-					"!!!!x x!!!!!!x         x!!!!!x    o                 xx!!!!!!xx !                    xx     xx                     ",
-					"!!!!x x!!!!!!x         x!!!!!x                     xx!!!!!!xx  !                     xxxxxxx                      ",
-					"!!!!x x!!!!!!x         x!!!!!xx       xxxxxxxxxxxxxx!!!!!!xx   !                                                  ",
-					"!!!!x x!!!!!!x         x!!!!!!xxxxxxxxx!!!!!!!!!!!!!!!!!!xx    !                                                  ",
-					"!!!!x x!!!!!!x         x!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!xx     !                                                  "
-				],
-				[
-					"                                                                                                              ",
-					"                                                                                                              ",
-					"                                                                                                              ",
-					"                                                                                                              ",
-					"                                                                                                              ",
-					"                                        o                                                                     ",
-					"                                                                                                              ",
-					"                                        x                                                                     ",
-					"                                        x                                                                     ",
-					"                                        x                                                                     ",
-					"                                        x                                                                     ",
-					"                                       xxx                                                                    ",
-					"                                       x x                 !!!        !!!  xxx                                ",
-					"                                       x x                 !x!        !x!                                     ",
-					"                                     xxx xxx                x          x                                      ",
-					"                                      x   x                 x   oooo   x       xxx                            ",
-					"                                      x   x                 x          x      x!!!x                           ",
-					"                                      x   x                 xxxxxxxxxxxx       xxx                            ",
-					"                                     xx   xx      x   x      x                                                ",
-					"                                      x   xxxxxxxxx   xxxxxxxx              x x                               ",
-					"                                      x   x           x                    x!!!x                              ",
-					"                                      x   x           x                     xxx                               ",
-					"                                     xx   xx          x                                                       ",
-					"                                      x   x= = = =    x            xxx                                        ",
-					"                                      x   x           x           x!!!x                                       ",
-					"                                      x   x    = = = =x     o      xxx       xxx                              ",
-					"                                     xx   xx          x                     x!!!x                             ",
-					"                              o   o   x   x           x     x                xxv        xxx                   ",
-					"                                      x   x           x              x                 x!!!x                  ",
-					"                             xxx xxx xxx xxx     o o  x!!!!!!!!!!!!!!x                   vx                   ",
-					"                             x xxx x x xxx x          x!!!!!!!!!!!!!!x                                        ",
-					"                             x             x   xxxxxxxxxxxxxxxxxxxxxxx                                        ",
-					"                             xx           xx                                         xxx                      ",
-					"  xxx                         x     x     x                                         x!!!x                xxx  ",
-					"  x x                         x    xxx    x                                          xxx                 x x  ",
-					"  x                           x    xxx    xxxxxxx                        xxxxx                             x  ",
-					"  x                           x           x                              x   x                             x  ",
-					"  x                           xx          x                              x x x                             x  ",
-					"  x                                       x       |xxxx|    |xxxx|     xxx xxx                             x  ",
-					"  x                xxx             o o    x                              x         xxx                     x  ",
-					"  x               xxxxx       xx          x                             xxx       x!!!x          x         x  ",
-					"  x               oxxxo       x    xxx    x                             x x        xxx          xxx        x  ",
-					"  x                xxx        xxxxxxxxxxxxx  x oo x    x oo x    x oo  xx xx                    xxx        x  ",
-					"  x      @          x         x           x!!x    x!!!!x    x!!!!x    xx   xx                    x         x  ",
-					"  xxxxxxxxxxxxxxxxxxxxxxxxxxxxx           xxxxxxxxxxxxxxxxxxxxxxxxxxxxx     xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  ",
-					"                                                                                                              ",
-					"                                                                                                              "
-				],
-				[
-					"                                                                                                  xxx x       ",
-					"                                                                                                      x       ",
-					"                                                                                                  xxxxx       ",
-					"                                                                                                  x           ",
-					"                                                                                                  x xxx       ",
-					"                          o                                                                       x x x       ",
-					"                                                                                             o o oxxx x       ",
-					"                   xxx                                                                                x       ",
-					"       !  o  !                                                xxxxx xxxxx xxxxx xxxxx xxxxx xxxxx xxxxx       ",
-					"       x     x                                                x   x x   x x   x x   x x   x x   x x           ",
-					"       x= o  x            x                                   xxx x xxx x xxx x xxx x xxx x xxx x xxxxx       ",
-					"       x     x                                                  x x   x x   x x   x x   x x   x x     x       ",
-					"       !  o  !            o                                  xxxx xxxxx xxxxx xxxxx xxxxx xxxxx xxxxxxx       ",
-					"                                                                                                              ",
-					"          o              xxx                              xx                                                  ",
-					"                                                                                                              ",
-					"                                                                                                              ",
-					"                                                      xx                                                      ",
-					"                   xxx         xxx                                                                            ",
-					"                                                                                                              ",
-					"                          o                                                     x      x                      ",
-					"                                                          xx     xx                                           ",
-					"             xxx         xxx         xxx                                 x                  x                 ",
-					"                                                                                                              ",
-					"                                                                 ||                                           ",
-					"  xxxxxxxxxxx                                                                                                 ",
-					"  x         x o xxxxxxxxx o xxxxxxxxx o xx                                                x                   ",
-					"  x         x   x       x   x       x   x                 ||                  x     x                         ",
-					"  x  @      xxxxx   o   xxxxx   o   xxxxx                                                                     ",
-					"  xxxxxxx                                     xxxxx       xx     xx     xxx                                   ",
-					"        x=                  =                =x   x                     xxx                                   ",
-					"        xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx   x!!!!!!!!!!!!!!!!!!!!!xxx!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
-					"                                                  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-					"                                                                                                              "
-				]
-			];
-			
-			function Vector(x, y) {
-				this.x = x;
-				this.y = y;
-			}
-			
-			Vector.prototype.plus = function (other) {
-				return new Vector(this.x + other.x, this.y + other.y);
-			};
-			
-			Vector.prototype.times = function (scale) {
-				return new Vector(this.x * scale, this.y * scale);
-			};
-			
-			// 注意：使用大写单词表示构造函数是值
-			var actorchars = {
-				"@": Player,
-				o: Coin,
-				"=": Lava,
-				"|": Lava,
-				v: Lava
-			};
-			
-			function Player(pos) {
-				this.pos = pos.plus(new Vector(0, -0.5));
-				this.size = new Vector(0.5, 1);
-				this.speed = new Vector(0, 0);
-			}
-			Player.prototype.type = "player";
-			
-			function Lava(pos, ch) {
-				this.pos = pos;
-				this.size = new Vector(1, 1);
-				if (ch === "=") this.speed = new Vector(2, 0);
-				else if (ch === "|") this.speed = new Vector(0, 2);
-				else if (ch === "v") {
-					this.speed = new Vector(0, 3);
-					this.repeatPos = pos;
-				}
-			}
-			Lava.prototype.type = "Lava";
-			
-			function Coin(pos) {
-				this.basePos = this.pos = pos;
-				this.size = new Vector(0.6, 0.6);
-				// 回头看看
-				this.wobble = Math.random() * Math.PI * 2;
-			}
-			Coin.prototype.type = "coin";
-			
-			Level.prototype.isFinished = function () {
-				return this.status != null && this.finishDelay < 0;
-			};
-			
-			function Level(plan) {
-				this.width = plan[0].length;
-				this.height = plan.length;
-				this.grid = [];
-				this.actors = [];
-			
-				for (var y = 0; y < this.height; y++) {
-					var line = plan[y],
-						gridLine = [];
-					for (var x = 0; x < this.width; x++) {
-						var ch = line[x],
-							fieldType = null;
-						var Actor = actorchars[ch];
-						if (Actor) this.actors.push(new Actor(new Vector(x, y), ch));
-						else if (ch === "x") fieldType = "wall";
-						else if (ch === "!") fieldType = "lava";
-						else if (ch === "|") fieldType = "lava";
-						else if (ch === "=") fieldType = "lava";
-						else if (ch === "v") {
-							fieldType = "lava";
-							console.log(fieldType);
-						}
-						gridLine.push(fieldType);
-					}
-					this.grid.push(gridLine);
-				}
-				this.player = this.actors.filter(function (actor) {
-					return actor.type === "player";
-				})[0];
-				this.status = this.finishDelay = null;
-			}
-			
-			function element(name, className) {
-				var elem = document.createElement(name);
-				if (className) elem.className = className;
-				return elem;
-			}
-			
-			function DOMDisplay(parent, level) {
-				this.wrap = parent.appendChild(element("div", "game"));
-				this.level = level;
-			
-				this.wrap.appendChild(this.drawBackground());
-				this.actorLayer = null;
-				this.drawFrame();
-			}
-			
-			var scale = 15;
-			
-			DOMDisplay.prototype.drawBackground = function () {
-				var table = element("table", "background");
-				table.style.width = this.level.width * scale + "px";
-				table.style.height = this.level.height * scale + "px";
-				this.level.grid.forEach(function (row) {
-					var rowElement = table.appendChild(element("tr"));
-					rowElement.style.height = scale + "px";
-					row.forEach(function (type) {
-						rowElement.appendChild(element("td", type));
-					});
-				});
-				return table;
-			};
-			
-			DOMDisplay.prototype.drawActors = function () {
-				var wrap = element("div");
-				this.level.actors.forEach(function (actor) {
-					var rect = wrap.appendChild(element("div", "actor " + actor.type));
-					rect.style.width = actor.size.x * scale + "px";
-					rect.style.height = actor.size.y * scale + "px";
-					rect.style.left = actor.pos.x * scale + "px";
-					rect.style.top = actor.pos.y * scale + "px";
-				});
-				return wrap;
-			};
-			
-			DOMDisplay.prototype.drawFrame = function () {
-				if (this.actorLayer) this.wrap.removeChild(this.actorLayer);
-				this.actorLayer = this.wrap.appendChild(this.drawActors());
-				this.wrap.className = "game " + (this.level.status || "");
-				this.scrollPlayerIntoView();
-			};
-			
-			// 稍后清除
-			DOMDisplay.prototype.scrollPlayerIntoView = function () {
-				var width = this.wrap.clientWidth;
-				var height = this.wrap.clientHeight;
-				var margin = width / 3;
-			
-				// The viewport
-				var left = this.wrap.scrollLeft,
-					right = left + width;
-				var top = this.wrap.scrollTop,
-					bottom = top + height;
-			
-				var player = this.level.player;
-				var center = player.pos.plus(player.size.times(0.5)).times(scale);
-			
-				if (center.x < left + margin) this.wrap.scrollLeft = center.x - margin;
-				else if (center.x > right - margin)
-					this.wrap.scrollLeft = center.x + margin - width;
-				if (center.y < top + margin) this.wrap.scrollTop = center.y - margin;
-				else if (center.y > bottom - margin)
-					this.wrap.scrollTop = center.y + margin - height;
-			};
-			
-			DOMDisplay.prototype.clear = function () {
-				this.wrap.parentNode.removeChild(this.wrap);
-			};
-			
-			Level.prototype.obstacleAt = function (pos, size) {
-				var xStart = Math.floor(pos.x);
-				var xEnd = Math.ceil(pos.x + size.x);
-				var yStart = Math.floor(pos.y);
-				var yEnd = Math.ceil(pos.y + size.y);
-			
-				if (xStart < 0 || xEnd > this.width || yStart < 0) return "wall";
-				if (yEnd > this.height) return "lava";
-				for (var y = yStart; y < yEnd; y++) {
-					for (var x = xStart; x < xEnd; x++) {
-						var fieldType = this.grid[y][x];
-						if (fieldType) return fieldType;
-					}
-				}
-			};
-			
-			Level.prototype.actorAt = function (actor) {
-				for (var i = 0; i < this.actors.length; i++) {
-					var other = this.actors[i];
-					if (
-						other != actor &&
-						actor.pos.x + actor.size.x > other.pos.x &&
-						actor.pos.x < other.pos.x + other.size.x &&
-						actor.pos.y + actor.size.y > other.pos.y &&
-						actor.pos.y < other.pos.y + other.size.y
-					)
-						return other;
-				}
-			};
-			
-			var maxStep = 0.05;
-			
-			Level.prototype.animate = function (step, keys) {
-				if (this.status != null) this.finishDelay -= step;
-			
-				while (step > 0) {
-					var thisStep = Math.min(step, maxStep);
-					this.actors.forEach(function (actor) {
-						actor.act(thisStep, this, keys);
-					}, this);
-					step -= thisStep;
-				}
-			};
-			
-			Lava.prototype.act = function (step, level) {
-				var newPos = this.pos.plus(this.speed.times(step));
-				if (!level.obstacleAt(newPos, this.size)) this.pos = newPos;
-				else if (this.repeatPos) this.pos = this.repeatPos;
-				else this.speed = this.speed.times(-1);
-			};
-			
-			var wobbleSpeed = 8,
-				wobbleDist = 0.07;
-			
-			Coin.prototype.act = function (step) {
-				this.wobble += step * wobbleSpeed;
-				var wobblePos = Math.sin(this.wobble) * wobbleDist;
-				this.pos = this.basePos.plus(new Vector(0, wobblePos));
-			};
-			
-			var playerXSpeed = 10;
-			
-			Player.prototype.moveX = function (step, level, keys) {
-				this.speed.x = 0;
-				if (keys.left) this.speed.x -= playerXSpeed;
-				if (keys.right) this.speed.x += playerXSpeed;
-			
-				var motion = new Vector(this.speed.x * step, 0);
-				var newPos = this.pos.plus(motion);
-				var obstacle = level.obstacleAt(newPos, this.size);
-				if (obstacle) level.playerTouched(obstacle);
-				else this.pos = newPos;
-			};
-			
-			var gravity = 30;
-			var jumpSpeed = 17;
-			
-			Player.prototype.moveY = function (step, level, keys) {
-				this.speed.y += step * gravity;
-				var motion = new Vector(0, this.speed.y * step);
-				var newPos = this.pos.plus(motion);
-				var obstacle = level.obstacleAt(newPos, this.size);
-				if (obstacle) {
-					level.playerTouched(obstacle);
-					if (keys.up && this.speed.y > 0) this.speed.y = -jumpSpeed;
-					else this.speed.y = 0;
-				} else {
-					this.pos = newPos;
-				}
-			};
-			
-			Player.prototype.act = function (step, level, keys) {
-				this.moveX(step, level, keys);
-				this.moveY(step, level, keys);
-			
-				var otherActor = level.actorAt(this);
-				if (otherActor) level.playerTouched(otherActor.type, otherActor);
-			
-				// 丢失动画
-				if (level.status == "lost") {
-					this.pos.y += step;
-					this.size.y -= step;
-				}
-			};
-			
-			Level.prototype.playerTouched = function (type, actor) {
-				if (type == "lava" && this.status == null) {
-					this.status = "lost";
-					this.finishDelay = 1;
-				} else if (type == "coin") {
-					this.actors = this.actors.filter(function (other) {
-						return other != actor;
-					});
-					if (
-						!this.actors.some(function (actor) {
-							return actor.type == "coin";
-						})
-					) {
-						this.status = "won";
-						this.finishDelay = 1;
-					}
-				}
-			};
-			
-			var arrowCodes = { 37: "left", 38: "up", 39: "right" };
-			
-			function trackKeys(codes) {
-				var pressed = Object.create(null);
-				function handler(event) {
-					if (codes.hasOwnProperty(event.keyCode)) {
-						var down = event.type == "keydown";
-						pressed[codes[event.keyCode]] = down;
-						event.preventDefault();
-					}
-				}
-				addEventListener("keydown", handler);
-				addEventListener("keyup", handler);
-				return pressed;
-			}
-			
-			function runAnimation(frameFunc) {
-				var lastTime = null;
-				function frame(time) {
-					var stop = false;
-					if (lastTime != null) {
-						var timeStep = Math.min(time - lastTime, 100) / 1000;
-						stop = frameFunc(timeStep) === false;
-					}
-					lastTime = time;
-					if (!stop) requestAnimationFrame(frame);
-				}
-				requestAnimationFrame(frame);
-			}
-			
-			var arrows = trackKeys(arrowCodes);
-			
-			function runLevel(level, Display, andThen) {
-				var display = new Display(document.body, level);
-				runAnimation(function (step) {
-					level.animate(step, arrows);
-					display.drawFrame(step);
-					if (level.isFinished()) {
-						display.clear();
-						if (andThen) andThen(level.status);
-						return false;
-					}
-				});
-			}
-			
-			function runGame(plans, Display) {
-				function startLevel(n) {
-					runLevel(new Level(plans[n]), Display, function (status) {
-						if (status == "lost") startLevel(n);
-						else if (n < plans.length - 1) startLevel(n + 1);
-						else alert("You win!");
-					});
-				}
-				startLevel(0);
-			}
-			
-			runGame(LEVELS, DOMDisplay);
+(() => {
+  const canvas = document.getElementById("nebula-canvas");
+  const ctx = canvas.getContext("2d");
+
+  const ui = {
+    level: document.getElementById("level"),
+    score: document.getElementById("score"),
+    shield: document.getElementById("shield"),
+    combo: document.getElementById("combo"),
+    mode: document.getElementById("mode-label"),
+    pulse: document.getElementById("pulse-status"),
+    meteor: document.getElementById("meteor-status"),
+    boost: document.getElementById("boost-status"),
+    feed: document.getElementById("mission-feed")
+  };
+
+  const buttons = {
+    pause: document.getElementById("pause-btn"),
+    resume: document.getElementById("resume-btn"),
+    restart: document.getElementById("restart-btn"),
+    pulse: document.getElementById("pulse-btn"),
+    difficulty: [...document.querySelectorAll("#difficulty-buttons .chip")]
+  };
+
+  const WIDTH = canvas.width;
+  const HEIGHT = canvas.height;
+  const MAX_FEED = 6;
+  const LOCAL_KEY = "neon-runner-highscore";
+
+  const colors = {
+    player: "#7af5ff",
+    orb: "#ffe761",
+    drone: "#ff8df4",
+    meteor: "#ff5757",
+    shield: "#61f2ff",
+    text: "rgba(234, 241, 255, 0.9)"
+  };
+
+  const DIFFICULTIES = {
+    casual: {
+      label: "Casual",
+      shield: 5,
+      droneFactor: 0.7,
+      meteorInterval: [8, 14],
+      powerupInterval: [5, 9],
+      pulseCooldown: 7
+    },
+    voyager: {
+      label: "Voyager",
+      shield: 4,
+      droneFactor: 1,
+      meteorInterval: [6, 11],
+      powerupInterval: [7, 11],
+      pulseCooldown: 8
+    },
+    eclipse: {
+      label: "Eclipse",
+      shield: 3,
+      droneFactor: 1.35,
+      meteorInterval: [4, 8],
+      powerupInterval: [9, 13],
+      pulseCooldown: 9
+    }
+  };
+
+  class Entity {
+    constructor(x, y, radius) {
+      this.x = x;
+      this.y = y;
+      this.radius = radius;
+    }
+  }
+
+  class Player extends Entity {
+    constructor() {
+      super(WIDTH / 2, HEIGHT / 2, 16);
+      this.baseSpeed = 260;
+      this.speedMultiplier = 1;
+      this.boostTimer = 0;
+      this.pulseVisual = 0;
+    }
+
+    update(dt, input) {
+      const dir = { x: 0, y: 0 };
+      if (input.up) dir.y -= 1;
+      if (input.down) dir.y += 1;
+      if (input.left) dir.x -= 1;
+      if (input.right) dir.x += 1;
+      const length = Math.hypot(dir.x, dir.y) || 1;
+      const speed = this.baseSpeed * this.speedMultiplier;
+      this.x += (dir.x / length) * speed * dt;
+      this.y += (dir.y / length) * speed * dt;
+      this.x = Math.min(Math.max(this.radius, this.x), WIDTH - this.radius);
+      this.y = Math.min(Math.max(this.radius, this.y), HEIGHT - this.radius);
+
+      if (this.boostTimer > 0) {
+        this.boostTimer -= dt;
+        if (this.boostTimer <= 0) {
+          this.speedMultiplier = 1;
+        }
+      }
+
+      if (this.pulseVisual > 0) {
+        this.pulseVisual -= dt;
+      }
+    }
+
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fillStyle = colors.player;
+      ctx.shadowBlur = 20;
+      ctx.shadowColor = colors.player;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      if (this.pulseVisual > 0) {
+        ctx.beginPath();
+        const radius = this.radius + (1 - this.pulseVisual / 0.4) * 180;
+        ctx.arc(this.x, this.y, radius, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(122, 245, 255, ${this.pulseVisual / 0.4})`;
+        ctx.lineWidth = 3;
+        ctx.stroke();
+      }
+    }
+
+    applyBoost(multiplier, duration) {
+      this.speedMultiplier = multiplier;
+      this.boostTimer = duration;
+    }
+
+    triggerPulseVisual() {
+      this.pulseVisual = 0.4;
+    }
+  }
+
+  class Orb extends Entity {
+    constructor() {
+      const padding = 40;
+      super(
+        padding + Math.random() * (WIDTH - padding * 2),
+        padding + Math.random() * (HEIGHT - padding * 2),
+        10
+      );
+      this.pulse = Math.random() * Math.PI * 2;
+    }
+    update(dt) {
+      this.pulse += dt * 4;
+    }
+    draw() {
+      const size = this.radius + Math.sin(this.pulse) * 2;
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, size, 0, Math.PI * 2);
+      ctx.fillStyle = colors.orb;
+      ctx.shadowBlur = 12;
+      ctx.shadowColor = colors.orb;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    }
+  }
+
+  class Drone extends Entity {
+    constructor(speedMultiplier) {
+      const border = 30;
+      super(
+        Math.random() < 0.5 ? border : WIDTH - border,
+        border + Math.random() * (HEIGHT - border * 2),
+        18
+      );
+      const angle = Math.random() * Math.PI * 2;
+      this.baseSpeed = 80 * speedMultiplier;
+      this.vx = Math.cos(angle) * this.baseSpeed;
+      this.vy = Math.sin(angle) * this.baseSpeed;
+    }
+    update(dt) {
+      this.x += this.vx * dt;
+      this.y += this.vy * dt;
+      if (this.x < this.radius || this.x > WIDTH - this.radius) this.vx *= -1;
+      if (this.y < this.radius || this.y > HEIGHT - this.radius) this.vy *= -1;
+    }
+    repelFrom(point) {
+      const angle = Math.atan2(this.y - point.y, this.x - point.x);
+      this.vx = Math.cos(angle) * this.baseSpeed * 2;
+      this.vy = Math.sin(angle) * this.baseSpeed * 2;
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fillStyle = colors.drone;
+      ctx.shadowBlur = 20;
+      ctx.shadowColor = colors.drone;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      ctx.beginPath();
+      ctx.strokeStyle = "rgba(255,255,255,0.25)";
+      ctx.lineWidth = 1.5;
+      ctx.moveTo(this.x - this.radius - 6, this.y);
+      ctx.lineTo(this.x + this.radius + 6, this.y);
+      ctx.stroke();
+    }
+  }
+
+  class Meteor extends Entity {
+    constructor() {
+      const edges = [
+        { x: Math.random() * WIDTH, y: -30, angle: Math.PI / 2 },
+        { x: Math.random() * WIDTH, y: HEIGHT + 30, angle: -Math.PI / 2 },
+        { x: -30, y: Math.random() * HEIGHT, angle: 0 },
+        { x: WIDTH + 30, y: Math.random() * HEIGHT, angle: Math.PI }
+      ];
+      const spawn = edges[Math.floor(Math.random() * edges.length)];
+      super(spawn.x, spawn.y, 22);
+      const jitter = (Math.random() - 0.5) * 0.6;
+      const angle = spawn.angle + jitter;
+      const speed = 220 + Math.random() * 80;
+      this.vx = Math.cos(angle) * speed;
+      this.vy = Math.sin(angle) * speed;
+    }
+    update(dt) {
+      this.x += this.vx * dt;
+      this.y += this.vy * dt;
+    }
+    isOffscreen() {
+      return this.x < -80 || this.x > WIDTH + 80 || this.y < -80 || this.y > HEIGHT + 80;
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fillStyle = colors.meteor;
+      ctx.shadowBlur = 25;
+      ctx.shadowColor = colors.meteor;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      ctx.beginPath();
+      ctx.strokeStyle = "rgba(255,255,255,0.3)";
+      ctx.lineWidth = 2;
+      ctx.moveTo(this.x - this.radius - 10, this.y);
+      ctx.lineTo(this.x + this.radius + 10, this.y);
+      ctx.stroke();
+    }
+  }
+
+  class PowerUp extends Entity {
+      constructor(type) {
+        const padding = 50;
+        super(
+          padding + Math.random() * (WIDTH - padding * 2),
+          padding + Math.random() * (HEIGHT - padding * 2),
+          14
+        );
+        this.type = type;
+        this.spin = Math.random() * Math.PI * 2;
+      }
+      update(dt) {
+        this.spin += dt * 4;
+      }
+      draw() {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.spin);
+        ctx.beginPath();
+        ctx.moveTo(0, -this.radius);
+        ctx.lineTo(this.radius, 0);
+        ctx.lineTo(0, this.radius);
+        ctx.lineTo(-this.radius, 0);
+        ctx.closePath();
+        const color = this.type === "shield" ? colors.shield : colors.orb;
+        ctx.fillStyle = color;
+        ctx.shadowBlur = 18;
+        ctx.shadowColor = color;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+        ctx.restore();
+      }
+    }
+
+  class Game {
+    constructor() {
+      this.difficultyKey = "voyager";
+      this.difficulty = DIFFICULTIES[this.difficultyKey];
+      this.highscore = Number(localStorage.getItem(LOCAL_KEY) || 0);
+      this.input = { up: false, down: false, left: false, right: false };
+      this.reset(true);
+    }
+
+    reset(full = false) {
+      this.player = new Player();
+      this.level = 1;
+      this.score = 0;
+      this.combo = 1;
+      this.comboTimer = 0;
+      this.shield = this.difficulty.shield;
+      this.maxShield = this.difficulty.shield;
+      this.paused = false;
+      this.orbs = [];
+      this.drones = [];
+      this.meteors = [];
+      this.powerUps = [];
+      this.meteorTimer = randRange(...this.difficulty.meteorInterval);
+      this.powerupTimer = randRange(...this.difficulty.powerupInterval);
+      this.pulseCooldown = 0;
+      this.pulseReady = true;
+      this.gameOver = false;
+      this.logEvent("任务启动，祝你好运！");
+      this.spawnWave();
+      this.updateUI();
+    }
+
+    spawnWave() {
+      const orbCount = 4 + this.level;
+      const droneBase = 2 + this.level * 0.5;
+      const droneCount = Math.min(Math.ceil(droneBase * this.difficulty.droneFactor), 10);
+      this.orbs = Array.from({ length: orbCount }, () => new Orb());
+      this.drones = Array.from({ length: droneCount }, () => new Drone(this.difficulty.droneFactor));
+      this.logEvent(`关卡 ${this.level} 初始化：${orbCount} 个能量球 / ${droneCount} 架无人机。`);
+    }
+
+    setDifficulty(mode) {
+      if (!DIFFICULTIES[mode]) return;
+      this.difficultyKey = mode;
+      this.difficulty = DIFFICULTIES[mode];
+      buttons.difficulty.forEach((btn) => btn.classList.toggle("active", btn.dataset.mode === mode));
+      this.logEvent(`切换至 ${this.difficulty.label} 模式。`);
+      this.reset(true);
+    }
+
+    logEvent(message) {
+      if (!ui.feed) return;
+      const li = document.createElement("li");
+      const timestamp = new Date().toLocaleTimeString([], { minute: "2-digit", second: "2-digit" });
+      li.textContent = `[${timestamp}] ${message}`;
+      ui.feed.prepend(li);
+      while (ui.feed.children.length > MAX_FEED) {
+        ui.feed.removeChild(ui.feed.lastChild);
+      }
+    }
+
+    updateUI() {
+      ui.level.textContent = this.level;
+      ui.score.textContent = this.score.toString().padStart(4, "0");
+      ui.shield.textContent = this.shield;
+      ui.combo.textContent = `x${this.combo}`;
+      ui.mode.textContent = this.difficulty.label;
+      ui.pulse.textContent = this.pulseReady ? "READY" : `${this.pulseCooldown.toFixed(1)}s`;
+      ui.pulse.style.color = this.pulseReady ? "#7af5ff" : "rgba(255,255,255,0.65)";
+      ui.boost.textContent = this.player.speedMultiplier > 1 ? "极速推进" : "无";
+      ui.meteor.textContent = this.meteors.length ? "流星来袭！" : "空域安全";
+      ui.meteor.style.color = this.meteors.length ? colors.meteor : "rgba(199, 216, 255, 0.7)";
+    }
+
+    triggerPulse() {
+      if (!this.pulseReady || this.paused || this.gameOver) return;
+      this.pulseReady = false;
+      this.pulseCooldown = this.difficulty.pulseCooldown;
+      this.player.triggerPulseVisual();
+      this.drones.forEach((drone) => drone.repelFrom(this.player));
+      if (this.meteors.length) {
+        this.logEvent("护盾脉冲摧毁了来袭流星！");
+      }
+      this.meteors = [];
+      this.logEvent("护盾脉冲已释放。");
+      this.updateUI();
+    }
+
+    update(dt) {
+      if (this.paused || this.gameOver) return;
+
+      this.player.update(dt, this.input);
+      this.orbs.forEach((orb) => orb.update(dt));
+      this.drones.forEach((drone) => drone.update(dt));
+      this.meteors.forEach((meteor) => meteor.update(dt));
+      this.powerUps.forEach((power) => power.update(dt));
+
+      this.meteors = this.meteors.filter((meteor) => !meteor.isOffscreen());
+
+      if (this.comboTimer > 0) {
+        this.comboTimer -= dt;
+        if (this.comboTimer <= 0) {
+          this.combo = 1;
+        }
+      }
+
+      if (!this.pulseReady) {
+        this.pulseCooldown -= dt;
+        if (this.pulseCooldown <= 0) {
+          this.pulseReady = true;
+          this.pulseCooldown = 0;
+          this.logEvent("护盾脉冲已就绪。");
+        }
+      }
+
+      this.meteorTimer -= dt;
+      if (this.meteorTimer <= 0) {
+        this.spawnMeteor();
+        this.meteorTimer = randRange(...this.difficulty.meteorInterval);
+      }
+
+      this.powerupTimer -= dt;
+      if (this.powerupTimer <= 0) {
+        this.spawnPowerUp();
+        this.powerupTimer = randRange(...this.difficulty.powerupInterval);
+      }
+
+      this.checkCollisions();
+      this.updateUI();
+    }
+
+    spawnMeteor() {
+      const meteor = new Meteor();
+      this.meteors.push(meteor);
+      this.logEvent("流星雨即将经过战区！");
+      ui.meteor.textContent = "流星来袭！";
+      ui.meteor.style.color = colors.meteor;
+    }
+
+    spawnPowerUp() {
+      const type = Math.random() < 0.5 ? "shield" : "boost";
+      this.powerUps.push(new PowerUp(type));
+      this.logEvent(type === "shield" ? "观测到护盾模块。" : "观测到速度模块。");
+    }
+
+    checkCollisions() {
+      this.orbs = this.orbs.filter((orb) => {
+        const collected = distance(this.player, orb) < this.player.radius + orb.radius;
+        if (collected) {
+          this.combo = this.comboTimer > 0 ? this.combo + 1 : 1;
+          this.comboTimer = 2.4;
+          this.score += 10 * this.combo;
+          if (this.combo > 1) this.logEvent(`连击 x${this.combo}！`);
+        }
+        return !collected;
+      });
+
+      if (!this.orbs.length) {
+        this.level += 1;
+        this.score += 50;
+        this.spawnWave();
+      }
+
+      this.drones.forEach((drone) => {
+        if (distance(this.player, drone) < this.player.radius + drone.radius) {
+          this.absorbDamage(1, "遭遇无人机！");
+          this.player = new Player();
+        }
+      });
+
+      this.meteors.forEach((meteor) => {
+        if (distance(this.player, meteor) < this.player.radius + meteor.radius) {
+          this.absorbDamage(2, "流星直击！");
+          this.player = new Player();
+        }
+      });
+
+      this.meteors = this.meteors.filter((meteor) => distance(this.player, meteor) >= this.player.radius + meteor.radius);
+
+      this.powerUps = this.powerUps.filter((power) => {
+        const hit = distance(this.player, power) < this.player.radius + power.radius;
+        if (hit) {
+          if (power.type === "shield") {
+            if (this.shield < this.maxShield) {
+              this.shield += 1;
+              this.logEvent("护盾 +1");
+            } else {
+              this.score += 25;
+              this.logEvent("护盾满载，转换为积分。");
+            }
+          } else {
+            this.player.applyBoost(1.8, 4);
+            this.logEvent("获取极速推进！");
+          }
+        }
+        return !hit;
+      });
+    }
+
+    absorbDamage(amount, reason) {
+      this.shield -= amount;
+      this.logEvent(reason);
+      if (this.shield <= 0) {
+        this.endRun();
+      } else {
+        ui.shield.style.color = colors.meteor;
+        setTimeout(() => (ui.shield.style.color = ""), 250);
+      }
+    }
+
+    endRun() {
+      this.gameOver = true;
+      this.paused = true;
+      this.shield = 0;
+      this.logEvent("护盾耗尽，任务失败。");
+      if (this.score > this.highscore) {
+        this.highscore = this.score;
+        localStorage.setItem(LOCAL_KEY, this.highscore);
+        this.logEvent(`新的本地最高分：${this.score}`);
+      }
+    }
+
+    draw() {
+      ctx.clearRect(0, 0, WIDTH, HEIGHT);
+      const gradient = ctx.createLinearGradient(0, 0, WIDTH, HEIGHT);
+      gradient.addColorStop(0, "rgba(97, 242, 255, 0.1)");
+      gradient.addColorStop(1, "rgba(255, 141, 244, 0.08)");
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, WIDTH, HEIGHT);
+
+      this.orbs.forEach((orb) => orb.draw());
+      this.powerUps.forEach((power) => power.draw());
+      this.drones.forEach((drone) => drone.draw());
+      this.meteors.forEach((meteor) => meteor.draw());
+      this.player.draw();
+
+      if (this.paused && !this.gameOver) {
+        this.drawOverlay("暂停中");
+      }
+      if (this.gameOver) {
+        this.drawOverlay("护盾耗尽 · 按 R 重启");
+      }
+
+      ctx.textAlign = "right";
+      ctx.font = "500 14px 'Inter', sans-serif";
+      ctx.fillStyle = "rgba(255,255,255,0.45)";
+      ctx.fillText("Space 暂停 · Shift 脉冲 · R 重启", WIDTH - 20, HEIGHT - 20);
+    }
+
+    drawOverlay(text) {
+      ctx.fillStyle = "rgba(2, 4, 12, 0.65)";
+      ctx.fillRect(0, 0, WIDTH, HEIGHT);
+      ctx.fillStyle = colors.text;
+      ctx.font = "600 36px 'Inter', sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText(text, WIDTH / 2, HEIGHT / 2);
+    }
+  }
+
+  const game = new Game();
+
+  function randRange(min, max) {
+    return min + Math.random() * (max - min);
+  }
+
+  function distance(a, b) {
+    return Math.hypot(a.x - b.x, a.y - b.y);
+  }
+
+  function handleKey(e, pressed) {
+    const key = e.key.toLowerCase();
+    if (["arrowup", "w"].includes(key)) {
+      game.input.up = pressed;
+      e.preventDefault();
+    }
+    if (["arrowdown", "s"].includes(key)) {
+      game.input.down = pressed;
+      e.preventDefault();
+    }
+    if (["arrowleft", "a"].includes(key)) {
+      game.input.left = pressed;
+      e.preventDefault();
+    }
+    if (["arrowright", "d"].includes(key)) {
+      game.input.right = pressed;
+      e.preventDefault();
+    }
+    if (pressed) {
+      if (key === " ") {
+        game.paused = !game.paused;
+        e.preventDefault();
+      } else if (key === "r") {
+        game.reset(true);
+      } else if (key === "shift") {
+        game.triggerPulse();
+      }
+    }
+  }
+
+  window.addEventListener("keydown", (e) => handleKey(e, true));
+  window.addEventListener("keyup", (e) => handleKey(e, false));
+
+  buttons.pause.addEventListener("click", () => (game.paused = true));
+  buttons.resume.addEventListener("click", () => {
+    if (!game.gameOver) game.paused = false;
+  });
+  buttons.restart.addEventListener("click", () => game.reset(true));
+  buttons.pulse.addEventListener("click", () => game.triggerPulse());
+  buttons.difficulty.forEach((btn) =>
+    btn.addEventListener("click", () => game.setDifficulty(btn.dataset.mode))
+  );
+
+  let last = performance.now();
+  function loop(now) {
+    const dt = Math.min((now - last) / 1000, 0.033);
+    last = now;
+    game.update(dt);
+    game.draw();
+    requestAnimationFrame(loop);
+  }
+
+  requestAnimationFrame(loop);
+})();

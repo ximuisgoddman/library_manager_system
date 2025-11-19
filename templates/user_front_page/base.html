@@ -1,46 +1,33 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-cn">
 
 <head>
-    <title>我的图书馆</title>
     {% load static %}
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="{% static 'css/Particle.css' %}">
-    <!-- 加载 Bootstrap CSS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block page_title %}我的图书馆{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-    <script src="{% static 'js/Particles.js' %}"></script>
-    <style>
-        #particles-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 2;
-            pointer-events: none;
-        }
-
-        #particles-js {
-            width: 100%;
-            height: 100%;
-            position: fixed;
-            z-index: 1;
-            background-color: black;
-        }
-
-        .navbar {
-            margin-bottom: 0;
-            /* 取消导航栏的底部外边距 */
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'css/site.css' %}">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
 </head>
 
-<body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top" style="height: 80px;">
-        <div class="container">
-            <a class="navbar-brand" href="#">Welcom {{ user.username }}!</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+<body class="page-shell">
+    <nav class="navbar navbar-expand-lg app-navbar shadow-sm fixed-top">
+        <div class="container align-items-center">
+            <a class="navbar-brand" href="{% url 'home' %}">
+                <span class="brand-badge">
+                    <i class="fas fa-feather-alt"></i>
+                </span>
+                <div class="d-flex flex-column">
+                    <small class="text-uppercase text-white-50">My Library Hub</small>
+                    <span>欢迎 {{ user.username|default:"访客" }}</span>
+                </div>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -50,85 +37,81 @@
                         <a class="nav-link" href="{% url 'home' %}">首页</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'user_online_book_list' %}">OnlineBooks</a>
+                        <a class="nav-link" href="{% url 'user_online_book_list' %}">电子图书</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'book_front_page' %}">OfflineBooks</a>
+                        <a class="nav-link" href="{% url 'book_front_page' %}">线下图书</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'online_song_list' %}">Music</a>
+                        <a class="nav-link" href="{% url 'online_song_list' %}">音乐</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'online_games' %}">Game</a>
+                        <a class="nav-link" href="{% url 'online_games' %}">游戏</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'article:article_list' %}">blog</a>
+                        <a class="nav-link" href="{% url 'article:article_list' %}">博客</a>
                     </li>
                 </ul>
-                <ul class="navbar-nav">
-                    <!-- Django的 if 模板语句 -->
+                <div class="navbar-nav align-items-lg-center">
                     {% if user.is_authenticated %}
-                    <!-- 如果用户已经登录，则显示用户名下拉框 -->
-                    <li class="nav-item dropdown">
-                        {% if user.avatar and user.avatar.url %}
-                        <a href="{% url 'article:user_article_list' user_id=user.id %}">
-                            <img src="{{ user.avatar.url }}" alt="{{ user.username }}" class="avatar-img"
-                                style="width: 38px; height: 38px; border-radius: 50%;">
-                        </a>
-                        {% else %}
-                        <a href="{% url 'article:user_article_list' user_id=user.id %}">
-                            <img src="{% static 'avatar/default.jpeg' %}" alt="{{ user.username }}" class="avatar-img"
-                                style="width: 38px; height: 38px; border-radius: 50%;">
-                        </a>
-                        {% endif %}
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            {% if unread_count %}
-                            <svg viewBox="0 0 8 8" width="8px" height="8px">
-                                <circle cx="4" cy="4" r="4" fill="#ff6b6b"></circle>
-                            </svg>
-                            {% endif %}
-                        </a>
-
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="{% url 'notice:list' %}">通知</a>
-                            {% if unread_count %}
-                            <span class="badge badge-danger">{{ unread_count }}</span>
-                            {% endif %}
-                            </a>
-                            <a class="dropdown-item" href="{% url 'article:article_create' %}">写文章</a>
-                            <a class="dropdown-item" href='{% url "user_edit" user.id %}'>个人信息</a>
-                            <a class="dropdown-item" href="#" onclick="user_delete()">删除用户</a>
-                            <a class="dropdown-item" href="{% url 'user_book_shelf_list' user.id %}">我的书架</a>
-                            <a class="dropdown-item" href="{% url 'user_borrow_record' user.id %}">我的借阅</a>
-                            <a class="dropdown-item" href="{% url 'my_favorite_music_list' user.id %}">收藏歌曲</a>
-                            <a class="dropdown-item" href="{% url 'my_collect_article_list' user.id %}">收藏文章</a>
-                        </div>
-                    <li class="dropdown-item">
-                        <a class="nav-link" href="{% url 'logout' %}">登出</a>
-                    </li>
+                    <a class="nav-link" href="{% url 'user_book_shelf_list' user.id %}">我的书架</a>
+                    <a class="nav-link" href="{% url 'user_borrow_record' user.id %}">我的借阅</a>
+                    <span class="nav-pill ml-lg-3 mb-2 mb-lg-0">{{ user.username }}</span>
+                    <a class="btn btn-sm btn-light ml-lg-3" href="{% url 'logout' %}">登出</a>
                     {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'login' %}">登录</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'register' %}">注册</a>
-                    </li>
+                    <a class="nav-link" href="{% url 'login' %}">登录</a>
+                    <a class="btn btn-sm btn-light ml-lg-3" href="{% url 'register' %}">注册</a>
                     {% endif %}
-                </ul>
+                </div>
             </div>
         </div>
     </nav>
-    <div id="particles-overlay"></div>
-    <div id="particles-js"></div>
-    <div class="container my-4 mt-0" style="position: relative; z-index: 1; background-color: white; top: 80px;">
-        {% block content %}
-        {% endblock %}
-    </div>
 
-    <!-- 加载 jQuery 库 -->
+    <main class="container py-5 content-shell">
+        {% block content %}{% endblock %}
+    </main>
+
+    {% now "Y" as current_year %}
+    <footer class="site-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="footer-brand">
+                        <span class="brand-badge">
+                            <i class="fas fa-book-reader"></i>
+                        </span>
+                        我的图书馆
+                    </div>
+                    <p class="mt-3">
+                        一站式学习生活空间，连接书籍、音乐、游戏与写作灵感。
+                    </p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5>即刻探索</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="{% url 'user_online_book_list' %}">电子图书馆</a></li>
+                        <li><a href="{% url 'book_front_page' %}">线下图书</a></li>
+                        <li><a href="{% url 'online_song_list' %}">音乐电台</a></li>
+                        <li><a href="{% url 'online_games' %}">小游戏驿站</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5>联系与反馈</h5>
+                    <p>喜欢这个主页？欢迎向我们提交你的灵感和建议。</p>
+                    <a class="btn btn-soft secondary" href="{% url 'article:article_list' %}">
+                        前往博客留言
+                    </a>
+                </div>
+            </div>
+            <div class="footer-divider"></div>
+            <div class="d-flex flex-column flex-md-row justify-content-between text-muted small">
+                <span>© {{ current_year }} Library Manager. All rights reserved.</span>
+                <span>保持好奇 · 持续创造</span>
+            </div>
+        </div>
+    </footer>
+
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
-    <!-- 加载 Bootstrap JavaScript 库 -->
     <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 

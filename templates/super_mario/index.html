@@ -1,66 +1,1317 @@
-<!doctype html>
-<html style="touch-action: none;" manifest="offline.appcache">
+<!DOCTYPE html>
+<html lang="zh-CN">
     <head>
         {% load static %}
-        <title>Super Mario Bros Level 1-1 - Backbone Game Engine</title>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <link href="{% static 'super-mario-bros/favicon.ico' %}" rel="shortcut icon" type="image/x-icon" />
-        <link href="{% static 'super-mario-bros/apple_touch_icon.png' %}" rel="apple-touch-icon" />
+    <meta charset="utf-8" />
+    <title>Neo Mario Run</title>
+    <meta
+      name="description"
+      content="焕然一新的超级玛丽练习场：多套关卡、语音提示、合成音效与移动端触控控制。"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      :root {
+        color-scheme: dark;
+        font-family: "Segoe UI", system-ui, -apple-system, "PingFang SC",
+          "Microsoft YaHei", sans-serif;
+        --bg: #05060d;
+        --panel: rgba(13, 18, 30, 0.92);
+        --panel-strong: rgba(22, 28, 48, 0.92);
+        --accent: #ffbe0b;
+        --accent-alt: #62f3cb;
+        --border: rgba(255, 255, 255, 0.08);
+        --text: #f4f7ff;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: radial-gradient(circle at top, #1b1f3a, #040510 70%);
+        color: var(--text);
+        display: flex;
+        justify-content: center;
+        padding: 32px 16px 72px;
+      }
+      .shell {
+        width: min(1280px, 100%);
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+      header {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 24px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        align-items: center;
+      }
+      header h1 {
+        margin: 0;
+        font-size: clamp(1.8rem, 2.6vw, 3rem);
+      }
+      header p {
+        margin: 6px 0 0;
+        max-width: 580px;
+        color: rgba(244, 247, 255, 0.82);
+        line-height: 1.6;
+      }
+      .stats {
+        flex: 1;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 12px;
+      }
+      .stat-card {
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.04);
+        padding: 12px 16px;
+      }
+      .stat-card span {
+        display: block;
+        font-size: 0.85rem;
+        color: rgba(244, 247, 255, 0.65);
+      }
+      .stat-card strong {
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: var(--accent);
+      }
+      .stat-card small {
+        display: block;
+        margin-top: 6px;
+        color: rgba(244, 247, 255, 0.6);
+        font-size: 0.8rem;
+      }
+      main {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 16px;
+      }
+      .game-panel,
+      .side-panel {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      canvas {
+        width: 100%;
+        max-width: 960px;
+        aspect-ratio: 16 / 9;
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: #04060d;
+      }
+      .toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .toolbar button {
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        background: rgba(255, 255, 255, 0.04);
+        color: var(--text);
+        padding: 10px 18px;
+        font-size: 0.95rem;
+        cursor: pointer;
+        transition: transform 0.12s ease, border 0.15s ease;
+      }
+      .toolbar button:hover {
+        border-color: var(--accent);
+      }
+      .toolbar button:active {
+        transform: scale(0.96);
+      }
+      .status-banner {
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.03);
+        padding: 14px 18px;
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      .status-banner strong {
+        font-size: 1.05rem;
+      }
+      .status-banner span {
+        color: rgba(244, 247, 255, 0.7);
+        font-size: 0.92rem;
+      }
+      .control-pad {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        justify-content: center;
+      }
+      .control-pad button {
+        flex: 1;
+        min-width: 110px;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--text);
+        padding: 12px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .side-panel h2,
+      .side-panel h3 {
+        margin: 0;
+      }
+      .level-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .level-btn {
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        background: rgba(255, 255, 255, 0.03);
+        padding: 12px 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        transition: border 0.15s ease, transform 0.12s ease;
+      }
+      .level-btn.active {
+        border-color: var(--accent);
+        background: rgba(255, 190, 11, 0.1);
+      }
+      .level-btn:hover {
+        transform: translateY(-1px);
+      }
+      .audio-toggle {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        padding: 10px 14px;
+        background: rgba(255, 255, 255, 0.04);
+      }
+      .audio-toggle button {
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--text);
+        padding: 6px 16px;
+        cursor: pointer;
+      }
+      .challenge-card {
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.04);
+        padding: 14px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .challenge-card h3 {
+        margin: 0;
+        font-size: 1rem;
+      }
+      .challenge-toggle {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        font-size: 0.95rem;
+        color: rgba(244, 247, 255, 0.85);
+      }
+      .challenge-toggle input {
+        width: 18px;
+        height: 18px;
+        accent-color: var(--accent);
+      }
+      ul.tip-list {
+        padding-left: 18px;
+        margin: 0;
+        color: rgba(244, 247, 255, 0.82);
+        line-height: 1.7;
+      }
+      .hint {
+        margin: 0;
+        text-align: center;
+        color: rgba(244, 247, 255, 0.7);
+        font-size: 0.9rem;
+      }
+      @media (max-width: 1024px) {
+        main {
+          grid-template-columns: 1fr;
+        }
+        canvas {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <header>
+        <div>
+          <h1>超级玛丽 · 量子巡游</h1>
+          <p>
+            全新画面与虚拟手柄，支持键盘 / 触屏操控，带有多关卡、计时排行榜与合成音效。按
+            <strong>W / 空格 / ↑</strong> 跳跃，<strong>A / D / ← →</strong> 移动。
+          </p>
+        </div>
+        <div class="stats">
+          <div class="stat-card">
+            <span>关卡</span>
+            <strong id="stat-level">1/3</strong>
+          </div>
+          <div class="stat-card">
+            <span>得分</span>
+            <strong id="stat-score">00000</strong>
+          </div>
+          <div class="stat-card">
+            <span>金币</span>
+            <strong id="stat-coins">0</strong>
+          </div>
+          <div class="stat-card">
+            <span>生命</span>
+            <strong id="stat-lives">3</strong>
+          </div>
+          <div class="stat-card">
+            <span>计时</span>
+            <strong id="stat-time">00:00</strong>
+          </div>
+          <div class="stat-card">
+            <span>最佳</span>
+            <strong id="stat-best">--</strong>
+            <small id="stat-best-detail">尚无纪录</small>
+          </div>
+        </div>
+      </header>
 
-        <meta name="viewport" content="width=960, user-scalable=no"/>
-        <meta name="mobileoptimized" content="0" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+      <main>
+        <section class="game-panel">
+          <div class="toolbar">
+            <button id="btn-restart">重置关卡 (R)</button>
+            <button id="btn-next">下一关 (N)</button>
+            <button id="btn-demo">关卡演示 (按住)</button>
+          </div>
 
-        <script src="{% static 'super-mario-bros/3rd/qtree.js' %}" type="text/javascript"></script>
-        <script src="{% static 'super-mario-bros/3rd/underscore.js' %}" type="text/javascript"></script>
-        <script src="{% static 'super-mario-bros/3rd/backbone.native.js' %}" type="text/javascript"></script>
-        <script src="{% static 'super-mario-bros/3rd/backbone.js' %}" type="text/javascript"></script>
+          <div class="status-banner">
+            <strong id="status-label">准备出发…</strong>
+            <span>支持键盘、手柄与触屏操作，首跳绝不踩雷。</span>
+          </div>
 
-        <script src="{% static 'super-mario-bros/src/adjust-viewport.js' %}" type="text/javascript"></script>
-        <script src="{% static 'super-mario-bros/src/shapes.js' %}" type="text/javascript"></script>
-        <script src="{% static 'super-mario-bros/src/core.js' %}" type="text/javascript"></script>
-        <script src="{% static 'super-mario-bros/src/character.js' %}" type="text/javascript"></script>
-        <script src="{% static 'super-mario-bros/src/input.js' %}" type="text/javascript"></script>
-        <script src="{% static 'super-mario-bros/src/hero.js' %}" type="text/javascript"></script>
-        <script src="{% static 'super-mario-bros/src/world.js' %}" type="text/javascript"></script>
-        <script src="{% static 'super-mario-bros/src/local-storage.js' %}" type="text/javascript"></script>
-        <script src="{% static 'super-mario-bros/src/camera.js' %}" type="text/javascript"></script>
-        <script src="{% static 'super-mario-bros/src/editor.js' %}" type="text/javascript"></script>
+          <canvas id="game-canvas" width="960" height="540"></canvas>
+          <div class="control-pad">
+            <button data-control="left">⇠ 左</button>
+            <button data-control="right">右 ⇢</button>
+            <button data-control="jump">跳跃 ⤴</button>
+          </div>
+          <p class="hint">
+            建议使用桌面浏览器获取最佳帧率。移动端长按跳跃键可连续弹跳。
+          </p>
+        </section>
 
-        <script src="{% static 'super-mario-bros/super-mario-bros/mario.js' %}" type="text/javascript"></script>
-        <script src="{% static 'super-mario-bros/super-mario-bros/tiles.js' %}" type="text/javascript"></script>
-        <script src="{% static 'super-mario-bros/super-mario-bros/artifacts.js' %}" type="text/javascript"></script>
-        <script src="{% static 'super-mario-bros/super-mario-bros/enemies.js' %}" type="text/javascript"></script>
-        <script src="{% static 'super-mario-bros/super-mario-bros/display.js' %}" type="text/javascript"></script>
-        <script src="{% static 'super-mario-bros/super-mario-bros/level_1-1.js' %}" type="text/javascript"></script>
-        <script src="{% static 'super-mario-bros/super-mario-bros/main.js' %}" type="text/javascript"></script>
+        <aside class="side-panel">
+          <h2>关卡选择</h2>
+          <div class="level-buttons" id="level-buttons"></div>
+          <div class="audio-toggle">
+            <div>
+              <strong>音效</strong>
+              <p class="hint" style="margin: 4px 0 0;">
+                合成跳跃、金币、敌人击倒与胜利提示。
+              </p>
+            </div>
+            <button id="sound-toggle">开启</button>
+          </div>
+          <div class="challenge-card">
+            <h3>挑战选项</h3>
+            <label class="challenge-toggle">
+              <input type="checkbox" id="challenge-speed" />
+              <span>极速模式 · 限时通关</span>
+            </label>
+            <label class="challenge-toggle">
+              <input type="checkbox" id="challenge-surge" />
+              <span>敌兵浪潮 · 巡逻翻倍</span>
+            </label>
+          </div>
+          <h3>玩法提示</h3>
+          <ul class="tip-list">
+            <li>问号砖可击打获取隐藏金币，旗杆则记录通关时间。</li>
+            <li>跳到敌人头顶即可踩扁，反之会失去生命。</li>
+            <li>按住“关卡演示”可将镜头移动到终点观察布局。</li>
+            <li>完成关卡后自动更新本地最佳纪录，可重复挑战。</li>
+          </ul>
+        </aside>
+      </main>
+    </div>
 
-        <style>
-            body {
-                margin: 0;
-                background-color: #000;
+    <script>
+      (() => {
+        const TILE_SIZE = 32;
+        const GRAVITY = 1500;
+        const MOVE_ACCEL = 800;
+        const MAX_SPEED = 220;
+        const JUMP_VELOCITY = 520;
+        const STORAGE_KEY = "neo_mario_best_records";
+
+        const LEVELS = [
+          {
+            id: "sunrise",
+            name: "晨光平原",
+            description: "基础跳台 + 零星的金币与一只孤独的栗宝宝。",
+            background: ["#2c3e8b", "#090b1c"],
+            layout: [
+              "........................................................................................................",
+              "........................................................................................................",
+              "......................C.................................C....................C.........................F.",
+              "..............??....................C....................................................C...............",
+              "............................g....................??......................................................",
+              ".@..............................C.............................C........................................",
+              "##########.....######.....#########.....########.............##########...........######################",
+              "##########.....######.....#########.....########.............##########...........######################"
+            ]
+          },
+          {
+            id: "canyon",
+            name: "悬崖峡谷",
+            description: "更长的落差、管道与双向巡逻敌人，注意流水陷阱。",
+            background: ["#1c274d", "#04050d"],
+            layout: [
+              "........................................................................................................",
+              "........................................C...............................................................",
+              "..............C...............??....................C......................F............................",
+              ".................g.......................g..............................................................",
+              ".@.....C.............####..............####...............C..............####.................C.........",
+              "###########....C....######.....####....######....#####....######....############....#####....###########",
+              "###########.........######.....####....######....#####....######....############....#####....###########",
+              "###########~~~~~~~~~######~~~~~~~~~~~~~######~~~~#####~~~~######~~~~############~~~~#####~~~~###########"
+            ]
+          },
+          {
+            id: "starlit",
+            name: "星辉夜跑",
+            description: "漂浮平台、连续敌人和高旗杆，考验节奏与加速滑行。",
+            background: ["#3b2063", "#07030c"],
+            layout: [
+              "........................................................................................................",
+              "................C.................C..................C..............................C..................F",
+              "...........g...........???....................g................????.....................g...............",
+              ".@..............#####............#####.............#####.............#####.............................",
+              "############............###############.....#############....#############....#########################",
+              "############............###############.....#############....#############....#########################"
+            ]
+          },
+          {
+            id: "foundry",
+            name: "熔炉险境",
+            description: "尖刺、熔岩与双倍敌兵，适合硬核挑战者。",
+            background: ["#401313", "#080101"],
+            layout: [
+              "..............................................................F.........................................",
+              "....C.......??......C....E....C........??......C......E........??........C........E.........C...........",
+              "....g....#####....g....#####....g....#####....g....#####....g....#####....g....#####....g....#####......",
+              ".@..###X###...###X###...###X###...###X###...###X###...###X###...###X###...###X###...###X###...###X###..",
+              "###############~~~~~~###############~~~~~~###############~~~~~~###############~~~~~~###############~~~~",
+              "###############~~~~~~###############~~~~~~###############~~~~~~###############~~~~~~###############~~~~"
+            ]
+          }
+        ];
+
+        const canvas = document.getElementById("game-canvas");
+        const ctx = canvas.getContext("2d");
+        const btnRestart = document.getElementById("btn-restart");
+        const btnNext = document.getElementById("btn-next");
+        const btnDemo = document.getElementById("btn-demo");
+        const levelButtonsEl = document.getElementById("level-buttons");
+        const statusLabel = document.getElementById("status-label");
+        const soundToggle = document.getElementById("sound-toggle");
+        const statLevel = document.getElementById("stat-level");
+        const statScore = document.getElementById("stat-score");
+        const statCoins = document.getElementById("stat-coins");
+        const statLives = document.getElementById("stat-lives");
+        const statTime = document.getElementById("stat-time");
+        const statBest = document.getElementById("stat-best");
+        const statBestDetail = document.getElementById("stat-best-detail");
+        const challengeSpeedToggle = document.getElementById("challenge-speed");
+        const challengeSurgeToggle = document.getElementById("challenge-surge");
+
+        const audioCtx =
+          window.AudioContext || window.webkitAudioContext
+            ? new (window.AudioContext || window.webkitAudioContext)()
+            : null;
+
+        const state = {
+          levelIndex: 0,
+          level: null,
+          player: null,
+          coinsCollected: 0,
+          totalCoins: 0,
+          score: 0,
+          lives: 3,
+          time: 0,
+          camera: { x: 0, y: 0 },
+          completed: false,
+          demoMode: false,
+          invincibleTimer: 0,
+          bestRecords: loadRecords(),
+          audioEnabled: true,
+          gameOver: false,
+          challenge: { speedRun: false, surge: false },
+          timeLimit: null,
+          timeExpired: false
+        };
+
+        const input = {
+          left: false,
+          right: false,
+          jumpHeld: false
+        };
+
+        function loadRecords() {
+          try {
+            return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+          } catch (err) {
+            console.warn("无法读取玛丽纪录", err);
+            return {};
+          }
+        }
+
+        function persistRecords() {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state.bestRecords));
+        }
+
+        function setupLevelButtons() {
+          levelButtonsEl.innerHTML = "";
+          LEVELS.forEach((level, idx) => {
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "level-btn";
+            btn.dataset.index = idx;
+            btn.innerHTML = `<strong>${idx + 1}. ${level.name}</strong><span>${
+              level.description
+            }</span>`;
+            btn.addEventListener("click", () => startLevel(idx));
+            levelButtonsEl.appendChild(btn);
+          });
+          highlightActiveLevel();
+        }
+
+        function highlightActiveLevel() {
+          [...levelButtonsEl.children].forEach((btn) => {
+            btn.classList.toggle(
+              "active",
+              Number(btn.dataset.index) === state.levelIndex
+            );
+          });
+        }
+
+        function buildLevel(def) {
+          const width = Math.max(...def.layout.map((line) => line.length));
+          const height = def.layout.length;
+          const tiles = [];
+          const coins = [];
+          const enemies = [];
+          let spawn = { x: TILE_SIZE * 2, y: TILE_SIZE * 2 };
+          let flag = {
+            x: (width - 3) * TILE_SIZE,
+            y: (height - 3) * TILE_SIZE
+          };
+
+          for (let y = 0; y < height; y++) {
+            const row = def.layout[y].padEnd(width, ".");
+            tiles[y] = row.split("");
+            for (let x = 0; x < width; x++) {
+              const ch = tiles[y][x];
+              switch (ch) {
+                case "@":
+                  spawn = { x: x * TILE_SIZE, y: y * TILE_SIZE };
+                  tiles[y][x] = ".";
+                  break;
+                case "C":
+                  coins.push({
+                    x: x * TILE_SIZE + TILE_SIZE / 2,
+                    y: y * TILE_SIZE + TILE_SIZE / 2,
+                    collected: false
+                  });
+                  tiles[y][x] = ".";
+                  break;
+                case "g":
+                case "E":
+                  enemies.push({
+                    x: x * TILE_SIZE + 4,
+                    y: y * TILE_SIZE,
+                    width: 24,
+                    height: 28,
+                    vx: ch === "E" ? 40 : -40,
+                    vy: 0,
+                    dir: ch === "E" ? 1 : -1,
+                    speed: 40,
+                    alive: true
+                  });
+                  tiles[y][x] = ".";
+                  break;
+                case "F":
+                  flag = { x: x * TILE_SIZE, y: y * TILE_SIZE };
+                  tiles[y][x] = ".";
+                  break;
+                default:
+                  break;
+              }
             }
-            canvas {
-                position: fixed;
-                top: 0;
-                left: 0;
+          }
+
+          return {
+            id: def.id,
+            name: def.name,
+            description: def.description,
+            width,
+            height,
+            tiles,
+            coins,
+            enemies,
+            spawn,
+            flag,
+            background: def.background
+          };
+        }
+
+        function createPlayer(spawn) {
+          return {
+            x: spawn.x,
+            y: spawn.y,
+            width: 24,
+            height: 32,
+            vx: 0,
+            vy: 0,
+            onGround: false,
+            coyote: 0,
+            facing: 1
+          };
+        }
+
+        function startLevel(index = 0) {
+          state.levelIndex = (index + LEVELS.length) % LEVELS.length;
+          state.level = buildLevel(LEVELS[state.levelIndex]);
+          state.player = createPlayer(state.level.spawn);
+          state.score = 0;
+          state.coinsCollected = 0;
+          state.totalCoins = state.level.coins.length;
+          state.lives = 3;
+          state.time = 0;
+          state.completed = false;
+          state.gameOver = false;
+          state.invincibleTimer = 1;
+          state.camera.x = 0;
+          state.timeExpired = false;
+          applyChallenges();
+          statusLabel.textContent = `进入 ${LEVELS[state.levelIndex].name}`;
+          highlightActiveLevel();
+          updateHUD();
+        }
+
+        function applyChallenges() {
+          if (!state.level) return;
+          if (state.challenge.surge) {
+            const clones = state.level.enemies.map((enemy) => ({
+              ...enemy,
+              x: Math.max(32, enemy.x - TILE_SIZE * 1.5),
+              dir: -enemy.dir,
+              vx: -enemy.vx,
+              speed: enemy.speed * 1.25
+            }));
+            state.level.enemies.push(...clones);
+          }
+          if (state.challenge.speedRun) {
+            state.timeLimit = Math.max(35, 95 - state.levelIndex * 12);
+            state.timeExpired = false;
+            statusLabel.textContent = `极速挑战：${state.timeLimit}s 内到达旗杆`;
+          } else {
+            state.timeLimit = null;
+            state.timeExpired = false;
+          }
+        }
+
+        function restartLevel() {
+          const idx = state.levelIndex;
+          startLevel(idx);
+        }
+
+        function nextLevel() {
+          startLevel(state.levelIndex + 1);
+        }
+
+        function updateHUD() {
+          statLevel.textContent = `${state.levelIndex + 1} / ${LEVELS.length}`;
+          statScore.textContent = state.score.toString().padStart(5, "0");
+          statCoins.textContent = `${state.coinsCollected}/${Math.max(
+            state.totalCoins,
+            state.coinsCollected
+          )}`;
+          statLives.textContent = state.lives.toString();
+          statTime.textContent = formatTime(state.time);
+          const record = state.bestRecords[LEVELS[state.levelIndex].id];
+          if (record) {
+            statBest.textContent = formatTime(record.time);
+            statBestDetail.textContent = `得分 ${record.score}`;
+          } else {
+            statBest.textContent = "--";
+            statBestDetail.textContent = "尚无纪录";
+          }
+        }
+
+        function formatTime(seconds) {
+          const m = Math.floor(seconds / 60)
+            .toString()
+            .padStart(2, "0");
+          const s = Math.floor(seconds % 60)
+            .toString()
+            .padStart(2, "0");
+          return `${m}:${s}`;
+        }
+
+        function getTile(tx, ty) {
+          if (ty >= state.level.height) return "#";
+          if (ty < 0 || tx < 0 || tx >= state.level.width) return ".";
+          return state.level.tiles[ty][tx];
+        }
+
+        function isSolid(tile) {
+          return (
+            tile === "#" ||
+            tile === "|" ||
+            tile === "=" ||
+            tile === "?" ||
+            tile === "!" ||
+            tile === "~" ||
+            tile === "X"
+          );
+        }
+
+        function tileFromPixels(px, py) {
+          return {
+            tx: Math.floor(px / TILE_SIZE),
+            ty: Math.floor(py / TILE_SIZE)
+          };
+        }
+
+        function rectsOverlap(a, b) {
+          return (
+            a.x < b.x + b.width &&
+            a.x + a.width > b.x &&
+            a.y < b.y + b.height &&
+            a.y + a.height > b.y
+          );
+        }
+
+        function moveEntity(entity, axis, dt, options = {}) {
+          const velocity = axis === "x" ? entity.vx : entity.vy;
+          if (velocity === 0) return;
+          const delta = velocity * dt;
+          if (axis === "x") entity.x += delta;
+          else entity.y += delta;
+          const dir = Math.sign(delta);
+          const bounds = {
+            left: entity.x,
+            right: entity.x + entity.width,
+            top: entity.y,
+            bottom: entity.y + entity.height
+          };
+          const startX = Math.floor(bounds.left / TILE_SIZE);
+          const endX = Math.floor((bounds.right - 1) / TILE_SIZE);
+          const startY = Math.floor(bounds.top / TILE_SIZE);
+          const endY = Math.floor((bounds.bottom - 1) / TILE_SIZE);
+          let collided = false;
+          for (let ty = startY; ty <= endY; ty++) {
+            for (let tx = startX; tx <= endX; tx++) {
+              const tile = getTile(tx, ty);
+              if (!isSolid(tile)) continue;
+              collided = true;
+              const tileLeft = tx * TILE_SIZE;
+              const tileRight = tileLeft + TILE_SIZE;
+              const tileTop = ty * TILE_SIZE;
+              const tileBottom = tileTop + TILE_SIZE;
+              if (axis === "x") {
+                if (dir > 0) {
+                  entity.x = tileLeft - entity.width - 0.01;
+                } else {
+                  entity.x = tileRight + 0.01;
+                }
+                entity.vx = 0;
+                if (options.onHorizontalCollide) {
+                  options.onHorizontalCollide(tile, tx, ty, dir);
+                }
+              } else {
+                if (dir > 0) {
+                  entity.y = tileTop - entity.height - 0.01;
+                  entity.vy = 0;
+                  if (options.onLand) options.onLand(tile, tx, ty);
+                } else {
+                  entity.y = tileBottom + 0.01;
+                  entity.vy = 0;
+                  if (options.onHitHead) options.onHitHead(tile, tx, ty);
+                }
+              }
             }
-        </style>
+          }
+          return collided;
+        }
 
-    </head>
+        function attemptJump() {
+          if (!state.player) return;
+          if (state.completed || state.gameOver) return;
+          if (state.player.coyote > 0) {
+            state.player.vy = -JUMP_VELOCITY;
+            state.player.onGround = false;
+            state.player.coyote = 0;
+            playSound("jump");
+          }
+        }
 
-    <body>
-        <img id="mario" src="{% static 'super-mario-bros/super-mario-bros/super-mario-2x.png' %}" style="display:none;" />
-        <img id="tiles" src="{% static 'super-mario-bros/super-mario-bros/super-mario-tiles-2x.png' %}" style="display:none;" />
-        <img id="enemies" src="{% static 'super-mario-bros/super-mario-bros/super-mario-enemies-2x.png' %}" style="display:none;" />
-        <img id="icons" src="{% static 'super-mario-bros/super-mario-bros/icons.png' %}" style="display:none;" />
+        function collectCoin(coin) {
+          coin.collected = true;
+          state.coinsCollected++;
+          state.score += 100;
+          playSound("coin");
+        }
 
-        <canvas id="foreground" width="960" height="700">
-            Your browser does not support canvas element.
-        </canvas>
-    </body>
+        function spawnBlockCoin(tx, ty) {
+          state.score += 150;
+          state.coinsCollected++;
+          playSound("coin");
+          state.totalCoins = Math.max(state.totalCoins, state.coinsCollected);
+          state.level.tiles[ty][tx] = "!";
+        }
 
+        function stompEnemy(enemy) {
+          enemy.alive = false;
+          state.score += 200;
+          state.player.vy = -JUMP_VELOCITY * 0.6;
+          playSound("stomp");
+        }
+
+        function hurtPlayer() {
+          if (state.invincibleTimer > 0 || state.completed || state.gameOver) {
+            return;
+          }
+          state.lives -= 1;
+          playSound("hurt");
+          if (state.lives < 0) {
+            state.gameOver = true;
+            statusLabel.textContent = "Game Over · 按 R 重开";
+            state.lives = 0;
+          } else {
+            state.invincibleTimer = 2;
+            state.player = createPlayer(state.level.spawn);
+            statusLabel.textContent = "小心！还剩 " + state.lives + " 条命";
+          }
+        }
+
+        function checkGoal() {
+          const flagX = state.level.flag.x;
+          const flagY = state.level.flag.y - TILE_SIZE * 3;
+          const flagRect = {
+            x: flagX - 8,
+            y: flagY,
+            width: 32,
+            height: TILE_SIZE * 4
+          };
+          const playerRect = {
+            x: state.player.x,
+            y: state.player.y,
+            width: state.player.width,
+            height: state.player.height
+          };
+          if (rectsOverlap(flagRect, playerRect)) {
+            completeLevel();
+          }
+        }
+
+        function checkHazards() {
+          const samples = [
+            tileFromPixels(
+              state.player.x + 6,
+              state.player.y + state.player.height - 2
+            ),
+            tileFromPixels(
+              state.player.x + state.player.width - 6,
+              state.player.y + state.player.height - 2
+            )
+          ];
+          let onSpikes = false;
+          let inLava = false;
+          samples.forEach(({ tx, ty }) => {
+            const tile = getTile(tx, ty);
+            if (tile === "X") onSpikes = true;
+            if (tile === "~") inLava = true;
+          });
+          if (onSpikes) {
+            hurtPlayer();
+          } else if (inLava) {
+            state.player.vx *= 0.9;
+          }
+        }
+
+        function completeLevel() {
+          if (state.completed) return;
+          state.completed = true;
+          playSound("win");
+          statusLabel.textContent = "旗杆到手！恭喜通关。";
+          const levelId = LEVELS[state.levelIndex].id;
+          const previous = state.bestRecords[levelId];
+          if (!previous || state.time < previous.time) {
+            state.bestRecords[levelId] = {
+              time: state.time,
+              score: state.score
+            };
+            persistRecords();
+          }
+        }
+
+        function playSound(type) {
+          if (!state.audioEnabled || !audioCtx) return;
+          if (audioCtx.state === "suspended") audioCtx.resume();
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          const now = audioCtx.currentTime;
+          const profiles = {
+            jump: { freq: 440, type: "square", duration: 0.16 },
+            coin: { freq: 880, type: "triangle", duration: 0.22 },
+            stomp: { freq: 180, type: "sawtooth", duration: 0.18 },
+            hurt: { freq: 130, type: "square", duration: 0.4 },
+            win: { freq: 660, type: "triangle", duration: 0.6 }
+          };
+          const profile = profiles[type] || profiles.jump;
+          osc.type = profile.type;
+          osc.frequency.value = profile.freq;
+          gain.gain.value = 0.2;
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now);
+          gain.gain.exponentialRampToValueAtTime(
+            0.0001,
+            now + profile.duration
+          );
+          osc.stop(now + profile.duration);
+        }
+
+        function updatePlayer(dt) {
+          if (!state.player) return;
+          const player = state.player;
+
+          const moveDirection = (input.right ? 1 : 0) - (input.left ? 1 : 0);
+          if (moveDirection !== 0) {
+            player.vx += moveDirection * MOVE_ACCEL * dt;
+            player.facing = moveDirection;
+          } else {
+            player.vx *= 0.86;
+          }
+          player.vx = Math.max(
+            -MAX_SPEED,
+            Math.min(MAX_SPEED, player.vx)
+          );
+          player.vy += GRAVITY * dt;
+          player.onGround = false;
+
+          moveEntity(player, "x", dt, {
+            onHorizontalCollide: () => {
+              player.vx = 0;
+            }
+          });
+
+          moveEntity(player, "y", dt, {
+            onLand: () => {
+              player.onGround = true;
+              player.coyote = 0.12;
+            },
+            onHitHead: (tile, tx, ty) => {
+              if (tile === "?") spawnBlockCoin(tx, ty);
+            }
+          });
+
+          if (!player.onGround) {
+            player.coyote = Math.max(player.coyote - dt, 0);
+          }
+
+          if (player.y > state.level.height * TILE_SIZE + 200) {
+            hurtPlayer();
+          }
+
+          checkCoins();
+          checkEnemies(dt);
+          checkHazards();
+          checkGoal();
+        }
+
+        function checkCoins() {
+          state.level.coins.forEach((coin) => {
+            if (coin.collected) return;
+            const playerCenterX =
+              state.player.x + state.player.width / 2;
+            const playerCenterY =
+              state.player.y + state.player.height / 2;
+            if (
+              Math.abs(playerCenterX - coin.x) < TILE_SIZE / 1.5 &&
+              Math.abs(playerCenterY - coin.y) < TILE_SIZE / 1.5
+            ) {
+              collectCoin(coin);
+            }
+          });
+        }
+
+        function checkEnemies(dt) {
+          state.level.enemies.forEach((enemy) => {
+            if (!enemy.alive) return;
+            enemy.vy += GRAVITY * dt;
+            enemy.vx = enemy.dir * enemy.speed;
+
+            moveEntity(enemy, "x", dt, {
+              onHorizontalCollide: () => {
+                enemy.dir *= -1;
+                enemy.vx = enemy.dir * enemy.speed;
+              }
+            });
+            moveEntity(enemy, "y", dt, {
+              onLand: () => {
+                enemy.vy = 0;
+              }
+            });
+
+            const playerRect = {
+              x: state.player.x,
+              y: state.player.y,
+              width: state.player.width,
+              height: state.player.height
+            };
+            const enemyRect = {
+              x: enemy.x,
+              y: enemy.y,
+              width: enemy.width,
+              height: enemy.height
+            };
+            if (!rectsOverlap(playerRect, enemyRect)) return;
+
+            if (state.player.vy > 0 && state.player.y < enemy.y) {
+              stompEnemy(enemy);
+            } else {
+              hurtPlayer();
+            }
+          });
+        }
+
+        function updateCamera() {
+          const playerCenter =
+            state.player.x + state.player.width / 2;
+          const maxX =
+            state.level.width * TILE_SIZE - canvas.width;
+          state.camera.x = Math.max(
+            0,
+            Math.min(maxX, playerCenter - canvas.width / 2)
+          );
+        }
+
+        function render() {
+          if (!state.level) return;
+          const [topColor, bottomColor] = state.level.background || [
+            "#1a2a6c",
+            "#000000"
+          ];
+          const gradient = ctx.createLinearGradient(
+            0,
+            0,
+            0,
+            canvas.height
+          );
+          gradient.addColorStop(0, topColor);
+          gradient.addColorStop(1, bottomColor);
+          ctx.fillStyle = gradient;
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+          ctx.save();
+          ctx.translate(-state.camera.x, 0);
+
+          drawTiles();
+          drawCoins();
+          drawFlag();
+          drawEnemies();
+          drawPlayer();
+
+          ctx.restore();
+        }
+
+        function drawTiles() {
+          const startX = Math.floor(state.camera.x / TILE_SIZE);
+          const endX = Math.ceil(
+            (state.camera.x + canvas.width) / TILE_SIZE
+          );
+          for (let y = 0; y < state.level.height; y++) {
+            for (let x = startX; x <= endX; x++) {
+              if (x < 0 || x >= state.level.width) continue;
+              const tile = state.level.tiles[y][x];
+              if (tile === "." || tile === "F") continue;
+              const px = x * TILE_SIZE;
+              const py = y * TILE_SIZE;
+              switch (tile) {
+                case "#":
+                  ctx.fillStyle = "#2b2b4b";
+                  ctx.fillRect(px, py, TILE_SIZE, TILE_SIZE);
+                  ctx.fillStyle = "#1b1b32";
+                  ctx.fillRect(px, py + TILE_SIZE - 6, TILE_SIZE, 6);
+                  break;
+                case "|":
+                  ctx.fillStyle = "#0c9";
+                  ctx.fillRect(px + 4, py, TILE_SIZE - 8, TILE_SIZE);
+                  break;
+                case "=":
+                  ctx.fillStyle = "#444c75";
+                  ctx.fillRect(px, py, TILE_SIZE, TILE_SIZE / 2);
+                  break;
+                case "?":
+                  ctx.fillStyle = "#f7a21d";
+                  ctx.fillRect(px, py, TILE_SIZE, TILE_SIZE);
+                  ctx.fillStyle = "#ffd86b";
+                  ctx.fillText("?", px + 10, py + 22);
+                  break;
+                case "!":
+                  ctx.fillStyle = "#c76b17";
+                  ctx.fillRect(px, py, TILE_SIZE, TILE_SIZE);
+                  break;
+                case "~":
+                  ctx.fillStyle = "#0f2d5c";
+                  ctx.fillRect(px, py + TILE_SIZE / 2, TILE_SIZE, TILE_SIZE / 2);
+                  break;
+              case "X":
+                ctx.fillStyle = "#ff4d6d";
+                ctx.beginPath();
+                ctx.moveTo(px + 2, py + TILE_SIZE);
+                ctx.lineTo(px + TILE_SIZE / 2, py + 4);
+                ctx.lineTo(px + TILE_SIZE - 2, py + TILE_SIZE);
+                ctx.closePath();
+                ctx.fill();
+                break;
+                default:
+                  break;
+              }
+            }
+          }
+        }
+
+        function drawCoins() {
+          ctx.fillStyle = "#ffd761";
+          state.level.coins.forEach((coin) => {
+            if (coin.collected) return;
+            ctx.beginPath();
+            ctx.arc(coin.x, coin.y, TILE_SIZE / 3, 0, Math.PI * 2);
+            ctx.fill();
+          });
+        }
+
+        function drawFlag() {
+          const flagX = state.level.flag.x;
+          ctx.fillStyle = "#b4d9ff";
+          ctx.fillRect(flagX, 0, 4, canvas.height);
+          ctx.fillStyle = "#ff4d6d";
+          ctx.beginPath();
+          ctx.moveTo(flagX, state.level.flag.y);
+          ctx.lineTo(flagX + 36, state.level.flag.y + 16);
+          ctx.lineTo(flagX, state.level.flag.y + 32);
+          ctx.closePath();
+          ctx.fill();
+        }
+
+        function drawEnemies() {
+          ctx.fillStyle = "#ff6b6b";
+          state.level.enemies.forEach((enemy) => {
+            if (!enemy.alive) return;
+            ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
+            ctx.fillStyle = "#2c0404";
+            ctx.fillRect(
+              enemy.x,
+              enemy.y + enemy.height - 6,
+              enemy.width,
+              6
+            );
+            ctx.fillStyle = "#ff6b6b";
+          });
+        }
+
+        function drawPlayer() {
+          ctx.fillStyle =
+            state.invincibleTimer > 0 ? "#9be7ff" : "#ffe066";
+          ctx.fillRect(
+            state.player.x,
+            state.player.y,
+            state.player.width,
+            state.player.height
+          );
+          ctx.fillStyle = "#20304f";
+          ctx.fillRect(
+            state.player.x,
+            state.player.y + state.player.height - 6,
+            state.player.width,
+            6
+          );
+        }
+
+        function update(dt) {
+          if (!state.level || !state.player) return;
+          if (state.completed || state.gameOver) {
+            updateHUD();
+            return;
+          }
+          state.time += dt;
+          if (state.challenge.speedRun && state.timeLimit) {
+            const remaining = state.timeLimit - state.time;
+            if (remaining <= 0 && !state.timeExpired) {
+              state.timeExpired = true;
+              statusLabel.textContent = "时间耗尽！";
+              hurtPlayer();
+              if (!state.gameOver) {
+                state.time = 0;
+                state.timeExpired = false;
+              }
+              updateHUD();
+              return;
+            }
+            if (remaining > 0 && remaining <= 10 && !state.timeExpired) {
+              statusLabel.textContent = `极速挑战 · 剩余 ${Math.ceil(
+                remaining
+              )}s`;
+            }
+          }
+          if (state.invincibleTimer > 0) {
+            state.invincibleTimer = Math.max(
+              0,
+              state.invincibleTimer - dt
+            );
+          }
+          updatePlayer(dt);
+          updateCamera();
+          updateHUD();
+          if (state.demoMode) {
+            state.camera.x = Math.min(
+              state.level.width * TILE_SIZE - canvas.width,
+              state.camera.x + 160 * dt
+            );
+          }
+        }
+
+        let lastTime = 0;
+        function loop(timestamp) {
+          const delta = (timestamp - lastTime) / 1000 || 0;
+          lastTime = timestamp;
+          const dt = Math.min(delta, 0.032);
+          update(dt);
+          render();
+          requestAnimationFrame(loop);
+        }
+
+        function handleKey(e, isDown) {
+          switch (e.key.toLowerCase()) {
+            case "arrowleft":
+            case "a":
+              input.left = isDown;
+              break;
+            case "arrowright":
+            case "d":
+              input.right = isDown;
+              break;
+            case " ":
+            case "arrowup":
+            case "w":
+            case "k":
+              if (isDown && !input.jumpHeld) {
+                attemptJump();
+              }
+              input.jumpHeld = isDown;
+              break;
+            case "r":
+              if (isDown) restartLevel();
+              break;
+            case "n":
+              if (isDown) nextLevel();
+              break;
+            default:
+              break;
+          }
+        }
+
+        document.addEventListener("keydown", (e) => handleKey(e, true));
+        document.addEventListener("keyup", (e) => handleKey(e, false));
+
+        document
+          .querySelectorAll("[data-control]")
+          .forEach((btn) => {
+            const control = btn.dataset.control;
+            const start = () => {
+              if (control === "left") input.left = true;
+              if (control === "right") input.right = true;
+              if (control === "jump") attemptJump();
+            };
+            const end = () => {
+              if (control === "left") input.left = false;
+              if (control === "right") input.right = false;
+              if (control === "jump") input.jumpHeld = false;
+            };
+            btn.addEventListener("touchstart", (e) => {
+              e.preventDefault();
+              start();
+            });
+            btn.addEventListener("mousedown", (e) => {
+              e.preventDefault();
+              start();
+            });
+            btn.addEventListener("touchend", end);
+            btn.addEventListener("mouseup", end);
+            btn.addEventListener("mouseleave", end);
+          });
+
+        challengeSpeedToggle.addEventListener("change", () => {
+          state.challenge.speedRun = challengeSpeedToggle.checked;
+          restartLevel();
+        });
+
+        challengeSurgeToggle.addEventListener("change", () => {
+          state.challenge.surge = challengeSurgeToggle.checked;
+          restartLevel();
+        });
+
+        btnRestart.addEventListener("click", restartLevel);
+        btnNext.addEventListener("click", nextLevel);
+        btnDemo.addEventListener("mousedown", () => {
+          state.demoMode = true;
+        });
+        btnDemo.addEventListener("mouseup", () => {
+          state.demoMode = false;
+        });
+        btnDemo.addEventListener("mouseleave", () => {
+          state.demoMode = false;
+        });
+        btnDemo.addEventListener("touchstart", (e) => {
+          e.preventDefault();
+          state.demoMode = true;
+        });
+        btnDemo.addEventListener("touchend", () => {
+          state.demoMode = false;
+        });
+
+        soundToggle.addEventListener("click", () => {
+          state.audioEnabled = !state.audioEnabled;
+          soundToggle.textContent = state.audioEnabled ? "开启" : "关闭";
+        });
+
+        setupLevelButtons();
+        startLevel(0);
+        requestAnimationFrame(loop);
+      })();
+    </script>
+  </body>
 </html>

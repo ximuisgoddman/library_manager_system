@@ -1,157 +1,179 @@
 {% extends 'user_front_page/base.html' %}
+{% load static %}
 
 {% block content %}
-<table class="table" id="gameTable">
-    <thead>
-    <tr>
-        <th scope="col">game</th>
-        <th scope="col">开始</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td>
-            <p id="pacman">吃豆人</p>
-        </td>
-        <td>
-            <!-- 在这里添加按钮链接，点击后跳转到/tetris页面 -->
-            <a href="{% url 'pacman' %}">
-                <button>开始</button>
-            </a>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p id="tetris">俄罗斯方块</p>
-        </td>
-        <td>
-            <!-- 在这里添加按钮链接，点击后跳转到/tetris页面 -->
-            <a href="{% url 'tetris' %}">
-                <button>开始</button>
-            </a>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p id="spaceship_shoot">飞船射击</p>
-        </td>
-        <td>
-            <!-- 在这里添加按钮链接，点击后跳转到/tetris页面 -->
-            <a href="{% url 'spaceship_shoot' %}">
-                <button>开始</button>
-            </a>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p id="snake">贪吃蛇</p>
-        </td>
-        <td>
-            <!-- 在这里添加按钮链接，点击后跳转到/tetris页面 -->
-            <a href="{% url 'snake' %}">
-                <button>开始</button>
-            </a>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p id="game2048">2048</p>
-        </td>
-        <td>
-            <!-- 在这里添加按钮链接，点击后跳转到/tetris页面 -->
-            <a href="{% url 'game2048' %}">
-                <button>开始</button>
-            </a>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p id="sliding_puzzle">华容道</p>
-        </td>
-        <td>
-            <!-- 在这里添加按钮链接，点击后跳转到/tetris页面 -->
-            <a href="{% url 'sliding_puzzle' %}">
-                <button>开始</button>
-            </a>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p id="super_mario">超级玛丽</p>
-        </td>
-        <td>
-            <!-- 在这里添加按钮链接，点击后跳转到/tetris页面 -->
-            <a href="{% url 'super_mario' %}">
-                <button>开始</button>
-            </a>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p id="racing">赛车</p>
-        </td>
-        <td>
-            <!-- 在这里添加按钮链接，点击后跳转到/tetris页面 -->
-            <a href="{% url 'racing' %}">
-                <button>开始</button>
-            </a>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p id="minesweeper">扫雷</p>
-        </td>
-        <td>
-            <!-- 在这里添加按钮链接，点击后跳转到/tetris页面 -->
-            <a href="{% url 'minesweeper' %}">
-                <button>开始</button>
-            </a>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p id="breakthrough">JS闯关</p>
-        </td>
-        <td>
-            <!-- 在这里添加按钮链接，点击后跳转到/tetris页面 -->
-            <a href="{% url 'breakthrough' %}">
-                <button>开始</button>
-            </a>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p id="build_tower">叠塔楼</p>
-        </td>
-        <td>
-            <!-- 在这里添加按钮链接，点击后跳转到/tetris页面 -->
-            <a href="{% url 'build_tower' %}">
-                <button>开始</button>
-            </a>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p id="crossing_the_bridge">圣诞老人过桥</p>
-        </td>
-        <td>
-            <!-- 在这里添加按钮链接，点击后跳转到/tetris页面 -->
-            <a href="{% url 'crossing_the_bridge' %}">
-                <button>开始</button>
-            </a>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <p id="cut_cubes">切方块</p>
-        </td>
-        <td>
-            <!-- 在这里添加按钮链接，点击后跳转到/tetris页面 -->
-            <a href="{% url 'cut_cubes' %}">
-                <button>开始</button>
-            </a>
-        </td>
-    </tr>
-    </tbody>
-</table>
+<section class="hero mb-4">
+    <div class="hero-content">
+        <span class="pill mb-3 d-inline-flex align-items-center">
+            <i class="fas fa-gamepad mr-2"></i> 云游乐园
+        </span>
+        <h1>轻松开一局</h1>
+        <p>经典街机、益智解谜、休闲放松，随时随地打开一局，收藏喜欢的小游戏。</p>
+    </div>
+</section>
+
+<section class="content-section">
+    <div class="section-title">
+        <h2>精选推荐</h2>
+        <span class="pill">持续更新</span>
+    </div>
+    <div class="card-grid">
+        <article class="media-card h-100">
+            <div class="card-body">
+                <span class="pill mb-2"><i class="fas fa-dot-circle mr-2"></i>街机</span>
+                <h5 class="card-title">吃豆人</h5>
+                <p class="text-muted">在迷宫中吞食能量豆，躲避幽灵的追捕。</p>
+                <a href="{% url 'pacman' %}" class="btn btn-soft primary mt-2">开始游戏</a>
+            </div>
+        </article>
+        <article class="media-card h-100">
+            <div class="card-body">
+                <span class="pill mb-2"><i class="fas fa-th-large mr-2"></i>益智</span>
+                <h5 class="card-title">俄罗斯方块</h5>
+                <p class="text-muted">经典方块消除，挑战更高连击分数。</p>
+                <a href="{% url 'tetris' %}" class="btn btn-soft primary mt-2">开始游戏</a>
+            </div>
+        </article>
+        <article class="media-card h-100">
+            <div class="card-body">
+                <span class="pill mb-2"><i class="fas fa-rocket mr-2"></i>动作</span>
+                <h5 class="card-title">飞船射击</h5>
+                <p class="text-muted">操控飞船闪避与射击，突破敌人封锁。</p>
+                <a href="{% url 'spaceship_shoot' %}" class="btn btn-soft primary mt-2">开始游戏</a>
+            </div>
+        </article>
+        <article class="media-card h-100">
+            <div class="card-body">
+                <span class="pill mb-2"><i class="fas fa-crosshairs mr-2"></i>横版</span>
+                <h5 class="card-title">魂斗罗 · 霓虹反击</h5>
+                <p class="text-muted">原创三段关卡 + 合成音效，重温热血魂斗罗。</p>
+                <a href="{% url 'contra' %}" class="btn btn-soft primary mt-2">开始游戏</a>
+            </div>
+        </article>
+        <article class="media-card h-100">
+            <div class="card-body">
+                <span class="pill mb-2"><i class="fas fa-motorcycle mr-2"></i>竞速</span>
+                <h5 class="card-title">暴力摩托 · Neo Ride</h5>
+                <p class="text-muted">在未来霓虹街道中飞驰，闪避车流赢取高分。</p>
+                <a href="{% url 'moto_racer' %}" class="btn btn-soft primary mt-2">开始游戏</a>
+            </div>
+        </article>
+    </div>
+</section>
+
+<section class="content-section">
+    <div class="section-title">
+        <h2>全部小游戏</h2>
+        <span class="pill">畅玩无门槛</span>
+    </div>
+    <div class="card-grid">
+        <article class="media-card h-100">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-dot-circle mr-2"></i> 吃豆人</h5>
+                <p class="text-muted mb-3">迷宫街机鼻祖，敏捷与策略的对决。</p>
+                <a href="{% url 'pacman' %}" class="btn btn-soft secondary">开局</a>
+            </div>
+        </article>
+        <article class="media-card h-100">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-th-large mr-2"></i> 俄罗斯方块</h5>
+                <p class="text-muted mb-3">堆叠消除，保持专注与节奏。</p>
+                <a href="{% url 'tetris' %}" class="btn btn-soft secondary">开局</a>
+            </div>
+        </article>
+        <article class="media-card h-100">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-rocket mr-2"></i> 飞船射击</h5>
+                <p class="text-muted mb-3">弹幕闪避 + 火力全开，爽快不停。</p>
+                <a href="{% url 'spaceship_shoot' %}" class="btn btn-soft secondary">开局</a>
+            </div>
+        </article>
+        <article class="media-card h-100">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-crosshairs mr-2"></i> 魂斗罗 · 霓虹反击</h5>
+                <p class="text-muted mb-3">原创音效、Boss 与连击系统的魂斗罗玩法。</p>
+                <a href="{% url 'contra' %}" class="btn btn-soft secondary">开局</a>
+            </div>
+        </article>
+        <article class="media-card h-100">
+            <div class="card-body">
+                <h5 class="card-title d-flex align-items-center gap-2">
+                    <i class="fas fa-snake mr-2"></i> 贪吃蛇
+                </h5>
+                <p class="text-muted mb-3">专注与手速的双重挑战。</p>
+                <a href="{% url 'snake' %}" class="btn btn-soft secondary">开局</a>
+            </div>
+        </article>
+        <article class="media-card h-100">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-square-full mr-2"></i> 2048</h5>
+                <p class="text-muted mb-3">滑动合并数字，冲击 2048。</p>
+                <a href="{% url 'game2048' %}" class="btn btn-soft secondary">开局</a>
+            </div>
+        </article>
+        <article class="media-card h-100">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-th mr-2"></i> 华容道</h5>
+                <p class="text-muted mb-3">经典滑块拼图，烧脑又解压。</p>
+                <a href="{% url 'sliding_puzzle' %}" class="btn btn-soft secondary">开局</a>
+            </div>
+        </article>
+        <article class="media-card h-100">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-hat-wizard mr-2"></i> 超级玛丽</h5>
+                <p class="text-muted mb-3">童年横版冒险，重温经典关卡。</p>
+                <a href="{% url 'super_mario' %}" class="btn btn-soft secondary">开局</a>
+            </div>
+        </article>
+        <article class="media-card h-100">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-flag-checkered mr-2"></i> 赛车</h5>
+                <p class="text-muted mb-3">感受指尖竞速的速度与激情。</p>
+                <a href="{% url 'racing' %}" class="btn btn-soft secondary">开局</a>
+            </div>
+        </article>
+        <article class="media-card h-100">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-motorcycle mr-2"></i> 暴力摩托 Neo</h5>
+                <p class="text-muted mb-3">城市高架疾驰，收集能源冲击排行榜。</p>
+                <a href="{% url 'moto_racer' %}" class="btn btn-soft secondary">开局</a>
+            </div>
+        </article>
+        <article class="media-card h-100">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-bomb mr-2"></i> 扫雷</h5>
+                <p class="text-muted mb-3">逻辑推理大师必备小游戏。</p>
+                <a href="{% url 'minesweeper' %}" class="btn btn-soft secondary">开局</a>
+            </div>
+        </article>
+        <article class="media-card h-100">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-code mr-2"></i>推箱子</h5>
+                <p class="text-muted mb-3">推箱子训练场。</p>
+                <a href="{% url 'breakthrough' %}" class="btn btn-soft secondary">开局</a>
+            </div>
+        </article>
+        <article class="media-card h-100">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-university mr-2"></i> 叠塔楼</h5>
+                <p class="text-muted mb-3">把握节奏，搭出最高塔楼。</p>
+                <a href="{% url 'build_tower' %}" class="btn btn-soft secondary">开局</a>
+            </div>
+        </article>
+        <article class="media-card h-100">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-gifts mr-2"></i> 圣诞老人过桥</h5>
+                <p class="text-muted mb-3">节奏与反应协奏的桥段挑战。</p>
+                <a href="{% url 'crossing_the_bridge' %}" class="btn btn-soft secondary">开局</a>
+            </div>
+        </article>
+        <article class="media-card h-100">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-cube mr-2"></i> 切方块</h5>
+                <p class="text-muted mb-3">空间感训练，切出完美形状。</p>
+                <a href="{% url 'cut_cubes' %}" class="btn btn-soft secondary">开局</a>
+            </div>
+        </article>
+    </div>
+</section>
 {% endblock %}

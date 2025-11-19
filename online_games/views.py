@@ -58,3 +58,11 @@ def crossing_the_bridge(request):
 
 def breakthrough(request):
     return render(request, 'breakthrough/index.html')
+
+
+def moto_racer(request):
+    return render(request, 'moto_racer/index.html')
+
+
+def contra(request):
+    return render(request, 'contra/index.html')

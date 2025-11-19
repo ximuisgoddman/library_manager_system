@@ -1,33 +1,45 @@
 {% extends 'user_front_page/base.html' %}
 {% block content %}
-<div class="container">
-    <h1 class="my-4">Borrow Records List</h1>
-    <a href="{% url 'book_front_page' %}" class="btn btn-secondary mb-4">Back to Book_List</a>
-    <table class="table table-hover table-striped">
-        <thead>
-        <tr>
-            <th scope="col">图书名称</th>
-            <th scope="col">作者</th>
-            <th scope="col">出版社</th>
-            <th scope="col">归还截至日期</th>
-            <th scope="col">操作</th>
-        </tr>
-        </thead>
-        <tbody>
+<section class="content-section">
+    <div class="page-header">
+        <div>
+            <p class="eyebrow">借阅记录</p>
+            <h1>我的图书行程</h1>
+            <p class="text-muted mb-0">跟踪当前借阅状态，按时归还，保持良好信用。</p>
+        </div>
+        <div class="header-actions">
+            <a class="btn-soft secondary" href="{% url 'book_front_page' %}">
+                返回图书馆
+            </a>
+        </div>
+    </div>
+
+    <div class="record-grid">
         {% for record in borrow_records %}
-        <tr>
-            <td>{{ record.book_name }}</td>
-            <td>{{ record.book_author }}</td>
-            <td>{{ record.publisher }}</td>
-            <td>{{ record.record_user_borrow_deadline }}</td>
-            <td>
-                <a href="{% url 'user_borrow_record_detail' record.id %}" class="btn btn-secondary btn-sm">View</a>
-            </td>
-        </tr>
+        <article class="record-card">
+            <span class="pill pill-dark mb-2">
+                归还截至 {{ record.record_user_borrow_deadline|date:"Y-m-d" }}
+            </span>
+            <h4>{{ record.book_name }}</h4>
+            <div class="record-meta">
+                <span><i class="fas fa-user-edit mr-1 text-primary"></i>{{ record.book_author }}</span>
+                <span><i class="fas fa-building mr-1 text-muted"></i>{{ record.publisher }}</span>
+            </div>
+            <div class="record-actions">
+                <a class="btn-soft primary" href="{% url 'user_borrow_record_detail' record.id %}">
+                    查看详情
+                </a>
+            </div>
+        </article>
+        {% empty %}
+        <div class="empty-state record-card">
+            <h4>暂无借阅记录</h4>
+            <p>去图书馆挑选一本喜欢的书，开启新的阅读旅程。</p>
+            <a class="btn-soft primary mt-2" href="{% url 'book_front_page' %}">
+                发现图书
+            </a>
+        </div>
         {% endfor %}
-        </tbody>
-    </table>
-</div>
-
-
+    </div>
+</section>
 {% endblock %}

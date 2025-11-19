@@ -1,28 +1,841 @@
 
 <!DOCTYPE html>
-<html>
-	<head>
-		{% load static %}
-		<meta charset="utf-8">
-		<title>海拥 | JS闯关小游戏</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta name="keywords" content="海拥，游戏，JS闯关小游戏" />
-		<link rel="stylesheet" href="{% static 'breakthrough/css/style.css' %}">
-	</head>
-	<body>
-		<h2>简单的 JavaScript 游戏
-		请用电脑打开，上下左右控制方向
-		吃完所有金币进入下一关</h2>
-		<script src="{% static 'breakthrough/js/script.js' %}"></script>
-		<script>
-        var _hmt = _hmt || [];
-        (function() {
-          var hm = document.createElement("script");
-          hm.src = "https://hm.baidu.com/hm.js?a9430a37066911650e26adadcc42798a";
-          var s = document.getElementsByTagName("script")[0]; 
-          s.parentNode.insertBefore(hm, s);
-        })();
-        </script>
-	</body>
-	
+<html lang="zh-CN">
+  <head>
+    {% load static %}
+    <meta charset="utf-8" />
+    <title>推箱子 · Breakthrough</title>
+    <meta
+      name="description"
+      content="经典 Sokoban 推箱子小游戏，完全响应式并支持键盘与触屏控制。"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #05070f;
+        --panel: rgba(16, 20, 40, 0.88);
+        --accent: #5df2d6;
+        --accent-strong: #ffd56b;
+        --grid-border: rgba(255, 255, 255, 0.08);
+        --text: #e6f7ff;
+        font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont,
+          "PingFang SC", sans-serif;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: radial-gradient(circle at top, #12224c, #03050b 70%);
+        color: var(--text);
+        display: flex;
+        justify-content: center;
+        padding: 32px 12px 64px;
+      }
+      .shell {
+        width: min(1200px, 100%);
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      header {
+        background: var(--panel);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 18px;
+        padding: 24px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 24px;
+        align-items: center;
+      }
+      header h1 {
+        margin: 0 0 6px;
+        font-size: clamp(1.8rem, 3vw, 2.8rem);
+      }
+      header p {
+        margin: 0;
+        max-width: 520px;
+        line-height: 1.5;
+        color: rgba(230, 247, 255, 0.8);
+      }
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 12px;
+        flex: 1;
+      }
+      .stat-card {
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 14px;
+        padding: 12px 16px;
+      }
+      .stat-card span {
+        display: block;
+        color: rgba(230, 247, 255, 0.65);
+        font-size: 0.85rem;
+      }
+      .stat-card strong {
+        font-size: 1.6rem;
+        font-weight: 600;
+        color: var(--accent);
+      }
+      main {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 16px;
+      }
+      .game-panel,
+      .info-panel {
+        background: var(--panel);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 18px;
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+      #grid {
+        display: grid;
+        gap: 6px;
+        width: 100%;
+        max-width: 540px;
+        margin: 0 auto;
+        border: 1px solid var(--grid-border);
+        padding: 12px;
+        border-radius: 14px;
+        background: rgba(2, 6, 16, 0.85);
+      }
+      .cell {
+        width: 42px;
+        aspect-ratio: 1;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 1.05rem;
+        transition: transform 0.08s ease;
+      }
+      .cell.wall {
+        background: linear-gradient(135deg, #0f172a, #0b1023);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      .cell.floor {
+        background: rgba(255, 255, 255, 0.03);
+      }
+      .cell.target {
+        background: rgba(93, 242, 214, 0.18);
+        border: 1px dashed rgba(93, 242, 214, 0.55);
+      }
+      .cell.box {
+        background: linear-gradient(135deg, #ff9f45, #ff6f3c);
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        color: #2b0f04;
+      }
+      .cell.box.goal {
+        background: linear-gradient(135deg, #ffe793, #fcb045);
+        border-color: rgba(93, 242, 214, 0.6);
+        color: #2b0f04;
+      }
+      .cell.player {
+        background: linear-gradient(135deg, #5df2d6, #22c1c3);
+        color: #04110f;
+        box-shadow: 0 0 12px rgba(93, 242, 214, 0.6);
+        transform: scale(1.04);
+      }
+      .controls {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .control-row {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      button {
+        flex: 1;
+        background: rgba(93, 242, 214, 0.18);
+        color: var(--text);
+        border: 1px solid rgba(93, 242, 214, 0.5);
+        border-radius: 999px;
+        padding: 10px 14px;
+        font-size: 0.95rem;
+        cursor: pointer;
+        transition: transform 0.15s ease, border 0.15s ease,
+          background 0.15s ease;
+      }
+      button:hover {
+        border-color: var(--accent);
+      }
+      button:active {
+        transform: scale(0.98);
+      }
+      .d-pad {
+        display: grid;
+        grid-template-columns: repeat(3, 60px);
+        gap: 8px;
+        justify-content: center;
+        margin-top: 8px;
+      }
+      .d-pad button {
+        flex: initial;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.04);
+        border-color: rgba(255, 255, 255, 0.08);
+        font-weight: 600;
+      }
+      .d-pad button.primary {
+        background: rgba(93, 242, 214, 0.15);
+        border-color: rgba(93, 242, 214, 0.35);
+      }
+      .challenge-card {
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.03);
+        padding: 14px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .challenge-card h3 {
+        margin: 0;
+        font-size: 1rem;
+      }
+      .challenge-toggle {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        font-size: 0.9rem;
+        color: rgba(230, 247, 255, 0.85);
+      }
+      .challenge-toggle input {
+        width: 18px;
+        height: 18px;
+        accent-color: var(--accent);
+      }
+      .info-panel ul {
+        padding-left: 20px;
+        margin: 0;
+        color: rgba(230, 247, 255, 0.9);
+        line-height: 1.6;
+      }
+      .level-select {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .level-select button {
+        flex: initial;
+        padding: 8px 14px;
+      }
+      .ghost {
+        color: rgba(230, 247, 255, 0.65);
+        font-size: 0.9rem;
+      }
+      @media (max-width: 980px) {
+        main {
+          grid-template-columns: 1fr;
+        }
+        #grid {
+          max-width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <header>
+        <div>
+          <h1>推箱子训练场</h1>
+          <p>
+            使用键盘 <strong>W A S D / ↑ ↓ ← →</strong> 或下方触控按键，将所有能源箱推入指定目标点。
+            小心只能推不能拉，试着用最少步数解锁更高评价。
+          </p>
+        </div>
+        <div class="stats">
+          <div class="stat-card">
+            <span>关卡</span>
+            <strong id="stat-level">1 / 5</strong>
+          </div>
+          <div class="stat-card">
+            <span>步数</span>
+            <strong id="stat-moves">0</strong>
+          </div>
+          <div class="stat-card">
+            <span>推箱</span>
+            <strong id="stat-pushes">0</strong>
+          </div>
+          <div class="stat-card">
+            <span>目标 (步 / 推)</span>
+            <strong id="stat-par">--</strong>
+          </div>
+          <div class="stat-card">
+            <span>耗时</span>
+            <strong id="stat-time">00:00</strong>
+          </div>
+          <div class="stat-card">
+            <span>最佳纪录</span>
+            <strong id="stat-best">--</strong>
+            <small id="stat-best-detail">尚无纪录</small>
+          </div>
+        </div>
+      </header>
+
+      <main>
+        <section class="game-panel">
+          <div id="grid" aria-label="推箱子棋盘"></div>
+          <div class="controls">
+            <div class="control-row">
+              <button id="btn-reset">重开本关</button>
+              <button id="btn-prev">上一关</button>
+              <button id="btn-next">下一关</button>
+            </div>
+            <div class="level-select" id="level-buttons"></div>
+          <div class="challenge-card">
+            <h3>挑战模式</h3>
+            <label class="challenge-toggle">
+              <input type="checkbox" id="challenge-strict" />
+              <span>严苛步数 · 超过目标自动重开</span>
+            </label>
+            <label class="challenge-toggle">
+              <input type="checkbox" id="challenge-limit-undo" />
+              <span>撤销次数受限（3 次）</span>
+            </label>
+          </div>
+            <div class="d-pad">
+              <span></span>
+              <button data-move="up">↑</button>
+              <span></span>
+              <button data-move="left">←</button>
+              <button class="primary" data-move="down">↓</button>
+              <button data-move="right">→</button>
+            </div>
+          </div>
+        <p class="ghost" id="sokoban-hint">
+            完成关卡后将自动记录最优步数与推箱次数。支持本地存档，刷新页面仍会保留。
+          </p>
+        </section>
+
+        <aside class="info-panel">
+          <h2>玩法提示</h2>
+          <ul>
+            <li>目标点用淡绿虚线标示，所有箱子归位即可过关。</li>
+            <li>尽量不要把箱子推到角落或墙边死路，除非那里正好是目标。</li>
+            <li>按住 Shift 可连按方向键实现快速移动（浏览器默认行为）。</li>
+            <li>点击关卡按钮可自由跳转，练习任意布局。</li>
+          </ul>
+          <div>
+            <h3>操作帮助</h3>
+            <p class="ghost">
+              桌面端推荐键盘操控，移动端可使用方向键或单指滑动。双指轻扫可滚动页面，不影响游戏。
+            </p>
+          </div>
+        </aside>
+      </main>
+    </div>
+
+    <script>
+      (() => {
+        const LEVELS = [
+          {
+            id: "training-1",
+            name: "基础训练",
+            par: { moves: 90, pushes: 24 },
+            layout: [
+              "##########",
+              "#   #    #",
+              "# # # ## #",
+              "# .$  $. #",
+              "#   ##   #",
+              "# #    # #",
+              "#   @  . #",
+              "##########",
+            ],
+          },
+          {
+            id: "cross-hall",
+            name: "交叉通道",
+            par: { moves: 120, pushes: 30 },
+            layout: [
+              "###########",
+              "#..  #   ##",
+              "#..$   $  #",
+              "##.# ## #.#",
+              "#  $      #",
+              "# ###@### #",
+              "#   $   ..#",
+              "###########",
+            ],
+          },
+          {
+            id: "warehouse-maze",
+            name: "仓储迷宫",
+            par: { moves: 150, pushes: 38 },
+            layout: [
+              "############",
+              "#   #   .. #",
+              "# # # # ## #",
+              "# .$ $ $   #",
+              "#   # # #  #",
+              "# #   @  # #",
+              "#   ##   . #",
+              "############",
+            ],
+          },
+          {
+            id: "twin-corridor",
+            name: "双层回廊",
+            par: { moves: 180, pushes: 46 },
+            layout: [
+              "#############",
+              "#   ..     ##",
+              "# # ### #   #",
+              "# # $  $# # #",
+              "#   #@ #   .#",
+              "### #  ## # #",
+              "#   $   $   #",
+              "# ..     ####",
+              "#############",
+            ],
+          },
+          {
+            id: "cargo-grid",
+            name: "多段集装",
+            par: { moves: 210, pushes: 54 },
+            layout: [
+              "###############",
+              "#   ..   #   ##",
+              "# # $$ #   #  #",
+              "#   # .### $$ #",
+              "###   #   #   #",
+              "#  $ $ @ $  # #",
+              "#   #   #   ..#",
+              "##   ###   ####",
+              "###############",
+            ],
+          },
+        ];
+
+        const STORAGE_KEY = "breakthrough_sokoban_records";
+        const gridEl = document.getElementById("grid");
+        const movesEl = document.getElementById("stat-moves");
+        const pushesEl = document.getElementById("stat-pushes");
+        const levelEl = document.getElementById("stat-level");
+        const parEl = document.getElementById("stat-par");
+        const timeEl = document.getElementById("stat-time");
+        const bestEl = document.getElementById("stat-best");
+        const bestDetailEl = document.getElementById("stat-best-detail");
+        const levelButtons = document.getElementById("level-buttons");
+        const challengeStrictToggle = document.getElementById("challenge-strict");
+        const challengeUndoToggle = document.getElementById("challenge-limit-undo");
+        const hintEl = document.getElementById("sokoban-hint");
+        const DEFAULT_HINT =
+          "完成关卡后将自动记录最优步数与推箱次数。支持本地存档，刷新页面仍会保留。";
+
+        const state = {
+          levelIndex: 0,
+          grid: [],
+          width: 0,
+          height: 0,
+          moves: 0,
+          pushes: 0,
+          player: { x: 0, y: 0 },
+          history: [],
+          records: loadRecords(),
+          timerRunning: false,
+          timerStart: null,
+          elapsedMs: 0,
+          timerInterval: null,
+          challenge: {
+            strict: false,
+            limitUndo: false,
+            undoBudget: Infinity,
+          },
+        };
+
+        function loadRecords() {
+          try {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            return saved ? JSON.parse(saved) : {};
+          } catch (err) {
+            console.warn("无法读取存档", err);
+            return {};
+          }
+        }
+
+        function persistRecords() {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state.records));
+        }
+
+        function formatTime(seconds) {
+          const m = Math.floor(seconds / 60)
+            .toString()
+            .padStart(2, "0");
+          const s = (seconds % 60).toString().padStart(2, "0");
+          return `${m}:${s}`;
+        }
+
+        function updateTimeLabel() {
+          const totalSeconds = Math.floor(state.elapsedMs / 1000);
+          timeEl.textContent = formatTime(totalSeconds);
+        }
+
+        function resetTimer() {
+          if (state.timerInterval) {
+            clearInterval(state.timerInterval);
+            state.timerInterval = null;
+          }
+          state.timerRunning = false;
+          state.timerStart = null;
+          state.elapsedMs = 0;
+          updateTimeLabel();
+        }
+
+        function startTimerIfNeeded() {
+          if (state.timerRunning) return;
+          state.timerRunning = true;
+          state.timerStart = Date.now();
+          state.timerInterval = setInterval(() => {
+            state.elapsedMs = Date.now() - state.timerStart;
+            updateTimeLabel();
+          }, 500);
+        }
+
+        function stopTimer() {
+          if (state.timerInterval) {
+            clearInterval(state.timerInterval);
+            state.timerInterval = null;
+          }
+          if (state.timerRunning && state.timerStart) {
+            state.elapsedMs = Date.now() - state.timerStart;
+          }
+          state.timerRunning = false;
+          updateTimeLabel();
+        }
+
+        function setupLevelButtons() {
+          levelButtons.innerHTML = "";
+          LEVELS.forEach((level, index) => {
+            const btn = document.createElement("button");
+            btn.textContent = `${index + 1}. ${level.name}`;
+            btn.dataset.index = index;
+            btn.addEventListener("click", () => loadLevel(index));
+            levelButtons.appendChild(btn);
+          });
+        }
+
+        function loadLevel(index) {
+          state.levelIndex = (index + LEVELS.length) % LEVELS.length;
+          const def = LEVELS[state.levelIndex];
+          const layout = def.layout;
+          state.height = layout.length;
+          state.width = Math.max(...layout.map((line) => line.length));
+          state.grid = layout.map((line) => line.padEnd(state.width, " ").split(""));
+          state.moves = 0;
+          state.pushes = 0;
+          state.history = [];
+          state.challenge.undoBudget = state.challenge.limitUndo ? 3 : Infinity;
+          resetTimer();
+          locatePlayer();
+          render();
+        }
+
+        function locatePlayer() {
+          for (let y = 0; y < state.height; y++) {
+            for (let x = 0; x < state.width; x++) {
+              const tile = state.grid[y][x];
+              if (tile === "@" || tile === "+") {
+                state.player = { x, y };
+                return;
+              }
+            }
+          }
+        }
+
+        function tileAt(x, y) {
+          if (x < 0 || y < 0 || x >= state.width || y >= state.height) return "#";
+          return state.grid[y][x];
+        }
+
+        function setTile(x, y, value) {
+          state.grid[y][x] = value;
+        }
+
+        function move(dx, dy) {
+          const { x, y } = state.player;
+          const target = tileAt(x + dx, y + dy);
+          if (target === "#") return;
+
+          if (target === "$" || target === "*") {
+            const beyond = tileAt(x + dx * 2, y + dy * 2);
+            if (beyond === "#" || beyond === "$" || beyond === "*") return;
+            startTimerIfNeeded();
+            state.history.push(snapshot());
+            state.moves++;
+            state.pushes++;
+
+            setTile(
+              x + dx * 2,
+              y + dy * 2,
+              beyond === "." ? "*" : "$"
+            );
+            setTile(x + dx, y + dy, target === "*" ? "+" : "@");
+          } else if (target === "." || target === " ") {
+            startTimerIfNeeded();
+            state.history.push(snapshot());
+            state.moves++;
+            setTile(x + dx, y + dy, target === "." ? "+" : "@");
+          } else if (target === "+") {
+            startTimerIfNeeded();
+            // player on goal treated as target
+            state.history.push(snapshot());
+            state.moves++;
+            setTile(x + dx, y + dy, "+");
+          } else {
+            return;
+          }
+
+          setTile(x, y, tileAt(x, y) === "+" ? "." : " ");
+          state.player = { x: x + dx, y: y + dy };
+          render();
+          enforceParLimit();
+          checkWin();
+        }
+
+        function snapshot() {
+          return {
+            grid: state.grid.map((row) => [...row]),
+            player: { ...state.player },
+            moves: state.moves,
+            pushes: state.pushes,
+          };
+        }
+
+        function undo() {
+          if (
+            state.challenge.limitUndo &&
+            Number.isFinite(state.challenge.undoBudget) &&
+            state.challenge.undoBudget <= 0
+          ) {
+            hintEl.textContent = "撤销次数已用尽";
+            return;
+          }
+          const last = state.history.pop();
+          if (!last) return;
+          state.grid = last.grid.map((row) => [...row]);
+          state.player = { ...last.player };
+          state.moves = last.moves;
+          state.pushes = last.pushes;
+          if (
+            state.challenge.limitUndo &&
+            Number.isFinite(state.challenge.undoBudget)
+          ) {
+            state.challenge.undoBudget -= 1;
+          }
+          render();
+        }
+
+        function checkWin() {
+          const remaining = state.grid.some((row) => row.includes("$"));
+          if (!remaining) {
+            stopTimer();
+            const elapsedSeconds = Math.floor(state.elapsedMs / 1000);
+            const def = LEVELS[state.levelIndex];
+            const rating = gradePerformance(def.par, state.moves, state.pushes);
+            const key = `level_${state.levelIndex}`;
+            const record = state.records[key];
+            if (
+              !record ||
+              ratingValue(rating) > ratingValue(record.rating) ||
+              (ratingValue(rating) === ratingValue(record.rating || "C") &&
+                (state.moves < record.moves ||
+                  (state.moves === record.moves &&
+                    state.pushes < record.pushes)))
+            ) {
+              state.records[key] = {
+                moves: state.moves,
+                pushes: state.pushes,
+                time: elapsedSeconds,
+                rating,
+              };
+              persistRecords();
+            }
+            setTimeout(() => {
+              alert(
+                `恭喜过关！评级 ${rating} · ${state.moves} 步 / ${state.pushes} 推 · 用时 ${formatTime(
+                  elapsedSeconds
+                )}。`
+              );
+            }, 120);
+          }
+        }
+
+        function gradePerformance(par, moves, pushes) {
+          if (!par) return "B";
+          const moveRatio = moves / par.moves;
+          const pushRatio = pushes / par.pushes;
+          if (moveRatio <= 1 && pushRatio <= 1) return "S";
+          if (moveRatio <= 1.15 && pushRatio <= 1.15) return "A";
+          if (moveRatio <= 1.35 && pushRatio <= 1.35) return "B";
+          return "C";
+        }
+
+        function ratingValue(rating = "C") {
+          return { S: 4, A: 3, B: 2, C: 1, D: 0 }[rating] ?? 0;
+        }
+
+        function enforceParLimit() {
+          if (!state.challenge.strict) return;
+          const def = LEVELS[state.levelIndex];
+          if (!def?.par) return;
+          if (state.moves > def.par.moves) {
+            hintEl.textContent = "超过目标步数，正在重置关卡…";
+            setTimeout(() => loadLevel(state.levelIndex), 400);
+          }
+        }
+
+        function render() {
+          gridEl.style.gridTemplateColumns = `repeat(${state.width}, 42px)`;
+          gridEl.innerHTML = "";
+          const def = LEVELS[state.levelIndex];
+          for (let y = 0; y < state.height; y++) {
+            for (let x = 0; x < state.width; x++) {
+              const tile = tileAt(x, y);
+              const cell = document.createElement("div");
+              cell.classList.add("cell");
+              if (tile === "#") cell.classList.add("wall");
+              else if (tile === "." || tile === "+" || tile === "*")
+                cell.classList.add("target");
+              else cell.classList.add("floor");
+
+              if (tile === "$" || tile === "*") cell.classList.add("box");
+              if (tile === "*") cell.classList.add("goal");
+              if (tile === "@" || tile === "+") {
+                cell.classList.add("player");
+                cell.textContent = "◎";
+              } else if (tile === "$" || tile === "*") {
+                cell.textContent = "■";
+              }
+              gridEl.appendChild(cell);
+            }
+          }
+          levelEl.textContent = `${state.levelIndex + 1} / ${LEVELS.length}`;
+          movesEl.textContent = state.moves;
+          pushesEl.textContent = state.pushes;
+          const record = state.records[`level_${state.levelIndex}`];
+          parEl.textContent = `${def.par.moves} / ${def.par.pushes}`;
+          if (record) {
+            bestEl.textContent = `${record.rating || "A"} · ${formatTime(
+              record.time || 0
+            )}`;
+            bestDetailEl.textContent = `${record.moves} 步 / ${record.pushes} 推`;
+          } else {
+            bestEl.textContent = "--";
+            bestDetailEl.textContent = "尚无纪录";
+          }
+
+          [...levelButtons.children].forEach((btn, index) => {
+            btn.style.borderColor =
+              index === state.levelIndex
+                ? "var(--accent)"
+                : "rgba(255,255,255,0.12)";
+          });
+          if (
+            state.challenge.limitUndo &&
+            Number.isFinite(state.challenge.undoBudget)
+          ) {
+            hintEl.textContent = `限撤销：剩余 ${state.challenge.undoBudget} 次。`;
+          } else if (state.challenge.strict) {
+            hintEl.textContent = "严苛步数开启，超过目标将自动重来。";
+          } else {
+            hintEl.textContent = DEFAULT_HINT;
+          }
+          updateTimeLabel();
+        }
+
+        function handleInput(e) {
+          const key = e.key.toLowerCase();
+          if (["arrowup", "w"].includes(key)) {
+            e.preventDefault();
+            move(0, -1);
+          } else if (["arrowdown", "s"].includes(key)) {
+            e.preventDefault();
+            move(0, 1);
+          } else if (["arrowleft", "a"].includes(key)) {
+            e.preventDefault();
+            move(-1, 0);
+          } else if (["arrowright", "d"].includes(key)) {
+            e.preventDefault();
+            move(1, 0);
+          } else if (key === "r") {
+            loadLevel(state.levelIndex);
+          } else if (key === "z" && (e.metaKey || e.ctrlKey)) {
+            undo();
+          }
+        }
+
+        document.getElementById("btn-reset").addEventListener("click", () => {
+          loadLevel(state.levelIndex);
+        });
+        document.getElementById("btn-prev").addEventListener("click", () => {
+          loadLevel(state.levelIndex - 1);
+        });
+        document.getElementById("btn-next").addEventListener("click", () => {
+          loadLevel(state.levelIndex + 1);
+        });
+
+        document.querySelectorAll(".d-pad button[data-move]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const dir = btn.dataset.move;
+            if (dir === "up") move(0, -1);
+            if (dir === "down") move(0, 1);
+            if (dir === "left") move(-1, 0);
+            if (dir === "right") move(1, 0);
+          });
+        });
+
+        challengeStrictToggle.addEventListener("change", () => {
+          state.challenge.strict = challengeStrictToggle.checked;
+          loadLevel(state.levelIndex);
+        });
+
+        challengeUndoToggle.addEventListener("change", () => {
+          state.challenge.limitUndo = challengeUndoToggle.checked;
+          loadLevel(state.levelIndex);
+        });
+
+        gridEl.addEventListener("touchstart", handleSwipeStart, { passive: true });
+        gridEl.addEventListener("touchend", handleSwipeEnd);
+
+        let touchStart = null;
+        function handleSwipeStart(event) {
+          if (event.touches.length !== 1) return;
+          const touch = event.touches[0];
+          touchStart = { x: touch.clientX, y: touch.clientY };
+        }
+        function handleSwipeEnd(event) {
+          if (!touchStart) return;
+          const touch = event.changedTouches[0];
+          const dx = touch.clientX - touchStart.x;
+          const dy = touch.clientY - touchStart.y;
+          touchStart = null;
+          const threshold = 20;
+          if (Math.abs(dx) < threshold && Math.abs(dy) < threshold) return;
+          if (Math.abs(dx) > Math.abs(dy)) {
+            move(dx > 0 ? 1 : -1, 0);
+          } else {
+            move(0, dy > 0 ? 1 : -1);
+          }
+        }
+
+        document.addEventListener("keydown", handleInput);
+        setupLevelButtons();
+        loadLevel(0);
+      })();
+    </script>
+  </body>
 </html>

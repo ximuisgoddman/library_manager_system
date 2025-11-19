@@ -1,0 +1,894 @@
+{% extends 'user_front_page/base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .hero .pill {
+        background: rgba(56, 189, 248, 0.15);
+        color: #38bdf8;
+        padding: 0.4rem 0.9rem;
+        border-radius: 999px;
+        font-weight: 600;
+    }
+    .glass-card {
+        background: rgba(15, 23, 42, 0.85);
+        border: 1px solid rgba(59, 130, 246, 0.25);
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(15, 23, 42, 0.45);
+    }
+    canvas#moto-canvas {
+        width: 100%;
+        max-width: 920px;
+        border-radius: 16px;
+        background: #020617;
+    }
+    .score-panel {
+        color: #94a3b8;
+    }
+    .status-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 0.75rem;
+    }
+    .status-tile {
+        padding: 0.9rem;
+        border-radius: 16px;
+        background: rgba(148, 163, 184, 0.08);
+        border: 1px solid rgba(100, 116, 139, 0.2);
+    }
+    .status-tile .label {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #94a3b8;
+    }
+    .status-tile .value {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #e2e8f0;
+    }
+    .progress-track {
+        position: relative;
+        height: 6px;
+        border-radius: 999px;
+        background: rgba(148, 163, 184, 0.2);
+        overflow: hidden;
+    }
+    .progress-fill {
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, #38bdf8, #f97316);
+        width: 0;
+        transition: width 0.2s ease;
+    }
+    .upgrade-panel {
+        background: rgba(15, 118, 110, 0.08);
+        border: 1px solid rgba(45, 212, 191, 0.3);
+        border-radius: 16px;
+        padding: 1rem;
+        margin-top: 1.5rem;
+    }
+    .upgrade-panel button {
+        width: 100%;
+        margin-bottom: 0.75rem;
+        border-radius: 12px;
+        border: 1px solid rgba(45, 212, 191, 0.4);
+        background: rgba(15, 118, 110, 0.4);
+        color: #ecfeff;
+        font-weight: 600;
+        padding: 0.75rem 1rem;
+        transition: transform 0.2s;
+    }
+    .upgrade-panel button:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+    }
+    .upgrade-panel button:not(:disabled):hover {
+        transform: translateY(-2px);
+    }
+    .mobile-controls {
+        display: none;
+        gap: 0.75rem;
+        margin-top: 1rem;
+    }
+    .mobile-controls button {
+        flex: 1;
+        border: none;
+        border-radius: 12px;
+        padding: 0.9rem 0;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    .btn-direction {
+        background: rgba(30, 64, 175, 0.6);
+        color: #e0f2fe;
+    }
+    .btn-boost {
+        background: rgba(220, 38, 38, 0.8);
+        color: #fff;
+    }
+    @media (max-width: 992px) {
+        canvas#moto-canvas {
+            height: 420px;
+        }
+        .mobile-controls {
+            display: flex;
+        }
+    }
+</style>
+
+<section class="hero mb-4">
+    <div class="hero-content">
+        <span class="pill mb-3 d-inline-flex align-items-center">
+            <i class="fas fa-motorcycle mr-2"></i> 暴力摩托 · Neo Ride
+        </span>
+        <h1>穿梭车流，击退对手，冲击更高段位</h1>
+        <p>键盘 <strong>WASD / 方向键</strong> 驾驶，按 <strong>Shift / F</strong> 释放氮气，<strong>空格</strong> 重新开局。移动端可使用屏幕操作。</p>
+        <div class="mt-2 text-muted small">完成每段关卡目标可解锁更高段位并获得金币升级座驾。</div>
+    </div>
+</section>
+
+<section class="content-section">
+    <div class="glass-card p-3 p-md-4">
+        <div class="d-flex flex-column flex-lg-row gap-4">
+            <div class="flex-grow-1">
+                <canvas id="moto-canvas" width="920" height="520"></canvas>
+                <div class="mobile-controls" id="mobile-controls">
+                    <button class="btn-direction" data-action="left">◀</button>
+                    <button class="btn-direction" data-action="right">▶</button>
+                    <button class="btn-boost" data-action="boost">氮气</button>
+                </div>
+            </div>
+            <div class="score-panel">
+                <div class="status-grid mb-3">
+                    <div class="status-tile">
+                        <div class="label">段位</div>
+                        <div class="value" id="hud-level">N/A</div>
+                    </div>
+                    <div class="status-tile">
+                        <div class="label">距离</div>
+                        <div class="value" id="hud-distance">0 m</div>
+                    </div>
+                    <div class="status-tile">
+                        <div class="label">得分</div>
+                        <div class="value" id="hud-score">0</div>
+                    </div>
+                    <div class="status-tile">
+                        <div class="label">护盾</div>
+                        <div class="value" id="hud-health">3</div>
+                    </div>
+                    <div class="status-tile">
+                        <div class="label">氮气</div>
+                        <div class="value" id="hud-boost">0%</div>
+                    </div>
+                    <div class="status-tile">
+                        <div class="label">金币</div>
+                        <div class="value" id="hud-coins">0</div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between small text-uppercase text-muted mb-1">
+                        <span>关卡进度</span>
+                        <span id="hud-level-target">0 / 0 m</span>
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill" id="level-progress"></div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between small text-uppercase text-muted mb-1">
+                        <span>连击能量</span>
+                        <span id="hud-streak">x0</span>
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill" id="combo-progress"></div>
+                    </div>
+                </div>
+                <div class="upgrade-panel">
+                    <h5 class="text-teal-200 mb-3">车库升级</h5>
+                    <button data-upgrade="engine">引擎调校 · +最高速度 <span class="float-right" data-cost="engine">200</span></button>
+                    <button data-upgrade="handling">竞速车架 · +操控性 <span class="float-right" data-cost="handling">150</span></button>
+                    <button data-upgrade="shield">纳米护盾 · +生命值 <span class="float-right" data-cost="shield">250</span></button>
+                    <div class="small text-muted mt-2">升级永久生效，可重复强化。</div>
+                </div>
+                <div class="mt-4 text-muted small">
+                    · 与 AI 对手并行时保持更高速度即可将其击倒<br>
+                    · 收集蓝色能源球补充氮气，金色芯片可兑换金币<br>
+                    · 击倒对手与连击可快速提高段位评分
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    const canvas = document.getElementById('moto-canvas');
+    const ctx = canvas.getContext('2d');
+
+    const hud = {
+        score: document.getElementById('hud-score'),
+        distance: document.getElementById('hud-distance'),
+        health: document.getElementById('hud-health'),
+        streak: document.getElementById('hud-streak'),
+        boost: document.getElementById('hud-boost'),
+        coins: document.getElementById('hud-coins'),
+        level: document.getElementById('hud-level'),
+        levelTarget: document.getElementById('hud-level-target'),
+        levelProgress: document.getElementById('level-progress'),
+        comboProgress: document.getElementById('combo-progress'),
+    };
+
+    const ROAD_WIDTH = 420;
+    const LANE_COUNT = 3;
+    const LANE_WIDTH = ROAD_WIDTH / LANE_COUNT;
+    const ROAD_X = (canvas.width - ROAD_WIDTH) / 2;
+
+    const BASE_PLAYER = {
+        width: 36,
+        height: 70,
+        acceleration: 0.14,
+        friction: 0.05,
+        maxSpeed: 6,
+        maxHealth: 3,
+        handling: 5,
+    };
+
+    const LEVELS = [
+        { name: '银翼试炼', target: 700, traffic: 1, aiAggro: 1 },
+        { name: '霓虹特快', target: 1200, traffic: 1.2, aiAggro: 1.2 },
+        { name: '量子疾驰', target: 1800, traffic: 1.4, aiAggro: 1.4 },
+        { name: '深空狂飙', target: 2500, traffic: 1.6, aiAggro: 1.6 },
+    ];
+
+    const UPGRADE_COST = {
+        engine: 200,
+        handling: 150,
+        shield: 250,
+    };
+
+    const GAME_STATE = {
+        keys: {},
+        input: { left: false, right: false, up: false, down: false, boost: false },
+        enemies: [],
+        pickups: [],
+        debris: [],
+        lastTime: 0,
+        distance: 0,
+        score: 0,
+        streak: 0,
+        streakTimer: 0,
+        spawnTimer: 0,
+        pickupTimer: 0,
+        aiTimer: 0,
+        boostEnergy: 40,
+        coins: 0,
+        savedCoins: 0,
+        upgrades: { engine: 0, handling: 0, shield: 0 },
+        levelIndex: 0,
+        gameOver: false,
+        levelMessageTimer: 0,
+    };
+
+    const player = {
+        x: canvas.width / 2 - BASE_PLAYER.width / 2,
+        y: canvas.height - 140,
+        width: BASE_PLAYER.width,
+        height: BASE_PLAYER.height,
+        speed: 0,
+        moveX: 0,
+        health: BASE_PLAYER.maxHealth,
+        maxSpeed: BASE_PLAYER.maxSpeed,
+        isBoosting: false,
+        shake: 0,
+    };
+
+    const audioContext = window.AudioContext ? new AudioContext() : null;
+    let allowAudio = false;
+
+    function initProgress() {
+        try {
+            const raw = localStorage.getItem('moto_racer_progress');
+            if (raw) {
+                const parsed = JSON.parse(raw);
+                GAME_STATE.savedCoins = parsed.coins ?? 0;
+                GAME_STATE.coins = GAME_STATE.savedCoins;
+                GAME_STATE.upgrades = { ...GAME_STATE.upgrades, ...parsed.upgrades };
+            } else {
+                GAME_STATE.coins = 0;
+            }
+        } catch (err) {
+            console.warn('Failed to load progress', err);
+        }
+        applyUpgrades();
+        updateUpgradeButtons();
+        updateHud();
+    }
+
+    function saveProgress() {
+        try {
+            localStorage.setItem('moto_racer_progress', JSON.stringify({
+                coins: GAME_STATE.coins,
+                upgrades: GAME_STATE.upgrades,
+            }));
+        } catch (err) {
+            console.warn('Failed to save progress', err);
+        }
+    }
+
+    function applyUpgrades() {
+        player.maxSpeed = BASE_PLAYER.maxSpeed + GAME_STATE.upgrades.engine * 0.6;
+        player.health = BASE_PLAYER.maxHealth + GAME_STATE.upgrades.shield;
+        player.maxHealth = BASE_PLAYER.maxHealth + GAME_STATE.upgrades.shield;
+        player.handling = BASE_PLAYER.handling + GAME_STATE.upgrades.handling * 0.4;
+    }
+
+    function setInput(action, value) {
+        GAME_STATE.input[action] = value;
+    }
+
+    document.addEventListener('keydown', (e) => {
+        GAME_STATE.keys[e.code] = true;
+        if (!allowAudio) {
+            allowAudio = true;
+            if (audioContext && audioContext.state === 'suspended') audioContext.resume();
+        }
+        if (GAME_STATE.gameOver && e.code === 'Space') {
+            resetGame();
+            return;
+        }
+        switch (e.code) {
+            case 'ArrowUp':
+            case 'KeyW':
+                setInput('up', true);
+                break;
+            case 'ArrowDown':
+            case 'KeyS':
+                setInput('down', true);
+                break;
+            case 'ArrowLeft':
+            case 'KeyA':
+                setInput('left', true);
+                break;
+            case 'ArrowRight':
+            case 'KeyD':
+                setInput('right', true);
+                break;
+            case 'ShiftLeft':
+            case 'ShiftRight':
+            case 'KeyF':
+                setInput('boost', true);
+                break;
+            default:
+                break;
+        }
+    });
+
+    document.addEventListener('keyup', (e) => {
+        GAME_STATE.keys[e.code] = false;
+        switch (e.code) {
+            case 'ArrowUp':
+            case 'KeyW':
+                setInput('up', false);
+                break;
+            case 'ArrowDown':
+            case 'KeyS':
+                setInput('down', false);
+                break;
+            case 'ArrowLeft':
+            case 'KeyA':
+                setInput('left', false);
+                break;
+            case 'ArrowRight':
+            case 'KeyD':
+                setInput('right', false);
+                break;
+            case 'ShiftLeft':
+            case 'ShiftRight':
+            case 'KeyF':
+                setInput('boost', false);
+                break;
+            default:
+                break;
+        }
+    });
+
+    function initMobileControls() {
+        const controls = document.getElementById('mobile-controls');
+        controls.querySelectorAll('button').forEach((btn) => {
+            const action = btn.dataset.action;
+            btn.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                if (action === 'boost') {
+                    setInput('boost', true);
+                } else {
+                    setInput(action, true);
+                }
+            }, { passive: false });
+            btn.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                if (action === 'boost') {
+                    setInput('boost', false);
+                } else {
+                    setInput(action, false);
+                }
+            }, { passive: false });
+        });
+    }
+
+    function resetGame() {
+        GAME_STATE.enemies = [];
+        GAME_STATE.pickups = [];
+        GAME_STATE.debris = [];
+        GAME_STATE.distance = 0;
+        GAME_STATE.score = 0;
+        GAME_STATE.streak = 0;
+        GAME_STATE.streakTimer = 0;
+        GAME_STATE.spawnTimer = 0;
+        GAME_STATE.pickupTimer = 0;
+        GAME_STATE.aiTimer = 0;
+        GAME_STATE.boostEnergy = 40 + GAME_STATE.upgrades.engine * 5;
+        GAME_STATE.gameOver = false;
+        player.x = canvas.width / 2 - player.width / 2;
+        player.speed = 0;
+        player.moveX = 0;
+        player.isBoosting = false;
+        player.health = player.maxHealth;
+        GAME_STATE.levelIndex = 0;
+        GAME_STATE.levelMessageTimer = 2.5;
+        requestAnimationFrame(loop);
+    }
+
+    function spawnTrafficCar(isAI = false) {
+        const lane = Math.floor(Math.random() * LANE_COUNT);
+        const baseSpeed = 3.2 + Math.random() * 2;
+        GAME_STATE.enemies.push({
+            x: ROAD_X + lane * LANE_WIDTH + LANE_WIDTH / 2 - 30,
+            y: -160,
+            width: 60,
+            height: 130,
+            speed: baseSpeed,
+            targetLane: lane,
+            color: isAI ? '#22d3ee' : ['#f43f5e', '#06b6d4', '#f97316'][lane],
+            isAI,
+            state: 'racing',
+            wobble: Math.random() * Math.PI,
+            knockTimer: 0,
+        });
+    }
+
+    function spawnPickup() {
+        const lane = Math.floor(Math.random() * LANE_COUNT);
+        const type = Math.random() > 0.55 ? 'boost' : 'coin';
+        GAME_STATE.pickups.push({
+            x: ROAD_X + lane * LANE_WIDTH + LANE_WIDTH / 2 - 16,
+            y: -40,
+            radius: 16,
+            speed: 3 + Math.random(),
+            pulse: Math.random() * Math.PI,
+            type,
+        });
+    }
+
+    function spawnDebris(x, y, color = '#e2e8f0') {
+        for (let i = 0; i < 14; i++) {
+            GAME_STATE.debris.push({
+                x,
+                y,
+                vx: (Math.random() - 0.5) * 6,
+                vy: -Math.random() * 4,
+                life: 1,
+                color,
+            });
+        }
+    }
+
+    function updateGame(delta) {
+        if (GAME_STATE.gameOver) return;
+        const seconds = delta / 16.67;
+        const level = LEVELS[GAME_STATE.levelIndex] || LEVELS[LEVELS.length - 1];
+
+        const accel = BASE_PLAYER.acceleration * (player.isBoosting ? 1.6 : 1);
+        if (GAME_STATE.input.up) {
+            player.speed = Math.min(player.maxSpeed + (player.isBoosting ? 3 : 0), player.speed + accel * seconds);
+        } else if (GAME_STATE.input.down) {
+            player.speed = Math.max(0, player.speed - accel * seconds);
+        } else {
+            player.speed = Math.max(0, player.speed - BASE_PLAYER.friction * seconds);
+        }
+
+        const driftForce = player.handling || BASE_PLAYER.handling;
+        if (GAME_STATE.input.left) {
+            player.moveX = -driftForce;
+        } else if (GAME_STATE.input.right) {
+            player.moveX = driftForce;
+        } else {
+            player.moveX *= 0.85;
+        }
+
+        player.x += player.moveX;
+        player.x = Math.max(ROAD_X + 10, Math.min(ROAD_X + ROAD_WIDTH - player.width - 10, player.x));
+        GAME_STATE.distance += player.speed * 8 * seconds;
+
+        if (GAME_STATE.input.boost && GAME_STATE.boostEnergy > 0) {
+            player.isBoosting = true;
+            GAME_STATE.boostEnergy = Math.max(0, GAME_STATE.boostEnergy - 0.3 * seconds);
+        } else {
+            player.isBoosting = false;
+            GAME_STATE.boostEnergy = Math.min(100, GAME_STATE.boostEnergy + 0.15 * seconds);
+        }
+
+        GAME_STATE.spawnTimer += seconds * level.traffic;
+        GAME_STATE.pickupTimer += seconds;
+        GAME_STATE.aiTimer += seconds;
+        GAME_STATE.levelMessageTimer = Math.max(0, GAME_STATE.levelMessageTimer - seconds);
+
+        if (GAME_STATE.spawnTimer > 1) {
+            spawnTrafficCar(false);
+            GAME_STATE.spawnTimer = 0;
+        }
+        if (GAME_STATE.pickupTimer > 2.8) {
+            spawnPickup();
+            GAME_STATE.pickupTimer = 0;
+        }
+        if (GAME_STATE.aiTimer > 3.6 / level.aiAggro) {
+            spawnTrafficCar(true);
+            GAME_STATE.aiTimer = 0;
+        }
+
+        GAME_STATE.enemies.forEach((enemy) => updateEnemy(enemy, seconds, level));
+        GAME_STATE.pickups.forEach((pickup) => {
+            pickup.y += pickup.speed * (1.2 + player.speed * 0.05);
+            pickup.pulse += 0.08;
+        });
+        GAME_STATE.pickups = GAME_STATE.pickups.filter((p) => p.y < canvas.height + 80);
+
+        GAME_STATE.debris.forEach((piece) => {
+            piece.x += piece.vx;
+            piece.y += piece.vy;
+            piece.vy += 0.2;
+            piece.life -= 0.02;
+        });
+        GAME_STATE.debris = GAME_STATE.debris.filter((piece) => piece.life > 0);
+
+        handleCollisions();
+        updateHud(level);
+        checkLevelProgress(level);
+    }
+
+    function updateEnemy(enemy, seconds, level) {
+        if (enemy.state === 'wrecked') {
+            enemy.y += 2.5;
+            enemy.knockTimer -= seconds;
+            if (enemy.knockTimer <= 0) {
+                enemy.alpha = (enemy.alpha || 1) - 0.02;
+                if (enemy.alpha <= 0) enemy.state = 'done';
+            }
+            return;
+        }
+        enemy.y += enemy.speed * (2 + player.speed * 0.1);
+        enemy.wobble += 0.05;
+        if (enemy.isAI && Math.random() < 0.005 * level.aiAggro) {
+            enemy.targetLane = Math.max(0, Math.min(LANE_COUNT - 1, enemy.targetLane + (Math.random() > 0.5 ? 1 : -1)));
+        }
+        const targetX = ROAD_X + enemy.targetLane * LANE_WIDTH + LANE_WIDTH / 2 - enemy.width / 2;
+        enemy.x += (targetX - enemy.x) * 0.04;
+    }
+
+    function handleCollisions() {
+        GAME_STATE.enemies.forEach((enemy) => {
+            if (enemy.state !== 'racing') return;
+            if (isRectIntersect(player, enemy)) {
+                const relativeSpeed = player.speed - enemy.speed;
+                if (player.isBoosting || relativeSpeed > 2) {
+                    enemy.state = 'wrecked';
+                    enemy.knockTimer = 1.4;
+                    spawnDebris(enemy.x + enemy.width / 2, enemy.y + enemy.height / 2, enemy.color);
+                    addScore(150);
+                    addCoins(5);
+                    GAME_STATE.streak += 1;
+                    GAME_STATE.streakTimer = 4;
+                    playSfx('knock');
+                } else {
+                    takeDamage();
+                    enemy.y += 40;
+                }
+            }
+        });
+        GAME_STATE.enemies = GAME_STATE.enemies.filter((enemy) => enemy.y < canvas.height + 200 && enemy.state !== 'done');
+
+        GAME_STATE.pickups.forEach((pickup) => {
+            if (isCircleHit(player, pickup)) {
+                if (pickup.type === 'boost') {
+                    GAME_STATE.boostEnergy = Math.min(100, GAME_STATE.boostEnergy + 25);
+                    addScore(60);
+                    playSfx('pickup');
+                } else {
+                    addCoins(10);
+                    addScore(80);
+                    playSfx('coin');
+                }
+                GAME_STATE.streak += 1;
+                GAME_STATE.streakTimer = 4;
+                pickup.y = canvas.height + 100;
+            }
+        });
+    }
+
+    function checkLevelProgress(level) {
+        const progress = Math.min(1, GAME_STATE.distance / level.target);
+        if (progress >= 1 && GAME_STATE.levelIndex < LEVELS.length - 1) {
+            GAME_STATE.levelIndex += 1;
+            GAME_STATE.distance = 0;
+            GAME_STATE.levelMessageTimer = 3;
+            addCoins(40);
+            playSfx('level');
+        }
+    }
+
+    function takeDamage() {
+        if (player.shake > 0) return;
+        player.health -= 1;
+        player.shake = 0.4;
+        GAME_STATE.streak = 0;
+        GAME_STATE.streakTimer = 0;
+        playSfx('hit');
+        if (player.health <= 0) {
+            GAME_STATE.gameOver = true;
+            saveProgress();
+        }
+    }
+
+    function addCoins(amount) {
+        GAME_STATE.coins += amount;
+        saveProgress();
+    }
+
+    function addScore(amount) {
+        GAME_STATE.score += amount;
+    }
+
+    function isRectIntersect(a, b) {
+        return (
+            a.x < b.x + b.width &&
+            a.x + a.width > b.x &&
+            a.y < b.y + b.height &&
+            a.y + a.height > b.y
+        );
+    }
+
+    function isCircleHit(rect, circle) {
+        const distX = Math.abs(circle.x + circle.radius - (rect.x + rect.width / 2));
+        const distY = Math.abs(circle.y + circle.radius - (rect.y + rect.height / 2));
+        if (distX > (rect.width / 2 + circle.radius)) { return false; }
+        if (distY > (rect.height / 2 + circle.radius)) { return false; }
+        if (distX <= (rect.width / 2)) { return true; }
+        if (distY <= (rect.height / 2)) { return true; }
+        const dx = distX - rect.width / 2;
+        const dy = distY - rect.height / 2;
+        return (dx * dx + dy * dy <= (circle.radius * circle.radius));
+    }
+
+    function updateHud(level = LEVELS[GAME_STATE.levelIndex]) {
+        hud.score.textContent = GAME_STATE.score.toString();
+        const totalDistance = Math.floor(GAME_STATE.distance);
+        hud.distance.textContent = `${totalDistance} m`;
+        hud.health.textContent = `${player.health}/${player.maxHealth}`;
+        hud.boost.textContent = `${Math.round(GAME_STATE.boostEnergy)}%`;
+        hud.coins.textContent = GAME_STATE.coins.toString();
+        hud.level.textContent = level.name;
+        hud.streak.textContent = `x${GAME_STATE.streak}`;
+        const progress = Math.min(1, GAME_STATE.distance / level.target);
+        hud.levelTarget.textContent = `${totalDistance} / ${level.target} m`;
+        hud.levelProgress.style.width = `${progress * 100}%`;
+        const streakRatio = Math.min(1, GAME_STATE.streakTimer / 4);
+        hud.comboProgress.style.width = `${streakRatio * 100}%`;
+        updateUpgradeButtons();
+    }
+
+    function updateUpgradeButtons() {
+        document.querySelectorAll('.upgrade-panel button').forEach((btn) => {
+            const key = btn.dataset.upgrade;
+            const cost = UPGRADE_COST[key];
+            btn.disabled = GAME_STATE.coins < cost;
+            const costSpan = btn.querySelector('[data-cost]');
+            if (costSpan) {
+                costSpan.textContent = `${cost}`;
+            }
+        });
+    }
+
+    document.querySelectorAll('.upgrade-panel button').forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const type = btn.dataset.upgrade;
+            if (!type) return;
+            const cost = UPGRADE_COST[type];
+            if (GAME_STATE.coins >= cost) {
+                GAME_STATE.coins -= cost;
+                GAME_STATE.upgrades[type] += 1;
+                saveProgress();
+                applyUpgrades();
+                updateHud();
+                showUpgradeToast(type);
+            }
+        });
+    });
+
+    function showUpgradeToast(type) {
+        const label = {
+            engine: '引擎调校升级！',
+            handling: '操控性能提升！',
+            shield: '护盾容量提升！',
+        }[type];
+        if (!label) return;
+        const toast = document.createElement('div');
+        toast.textContent = label;
+        toast.style.position = 'absolute';
+        toast.style.top = '20px';
+        toast.style.right = '20px';
+        toast.style.padding = '0.75rem 1.2rem';
+        toast.style.background = 'rgba(15, 118, 110, 0.9)';
+        toast.style.borderRadius = '999px';
+        toast.style.color = '#ecfeff';
+        toast.style.fontWeight = '600';
+        toast.style.zIndex = '5';
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 1800);
+    }
+
+    function playSfx(type) {
+        if (!audioContext || !allowAudio) return;
+        const notes = {
+            pickup: 880,
+            coin: 660,
+            knock: 280,
+            hit: 140,
+            level: 520,
+        };
+        const freq = notes[type] || 440;
+        const osc = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+        osc.frequency.setValueAtTime(freq, audioContext.currentTime);
+        gain.gain.setValueAtTime(0.15, audioContext.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.25);
+        osc.connect(gain).connect(audioContext.destination);
+        osc.start();
+        osc.stop(audioContext.currentTime + 0.25);
+    }
+
+    function drawRoad() {
+        ctx.fillStyle = '#020617';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+        gradient.addColorStop(0, '#0f172a');
+        gradient.addColorStop(1, '#020617');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(ROAD_X, 0, ROAD_WIDTH, canvas.height);
+        ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+        ctx.lineWidth = 2;
+        ctx.setLineDash([22, 18]);
+        for (let i = 1; i < LANE_COUNT; i++) {
+            ctx.beginPath();
+            ctx.moveTo(ROAD_X + i * LANE_WIDTH, 0);
+            ctx.lineTo(ROAD_X + i * LANE_WIDTH, canvas.height);
+            ctx.stroke();
+        }
+        ctx.setLineDash([]);
+    }
+
+    function drawPlayer() {
+        ctx.save();
+        const shakeX = player.shake > 0 ? (Math.random() - 0.5) * 8 : 0;
+        const shakeY = player.shake > 0 ? (Math.random() - 0.5) * 8 : 0;
+        player.shake = Math.max(0, player.shake - 0.02);
+        ctx.translate(player.x + player.width / 2 + shakeX, player.y + player.height / 2 + shakeY);
+        ctx.rotate(player.moveX * 0.015);
+        ctx.fillStyle = player.isBoosting ? '#f59e0b' : '#f97316';
+        ctx.fillRect(-player.width / 2, -player.height / 2, player.width, player.height);
+        ctx.fillStyle = '#0f172a';
+        ctx.fillRect(-player.width / 2 + 8, -player.height / 2 + 12, player.width - 16, player.height - 24);
+        if (player.isBoosting) {
+            ctx.fillStyle = 'rgba(59, 130, 246, 0.7)';
+            ctx.fillRect(-player.width / 2 + 6, player.height / 2 - 8, player.width - 12, 10);
+        }
+        ctx.restore();
+    }
+
+    function drawEnemies() {
+        GAME_STATE.enemies.forEach((enemy) => {
+            ctx.save();
+            ctx.globalAlpha = enemy.alpha || 1;
+            ctx.fillStyle = enemy.color;
+            ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
+            ctx.fillStyle = 'rgba(255,255,255,0.5)';
+            ctx.fillRect(enemy.x + 12, enemy.y + 18, enemy.width - 24, 12);
+            ctx.restore();
+        });
+    }
+
+    function drawPickups() {
+        GAME_STATE.pickups.forEach((pickup) => {
+            ctx.beginPath();
+            const gradient = ctx.createRadialGradient(
+                pickup.x + pickup.radius,
+                pickup.y + pickup.radius,
+                pickup.radius * 0.3,
+                pickup.x + pickup.radius,
+                pickup.y + pickup.radius,
+                pickup.radius
+            );
+            if (pickup.type === 'boost') {
+                gradient.addColorStop(0, 'rgba(14,165,233,0.95)');
+                gradient.addColorStop(1, 'rgba(14,165,233,0.25)');
+            } else {
+                gradient.addColorStop(0, 'rgba(250,204,21,0.95)');
+                gradient.addColorStop(1, 'rgba(251,191,36,0.25)');
+            }
+            ctx.fillStyle = gradient;
+            ctx.arc(pickup.x + pickup.radius, pickup.y + pickup.radius, pickup.radius + Math.sin(pickup.pulse) * 2, 0, Math.PI * 2);
+            ctx.fill();
+        });
+    }
+
+    function drawDebris() {
+        GAME_STATE.debris.forEach((piece) => {
+            ctx.fillStyle = piece.color;
+            ctx.globalAlpha = Math.max(0, piece.life);
+            ctx.fillRect(piece.x, piece.y, 4, 4);
+            ctx.globalAlpha = 1;
+        });
+    }
+
+    function drawOverlay() {
+        if (GAME_STATE.gameOver) {
+            ctx.fillStyle = 'rgba(2,6,23,0.85)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#f8fafc';
+            ctx.textAlign = 'center';
+            ctx.font = '700 42px "Inter", sans-serif';
+            ctx.fillText('比赛结束', canvas.width / 2, canvas.height / 2 - 10);
+            ctx.font = '400 20px "Inter", sans-serif';
+            ctx.fillText('按空格键重新开始', canvas.width / 2, canvas.height / 2 + 26);
+        } else if (GAME_STATE.levelMessageTimer > 0) {
+            ctx.fillStyle = `rgba(56,189,248,${GAME_STATE.levelMessageTimer / 3})`;
+            ctx.textAlign = 'center';
+            ctx.font = '700 32px "Inter", sans-serif';
+            ctx.fillText(`进入 ${LEVELS[GAME_STATE.levelIndex].name}`, canvas.width / 2, canvas.height / 2);
+        }
+    }
+
+    function loop(timestamp) {
+        const delta = timestamp - GAME_STATE.lastTime;
+        GAME_STATE.lastTime = timestamp;
+        updateGame(delta);
+        drawRoad();
+        drawPickups();
+        drawEnemies();
+        drawPlayer();
+        drawDebris();
+        drawOverlay();
+        if (typeof highlightQueueItem === 'function') {
+            highlightQueueItem(audioPlayer?.getAttribute?.('data-song-id'));
+        }
+        if (!GAME_STATE.gameOver) {
+            requestAnimationFrame(loop);
+        }
+    }
+
+    window.addEventListener('resize', () => {
+        const rect = canvas.getBoundingClientRect();
+        canvas.width = rect.width * window.devicePixelRatio;
+        canvas.height = 520 * window.devicePixelRatio;
+    });
+
+    initMobileControls();
+    initProgress();
+    if (typeof renderQueue === 'function') {
+        renderQueue();
+    }
+    resetGame();
+</script>
+{% endblock %}

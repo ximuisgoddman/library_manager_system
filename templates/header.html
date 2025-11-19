@@ -2,65 +2,79 @@
 {% notifications_unread as unread_count %}
 {% load static %}
 
-<!-- 定义导航栏 -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark app-navbar">
     <div class="container">
-        <!-- 导航栏商标 -->
-        <a class="navbar-brand" href="#">Myblog</a>
-        <!-- 导航入口 -->
-        <div>
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'article:article_list' %}">文章</a>
-                </li>
+        <a class="navbar-brand" href="{% url 'home' %}">
+            <span class="brand-badge">
+                <i class="fas fa-book-open"></i>
+            </span>
+            <span>Library Hub</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNav"
+                aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-                <!-- Django的 if 模板语句 -->
-                {% if user.is_authenticated %}
-                <!-- 如果用户已经登录，则显示用户名下拉框 -->
-                <li class="nav-item dropdown">
-                    {% if user.avatar and user.avatar.url %}
-                    <a href="{% url 'article:user_article_list' user_id=user.id %}">
-                        <img src="{{ user.avatar.url }}" alt="{{ user.username }}" class="avatar-img"
-                             style="width: 38px; height: 38px; border-radius: 50%;">
-                    </a>
-                    {% else %}
-                    <a href="{% url 'article:user_article_list' user_id=user.id %}">
-                        <img src="{% static 'avatar/default.jpeg' %}" alt="{{ user.username }}" class="avatar-img"
-                             style="width: 38px; height: 38px; border-radius: 50%;">
-                    </a>
-                    {% endif %}
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {% if unread_count %}
-                        <svg viewBox="0 0 8 8" width="8px" height="8px">
-                            <circle cx="4" cy="4" r="4" fill="#ff6b6b"></circle>
-                        </svg>
-                        {% endif %}
-                    </a>
-
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="{% url 'notice:list' %}">通知</a>
-                        {% if unread_count %}
-                        <span class="badge badge-danger">{{ unread_count }}</span>
-                        {% endif %}
-                        </a>
-                        <a class="dropdown-item" href="{% url 'article:article_create' %}">写文章</a>
-                        <a class="dropdown-item" href='{% url "user_edit" user.id %}'>个人信息</a>
-                        <a class="dropdown-item" href="#" onclick="user_delete()">删除用户</a>
-                        <a class="dropdown-item" href='{% url "logout" %}'>退出登录</a>
-                    </div>
-                </li>
-                <li id="back-home">
-                    <a class="nav-link" href="{% url 'home' %}">主页</a>
-                </li>
-                <!-- 如果用户未登录，则显示 “登录” -->
-                {% else %}
+        <div class="collapse navbar-collapse" id="mainNav">
+            <ul class="navbar-nav mr-auto align-items-lg-center">
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'login' %}">登录</a>
+                    <a class="nav-link" href="{% url 'home' %}">首页</a>
                 </li>
-                <!-- if 语句在这里结束 -->
-                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'book_front_page' %}">纸质图书</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'user_online_book_list' %}">电子书</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'online_song_list' %}">音乐角</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'online_games' %}">小游戏</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'article:article_list' %}">博客</a>
+                </li>
             </ul>
+
+            <div class="d-flex align-items-center">
+                {% if user.is_authenticated %}
+                <div class="nav-pill d-none d-lg-block">
+                    <span class="text-capitalize">你好，{{ user.username }}</span>
+                </div>
+                <div class="nav-item dropdown ml-lg-3">
+                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown"
+                       role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {% if user.avatar and user.avatar.url %}
+                        <img src="{{ user.avatar.url }}" alt="{{ user.username }}" class="avatar-chip">
+                        {% else %}
+                        <img src="{% static 'avatar/default.jpeg' %}" alt="{{ user.username }}" class="avatar-chip">
+                        {% endif %}
+                        {% if unread_count %}
+                        <span class="badge badge-danger ml-2">{{ unread_count }}</span>
+                        {% endif %}
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right shadow-sm" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{% url 'notice:list' %}">
+                            通知中心
+                            {% if unread_count %}
+                            <span class="badge badge-danger ml-2">{{ unread_count }}</span>
+                            {% endif %}
+                        </a>
+                        <a class="dropdown-item" href="{% url 'article:article_create' %}">发布文章</a>
+                        <a class="dropdown-item" href="{% url 'user_book_shelf_list' user.id %}">我的书架</a>
+                        <a class="dropdown-item" href="{% url 'user_borrow_record' user.id %}">借阅记录</a>
+                        <a class="dropdown-item" href="{% url 'user_edit' user.id %}">个人资料</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item text-danger" href="#" onclick="user_delete()">删除账户</a>
+                        <a class="dropdown-item" href="{% url 'logout' %}">退出登录</a>
+                    </div>
+                </div>
+                {% else %}
+                <a class="btn btn-soft secondary mr-2" href="{% url 'login' %}">登录</a>
+                <a class="btn btn-soft primary" href="{% url 'register' %}">注册账号</a>
+                {% endif %}
+            </div>
         </div>
     </div>
 </nav>
@@ -72,37 +86,14 @@
 </form>
 <script>
     function user_delete() {
-        // 调用layer弹窗组件
         layer.open({
             title: "确认删除",
             content: "确认删除用户资料吗？",
-            yes: function (index, layero) {
-                $('form#user_delete button').click();
+            yes: function (index) {
+                document.querySelector('form#user_delete button').click();
                 layer.close(index);
             },
         })
     }
-    $(document).ready(function () {
-        $(".avatar-img").click(function () {
-            // 显示用户信息
-            $(".user-info").toggleClass("show");
-        });
-
-        function user_delete() {
-            // 调用layer弹窗组件
-            layer.open({
-                title: "确认删除",
-                content: "确认删除用户资料吗？",
-                yes: function (index, layero) {
-                    $('form#user_delete button').click();
-                    layer.close(index);
-                },
-            })
-        }
-    });
-
-
-
 </script>
-
 {% endif %}

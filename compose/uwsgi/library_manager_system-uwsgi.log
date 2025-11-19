@@ -1610,3 +1610,42 @@ detected binary path: /usr/local/bin/uwsgi
 !!! no internal routing support, rebuild with pcre support !!!
 chdir() to /var/www/html/library_manager_system
 chdir(): No such file or directory [core/uwsgi.c line 2628]
+*** Starting uWSGI 2.0.24 (64bit) on [Wed Sep  3 15:05:12 2025] ***
+*** Starting uWSGI 2.0.24 (64bit) on [Wed Sep  3 15:05:12 2025] ***
+*** Starting uWSGI 2.0.24 (64bit) on [Wed Sep  3 15:05:12 2025] ***
+compiled with version: 12.2.0 on 08 October 2024 14:17:26
+compiled with version: 12.2.0 on 08 October 2024 14:17:26
+compiled with version: 12.2.0 on 08 October 2024 14:17:26
+os: Linux-5.15.153.1-microsoft-standard-WSL2 #1 SMP Fri Mar 29 23:14:13 UTC 2024
+os: Linux-5.15.153.1-microsoft-standard-WSL2 #1 SMP Fri Mar 29 23:14:13 UTC 2024
+os: Linux-5.15.153.1-microsoft-standard-WSL2 #1 SMP Fri Mar 29 23:14:13 UTC 2024
+nodename: 616c39f6c044
+nodename: 51d739f55220
+nodename: a1eb652d95a4
+machine: x86_64
+machine: x86_64
+machine: x86_64
+clock source: unix
+clock source: unix
+clock source: unix
+detected number of CPU cores: 12
+detected number of CPU cores: 12
+detected number of CPU cores: 12
+current working directory: /app
+current working directory: /app
+current working directory: /app
+writing pidfile to /tmp/library_manager_system-master.pid
+writing pidfile to /tmp/library_manager_system-master.pid
+writing pidfile to /tmp/library_manager_system-master.pid
+detected binary path: /usr/local/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+chdir() to /var/www/html/library_manager_system
+detected binary path: /usr/local/bin/uwsgi
+chdir(): No such file or directory [core/uwsgi.c line 2628]
+!!! no internal routing support, rebuild with pcre support !!!
+detected binary path: /usr/local/bin/uwsgi
+chdir() to /var/www/html/library_manager_system
+!!! no internal routing support, rebuild with pcre support !!!
+chdir() to /var/www/html/library_manager_system
+chdir(): No such file or directory [core/uwsgi.c line 2628]
+chdir(): No such file or directory [core/uwsgi.c line 2628]

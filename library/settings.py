@@ -34,6 +34,7 @@ ALLOWED_HOSTS = ['10.24.96.143', '127.0.0.1', '10.58.237.117', '192.168.1.3', 'd
 # Application definition
 
 INSTALLED_APPS = [
+    'library.apps.LibraryConfig',
     # 性能分析工具
     'debug_toolbar',
     'lottery',
@@ -285,6 +286,19 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 ADMIN_FRONT_PAGE_VIEWS_DIR = os.path.join(BASE_DIR, 'admin_front_page_views')
+
+# -----------------------------
+# django-simple-captcha 配置
+# -----------------------------
+CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.math_challenge'
+CAPTCHA_LENGTH = 4
+CAPTCHA_IMAGE_SIZE = None  # 自动根据文字尺寸适配，避免裁切
+CAPTCHA_FONT_SIZE = 34
+CAPTCHA_BACKGROUND_COLOR = '#f8fafc'
+CAPTCHA_FOREGROUND_COLOR = '#1f2933'
+CAPTCHA_NOISE_FUNCTIONS = ('captcha.helpers.noise_null',)
+CAPTCHA_FILTER_FUNCTIONS = ()
+CAPTCHA_LETTER_ROTATION = (-4, 4)
 
 CKEDITOR_CONFIGS = {
     # django-ckeditor默认使用default配置

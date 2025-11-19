@@ -10,176 +10,129 @@
 
 <!-- 写入 base.html 中定义的 content -->
 {% block content %}
-
-<!-- 定义放置文章标题的div容器 -->
-<div class="container">
-    <!-- 面包屑导航 -->
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item">
-                <a href="{% url 'article:article_list' %}?search={{ search }}&column={{ column }}&tag={{ tag }}">
-                    最新
-                </a>
-            </li>
-            <li class="breadcrumb-item">
-                <a href="{% url 'article:article_list' %}?order=total_views&search={{ search }}&column={{ column }}&tag={{ tag }}">
-                    最热
-                </a>
-            </li>
-        </ol>
-    </nav>
-
-    <!-- 搜索栏 -->
-    <div class="row">
-        <div class="col-auto mr-auto">
-            <form class="form-inline" >
-                <label class="sr-only">content</label>
-                <input type="text"
-                    class="form-control mb-2 mr-sm-2"
-                    name="search"
-                    placeholder="搜索文章..."
-                    required
-                >
-            </form>
+<section class="content-section">
+    <div class="page-header">
+        <div>
+            <p class="eyebrow">我的收藏</p>
+            <h1>文章灵感库</h1>
+            <p class="text-muted mb-0">沉淀灵感、随时回看，继续创作你的下一篇故事。</p>
+        </div>
+        <div class="header-actions">
+            <span class="pill">本页 {{ articles|length }} 篇</span>
+            {% if search %}
+            <span class="pill pill-live">关键词：{{ search }}</span>
+            {% endif %}
         </div>
     </div>
 
-    <!-- 搜索提示语 -->
-    {% if search %}
-        {% if articles %}
-            <h4><span style="color: red">"{{ search }}"</span>的搜索结果如下：</h4>
-            <hr>
-        {% else %}
-            <h4>暂无<span style="color: red">"{{ search }}"</span>有关的文章。</h4>
-            <hr>
-        {% endif %}
-    {% endif %}
-
-    <!-- 列表循环 -->
-    <div class="row mt-2">
-        {% for article in articles %}
-            <!-- 文章内容 -->
-
-            <!-- 标题图 -->
-            {% if article.avatar %}
-                <div class="col-3">
-                    <img src="{{ article.avatar.url }}"
-                         alt="avatar"
-                         style="max-width:100%; border-radius: 20px"
-                    >
+    <div class="glass-card filter-card mb-4">
+        <form method="get" class="w-100">
+            <input type="hidden" name="order" value="{{ order }}">
+            <input type="hidden" name="column" value="{{ column }}">
+            <input type="hidden" name="tag" value="{{ tag }}">
+            <div class="row align-items-center">
+                <div class="col-md-6 mb-3 mb-md-0">
+                    <div class="input-icon">
+                        <i class="fas fa-search"></i>
+                        <input type="text"
+                               name="search"
+                               class="form-control"
+                               placeholder="搜索收藏文章..."
+                               value="{{ search }}"
+                        >
+                    </div>
                 </div>
-            {% endif %}
+                <div class="col-md-6 text-md-right">
+                    <div class="chip-group">
+                        <a class="chip {% if not order or order == '' %}active{% endif %}"
+                           href="{% url 'article:article_list' %}?search={{ search }}&column={{ column }}&tag={{ tag }}">
+                            最新
+                        </a>
+                        <a class="chip {% if order == 'total_views' %}active{% endif %}"
+                           href="{% url 'article:article_list' %}?order=total_views&search={{ search }}&column={{ column }}&tag={{ tag }}">
+                            最热
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
 
-            <div class="col">
-                <!-- 栏目 -->
-                {% if article.column %}
-                    <a  role="button"
-                        href="{% url 'article:article_list' %}?column={{ article.column.id }}"
-                        class="btn btn-sm mb-2
-                            {% if article.column.title == 'Django' %}
-                                btn-success
-                            {% elif article.column.title == 'Java' %}
-                                btn-danger
-                            {% elif article.column.title == 'HTML' %}
-                                btn-warning
-                            {% endif %}
-                        "
-                    >
+    <div class="article-collection">
+        {% for article in articles %}
+        <article class="article-card">
+            <div class="article-cover">
+                <img src="{% if article.avatar %}{{ article.avatar.url }}{% else %}{% static 'avatar/default.jpeg' %}{% endif %}"
+                     alt="{{ article.title }}">
+            </div>
+            <div>
+                <div class="article-meta">
+                    {% if article.column %}
+                    <a href="{% url 'article:article_list' %}?column={{ article.column.id }}"
+                       class="pill pill-dark">
                         {{ article.column }}
                     </a>
-                {% endif %}
-
-                <!-- 标签 -->
-                <span>
+                    {% endif %}
                     {% for tag in article.tags.all %}
-                        <a href="{% url 'article:article_list' %}?tag={{ tag }}"
-                           class="badge badge-secondary"
-                        >
-                            {{ tag }}
-                        </a>
+                    <a href="{% url 'article:article_list' %}?tag={{ tag }}"
+                       class="badge badge-secondary">
+                        {{ tag }}
+                    </a>
                     {% endfor %}
-                </span>
-
-                <!-- 标题 -->
-                <h4>
-                    <b>
-                        <a href="{% url 'article:article_detail' article.id %}"
-                           style="color: black;"
-                        >
-                            {{ article.title }}
-                        </a>
-                    </b>
-                </h4>
-                <!-- 摘要 -->
-                <div>
-                    <p style="color: gray;">
-                        {{ article.content|slice:'100' }}...
-                    </p>
                 </div>
-                <!-- 注脚 -->
-                <p>
-                    <!-- 附加信息 -->
-                    <span>
-                        <i class="fas fa-eye" style="color: lightskyblue;"></i>
-                        {{ article.total_views }}&nbsp;&nbsp;&nbsp;
-                    </span>
-                    <span>
-                        <i class="fas fa-comments" style="color: yellowgreen;"></i>
-                        {{ article.comments.count }}&nbsp;&nbsp;&nbsp;
-                    </span>
-                    <span>
-                        <i class="fas fa-clock" style="color: pink;"></i>
-                        <!--
-                        {{ article.created|date:'Y-m-d' }}
-                        -->
-                        {{ article.created|timesince_zh }}
-                    </span>
+                <h4 class="mb-2">
+                    <a href="{% url 'article:article_detail' article.id %}">
+                        {{ article.title }}
+                    </a>
+                </h4>
+                <p class="text-muted mb-3">
+                    {{ article.content|slice:'120' }}...
                 </p>
+                <div class="article-footer">
+                    <span><i class="fas fa-eye text-primary mr-1"></i>{{ article.total_views }}</span>
+                    <span><i class="fas fa-comments text-success mr-1"></i>{{ article.comments.count }}</span>
+                    <span><i class="far fa-clock text-warning mr-1"></i>{{ article.created|timesince_zh }}</span>
+                </div>
             </div>
-            <hr style="width: 100%;"/>
+        </article>
+        {% empty %}
+        <div class="empty-state">
+            <h4>暂时没有收藏文章</h4>
+            <p>去博客社区寻找灵感，并把喜欢的内容加入收藏吧。</p>
+            <a class="btn-soft primary mt-3" href="{% url 'article:article_list' %}">
+                探索文章
+                <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
         {% endfor %}
     </div>
 
-    <!-- 页码导航 -->
-    <div class="pagination row">
-        <div class="m-auto">
-            <span class="step-links">
-                <!-- 如果不是第一页，则显示上翻按钮 -->
-                {% if articles.has_previous %}
-                    <a href="?page=1&order={{ order }}&search={{ search }}&column={{ column }}&tag={{ tag }}" class="btn btn-success">
-                        &laquo; 1
-                    </a>
-                    <span>...</span>
-                    <a href="?page={{ articles.previous_page_number }}&order={{ order }}&search={{ search }}&column={{ column }}&tag={{ tag }}"
-                       class="btn btn-secondary"
-                    >
-                        {{ articles.previous_page_number }}
-                    </a>
-                {% endif %}
+    {% if articles.has_other_pages %}
+    <div class="pagination-card mt-4">
+        {% if articles.has_previous %}
+        <a class="pagination-link"
+           href="?page=1&order={{ order }}&search={{ search }}&column={{ column }}&tag={{ tag }}">
+            « 首
+        </a>
+        <a class="pagination-link"
+           href="?page={{ articles.previous_page_number }}&order={{ order }}&search={{ search }}&column={{ column }}&tag={{ tag }}">
+            {{ articles.previous_page_number }}
+        </a>
+        {% endif %}
 
-                <!-- 当前页面 -->
-                <span class="current btn btn-danger btn-lg">
-                    {{ articles.number }}
-                </span>
+        <span class="pagination-link active">{{ articles.number }}</span>
 
-                <!-- 如果不是最末页，则显示下翻按钮 -->
-                {% if articles.has_next %}
-                    <a href="?page={{ articles.next_page_number }}&order={{ order }}&search={{ search }}&column={{ column }}&tag={{ tag }}"
-                       class="btn btn-secondary"
-                    >
-                        {{ articles.next_page_number }}
-                    </a>
-                    <span>...</span>
-                    <a href="?page={{ articles.paginator.num_pages }}&order={{ order }}&search={{ search }}&column={{ column }}&tag={{ tag }}"
-                       class="btn btn-success"
-                    >
-                        {{ articles.paginator.num_pages }} &raquo;
-                    </a>
-                {% endif %}
-            </span>
-        </div>
+        {% if articles.has_next %}
+        <a class="pagination-link"
+           href="?page={{ articles.next_page_number }}&order={{ order }}&search={{ search }}&column={{ column }}&tag={{ tag }}">
+            {{ articles.next_page_number }}
+        </a>
+        <a class="pagination-link"
+           href="?page={{ articles.paginator.num_pages }}&order={{ order }}&search={{ search }}&column={{ column }}&tag={{ tag }}">
+            末 »
+        </a>
+        {% endif %}
     </div>
-
-</div>
-
+    {% endif %}
+</section>
 {% endblock content %}
